@@ -1,0 +1,51 @@
+# dependencies
+node_modules/
+.pnp*
+
+# builds and caches
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+generated/
+
+# test output
+playwright-report/
+test-results/
+blob-report/
+.lighthouseci/
+
+# environment and secrets: never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+stripe-*.json
+
+# local data, uploads and exports (may contain personal data)
+uploads/
+public/uploads/
+data/exports/
+*.sqlite
+*.dump
+*.sql.gz
+
+# Claude Code: commit shared settings, not personal ones
+.claude/settings.local.json
+CLAUDE.local.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.log
+npm-debug.log*

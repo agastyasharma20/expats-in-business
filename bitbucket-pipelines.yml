@@ -1,0 +1,34 @@
+# Bitbucket Free = 50 build minutes/month. Keep this pipeline fast (~3-4 min):
+# it runs only on pull requests and on main. Full e2e runs locally (npm run e2e) or on the GitHub mirror.
+image: node:24
+
+definitions:
+  caches:
+    nextcache: .next/cache
+  steps:
+    - step: &check
+        name: Lint, type-check, unit tests, build
+        caches:
+          - node
+          - nextcache
+        script:
+          - export DEMO_MODE=true SKIP_ENV_VALIDATION=1 AI_PROVIDER=demo
+          - export DATABASE_URL=postgresql://eib:eib@localhost:5432/eib
+          - npm ci
+          - npx prisma generate
+          - npm run lint
+          - npm run typecheck
+          - npm run test -- --run
+          - npm run build
+          - npm audit --audit-level=high --omit=dev || true
+
+pipelines:
+  pull-requests:
+    "**":
+      - step: *check
+  branches:
+    main:
+      - step: *check
+  custom:
+    full-check:
+      - step: *check

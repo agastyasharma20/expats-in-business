@@ -1,1 +1,13 @@
+# Saved word for word; never reformat
 docs/PROJECT_BRIEF.md
+
+# Generated or vendored
+node_modules/
+.next/
+generated/
+coverage/
+playwright-report/
+test-results/
+package-lock.json
+prisma/migrations/
+.cache/

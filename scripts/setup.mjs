@@ -4,6 +4,7 @@
 import { spawnSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,6 +12,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const useDocker = !process.argv.includes("--no-docker");
 const MIN_NODE_MAJOR = 24;
 const AUTH_SECRET_PLACEHOLDER = "replace-with-a-long-random-string";
+// Host ports published by docker-compose.yml
+const PORTS = { database: 5433, smtp: 1025, mailUi: 8025 };
 
 const step = (message) => console.log(`\n▶ ${message}`);
 const ok = (message) => console.log(`  ✓ ${message}`);
@@ -60,6 +63,54 @@ function checkDocker() {
   ok("Docker is running");
 }
 
+/** Resolves true if anything accepts TCP connections on localhost:port (IPv4 or IPv6). */
+function isPortInUse(port) {
+  const probe = (host) =>
+    new Promise((resolve) => {
+      const socket = net.connect({ host, port });
+      const done = (inUse) => {
+        socket.destroy();
+        resolve(inUse);
+      };
+      socket.setTimeout(1_000);
+      socket.once("connect", () => done(true));
+      socket.once("timeout", () => done(false));
+      socket.once("error", () => done(false));
+    });
+  return Promise.all([probe("127.0.0.1"), probe("::1")]).then((results) => results.some(Boolean));
+}
+
+function isEibStackRunning() {
+  const result = spawnSync("docker", ["compose", "ps", "--status", "running", "-q"], {
+    cwd: root,
+    encoding: "utf8",
+    shell: true,
+  });
+  return result.status === 0 && result.stdout.trim() !== "";
+}
+
+// Another program on our ports makes EiB silently talk to the wrong service (e.g. error P1000).
+async function checkPortsFree() {
+  step("Checking ports");
+  if (isEibStackRunning()) {
+    ok("EiB containers already running");
+    return;
+  }
+  for (const [name, port] of Object.entries(PORTS)) {
+    if (await isPortInUse(port)) {
+      const findIt =
+        process.platform === "win32"
+          ? `in PowerShell: Get-Process -Id (Get-NetTCPConnection -LocalPort ${port} -State Listen).OwningProcess`
+          : `run: lsof -i :${port}`;
+      fail(
+        `Port ${port} (${name}) is already used by another program.`,
+        `find it (${findIt}), stop it, then run "npm run setup" again.`,
+      );
+    }
+  }
+  ok(`Ports ${Object.values(PORTS).join(", ")} are free`);
+}
+
 function createEnvFile() {
   step("Creating .env");
   const envPath = path.join(root, ".env");
@@ -79,10 +130,13 @@ function createEnvFile() {
   }
 }
 
-function main() {
+async function main() {
   console.log(`EiB setup (${useDocker ? "Docker" : "no Docker"})`);
   checkNode();
-  if (useDocker) checkDocker();
+  if (useDocker) {
+    checkDocker();
+    await checkPortsFree();
+  }
 
   step("Installing dependencies (npm ci)");
   if (!run("npm", ["ci"]))
@@ -95,10 +149,10 @@ function main() {
     if (!run("docker", ["compose", "up", "-d", "--wait"])) {
       fail(
         "docker compose could not start the services.",
-        "check that ports 5432, 1025 and 8025 are free.",
+        `check that ports ${Object.values(PORTS).join(", ")} are free.`,
       );
     }
-    ok("Database on localhost:5432, Mailpit on http://localhost:8025");
+    ok(`Database on localhost:${PORTS.database}, Mailpit on http://localhost:${PORTS.mailUi}`);
   }
 
   step("Generating the Prisma client");
@@ -109,7 +163,7 @@ function main() {
     fail(
       "Migrations failed.",
       useDocker
-        ? "run `docker compose ps` to check the db container is healthy."
+        ? `check DATABASE_URL in .env uses port ${PORTS.database} (an .env made before this port change uses 5432: delete .env and re-run setup). P1000 means a different PostgreSQL answered.`
         : "check DATABASE_URL in .env and that the pgvector extension is installed.",
     );
   }
@@ -123,4 +177,4 @@ function main() {
   console.log("\n✓ Setup complete. Start the app with `npm run dev` → http://localhost:3000");
 }
 
-main();
+await main();

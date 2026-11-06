@@ -25,6 +25,7 @@ jobs:
       BETTER_AUTH_SECRET: ci-only-not-a-secret-0123456789abcdef
       BETTER_AUTH_URL: http://localhost:3000
       APP_URL: http://localhost:3000
+      E2E_EXPECT_DB: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

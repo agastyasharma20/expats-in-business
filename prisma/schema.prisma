@@ -1,0 +1,58 @@
+// EiB data model. Milestone 1: geography only. Milestone 3 adds the full model.
+// Rules: ids are cuid2; chapter-specific models carry chapterId; jurisdiction-specific models carry
+// countryCode; money is Int minor units + currency; times are stored in UTC; seeded records set isDemo.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ChapterStatus {
+  live
+  launching
+  requested
+}
+
+model Country {
+  id              String    @id @default(cuid(2))
+  /// ISO 3166-1 alpha-2, e.g. "PL"
+  code            String    @unique @db.VarChar(2)
+  name            String
+  /// ISO 4217 currency used by default for chapters in this country, e.g. "PLN"
+  defaultCurrency String    @db.VarChar(3)
+  /// IANA time zone used by default for chapters in this country
+  defaultTimezone String
+  /// UI locales offered in this country, first = default
+  locales         String[]
+  isDemo          Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  chapters        Chapter[]
+}
+
+model Chapter {
+  id          String        @id @default(cuid(2))
+  slug        String        @unique
+  name        String
+  city        String
+  countryCode String        @db.VarChar(2)
+  country     Country       @relation(fields: [countryCode], references: [code])
+  /// IANA time zone; all times are stored in UTC and shown in this zone
+  timezone    String
+  /// ISO 4217 currency for prices in this chapter
+  currency    String        @db.VarChar(3)
+  /// UI locales offered in this chapter, first = default
+  locales     String[]
+  status      ChapterStatus @default(requested)
+  launchedAt  DateTime?
+  isDemo      Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([countryCode])
+  @@index([status])
+}

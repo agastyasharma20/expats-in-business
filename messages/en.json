@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "Expats in Business",
+    "description": "The business network for internationals."
+  },
+  "home": {
+    "eyebrow": "Milestone 1",
+    "title": "EiB platform: Milestone 1",
+    "intro": "The new Expats in Business platform is being built. This temporary page checks that the app and database are running.",
+    "dbChecking": "Checking the database…",
+    "dbUp": "Database: connected",
+    "dbDown": "Database: not reachable. Start Docker Desktop and run npm run setup."
+  }
+}

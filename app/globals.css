@@ -1,0 +1,151 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * EiB design tokens: the only place raw colour values may appear.
+ * Starting values from docs/PROJECT_BRIEF.md section 6; Milestone 2 replaces them with the live
+ * site's computed values. shadcn/ui semantic variables (primary, muted, ...) map onto these.
+ */
+:root {
+  --brand-950: #0a3335; /* Deep Teal: logo, headings, footer */
+  --brand-800: #0e4a48;
+  --brand-700: #12635a; /* EiB Green: primary actions, links */
+  --brand-500: #2e8f80;
+  --brand-100: #e0f4f3;
+  --brand-50: #f2faf9;
+  --ink: #0f1a1a;
+  --ink-muted: #51605f;
+  --line: #dce5e4;
+  --surface: #ffffff;
+  --canvas: #f7faf9;
+  --success: #1f7a4d;
+  --warning: #a15c00;
+  --danger: #b3261e;
+  --highlight: #f2b544; /* proposal, badges only */
+
+  /* shadcn/ui semantic mapping */
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--brand-700);
+  --primary-foreground: var(--surface);
+  --secondary: var(--brand-100);
+  --secondary-foreground: var(--brand-950);
+  --muted: var(--brand-50);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--brand-100);
+  --accent-foreground: var(--brand-950);
+  --destructive: var(--danger);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--brand-700);
+  --chart-1: var(--brand-700);
+  --chart-2: var(--brand-500);
+  --chart-3: var(--brand-950);
+  --chart-4: var(--highlight);
+  --chart-5: var(--brand-100);
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--brand-700);
+  --sidebar-primary-foreground: var(--surface);
+  --sidebar-accent: var(--brand-100);
+  --sidebar-accent-foreground: var(--brand-950);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--brand-700);
+
+  --radius: 0.75rem; /* 12px; sm ≈ 8px, 2xl ≈ 20px */
+}
+
+@theme inline {
+  /* Brand palette as utilities: bg-brand-700, text-brand-950, ... */
+  --color-brand-950: var(--brand-950);
+  --color-brand-800: var(--brand-800);
+  --color-brand-700: var(--brand-700);
+  --color-brand-500: var(--brand-500);
+  --color-brand-100: var(--brand-100);
+  --color-brand-50: var(--brand-50);
+  --color-ink: var(--ink);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
+  --color-canvas: var(--canvas);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-highlight: var(--highlight);
+
+  /* shadcn/ui semantic utilities */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Fonts come from next/font variables set in app/[locale]/layout.tsx */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

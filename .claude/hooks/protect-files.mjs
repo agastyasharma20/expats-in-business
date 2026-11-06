@@ -6,7 +6,11 @@ process.stdin.on("end", () => {
   try {
     const input = JSON.parse(raw || "{}");
     const file = String(input?.tool_input?.file_path || "").replace(/\\/g, "/");
-    const blocked = [/(^|\/)\.env(\.(?!example$)[^/]*)?$/, /(^|\/)\.git\//, /(^|\/)package-lock\.json$/];
+    const blocked = [
+      /(^|\/)\.env(\.(?!example$)[^/]*)?$/,
+      /(^|\/)\.git\//,
+      /(^|\/)package-lock\.json$/,
+    ];
     if (blocked.some((re) => re.test(file))) {
       process.stderr.write(
         `Blocked edit to ${file}: secrets, lockfiles and .git are protected. ` +

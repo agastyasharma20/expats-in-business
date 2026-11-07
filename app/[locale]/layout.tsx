@@ -1,21 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { bodyFont, headingFont } from "@/lib/fonts";
 import { routing } from "@/lib/i18n/routing";
 
 import "../globals.css";
-
-const inter = Inter({ variable: "--font-inter", subsets: ["latin", "latin-ext", "cyrillic"] });
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin", "latin-ext", "cyrillic"],
-  weight: ["700", "800"],
-});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -33,7 +26,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={`${inter.variable} ${montserrat.variable} h-full antialiased`}>
+    <html
+      lang={locale}
+      className={`${bodyFont.variable} ${headingFont.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>
           <TooltipProvider>{children}</TooltipProvider>

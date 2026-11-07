@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { bodyFont, headingFont } from "@/lib/fonts";
@@ -32,7 +33,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     >
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <MotionProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </MotionProvider>
           <Toaster />
         </NextIntlClientProvider>
       </body>

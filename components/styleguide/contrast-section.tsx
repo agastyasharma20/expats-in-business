@@ -13,7 +13,13 @@ export function ContrastSection() {
 
   return (
     <StyleguideSection id="contrast" title={t("sections.contrast")} intro={t("contrast.intro")}>
-      <div className="relative w-full max-w-full min-w-0 overflow-x-auto rounded-xl border border-line bg-surface">
+      {/* Focusable so keyboard users can scroll the table on narrow screens. */}
+      <div
+        role="region"
+        aria-label={t("sections.contrast")}
+        tabIndex={0}
+        className="relative w-full max-w-full min-w-0 overflow-x-auto rounded-xl border border-line bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      >
         <table className="w-full min-w-[44rem] border-collapse text-left text-small">
           <thead className="bg-muted text-brand-950">
             <tr>

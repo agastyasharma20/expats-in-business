@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 type ExternalLinkProps = Omit<React.ComponentProps<"a">, "target" | "rel"> & {
   href: string;

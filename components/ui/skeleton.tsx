@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 /**
  * Loading placeholder with a 1.4s shimmer (one of the only looping animations allowed). The shimmer

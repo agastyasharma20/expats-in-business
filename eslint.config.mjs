@@ -12,7 +12,22 @@ export default defineConfig([
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "no-console": ["warn", { allow: ["warn", "error", "info"] }],
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "cn",
+              message: "Import { cn } from \"@/lib/utils\": it knows EiB's custom Tailwind tokens.",
+            },
+          ],
+        },
+      ],
     },
+  },
+  {
+    files: ["lib/utils.ts"],
+    rules: { "no-restricted-imports": "off" },
   },
   {
     // Node scripts may log freely.

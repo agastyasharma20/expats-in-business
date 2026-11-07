@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, useInView, useReducedMotion } from "motion/react";
 import { useLocale } from "next-intl";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 type StatCounterProps = {
   value: number;

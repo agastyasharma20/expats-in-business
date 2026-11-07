@@ -10,5 +10,12 @@
     "dbChecking": "Checking the database…",
     "dbUp": "Database: connected",
     "dbDown": "Database: not reachable. Start Docker Desktop and run npm run setup."
+  },
+  "common": {
+    "close": "Close",
+    "required": "(required)",
+    "optional": "(optional)",
+    "opensInNewTab": "(opens in a new tab)",
+    "loading": "Loading…"
   }
 }

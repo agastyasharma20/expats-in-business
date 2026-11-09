@@ -5,26 +5,46 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * EiB design tokens: the only place raw colour values may appear.
- * Starting values from docs/PROJECT_BRIEF.md section 6; Milestone 2 replaces them with the live
- * site's computed values. shadcn/ui semantic variables (primary, muted, ...) map onto these.
+ * EiB design tokens: the only place raw colour values may appear (mirrored in lib/design/tokens.ts,
+ * a unit test keeps the two in sync). Values come from the live site, see docs/brand/BRAND.md.
+ * shadcn/ui semantic variables (primary, muted, ...) map onto these.
  */
 :root {
-  --brand-950: #0a3335; /* Deep Teal: logo, headings, footer */
-  --brand-800: #0e4a48;
-  --brand-700: #12635a; /* EiB Green: primary actions, links */
-  --brand-500: #2e8f80;
-  --brand-100: #e0f4f3;
-  --brand-50: #f2faf9;
+  /* Teal family (brand) */
+  --brand-950: #093334; /* Deep Teal: headings, top bar, footer, favicon (live) */
+  --brand-900: #074c4c; /* logo teal (live) */
+  --brand-800: #104d4d; /* secondary teal (live Elementor secondary) */
+  --brand-700: #12635a; /* EiB Green: primary buttons and links */
+  --brand-500: #2e8f80; /* decoration and focus accents only (3.9:1 on white) */
+  --brand-200: #b3dfe3; /* secondary button hover */
+  --brand-100: #c5e8eb; /* tint (live Elementor accent) */
+  --brand-50: #f2faf9; /* lightest wash */
+
+  /* Ember: the live site's CTA orange-red */
+  --ember-500: #ff3514; /* icons, live dot, display text ≥ 24px only */
+  --ember-700: #a5200a; /* highlight button hover */
+  --ember-600: #c2260c; /* "Join" highlight button with white text (5.9:1) */
+  --ember-50: #fff0ec;
+
+  /* Neutrals */
   --ink: #0f1a1a;
   --ink-muted: #51605f;
+  --on-dark: #ffffff;
+  --on-dark-muted: #b3c2c1; /* muted text on Deep Teal (7.4:1) */
   --line: #dce5e4;
+  --line-strong: #7a8b8a; /* form control borders (3:1 non-text contrast) */
   --surface: #ffffff;
   --canvas: #f7faf9;
+
+  /* Status (text colours pass 4.5:1 on white and on their -50 tint) */
   --success: #1f7a4d;
-  --warning: #a15c00;
+  --success-50: #e8f5ee;
+  --warning: #8a4f00;
+  --warning-50: #fdf3e3;
+  --danger-700: #93261f; /* destructive button hover */
   --danger: #b3261e;
-  --highlight: #f2b544; /* proposal, badges only */
+  --danger-50: #fcebea;
+  --highlight: #f2b544; /* founding badge background only, with ink text */
 
   /* shadcn/ui semantic mapping */
   --background: var(--canvas);
@@ -34,49 +54,63 @@
   --popover: var(--surface);
   --popover-foreground: var(--ink);
   --primary: var(--brand-700);
-  --primary-foreground: var(--surface);
+  --primary-foreground: var(--on-dark);
   --secondary: var(--brand-100);
   --secondary-foreground: var(--brand-950);
   --muted: var(--brand-50);
   --muted-foreground: var(--ink-muted);
-  --accent: var(--brand-100);
+  --accent: var(--brand-50);
   --accent-foreground: var(--brand-950);
   --destructive: var(--danger);
   --border: var(--line);
-  --input: var(--line);
+  --input: var(--line-strong);
   --ring: var(--brand-700);
   --chart-1: var(--brand-700);
   --chart-2: var(--brand-500);
   --chart-3: var(--brand-950);
-  --chart-4: var(--highlight);
+  --chart-4: var(--ember-500);
   --chart-5: var(--brand-100);
   --sidebar: var(--surface);
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--brand-700);
-  --sidebar-primary-foreground: var(--surface);
-  --sidebar-accent: var(--brand-100);
+  --sidebar-primary-foreground: var(--on-dark);
+  --sidebar-accent: var(--brand-50);
   --sidebar-accent-foreground: var(--brand-950);
   --sidebar-border: var(--line);
   --sidebar-ring: var(--brand-700);
 
-  --radius: 0.75rem; /* 12px; sm ≈ 8px, 2xl ≈ 20px */
+  --radius: 0.75rem;
 }
 
 @theme inline {
   /* Brand palette as utilities: bg-brand-700, text-brand-950, ... */
   --color-brand-950: var(--brand-950);
+  --color-brand-900: var(--brand-900);
   --color-brand-800: var(--brand-800);
   --color-brand-700: var(--brand-700);
   --color-brand-500: var(--brand-500);
+  --color-brand-200: var(--brand-200);
   --color-brand-100: var(--brand-100);
   --color-brand-50: var(--brand-50);
+  --color-ember-500: var(--ember-500);
+  --color-ember-700: var(--ember-700);
+  --color-ember-600: var(--ember-600);
+  --color-ember-50: var(--ember-50);
   --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-muted: var(--on-dark-muted);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-surface: var(--surface);
   --color-canvas: var(--canvas);
   --color-success: var(--success);
+  --color-success-50: var(--success-50);
   --color-warning: var(--warning);
+  --color-warning-50: var(--warning-50);
+  --color-danger-700: var(--danger-700);
   --color-danger: var(--danger);
+  --color-danger-50: var(--danger-50);
   --color-highlight: var(--highlight);
 
   /* shadcn/ui semantic utilities */
@@ -112,19 +146,59 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* Radius 8 / 12 / 20 / pill */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.25rem;
+  --radius-4xl: 1.25rem;
+  --radius-pill: 9999px;
 
-  /* Fonts come from next/font variables set in app/[locale]/layout.tsx */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgb(9 51 52 / 0.06), 0 8px 24px rgb(9 51 52 / 0.06);
+  --shadow-raised: 0 2px 4px rgb(9 51 52 / 0.08), 0 16px 40px rgb(9 51 52 / 0.1);
 
+  /* Fonts (next/font variables set in app/[locale]/layout.tsx). Cabin has no Cyrillic, so
+     Ukrainian headings fall back glyph by glyph to Nunito Sans. */
+  --font-sans: var(--font-nunito-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-cabin), var(--font-nunito-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Type scale (size / line-height) */
+  --text-display: 3.5rem;
+  --text-display--line-height: 4rem;
+  --text-display-sm: 2.25rem;
+  --text-display-sm--line-height: 2.75rem;
+  --text-h1: 2.5rem;
+  --text-h1--line-height: 3rem;
+  --text-h2: 2rem;
+  --text-h2--line-height: 2.5rem;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 2rem;
+  --text-body: 1rem;
+  --text-body--line-height: 1.625rem;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.375rem;
+  --tracking-eyebrow: 0.08em;
+
+  /* Layout */
+  --container-page: 75rem;
+
+  /* Motion */
   --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-micro: 150ms;
+  --duration-entrance: 500ms;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
 }
 
 @layer base {
@@ -133,9 +207,33 @@
   }
   html {
     @apply font-sans;
+    -webkit-text-size-adjust: 100%;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-body text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading font-bold text-brand-950;
+    text-wrap: balance;
+  }
+  a {
+    text-underline-offset: 0.2em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .container-page {
+    @apply mx-auto w-full max-w-(--container-page) px-4 sm:px-6;
+  }
+  .eyebrow {
+    @apply text-small font-bold tracking-eyebrow uppercase;
   }
 }
 

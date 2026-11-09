@@ -13,7 +13,9 @@ test.describe("Milestone 1 home", () => {
     page.on("pageerror", (error) => errors.push(error.message));
 
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/^EiB platform: Milestone d+/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      /^EiB platform: Milestone \d+/,
+    );
     await expect(page.getByTestId("db-status")).toBeVisible();
     if (expectDb) await expect(page.getByTestId("db-status")).toHaveAttribute("data-db", "up");
     expect(errors).toEqual([]);

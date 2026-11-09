@@ -11,6 +11,7 @@ import {
   legalNav,
   mainNav,
   socialNav,
+  type NavItem,
 } from "@/lib/nav";
 import en from "@/messages/en.json";
 
@@ -24,9 +25,9 @@ function message(key: string): unknown {
     .reduce<unknown>((node, part) => (node as Record<string, unknown>)?.[part], en);
 }
 
-const menus = {
+const menus: Record<string, readonly NavItem[]> = {
   header: [...mainNav, accountNav.signIn],
-  footerAll: footerColumns.flatMap((column) => column.items),
+  footerAll: footerColumns.flatMap((column): readonly NavItem[] => column.items),
   legal: legalNav,
 };
 

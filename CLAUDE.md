@@ -51,10 +51,18 @@ Package manager: npm. Node 24 LTS. OS of the developer: Windows 11 (PowerShell).
 
 ## Brand rules
 
-- Colors (tokens in app/globals.css): Deep Teal #0A3335 (logo, headings, footer), EiB Green #12635A (primary actions),
-  tint #E0F4F3, white. Values were sampled; Milestone 2 replaces them with the live site's computed values. Never hard-code hex in components.
-- Fonts: Montserrat 700–800 for headings (sentence case), Inter for body, via next/font. All caps only for short eyebrow labels.
-- Logo: circular "EB" monogram on white or Deep Teal only. Files in public/brand/.
+- Colors: tokens in app/globals.css (mirrored in lib/design/tokens.ts, kept in sync by a test), taken from the live site
+  in Milestone 2 (docs/brand/BRAND.md): Deep Teal #093334 (headings, top bar, footer), logo teal #074C4C, EiB Green #12635A
+  (primary buttons, links), tint #C5E8EB, ember #FF3514 (decoration only) / #C2260C (one "Join" highlight button).
+  Never hard-code hex in components or app (a unit test scans for it). Every new text/background pair goes into
+  contrastPairs in lib/design/tokens.ts and must pass 4.5:1 (3:1 for borders and focus).
+- Fonts: Cabin 600–700 for headings (sentence case), Nunito Sans for body: the live site's fonts, via lib/fonts.ts.
+  All caps only for short eyebrow labels (.eyebrow).
+- Class names: import { cn } from "@/lib/utils" (knows the custom text-body/text-small/shadow-card tokens); ESLint
+  blocks the bare "cn" package because it silently drops colours next to custom font sizes.
+- Living reference: /styleguide (development and demo mode only).
+- Logo: eib-logo.png on white, eib-logo-white.png on Deep Teal, eib-monogram.png for the circle mark; originals in
+  docs/brand/source/, regenerate with `node scripts/brand-assets.mjs`.
 - Tone: warm, inclusive, concrete. Sentence-case buttons, at most one exclamation mark, always date, time, venue, price.
 - Images: real EiB photos only or labeled illustrated placeholders. No stock photos presented as EiB events.
 

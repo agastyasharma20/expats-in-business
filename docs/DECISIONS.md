@@ -1,5 +1,11 @@
 # Decisions (newest first)
 
+- 2026-11-07 · Brand from the live site (docs/brand/BRAND.md): Deep Teal #093334, tint #C5E8EB and the real fonts Cabin + Nunito Sans replace the brief's starting values and Montserrat + Inter. EiB Green #12635A is kept for primary actions even though the live site doesn't use it, because the live CTA orange #FF3514 fails 4.5:1 with white. The orange stays as "ember" for decoration, with #C2260C for one highlight button.
+- 2026-11-07 · Logo: the original 3000 px raster is used (resized by scripts/brand-assets.mjs). It is **not** redrawn as SVG: it isn't a small raster, and a hand-traced "EB" would drift from the real artwork. Ask EiB for the vector source.
+- 2026-11-07 · Buttons use 8 px radius, not the live site's square corners. Colour changes on hover are instant; only transform (press) and opacity animate.
+- 2026-11-07 · /styleguide is available in development and demo mode (not only development) so CI's production build can e2e-test it. It is noindex.
+- 2026-11-07 · cn is created with the custom token lists (lib/utils.ts); importing the bare "cn" package is a lint error.
+
 - 2026-11-06 · Versions pinned exactly (.npmrc save-exact). TypeScript 6.0.3, not 7, because typescript-eslint supports < 6.1. Prisma 7.10.1, because npm's "latest" tag points at an 8.0 release candidate. jsdom 29, because 30+ needs Node ≥ 24.15. ESLint 9, as chosen by create-next-app 16.4.
 - 2026-11-06 · Next 16.4 defaults kept: Cache Components and Partial Prefetching on. Request-time data goes inside <Suspense> after `connection()`.
 - 2026-11-06 · i18n: next-intl with `localePrefix: "as-needed"` (English at /, /pl and /uk prefixed). The default locale comes from DEFAULT_LOCALE. pl/uk merge over en until M15.

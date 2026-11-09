@@ -96,7 +96,7 @@ Each entry: **Goal · Acceptance criteria · Files · Tests · Risks.**
   - Built: Badge (verified/founding/demo/unconfirmed), EmptyState, Skeleton, ExternalLink, Breadcrumbs.
   - Header and footer come from `lib/nav` config (no duplicate Home, fixes bug 11).
   - Motion pieces: Reveal, PageTransition, StatCounter, SuccessCheck, Skyline.
-  - Styled 404 and error pages; /dev/ui showcase in demo mode.
+  - Styled 404 and error pages; /styleguide (development and demo mode).
 - **Tests:** component units, axe on the showcase.
 - **Risks:** CLS from fonts, readable contrast for the extracted colours.
 

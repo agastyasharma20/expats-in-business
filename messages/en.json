@@ -1,22 +1,26 @@
 {
   "meta": {
     "title": "Expats in Business",
+    "titleTemplate": "%s · Expats in Business",
     "description": "The business network for internationals."
   },
   "home": {
-    "eyebrow": "Milestone 1",
-    "title": "EiB platform: Milestone 1",
-    "intro": "The new Expats in Business platform is being built. This temporary page checks that the app and database are running.",
+    "eyebrow": "Milestone 3",
+    "title": "EiB platform: Milestone 3, layout and navigation",
+    "intro": "The new Expats in Business platform is being built. This temporary page checks that the app and database are running; the real homepage arrives in Milestone 5.",
     "dbChecking": "Checking the database…",
     "dbUp": "Database: connected",
-    "dbDown": "Database: not reachable. Start Docker Desktop and run npm run setup."
+    "dbDown": "Database: not reachable. Start Docker Desktop and run npm run setup.",
+    "styleguideLink": "View the design system"
   },
   "common": {
     "close": "Close",
     "required": "(required)",
     "optional": "(optional)",
     "opensInNewTab": "(opens in a new tab)",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "skipToContent": "Skip to content",
+    "backHome": "Back to home"
   },
   "styleguide": {
     "metaTitle": "Design system",
@@ -208,5 +212,97 @@
       "demoValue": "Demo value"
     },
     "pressed": "Styleguide example: “{name}” does nothing here."
+  },
+  "nav": {
+    "main": "Main",
+    "home": "Expats in Business home",
+    "menu": "Menu",
+    "menuTitle": "Navigation",
+    "events": "Events",
+    "members": "Members",
+    "providers": "Providers",
+    "guides": "Guides",
+    "pricing": "Pricing",
+    "signIn": "Sign in",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use",
+    "cookies": "Cookie policy",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube"
+  },
+  "chapter": {
+    "label": "Chapter",
+    "choose": "Choose your chapter",
+    "global": "Global",
+    "launching": "Launching",
+    "current": "Chapter: {name}",
+    "saved": "Showing {name}"
+  },
+  "language": {
+    "label": "Language",
+    "current": "Language: {name}",
+    "names": {
+      "en": "English",
+      "pl": "Polski",
+      "uk": "Українська"
+    }
+  },
+  "footer": {
+    "platform": "Platform",
+    "legal": "Legal",
+    "connect": "Follow EiB",
+    "contact": "Contact",
+    "email": "Email us",
+    "messenger": "Message us on Messenger",
+    "whatsapp": "Join the WhatsApp community",
+    "copyright": "© {name}"
+  },
+  "comingSoon": {
+    "badge": "Coming soon",
+    "lead": "We're building this part of the new EiB platform.",
+    "whatsapp": "Join the WhatsApp community",
+    "events": {
+      "title": "Events",
+      "description": "Upcoming sessions, RSVPs and tickets will live here. Until then, sessions are announced in the WhatsApp community."
+    },
+    "members": {
+      "title": "Members",
+      "description": "A directory of verified members you can filter by industry, language and origin."
+    },
+    "providers": {
+      "title": "Providers",
+      "description": "Verified accountants, lawyers, relocation and language providers who work with internationals."
+    },
+    "guides": {
+      "title": "Guides",
+      "description": "Practical guides for settling in and doing business, each with official sources."
+    },
+    "pricing": {
+      "title": "Pricing",
+      "description": "EiB stays free to join. Optional plans for members and businesses are planned."
+    },
+    "signIn": {
+      "title": "Sign in",
+      "description": "Member accounts are coming soon: sign in with an email link or with Google."
+    }
+  },
+  "legal": {
+    "draftBanner": "Draft: to be reviewed by a lawyer",
+    "draftNote": "This document is a draft and is not yet in force.",
+    "englishOnly": "This document is available in English only for now.",
+    "lastUpdated": "Last updated {date}",
+    "onThisPage": "Legal documents"
+  },
+  "errors": {
+    "notFoundEyebrow": "Error 404",
+    "notFoundTitle": "We couldn't find that page",
+    "notFoundDescription": "The link may be old or mistyped. Try the homepage, or tell us what you were looking for.",
+    "errorEyebrow": "Something went wrong",
+    "errorTitle": "This page didn't load",
+    "errorDescription": "It's not you: something went wrong on our side. Try again in a moment.",
+    "retry": "Try again",
+    "contact": "Contact us"
   }
 }

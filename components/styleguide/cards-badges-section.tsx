@@ -57,6 +57,7 @@ export function BadgesSection() {
 
   return (
     <StyleguideSection id="badges" title={t("sections.badges")}>
+      <p className="text-small text-muted-foreground">{t("badges.examples")}</p>
       <div className="flex flex-wrap items-center gap-3">
         <Badge variant="verified">
           <BadgeCheckIcon aria-hidden="true" />
@@ -70,7 +71,7 @@ export function BadgesSection() {
         <Badge variant="unconfirmed">{t("badges.unconfirmed")}</Badge>
         <Badge variant="bubble">
           <span aria-hidden="true" className="font-heading">
-            IN
+            {t("badges.bubbleCode")}
           </span>
           {t("badges.bubble")}
         </Badge>

@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { Reveal } from "@/components/motion/reveal";
 import { StatCounter } from "@/components/motion/stat-counter";
 import { SuccessCheck } from "@/components/motion/success-check";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { StyleguideSection } from "./section";
@@ -47,12 +48,15 @@ export function MotionSection() {
     <StyleguideSection id="motion" title={sections("motion")} intro={t("intro")}>
       <div className="grid gap-6 md:grid-cols-3">
         <Demo label={t("counterLabel")} onReplay={() => replay("counter")}>
-          <StatCounter
-            key={runs.counter}
-            value={35}
-            suffix="+"
-            className="font-heading text-display-sm font-bold text-brand-950"
-          />
+          <div className="flex flex-col items-center gap-2">
+            <StatCounter
+              key={runs.counter}
+              value={35}
+              suffix="+"
+              className="font-heading text-display-sm font-bold text-brand-950"
+            />
+            <Badge variant="demo">{t("demoValue")}</Badge>
+          </div>
         </Demo>
         <Demo label={t("checkLabel")} onReplay={() => replay("check")}>
           <SuccessCheck key={runs.check} label={t("checkDone")} className="size-16" />

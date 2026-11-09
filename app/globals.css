@@ -16,11 +16,13 @@
   --brand-800: #104d4d; /* secondary teal (live Elementor secondary) */
   --brand-700: #12635a; /* EiB Green: primary buttons and links */
   --brand-500: #2e8f80; /* decoration and focus accents only (3.9:1 on white) */
+  --brand-200: #b3dfe3; /* secondary button hover */
   --brand-100: #c5e8eb; /* tint (live Elementor accent) */
   --brand-50: #f2faf9; /* lightest wash */
 
   /* Ember: the live site's CTA orange-red */
   --ember-500: #ff3514; /* icons, live dot, display text ≥ 24px only */
+  --ember-700: #a5200a; /* highlight button hover */
   --ember-600: #c2260c; /* "Join" highlight button with white text (5.9:1) */
   --ember-50: #fff0ec;
 
@@ -39,6 +41,7 @@
   --success-50: #e8f5ee;
   --warning: #8a4f00;
   --warning-50: #fdf3e3;
+  --danger-700: #93261f; /* destructive button hover */
   --danger: #b3261e;
   --danger-50: #fcebea;
   --highlight: #f2b544; /* founding badge background only, with ink text */
@@ -86,9 +89,11 @@
   --color-brand-800: var(--brand-800);
   --color-brand-700: var(--brand-700);
   --color-brand-500: var(--brand-500);
+  --color-brand-200: var(--brand-200);
   --color-brand-100: var(--brand-100);
   --color-brand-50: var(--brand-50);
   --color-ember-500: var(--ember-500);
+  --color-ember-700: var(--ember-700);
   --color-ember-600: var(--ember-600);
   --color-ember-50: var(--ember-50);
   --color-ink: var(--ink);
@@ -103,6 +108,7 @@
   --color-success-50: var(--success-50);
   --color-warning: var(--warning);
   --color-warning-50: var(--warning-50);
+  --color-danger-700: var(--danger-700);
   --color-danger: var(--danger);
   --color-danger-50: var(--danger-50);
   --color-highlight: var(--highlight);

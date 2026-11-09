@@ -13,16 +13,13 @@ const buttonVariants = cva(
         /** Primary action: EiB Green. */
         default: "bg-primary text-primary-foreground hover:bg-brand-800",
         /** The one "Join EiB" moment per screen: the live site's CTA orange, darkened for contrast. */
-        highlight:
-          "bg-ember-600 text-on-dark hover:bg-[color-mix(in_oklab,var(--ember-600),var(--ink)_15%)]",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklab,var(--brand-100),var(--brand-950)_10%)]",
+        highlight: "bg-ember-600 text-on-dark hover:bg-ember-700",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-brand-200",
         /** Matches the live site's outlined "Need help?" button. */
         outline:
           "border-brand-950 bg-surface text-brand-950 hover:bg-brand-50 aria-expanded:bg-brand-50",
         ghost: "text-brand-950 hover:bg-brand-50 aria-expanded:bg-brand-50",
-        destructive:
-          "bg-destructive text-on-dark hover:bg-[color-mix(in_oklab,var(--danger),var(--ink)_15%)]",
+        destructive: "bg-destructive text-on-dark hover:bg-danger-700",
         link: "text-primary underline decoration-1 underline-offset-4 hover:text-brand-800 hover:decoration-2",
       },
       size: {
@@ -37,7 +34,7 @@ const buttonVariants = cva(
         inline: "h-auto p-0 text-[length:inherit] font-[inherit]",
       },
     },
-    compoundVariants: [{ variant: "link", size: "default", class: "h-auto px-0 py-2" }],
+    compoundVariants: [{ variant: "link", size: "default", class: "h-auto min-h-11 px-0 py-2.5" }],
     defaultVariants: {
       variant: "default",
       size: "default",

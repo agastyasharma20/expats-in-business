@@ -41,6 +41,7 @@ Package manager: npm. Node 24 LTS. OS of the developer: Windows 11 (PowerShell).
 - app/[locale]/(member) – dashboard, roadmap, concierge, connections, bubbles, settings
 - app/[locale]/(provider) – provider inbox and analytics
 - app/[locale]/(admin) – admin and chapter-lead tools
+- app/[locale]/(dev) – developer pages (/styleguide), development and demo mode only
 - app/api – route handlers only for external callers (stripe webhook, concierge stream, pulse SSE, ics, checkin, health)
 - components/ui (shadcn) · components/motion · components/layout · components/<feature>
 - lib/ (auth, permissions, ai, db, env, rate-limit, i18n, money, time, chapters, nav, roadmap) · server/actions/<feature>.ts
@@ -77,7 +78,8 @@ Package manager: npm. Node 24 LTS. OS of the developer: Windows 11 (PowerShell).
 
 ## Animation rules
 
-- Use components/motion (Reveal, StatCounter, PageTransition, SuccessCheck). Animate only transform and opacity.
+- Use components/motion (Reveal, StatCounter, PageTransition, SuccessCheck). Animate only transform and opacity;
+  the only exceptions are SVG line drawing (pathLength: success tick, skyline) and the skeleton shimmer.
 - Micro 120–180ms, entrances 400–600ms with 60ms stagger, nothing over 600ms except counters (1.2s) and the skyline (1.6s).
 - MotionConfig reducedMotion="user" wraps the app; CSS transitions have prefers-reduced-motion fallbacks. No CLS from animation.
 

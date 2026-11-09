@@ -9,9 +9,11 @@ export const colorTokens = {
   "brand-800": "#104d4d",
   "brand-700": "#12635a",
   "brand-500": "#2e8f80",
+  "brand-200": "#b3dfe3",
   "brand-100": "#c5e8eb",
   "brand-50": "#f2faf9",
   "ember-500": "#ff3514",
+  "ember-700": "#a5200a",
   "ember-600": "#c2260c",
   "ember-50": "#fff0ec",
   ink: "#0f1a1a",
@@ -26,6 +28,7 @@ export const colorTokens = {
   "success-50": "#e8f5ee",
   warning: "#8a4f00",
   "warning-50": "#fdf3e3",
+  "danger-700": "#93261f",
   danger: "#b3261e",
   "danger-50": "#fcebea",
   highlight: "#f2b544",
@@ -33,7 +36,7 @@ export const colorTokens = {
 
 export type ColorToken = keyof typeof colorTokens;
 
-/** Where each token is meant to be used (shown on /styleguide). Keys are message ids in `styleguide.usage`. */
+/** Token names in display order. Their usage notes are message ids under `styleguide.tokens`. */
 export const colorTokenNames = Object.keys(colorTokens) as ColorToken[];
 
 export type ContrastLevel = "body" | "large" | "nonText";
@@ -67,6 +70,11 @@ export const contrastPairs: ContrastPair[] = [
   { id: "secondaryButton", foreground: "brand-950", background: "brand-100", level: "body" },
   { id: "ghostHover", foreground: "brand-950", background: "brand-50", level: "body" },
   { id: "highlightButton", foreground: "on-dark", background: "ember-600", level: "body" },
+  { id: "highlightButtonHover", foreground: "on-dark", background: "ember-700", level: "body" },
+  { id: "secondaryButtonHover", foreground: "brand-950", background: "brand-200", level: "body" },
+  { id: "destructiveButton", foreground: "on-dark", background: "danger", level: "body" },
+  { id: "destructiveButtonHover", foreground: "on-dark", background: "danger-700", level: "body" },
+  { id: "linkHover", foreground: "brand-800", background: "surface", level: "body" },
   { id: "bubbleBadge", foreground: "ember-600", background: "ember-50", level: "body" },
   { id: "foundingBadge", foreground: "ink", background: "highlight", level: "body" },
   { id: "successText", foreground: "success", background: "surface", level: "body" },
@@ -77,4 +85,9 @@ export const contrastPairs: ContrastPair[] = [
   { id: "errorAlert", foreground: "danger", background: "danger-50", level: "body" },
   { id: "inputBorder", foreground: "line-strong", background: "surface", level: "nonText" },
   { id: "focusRing", foreground: "brand-700", background: "surface", level: "nonText" },
+  { id: "focusRingOnCanvas", foreground: "brand-700", background: "canvas", level: "nonText" },
+  { id: "focusRingOnWash", foreground: "brand-700", background: "brand-50", level: "nonText" },
+  { id: "focusRingOnTint", foreground: "brand-700", background: "brand-100", level: "nonText" },
+  { id: "outlineButtonBorder", foreground: "brand-950", background: "surface", level: "nonText" },
+  { id: "dashedBorderOnCanvas", foreground: "line-strong", background: "canvas", level: "nonText" },
 ];

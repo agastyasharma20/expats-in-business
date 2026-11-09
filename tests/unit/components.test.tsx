@@ -49,10 +49,21 @@ describe("Button", () => {
     expect(button.className).toContain("text-body");
   });
 
-  it("gives every size at least a 44px target", () => {
-    render(<Button size="sm">Small</Button>);
-    // sm is 40px tall plus a 2px hit-area extension above and below.
-    expect(screen.getByRole("button").className).toMatch(/h-10 .*before:-inset-y-0\.5/);
+  it.each([
+    // [size, variant, expected class: 44px+ height, or a hit-area extension to 44px]
+    ["default", "default", /\bh-11\b/],
+    ["lg", "default", /\bh-12\b/],
+    ["icon", "default", /\bsize-11\b/],
+    ["sm", "default", /h-10 .*before:-inset-y-0\.5/],
+    ["icon-sm", "default", /size-10 .*before:-inset-0\.5/],
+    ["default", "link", /\bmin-h-11\b/],
+  ] as const)("gives size %s (%s variant) a 44px target", (size, variant, expected) => {
+    render(
+      <Button size={size} variant={variant}>
+        Label
+      </Button>,
+    );
+    expect(screen.getByRole("button").className).toMatch(expected);
   });
 });
 

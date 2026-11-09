@@ -82,7 +82,10 @@
       "warning-50": "Warning tint",
       "danger": "Errors, destructive actions",
       "danger-50": "Danger tint",
-      "highlight": "Founding badge background"
+      "highlight": "Founding badge background",
+      "brand-200": "Secondary button hover",
+      "ember-700": "Highlight button hover",
+      "danger-700": "Destructive button hover"
     },
     "pairs": {
       "bodyOnCanvas": "Body text on the page",
@@ -110,7 +113,17 @@
       "errorText": "Error message under a field",
       "errorAlert": "Error alert",
       "inputBorder": "Input border",
-      "focusRing": "Focus ring"
+      "focusRing": "Focus ring",
+      "highlightButtonHover": "Join highlight button, hover",
+      "secondaryButtonHover": "Secondary button, hover",
+      "destructiveButton": "Destructive button",
+      "destructiveButtonHover": "Destructive button, hover",
+      "linkHover": "Links, hover",
+      "focusRingOnCanvas": "Focus ring on the page",
+      "focusRingOnWash": "Focus ring on muted panels and dialog footers",
+      "focusRingOnTint": "Focus ring on tinted surfaces",
+      "outlineButtonBorder": "Outline button border",
+      "dashedBorderOnCanvas": "Empty state border on the page"
     },
     "type": {
       "display": "Display: the business network for internationals",
@@ -139,7 +152,7 @@
     },
     "cards": {
       "title": "Connect & Collaborate",
-      "description": "Demo data · Thu 12 Feb · 18:00 · Demo venue",
+      "description": "Demo data · Thu 12 Feb · 18:00 · Demo venue · Free",
       "body": "A relaxed networking evening with short intros and open conversation.",
       "shortTitle": "Guest Speaker",
       "shortBody": "Short card.",
@@ -156,7 +169,9 @@
       "default": "New",
       "secondary": "Free",
       "outline": "Online",
-      "destructive": "Full"
+      "destructive": "Full",
+      "examples": "Examples with demo values.",
+      "bubbleCode": "IN"
     },
     "forms": {
       "nameLabel": "Full name",
@@ -183,13 +198,14 @@
       "externalLink": "Official source (example.com)"
     },
     "motion": {
-      "intro": "All motion respects your system's reduce-motion setting. Only transform and opacity are animated.",
+      "intro": "All motion respects your system's reduce-motion setting. Movement uses transform and opacity; the only exceptions are the success tick and skyline line drawing (pathLength) and the skeleton shimmer.",
       "replay": "Replay",
       "counterLabel": "Stat counter (1.2s)",
       "checkLabel": "Success check (500ms)",
       "checkDone": "Task marked as done",
       "revealLabel": "Reveal (500ms, 60ms stagger)",
-      "revealItem": "Item {n}"
+      "revealItem": "Item {n}",
+      "demoValue": "Demo value"
     },
     "pressed": "Styleguide example: “{name}” does nothing here."
   }

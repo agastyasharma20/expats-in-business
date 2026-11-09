@@ -62,10 +62,10 @@ describe("EmptyState", () => {
       <EmptyState
         title="No events yet"
         description="New sessions are announced every month."
-        action={<a href="/chapters">See chapters</a>}
+        action={<button type="button">See chapters</button>}
       />,
     );
     expect(screen.getByRole("heading", { name: "No events yet" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "See chapters" })).toHaveAttribute("href", "/chapters");
+    expect(screen.getByRole("button", { name: "See chapters" })).toBeInTheDocument();
   });
 });

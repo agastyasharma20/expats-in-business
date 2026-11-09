@@ -1,9 +1,9 @@
 # Progress log
 
-| Milestone                  | Status                         | Branch / tag                        | Notes |
-| -------------------------- | ------------------------------ | ----------------------------------- | ----- |
-| M1 Scaffolding and tooling | done                           | develop · v0.1.0                    |       |
-| M2 Brand and design system | built; awaiting review and tag | feat/m02-design → v0.2.0 (proposed) |       |
+| Milestone                  | Status                  | Branch / tag                        | Notes |
+| -------------------------- | ----------------------- | ----------------------------------- | ----- |
+| M1 Scaffolding and tooling | done                    | develop · v0.1.0                    |       |
+| M2 Brand and design system | done; reviewer approved | feat/m02-design → v0.2.0 (proposed) |       |
 
 ## Log
 
@@ -33,7 +33,7 @@
 **How to test**
 
 1. `npm run dev`, then open http://localhost:3000/styleguide. Tab through the buttons, try reduced motion in the OS settings, and resize to 375 px.
-2. `npm run check` (60 unit tests) · `npm run build` · `npm run e2e` (18 tests at 1440 and 375 px).
+2. `npm run check` (75 unit tests) · `npm run build` · `npm run e2e` (18 tests at 1440 and 375 px).
 
 **Verified**
 
@@ -47,6 +47,16 @@
 - Against a dev server that has been running for hours, the parallel desktop e2e run can stall during route compilation. A fresh dev server or the production run passes.
 - The vector logo source is still needed from EiB. The live site's own logo `<img>` points at a dead staging host (tell Ziyan).
 - When the Playwright MCP screenshots a page, it injects `caret-color` into inputs, which shows up as a hydration warning. That's tooling, not app code; the e2e console check is clean.
+
+**Review** (reviewer subagent): the first pass blocked on button hover colours not being tokens and on missing contrast pairs. Both were fixed in 8c9d03f (36 pairs, all passing). Second pass: "Ready to merge" and "Brand consistency: approved".
+
+**Carried forward**
+
+- **BLOCKING for the milestone that builds the teal header and footer (M3 or M5):** add an on-dark focus-ring token. brand-700 on brand-950 is only 1.93:1.
+- StatCounter: one frame of the final value before the count-up when the counter is already on screen at load.
+- SuccessCheck: the live region mounts already filled, so some screen readers skip it.
+- The proxy matcher skips any path containing a dot (matters for future slugs such as `/guides/visa-1.2`).
+- `lib/dev-tools.ts` has no unit test, and the gate is decided at build time.
 
 **Old portal bugs addressed**: 2 (styled external links via `ExternalLink`), 12 (the equal-height `Card` variant is ready for event cards in M7).
 

@@ -414,7 +414,8 @@
     "rateLimited": "Too many attempts. Wait a minute and try again.",
     "demoTitle": "Demo accounts",
     "demoLead": "Demo mode only. Password for all: {password}",
-    "demoUse": "Use {email}"
+    "demoUse": "Use {email}",
+    "invalidEmail": "Enter your email address (and password, if you use one)."
   },
   "onboarding": {
     "title": "Set up your profile",

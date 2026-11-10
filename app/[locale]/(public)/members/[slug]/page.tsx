@@ -15,6 +15,9 @@ import { visibleProfile } from "@/lib/member/visibility";
 
 type Props = PageProps<"/[locale]/members/[slug]">;
 
+// Dynamic slug + session: rendered per request (the shell uses usePathname outside Suspense).
+export const instant = false;
+
 export const metadata: Metadata = { robots: { index: false } };
 
 async function ProfileView({ params }: { params: Props["params"] }) {

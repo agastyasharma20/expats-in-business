@@ -26,8 +26,11 @@ export function SignInForms({ next, google, demo }: SignInFormsProps) {
 
   const fail = (status?: number) => setError(status === 429 ? t("rateLimited") : t("error"));
 
+  const validEmail = () => /^\S+@\S+\.\S+$/.test(email);
+
   async function sendLink(event: React.FormEvent) {
     event.preventDefault();
+    if (!validEmail()) return setError(t("invalidEmail"));
     setPending(true);
     setError(null);
     const { error: err } = await authClient.signIn.magicLink({ email, callbackURL: next });
@@ -38,6 +41,7 @@ export function SignInForms({ next, google, demo }: SignInFormsProps) {
 
   async function signInWithPassword(event: React.FormEvent) {
     event.preventDefault();
+    if (!validEmail() || !password) return setError(t("invalidEmail"));
     setPending(true);
     setError(null);
     const { error: err } = await authClient.signIn.email({ email, password });
@@ -69,6 +73,7 @@ export function SignInForms({ next, google, demo }: SignInFormsProps) {
   return (
     <div className="flex flex-col gap-8">
       <form
+        noValidate
         onSubmit={sendLink}
         className="flex flex-col gap-4 rounded-xl border border-line bg-surface p-6 shadow-card"
       >
@@ -103,7 +108,7 @@ export function SignInForms({ next, google, demo }: SignInFormsProps) {
         <summary className="min-h-11 cursor-pointer font-heading font-semibold text-brand-950">
           {t("orPassword")}
         </summary>
-        <form onSubmit={signInWithPassword} className="mt-4 flex flex-col gap-4">
+        <form noValidate onSubmit={signInWithPassword} className="mt-4 flex flex-col gap-4">
           <Field id="signin-password" label={t("password")} required>
             {(props) => (
               <Input
@@ -145,6 +150,7 @@ export function SignInForms({ next, google, demo }: SignInFormsProps) {
                   variant="outline"
                   size="sm"
                   aria-label={t("demoUse", { email: account })}
+                  aria-pressed={email === account}
                   onClick={() => {
                     setEmail(account);
                     setPassword(demo.password);

@@ -305,7 +305,13 @@
     "facebook": "Facebook",
     "instagram": "Instagram",
     "linkedin": "LinkedIn",
-    "youtube": "YouTube"
+    "youtube": "YouTube",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "myProfile": "My profile",
+    "admin": "Admin",
+    "signOut": "Sign out",
+    "account": "Account menu"
   },
   "chapter": {
     "label": "Chapter",
@@ -386,6 +392,231 @@
     "errorTitle": "This page didn't load",
     "errorDescription": "It's not you: something went wrong on our side. Try again in a moment.",
     "retry": "Try again",
-    "contact": "Contact us"
+    "contact": "Contact us",
+    "forbiddenEyebrow": "Error 403",
+    "forbiddenTitle": "You don't have access to this page",
+    "forbiddenDescription": "This area is for chapter leads and admins. If you think you should have access, contact the team."
+  },
+  "auth": {
+    "title": "Sign in",
+    "lead": "Sign in with a link sent to your email. No password needed.",
+    "email": "Email",
+    "sendLink": "Email me a sign-in link",
+    "sending": "Sending…",
+    "checkInbox": "Check your inbox",
+    "checkInboxBody": "We sent a sign-in link to {email}. It works once and expires in 15 minutes.",
+    "useAnother": "Use another email",
+    "orPassword": "Or sign in with a password",
+    "password": "Password",
+    "signIn": "Sign in",
+    "google": "Continue with Google",
+    "error": "That did not work. Check the details and try again.",
+    "rateLimited": "Too many attempts. Wait a minute and try again.",
+    "demoTitle": "Demo accounts",
+    "demoLead": "Demo mode only. Password for all: {password}",
+    "demoUse": "Use {email}"
+  },
+  "onboarding": {
+    "title": "Set up your profile",
+    "stepOf": "Step {step} of {total}",
+    "next": "Save and continue",
+    "back": "Back",
+    "finish": "Finish",
+    "saved": "Saved",
+    "steps": {
+      "chapter": {
+        "title": "Your chapter",
+        "lead": "Where do you live or work?",
+        "label": "Chapter"
+      },
+      "origin": {
+        "title": "Where you are from",
+        "lead": "This places you in your Cultural Bubble.",
+        "label": "Country of origin"
+      },
+      "languages": {
+        "title": "Languages",
+        "lead": "Which languages can you do business in?"
+      },
+      "industry": {
+        "title": "Your industry",
+        "lead": "What do you work in?",
+        "label": "Industry",
+        "headline": "Headline (optional)",
+        "headlineHint": "For example: QA engineer at a software house"
+      },
+      "goals": {
+        "title": "What brings you here",
+        "lead": "Pick everything that applies."
+      },
+      "arrival": {
+        "title": "Arrival and residence",
+        "lead": "Used for your Landing Roadmap. Only you see this.",
+        "date": "Arrival date",
+        "residence": "Residence situation"
+      }
+    },
+    "residence": {
+      "eu_citizen": "EU citizen",
+      "non_eu_employee": "Non-EU employee",
+      "non_eu_founder": "Non-EU founder",
+      "student": "Student",
+      "family_member": "Family member"
+    },
+    "errors": {
+      "required": "Please choose an option to continue.",
+      "date": "Enter a valid date."
+    }
+  },
+  "dashboard": {
+    "title": "Welcome back, {name}",
+    "founding": "Founding member #{number}",
+    "nextEvent": "Your next session",
+    "noEvent": "You have no upcoming sessions.",
+    "findEvent": "Find a session",
+    "viewTicket": "View session",
+    "stats": {
+      "events": "Sessions joined",
+      "connections": "Connections",
+      "businesses": "Businesses"
+    },
+    "suggested": "People you could meet",
+    "noSuggested": "Complete your profile to get suggestions.",
+    "completeProfile": "Complete your profile",
+    "roadmap": "Landing Roadmap",
+    "roadmapSoon": "Your personal 30/60/90-day plan is being prepared.",
+    "myEvents": {
+      "title": "Sessions you joined",
+      "empty": "You have not joined a session yet.",
+      "checkedIn": "Checked in",
+      "confirmed": "Going"
+    },
+    "myConnections": {
+      "title": "Your connections",
+      "empty": "No connections yet. Meet people at a session and connect afterwards.",
+      "metAt": "Met at {event}"
+    },
+    "myBusinesses": {
+      "title": "Your businesses",
+      "empty": "You have not listed a business yet. Business listings come with the Business plan."
+    }
+  },
+  "profile": {
+    "origin": "From",
+    "languages": "Languages",
+    "industry": "Industry",
+    "skills": "Skills",
+    "chapter": "Chapter",
+    "coffee": "Open to coffee",
+    "copyLink": "Copy profile link",
+    "copied": "Profile link copied",
+    "copyFailed": "Copy failed. Select the link and copy it manually.",
+    "demo": "Demo profile",
+    "private": "This profile is private.",
+    "edit": "Edit profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "profile": "Profile",
+      "account": "Account",
+      "email": "Email",
+      "billing": "Billing",
+      "privacy": "Privacy"
+    },
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saved": "Changes saved",
+    "error": "Could not save. Check the fields and try again.",
+    "profile": {
+      "headline": "Headline",
+      "bio": "About you",
+      "skills": "Skills",
+      "skillsHint": "Separate with commas.",
+      "coffee": "Open to coffee chats",
+      "visibility": "Who can see what",
+      "visibilityLead": "Visitors see only what you switch on. Your email is never public.",
+      "isPublic": "Public profile",
+      "showBio": "Show about",
+      "showOrigin": "Show country of origin",
+      "showLanguages": "Show languages",
+      "showIndustry": "Show industry",
+      "showSkills": "Show skills",
+      "viewPublic": "View public profile"
+    },
+    "account": {
+      "name": "Name",
+      "locale": "Preferred language",
+      "email": "Sign-in email"
+    },
+    "email": {
+      "lead": "Add another address, for example a work email.",
+      "add": "Add email",
+      "added": "We sent a verification link to {email}.",
+      "verified": "Verified",
+      "unverified": "Not verified",
+      "resend": "Resend link",
+      "remove": "Remove",
+      "verifiedNotice": "Email verified.",
+      "invalidLink": "That link is invalid or has expired.",
+      "primary": "Primary",
+      "taken": "That email is already in use."
+    },
+    "billing": {
+      "lead": "Plans and payments arrive with the next milestone. You are on the free Community plan.",
+      "plan": "Current plan: Community (free)"
+    },
+    "privacy": {
+      "exportTitle": "Download your data",
+      "exportLead": "A JSON file with your account, profile, tickets and connections.",
+      "export": "Download my data",
+      "deleteTitle": "Delete your account",
+      "deleteLead": "Your account is deleted 30 days after you ask. You can cancel until then.",
+      "delete": "Delete my account",
+      "deleteConfirm": "Type DELETE to confirm",
+      "scheduled": "Deletion scheduled for {date}.",
+      "cancel": "Cancel deletion",
+      "cancelled": "Deletion cancelled."
+    }
+  },
+  "help": {
+    "title": "Help",
+    "lead": "Answers to common questions, and a way to reach the team.",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "free": {
+        "q": "Is EiB free?",
+        "a": "Yes. Joining the community, the events listed as free and the guides are free."
+      },
+      "signin": {
+        "q": "How do I sign in?",
+        "a": "Enter your email on the sign-in page and we send you a link. No password needed."
+      },
+      "profile": {
+        "q": "Who can see my profile?",
+        "a": "You decide field by field in Settings, Profile. Your email is never shown publicly."
+      },
+      "delete": {
+        "q": "Can I delete my account?",
+        "a": "Yes, in Settings, Privacy. It is deleted 30 days after you ask, and you can cancel until then."
+      }
+    },
+    "concierge": "Questions about PESEL, residence or taxes? Read the guides, which cite official sources.",
+    "guides": "Read the guides",
+    "contactTitle": "Contact the team",
+    "name": "Your name",
+    "email": "Your email",
+    "message": "Message",
+    "send": "Send message",
+    "sent": "Thanks. Your message was sent; we usually reply within a few days.",
+    "rateLimited": "You have sent several messages already. Try again later.",
+    "error": "Please fill in all fields (message at least 10 characters)."
+  },
+  "admin": {
+    "title": "Admin",
+    "lead": "Command centre. Tools arrive in a later milestone.",
+    "members": "Members",
+    "events": "Events",
+    "chapters": "Chapters"
   }
 }

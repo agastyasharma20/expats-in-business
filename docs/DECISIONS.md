@@ -1,5 +1,11 @@
 # Decisions (newest first)
 
+- 2026-11-10 · Seed layering: real configuration (country, chapters, catalogues, plans, roadmap tasks) is `isDemo=false` and upserted. Everything fictional is `isDemo=true` and replaced by `demo:reset`. This deviates from the M4 prompt's "every seeded record isDemo=true" so a real install can keep its configuration.
+- 2026-11-10 · Cached data loaders (`"use cache"`) must throw on failure; a non-cached wrapper catches and returns the empty state. Catching inside the cache would cache the failure.
+- 2026-11-10 · Public pages animate with CSS keyframes (they run on first paint, need no hydration and ship no JS). Motion is only loaded by pages that use `m.*` components, inside `MotionProvider`.
+- 2026-11-10 · The layout passes only the client namespaces to `NextIntlClientProvider`; pages with extra client needs (the styleguide) add their own provider.
+- 2026-11-10 · Guides accept only official https sources (gov.pl, krakow.pl, zus.pl, knf.gov.pl, europa.eu) and must be re-verified within a year (tests enforce this). City-specific guides carry a `chapter` frontmatter field.
+
 - 2026-11-10 · The locale comes from `next/root-params` (in lib/i18n/request.ts and the locale layout). No page awaits `params` and `setRequestLocale` is gone (deprecated by next-intl). This removes the "URL data outside Suspense" instant-navigation insight on every page. As a result `app/layout.tsx` is gone, so `[locale]` is the root layout again; URLs outside any locale use `app/global-not-found.tsx` (`experimental.globalNotFound`). The legal pages are three static routes sharing `LegalPageView` instead of `[slug]` (`dynamicParams` is not supported with Cache Components). The `[...rest]` catch-all sets `instant = false` because it only ever 404s.
 
 - 2026-11-10 · Unbuilt nav destinations (Events, Members, Providers, Guides, Pricing, Sign in) render designed, noindex coming-soon pages with working actions, so the full navbar ships now and the crawler stays green. Each later milestone replaces its route.

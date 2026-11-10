@@ -31,7 +31,8 @@ export const mainNav = [
 ] as const satisfies readonly NavItem[];
 
 export const accountNav = {
-  signIn: { id: "signIn", href: "/sign-in", labelKey: "nav.signIn", status: "comingSoon" },
+  signIn: { id: "signIn", href: "/sign-in", labelKey: "nav.signIn", status: "live" },
+  help: { id: "help", href: "/help", labelKey: "nav.help", status: "live" },
 } as const satisfies Record<string, NavItem>;
 
 export const legalNav = [
@@ -49,7 +50,11 @@ export const socialNav = [
 
 /** Footer columns, in display order. Headings are message keys under `footer.*`. */
 export const footerColumns = [
-  { id: "platform", headingKey: "footer.platform", items: [...mainNav, accountNav.signIn] },
+  {
+    id: "platform",
+    headingKey: "footer.platform",
+    items: [...mainNav, accountNav.signIn, accountNav.help],
+  },
   { id: "legal", headingKey: "footer.legal", items: legalNav },
 ] as const;
 

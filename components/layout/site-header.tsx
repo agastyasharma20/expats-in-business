@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import { useTranslations } from "next-intl";
 
-import { Button } from "@/components/ui/button";
+import { AccountNav, SignInButton } from "@/components/auth/account-nav";
 import { Link } from "@/lib/i18n/navigation";
-import { accountNav, mainNav } from "@/lib/nav";
+import { mainNav } from "@/lib/nav";
 
 import { ChapterSwitcher } from "./chapter-switcher";
 import { HeaderScrollState } from "./header-scroll-state";
@@ -46,9 +47,9 @@ export function SiteHeader() {
             <ChapterSwitcher />
             <LanguageSwitcher />
           </div>
-          <Button asChild variant="outline" className="hidden sm:inline-flex">
-            <Link href={accountNav.signIn.href}>{t("signIn")}</Link>
-          </Button>
+          <Suspense fallback={<SignInButton />}>
+            <AccountNav />
+          </Suspense>
           <MobileNav
             controls={
               <>

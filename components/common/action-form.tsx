@@ -83,7 +83,7 @@ export function Toggle({
         type="checkbox"
         name={name}
         defaultChecked={defaultChecked}
-        className="size-5 accent-[var(--brand-700)]"
+        className="size-5 accent-brand-700"
       />
       {label}
     </label>

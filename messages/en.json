@@ -310,7 +310,8 @@
     "myProfile": "My profile",
     "admin": "Admin",
     "signOut": "Sign out",
-    "account": "Account menu"
+    "account": "Account menu",
+    "help": "Help"
   },
   "chapter": {
     "label": "Chapter",

@@ -30,7 +30,8 @@
     "stripe:listen": "node scripts/stub.mjs stripe:listen 7",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "messages:sync": "node scripts/sync-messages.mjs"
+    "messages:sync": "node scripts/sync-messages.mjs",
+    "crawl": "tsx scripts/crawl-links.ts"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "3.3.0",

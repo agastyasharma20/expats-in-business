@@ -41,7 +41,7 @@ Package manager: npm. Node 24 LTS. OS of the developer: Windows 11 (PowerShell).
 - app/[locale]/(member) – dashboard, roadmap, concierge, connections, bubbles, settings
 - app/[locale]/(provider) – provider inbox and analytics
 - app/[locale]/(admin) – admin and chapter-lead tools
-- app/[locale]/(dev) – developer pages (/styleguide), development and demo mode only
+- app/[locale]/(tools) – developer pages (/styleguide), development and demo mode only
 - app/api – route handlers only for external callers (stripe webhook, concierge stream, pulse SSE, ics, checkin, health)
 - components/ui (shadcn) · components/motion · components/layout · components/<feature>
 - lib/ (auth, permissions, ai, db, env, rate-limit, i18n, money, time, chapters, nav, roadmap) · server/actions/<feature>.ts

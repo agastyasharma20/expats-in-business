@@ -2,6 +2,9 @@ import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { DatabaseStatus } from "@/components/system/database-status";
+import { buttonVariants } from "@/components/ui/button";
+import { areDevToolsEnabled } from "@/lib/dev-tools";
+import { Link } from "@/lib/i18n/navigation";
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -16,6 +19,11 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <Suspense fallback={<p className="text-muted-foreground">{t("dbChecking")}</p>}>
         <DatabaseStatus />
       </Suspense>
+      {areDevToolsEnabled() ? (
+        <Link href="/styleguide" className={`${buttonVariants({ variant: "outline" })} self-start`}>
+          {t("styleguideLink")}
+        </Link>
+      ) : null}
     </div>
   );
 }

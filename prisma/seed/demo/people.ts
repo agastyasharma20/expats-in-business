@@ -148,7 +148,7 @@ export async function seedPeople(ctx: SeedContext): Promise<DemoPeople> {
         email: u.email,
         emailVerified: true,
         isDemo: true,
-        locale: "en",
+        locale: chapters.live.locales[0] ?? null,
       })),
     }),
   );

@@ -82,7 +82,7 @@ export async function seedBase(db: PrismaClient) {
       interval: plan.interval,
       amountMinor: Math.round(plan.amount * 100),
       currency: home.defaultCurrency,
-      perLeadFeeMinor: plan.perLeadFee ? plan.perLeadFee * 100 : null,
+      perLeadFeeMinor: plan.perLeadFee ? Math.round(plan.perLeadFee * 100) : null,
       contactOnly: plan.contactOnly ?? false,
       features: plan.features,
       priceStatus: "proposal" as const,

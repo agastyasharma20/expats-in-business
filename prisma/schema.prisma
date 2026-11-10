@@ -315,6 +315,7 @@ model ChapterRequestVote {
   createdAt DateTime       @default(now())
 
   @@id([requestId, userId])
+  @@index([userId])
 }
 
 // ─── People ───────────────────────────────────────────────────────────────────────────────────
@@ -465,7 +466,7 @@ model EventFormat {
 model Venue {
   id        String   @id @default(cuid(2))
   chapterId String
-  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Restrict)
   name      String
   address   String?
   mapUrl    String?
@@ -480,7 +481,7 @@ model Event {
   id          String      @id @default(cuid(2))
   slug        String      @unique
   chapterId   String
-  chapter     Chapter     @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapter     Chapter     @relation(fields: [chapterId], references: [id], onDelete: Restrict)
   formatId    String
   format      EventFormat @relation(fields: [formatId], references: [id])
   title       String
@@ -543,6 +544,7 @@ model Ticket {
   checkIn         CheckIn?
 
   @@unique([eventId, userId])
+  @@index([userId])
   @@index([eventId, status])
 }
 
@@ -560,6 +562,7 @@ model CheckIn {
   checkedInAt DateTime      @default(now())
 
   @@index([eventId])
+  @@index([userId])
 }
 
 model Sponsor {
@@ -587,6 +590,7 @@ model Sponsorship {
   createdAt   DateTime @default(now())
 
   @@unique([sponsorId, eventId])
+  @@index([eventId])
 }
 
 model EventPhoto {
@@ -655,7 +659,7 @@ model Group {
   name      String
   kind      GroupKind
   chapterId String?
-  chapter   Chapter?  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapter   Chapter?  @relation(fields: [chapterId], references: [id], onDelete: Restrict)
   bubbleId  String?
   bubble    Bubble?   @relation(fields: [bubbleId], references: [id], onDelete: Cascade)
   isDemo    Boolean   @default(false)
@@ -680,6 +684,7 @@ model Post {
   reports   PostReport[]
 
   @@index([groupId, createdAt])
+  @@index([authorId])
 }
 
 model PostReaction {
@@ -734,6 +739,7 @@ model Business {
   updatedAt   DateTime          @updatedAt
 
   @@index([chapterId])
+  @@index([ownerId])
 }
 
 model Provider {
@@ -759,6 +765,7 @@ model Provider {
   reviews            Review[]
 
   @@index([chapterId, categoryId])
+  @@index([ownerId])
 }
 
 /// Admin checklist behind the "Verified provider" badge.
@@ -792,6 +799,7 @@ model QuoteRequest {
   reviews     Review[]
 
   @@index([providerId, status])
+  @@index([requesterId])
 }
 
 /// Reviews are allowed only after a shared quote request or event.

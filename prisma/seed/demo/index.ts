@@ -17,7 +17,8 @@ export async function clearDemo(db: PrismaClient) {
   await db.application.deleteMany({ where: { isDemo: true } });
   await db.bubble.deleteMany({ where: { isDemo: true } });
   await db.user.deleteMany({ where: { isDemo: true } });
-  await db.country.deleteMany({ where: { isDemo: true } });
+  // Keep a demo country if a real (non-demo) chapter request now points at it.
+  await db.country.deleteMany({ where: { isDemo: true, chapterRequests: { none: { isDemo: false } } } });
 }
 
 /** Rebuilds the deterministic demo layer (brief 3L). Requires the base layer. */

@@ -5,7 +5,9 @@ import type {
 } from "../../../generated/prisma/client";
 
 /**
- * Real configuration (isDemo = false). Edit here, or later in the admin catalogs, to change it.
+ * Real configuration (isDemo = false). Event format durations and descriptions are editable
+ * defaults for the event builder, not statements about how EiB runs its sessions.
+ * Edit here, or later in the admin catalogs, to change it.
  * Event formats come from docs/FACTS.md; plan prices are the brief's proposals (priceStatus
  * "proposal" shows the "Proposed prices · net of VAT · Test mode" banner).
  */
@@ -202,7 +204,7 @@ export const roadmapTasks = [
     appliesTo: [],
     forGoals: [],
     dependsOn: [],
-    due: 7,
+    due: 30,
   },
   {
     slug: "trusted-profile",
@@ -219,7 +221,7 @@ export const roadmapTasks = [
     guideSlug: "mos-residence-application",
     appliesTo: NON_EU,
     forGoals: [],
-    dependsOn: ["trusted-profile"],
+    dependsOn: [],
     due: 30,
   },
   {
@@ -243,11 +245,11 @@ export const roadmapTasks = [
   {
     slug: "address-registration",
     title: "Register your address",
-    guideSlug: null,
+    guideSlug: "pesel",
     appliesTo: [],
     forGoals: [],
     dependsOn: [],
-    due: 60,
+    due: 30,
   },
   {
     slug: "tax-basics",

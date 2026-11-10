@@ -15,7 +15,7 @@ export type SeedContext = {
   chapters: { live: ChapterRef; launching: ChapterRef };
 };
 
-export type ChapterRef = { id: string; slug: string; timezone: string; currency: string };
+export type ChapterRef = { id: string; slug: string; timezone: string; currency: string; locales: string[] };
 
 export function resetRandom() {
   faker.seed(FAKER_SEED);

@@ -50,6 +50,11 @@ export const guideFrontmatterSchema = z.object({
     )
     .min(1),
   disclaimer: z.string().default(GUIDE_DISCLAIMER),
+  /** Set for city-specific guides (chapter slug); omitted = applies to the whole country. */
+  chapter: z
+    .string()
+    .regex(/^[a-z0-9-]+$/)
+    .optional(),
 });
 
 export type GuideFrontmatter = z.infer<typeof guideFrontmatterSchema>;

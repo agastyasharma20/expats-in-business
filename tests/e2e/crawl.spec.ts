@@ -48,6 +48,8 @@ test.describe("nav and footer crawl", () => {
         await expect(page.locator("html")).toHaveAttribute("lang", locale);
         await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       }
+      // Axe must see final colours, not entrance animations mid-fade.
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto(href);
       const results = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])

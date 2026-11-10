@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { locale as rootLocale } from "next/root-params";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -18,9 +19,8 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("meta");
   return {
     title: { default: t("title"), template: t("titleTemplate") },
     description: t("description"),
@@ -28,10 +28,10 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   };
 }
 
-export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
-  const { locale } = await params;
+// The locale is a root param (app/[locale] holds the root layout), read via next/root-params.
+export default async function LocaleLayout({ children }: LayoutProps<"/[locale]">) {
+  const locale = await rootLocale();
   if (!hasLocale(routing.locales, locale)) notFound();
-  setRequestLocale(locale);
 
   return (
     <html

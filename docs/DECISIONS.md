@@ -1,5 +1,7 @@
 # Decisions (newest first)
 
+- 2026-11-10 · The locale comes from `next/root-params` (in lib/i18n/request.ts and the locale layout). No page awaits `params` and `setRequestLocale` is gone (deprecated by next-intl). This removes the "URL data outside Suspense" instant-navigation insight on every page. As a result `app/layout.tsx` is gone, so `[locale]` is the root layout again; URLs outside any locale use `app/global-not-found.tsx` (`experimental.globalNotFound`). The legal pages are three static routes sharing `LegalPageView` instead of `[slug]` (`dynamicParams` is not supported with Cache Components). The `[...rest]` catch-all sets `instant = false` because it only ever 404s.
+
 - 2026-11-10 · Unbuilt nav destinations (Events, Members, Providers, Guides, Pricing, Sign in) render designed, noindex coming-soon pages with working actions, so the full navbar ships now and the crawler stays green. Each later milestone replaces its route.
 - 2026-11-10 · Social and contact links come from config/facts.ts, read from the EiB Connect page on 9 Nov 2026 and recorded with sources in docs/FACTS.md.
 - 2026-11-10 · The chapter preference is a first-party httpOnly cookie (eib-chapter, 1 year) set by a validated server action. It records a choice the visitor made, so it is treated as strictly necessary (see the cookie policy draft).

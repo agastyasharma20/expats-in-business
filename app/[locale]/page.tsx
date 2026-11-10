@@ -1,14 +1,12 @@
 import { Suspense } from "react";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 import { DatabaseStatus } from "@/components/system/database-status";
 import { buttonVariants } from "@/components/ui/button";
 import { areDevToolsEnabled } from "@/lib/dev-tools";
 import { Link } from "@/lib/i18n/navigation";
 
-export default async function HomePage({ params }: PageProps<"/[locale]">) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export default async function HomePage() {
   const t = await getTranslations("home");
 
   return (

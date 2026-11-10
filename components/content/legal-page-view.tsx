@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
 import { TriangleAlertIcon } from "lucide-react";
-import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { locale as rootLocale } from "next/root-params";
 
-import { LegalDocument } from "@/components/content/legal-document";
 import { NavLink } from "@/components/layout/nav-link";
-import { getLegalMeta, isLegalSlug, legalSlugs } from "@/lib/content/legal";
+import { getLegalMeta, type LegalSlug } from "@/lib/content/legal";
 import { routing } from "@/lib/i18n/routing";
 import { legalNav } from "@/lib/nav";
 
-export function generateStaticParams() {
-  return legalSlugs.map((slug) => ({ slug }));
-}
+import { LegalDocument } from "./legal-document";
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/[locale]/legal/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
-  if (!isLegalSlug(slug)) return {};
+export async function legalMetadata(slug: LegalSlug): Promise<Metadata> {
   const meta = await getLegalMeta(slug);
   // Drafts are not in force, so keep them out of search results.
   return {
@@ -28,10 +21,13 @@ export async function generateMetadata({
   };
 }
 
-export default async function LegalPage({ params }: PageProps<"/[locale]/legal/[slug]">) {
-  const { locale, slug } = await params;
-  if (!isLegalSlug(slug) || !hasLocale(routing.locales, locale)) notFound();
-  setRequestLocale(locale);
+/**
+ * Shared layout for /legal/privacy, /legal/terms and /legal/cookies. Each route passes a fixed
+ * slug, so no URL params are read and the whole page prerenders.
+ */
+export async function LegalPageView({ slug }: { slug: LegalSlug }) {
+  const requested = await rootLocale();
+  const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
   const t = await getTranslations("legal");
   const nav = await getTranslations("nav");
 
@@ -55,7 +51,7 @@ export default async function LegalPage({ params }: PageProps<"/[locale]/legal/[
           <div className="flex flex-col gap-1">
             <p className="font-bold">{t("draftBanner")}</p>
             <p>{t("draftNote")}</p>
-            {locale !== "en" ? <p lang={locale}>{t("englishOnly")}</p> : null}
+            {locale !== routing.defaultLocale ? <p>{t("englishOnly")}</p> : null}
           </div>
         </div>
         <div lang="en">

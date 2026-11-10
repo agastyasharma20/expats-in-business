@@ -1,14 +1,12 @@
-import { setRequestLocale } from "next-intl/server";
-
 import { ComingSoon } from "@/components/common/coming-soon";
 import { comingSoonMetadata } from "@/lib/coming-soon-metadata";
 
 // Placeholder until this feature's milestone ships (see lib/nav.ts, status "comingSoon").
-export async function generateMetadata({ params }: PageProps<"/[locale]/guides">) {
-  return comingSoonMetadata((await params).locale, "guides");
+// The locale comes from next/root-params via lib/i18n/request.ts, so no params are read here.
+export function generateMetadata() {
+  return comingSoonMetadata("guides");
 }
 
-export default async function GuidesPage({ params }: PageProps<"/[locale]/guides">) {
-  setRequestLocale((await params).locale);
+export default function GuidesPage() {
   return <ComingSoon feature="guides" />;
 }

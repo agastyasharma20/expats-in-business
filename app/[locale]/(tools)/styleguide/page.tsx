@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 import { Badge } from "@/components/ui/badge";
 import { ButtonsSection } from "@/components/styleguide/buttons-section";
@@ -25,18 +25,13 @@ const sectionIds = [
   "motion",
 ] as const;
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/[locale]/styleguide">): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "styleguide" });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("styleguide");
   return { title: t("metaTitle"), robots: { index: false, follow: false } };
 }
 
-export default async function StyleguidePage({ params }: PageProps<"/[locale]/styleguide">) {
+export default async function StyleguidePage() {
   if (!areDevToolsEnabled()) notFound();
-  const { locale } = await params;
-  setRequestLocale(locale);
   const t = await getTranslations("styleguide");
 
   return (

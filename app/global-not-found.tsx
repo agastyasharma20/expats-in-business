@@ -9,8 +9,8 @@ import { routing } from "@/lib/i18n/routing";
 
 import "./globals.css";
 
-/** 404 for paths outside any locale; shown in the default locale. */
-export default async function RootNotFound() {
+/** 404 for URLs that match no route at all (outside any locale); shown in the default locale. */
+export default async function GlobalNotFound() {
   const locale = routing.defaultLocale;
   const t = await getTranslations({ locale, namespace: "errors" });
   const common = await getTranslations({ locale, namespace: "common" });

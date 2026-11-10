@@ -5,13 +5,85 @@
     "description": "The business network for internationals."
   },
   "home": {
-    "eyebrow": "Milestone 3",
-    "title": "EiB platform: Milestone 3, layout and navigation",
-    "intro": "The new Expats in Business platform is being built. This temporary page checks that the app and database are running; the real homepage arrives in Milestone 5.",
-    "dbChecking": "Checking the database…",
-    "dbUp": "Database: connected",
-    "dbDown": "Database: not reachable. Start Docker Desktop and run npm run setup.",
-    "styleguideLink": "View the design system"
+    "eyebrow": "Your global business community",
+    "title": "The business network for internationals",
+    "lead": "Meet founders, freelancers and professionals who made a new country home, and the locals who work with them. Free to join.",
+    "join": "Join free",
+    "sessions": "See upcoming sessions",
+    "skylineLabel": "Line drawing of the Kraków skyline",
+    "styleguideLink": "View the design system",
+    "stats": {
+      "title": "EiB in numbers",
+      "sessions": "sessions held",
+      "members": "members",
+      "bubbles": "Cultural Bubbles",
+      "chapters": "live chapter",
+      "demoTag": "Demo data"
+    },
+    "events": {
+      "title": "Upcoming sessions",
+      "lead": "Every session lists the date, time, venue and price.",
+      "all": "See all sessions",
+      "free": "Free",
+      "going": "{count} going",
+      "spotsLeft": "{count} spots left",
+      "full": "Full: join the waitlist",
+      "online": "Online",
+      "demo": "Demo data",
+      "emptyTitle": "No sessions scheduled yet",
+      "emptyDescription": "New sessions are announced in the WhatsApp community first.",
+      "emptyAction": "Join the WhatsApp community"
+    },
+    "how": {
+      "title": "How it works",
+      "join": {
+        "title": "Join for free",
+        "body": "Create your profile and tell us what you are looking for: clients, a job, or simply people to meet."
+      },
+      "come": {
+        "title": "Come to a session",
+        "body": "Meet other internationals and locals at networking evenings, talks and workshops near you."
+      },
+      "grow": {
+        "title": "Connect and grow",
+        "body": "Follow up with the people you met, find trusted providers and get practical guides for settling in."
+      }
+    },
+    "bubbles": {
+      "title": "Cultural Bubbles",
+      "lead": "Groups by country or region of origin, each led by a Bubble Lead, in every chapter.",
+      "members": "{count} members",
+      "explore": "Explore Bubbles",
+      "hiddenNote": "Bubbles with fewer than 5 members are not listed.",
+      "emptyTitle": "Bubbles are forming",
+      "emptyDescription": "Join EiB and tell us where you are from to help start your Bubble."
+    },
+    "chapters": {
+      "title": "Chapters",
+      "lead": "EiB started in one city and is built for every city.",
+      "live": "Live",
+      "launching": "Launching",
+      "waitlist": "Join the waitlist",
+      "visit": "Visit the chapter",
+      "request": "Request your city",
+      "mostRequested": "Most requested next",
+      "votes": "{count} votes"
+    },
+    "partners": {
+      "title": "Partners",
+      "lead": "Partner organisations will be shown here once they have approved the use of their logo.",
+      "tile": "Partner logo, permission pending"
+    },
+    "testimonials": {
+      "title": "What members say",
+      "label": "Placeholder testimonial",
+      "quote": "Real member quotes will appear here, with each member's permission.",
+      "author": "Member name (placeholder)"
+    },
+    "cta": {
+      "title": "Your next business contact might be at the next session.",
+      "body": "Joining EiB is free."
+    }
   },
   "common": {
     "close": "Close",
@@ -288,6 +360,14 @@
     "signIn": {
       "title": "Sign in",
       "description": "Member accounts are coming soon: sign in with an email link or with Google."
+    },
+    "bubbles": {
+      "title": "Cultural Bubbles",
+      "description": "Bubble pages with their leads, members and events are on the way."
+    },
+    "chapters": {
+      "title": "Chapters",
+      "description": "See every chapter, join a waitlist and vote for EiB to come to your city."
     }
   },
   "legal": {

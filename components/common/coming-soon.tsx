@@ -2,6 +2,8 @@ import {
   BookOpenIcon,
   BriefcaseIcon,
   CalendarDaysIcon,
+  GlobeIcon,
+  MapIcon,
   KeyRoundIcon,
   TagIcon,
   UsersIcon,
@@ -24,6 +26,8 @@ export const comingSoonFeatures = {
   guides: BookOpenIcon,
   pricing: TagIcon,
   signIn: KeyRoundIcon,
+  bubbles: GlobeIcon,
+  chapters: MapIcon,
 } as const satisfies Record<string, LucideIcon>;
 
 export type ComingSoonFeature = keyof typeof comingSoonFeatures;

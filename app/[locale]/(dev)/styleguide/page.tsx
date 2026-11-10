@@ -40,7 +40,7 @@ export default async function StyleguidePage({ params }: PageProps<"/[locale]/st
   const t = await getTranslations("styleguide");
 
   return (
-    <main className="container-page flex flex-col gap-16 py-12">
+    <div className="container-page flex flex-col gap-16 py-12">
       <header className="flex flex-col gap-4">
         <p className="eyebrow text-brand-700">{t("eyebrow")}</p>
         <h1 className="text-display-sm md:text-display">{t("title")}</h1>
@@ -70,6 +70,6 @@ export default async function StyleguidePage({ params }: PageProps<"/[locale]/st
       <FormsSection />
       <FeedbackSection />
       <MotionSection />
-    </main>
+    </div>
   );
 }

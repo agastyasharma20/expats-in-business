@@ -128,7 +128,9 @@
       "focusRingOnWash": "Focus ring on muted panels and dialog footers",
       "focusRingOnTint": "Focus ring on tinted surfaces",
       "outlineButtonBorder": "Outline button border",
-      "dashedBorderOnCanvas": "Empty state border on the page"
+      "dashedBorderOnCanvas": "Empty state border on the page",
+      "focusRingOnDark": "Focus ring on Deep Teal (footer)",
+      "darkControlBorder": "Button border on Deep Teal (footer)"
     },
     "type": {
       "display": "Display: the business network for internationals",

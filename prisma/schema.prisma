@@ -1,6 +1,7 @@
-// EiB data model. Milestone 1: geography only. Milestone 3 adds the full model.
+// EiB data model (docs/PROJECT_BRIEF.md section 5).
 // Rules: ids are cuid2; chapter-specific models carry chapterId; jurisdiction-specific models carry
-// countryCode; money is Int minor units + currency; times are stored in UTC; seeded records set isDemo.
+// countryCode; money is Int minor units + currency; times are UTC; seeded fictional records set
+// isDemo = true. Lists EiB may rename (formats, categories, goals, industries) are lookup tables.
 
 generator client {
   provider = "prisma-client"
@@ -11,48 +12,962 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Enums ────────────────────────────────────────────────────────────────────────────────────
+
 enum ChapterStatus {
   live
   launching
   requested
 }
 
+enum RoleName {
+  member
+  bubble_lead
+  moderator
+  chapter_lead
+  admin
+}
+
+enum ResidenceSituation {
+  eu_citizen
+  non_eu_employee
+  non_eu_founder
+  student
+  family_member
+}
+
+enum ConsentType {
+  marketing_email
+  matching
+  who_i_met
+  avatar_display
+  analytics_cookies
+}
+
+enum PlanTier {
+  community
+  plus
+  business
+  provider
+  corporate
+}
+
+enum BillingInterval {
+  month
+  year
+}
+
+enum PriceStatus {
+  proposal
+  approved
+}
+
+enum SubscriptionStatus {
+  active
+  trialing
+  past_due
+  canceled
+}
+
+enum EventStatus {
+  draft
+  published
+  cancelled
+}
+
+enum TicketStatus {
+  reserved
+  confirmed
+  waitlisted
+  cancelled
+}
+
+enum CheckInMethod {
+  qr
+  manual
+}
+
+enum ConnectionStatus {
+  pending
+  accepted
+  declined
+}
+
+enum GroupKind {
+  chapter
+  bubble
+}
+
+enum PostKind {
+  post
+  question
+  announcement
+}
+
+enum ReportStatus {
+  open
+  resolved
+  dismissed
+}
+
+enum VerificationStatus {
+  none
+  pending
+  verified
+  rejected
+}
+
+enum QuoteStatus {
+  open
+  accepted
+  declined
+  closed
+}
+
+enum ApplicationType {
+  speaker
+  story
+  contributor
+}
+
+enum ApplicationStatus {
+  submitted
+  in_review
+  accepted
+  declined
+}
+
+enum ContentStatus {
+  draft
+  published
+}
+
+// ─── Better Auth (core tables, Prisma adapter) ────────────────────────────────────────────────
+
+model User {
+  id                  String    @id @default(cuid(2))
+  name                String
+  email               String    @unique
+  emailVerified       Boolean   @default(false)
+  image               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  // EiB additions
+  locale              String?
+  stripeCustomerId    String?   @unique
+  /// Set when the member asks to delete the account; hard delete after 30 days.
+  deletionRequestedAt DateTime?
+  isDemo              Boolean   @default(false)
+
+  sessions            Session[]
+  accounts            Account[]
+  profile             Profile?
+  roles               ChapterRole[]
+  consents            Consent[]
+  subscriptions       Subscription[]
+  tickets             Ticket[]
+  checkIns            CheckIn[]              @relation("CheckInAttendee")
+  scans               CheckIn[]              @relation("CheckInScanner")
+  connectionsSent     Connection[]           @relation("ConnectionRequester")
+  connectionsReceived Connection[]           @relation("ConnectionAddressee")
+  bubbles             BubbleMember[]
+  posts               Post[]
+  reactions           PostReaction[]
+  reports             PostReport[]
+  businesses          Business[]
+  providers           Provider[]
+  quoteRequests       QuoteRequest[]
+  reviews             Review[]
+  tasks               UserTask[]
+  applications        Application[]
+  points              PointsEntry[]
+  badges              UserBadge[]
+  chapterVotes        ChapterRequestVote[]
+  auditEntries        AuditLog[]
+  eventsCreated       Event[]
+  verificationsDone   ProviderVerification[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid(2))
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid(2))
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid(2))
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// ─── Geography ────────────────────────────────────────────────────────────────────────────────
+
 model Country {
-  id              String    @id @default(cuid(2))
+  id               String            @id @default(cuid(2))
   /// ISO 3166-1 alpha-2, e.g. "PL"
-  code            String    @unique @db.VarChar(2)
-  name            String
-  /// ISO 4217 currency used by default for chapters in this country, e.g. "PLN"
-  defaultCurrency String    @db.VarChar(3)
-  /// IANA time zone used by default for chapters in this country
-  defaultTimezone String
+  code             String            @unique @db.VarChar(2)
+  name             String
+  /// ISO 4217, e.g. "PLN"
+  defaultCurrency  String            @db.VarChar(3)
+  defaultTimezone  String
   /// UI locales offered in this country, first = default
-  locales         String[]
-  isDemo          Boolean   @default(false)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  chapters        Chapter[]
+  locales          String[]
+  isDemo           Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  chapters         Chapter[]
+  guides           Guide[]
+  roadmapTemplates RoadmapTemplate[]
+  chapterRequests  ChapterRequest[]
 }
 
 model Chapter {
-  id          String        @id @default(cuid(2))
-  slug        String        @unique
-  name        String
-  city        String
-  countryCode String        @db.VarChar(2)
-  country     Country       @relation(fields: [countryCode], references: [code])
-  /// IANA time zone; all times are stored in UTC and shown in this zone
-  timezone    String
-  /// ISO 4217 currency for prices in this chapter
-  currency    String        @db.VarChar(3)
-  /// UI locales offered in this chapter, first = default
-  locales     String[]
-  status      ChapterStatus @default(requested)
-  launchedAt  DateTime?
-  isDemo      Boolean       @default(false)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id            String        @id @default(cuid(2))
+  slug          String        @unique
+  name          String
+  city          String
+  countryCode   String        @db.VarChar(2)
+  country       Country       @relation(fields: [countryCode], references: [code])
+  timezone      String
+  currency      String        @db.VarChar(3)
+  locales       String[]
+  status        ChapterStatus @default(requested)
+  coverImage    String?
+  /// Founding-member badges are numbered up to this limit per chapter.
+  foundingLimit Int           @default(500)
+  launchedAt    DateTime?
+  isDemo        Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  roles         ChapterRole[]
+  profiles      Profile[]
+  venues        Venue[]
+  events        Event[]
+  groups        Group[]
+  businesses    Business[]
+  providers     Provider[]
+  applications  Application[]
+  auditEntries  AuditLog[]
+  bubbleMembers BubbleMember[]
 
   @@index([countryCode])
   @@index([status])
+}
+
+/// A city people would like EiB to launch in ("Request a chapter in my city").
+model ChapterRequest {
+  id          String               @id @default(cuid(2))
+  city        String
+  /// Lower-case, accent-free key so "Kraków" and "krakow" count as one city.
+  cityKey     String
+  countryCode String               @db.VarChar(2)
+  country     Country              @relation(fields: [countryCode], references: [code])
+  isDemo      Boolean              @default(false)
+  createdAt   DateTime             @default(now())
+  votes       ChapterRequestVote[]
+
+  @@unique([countryCode, cityKey])
+}
+
+model ChapterRequestVote {
+  requestId String
+  request   ChapterRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
+
+  @@id([requestId, userId])
+}
+
+// ─── People ───────────────────────────────────────────────────────────────────────────────────
+
+model Industry {
+  id        String    @id @default(cuid(2))
+  slug      String    @unique
+  name      String
+  sortOrder Int       @default(0)
+  profiles  Profile[]
+}
+
+model Goal {
+  id        String        @id @default(cuid(2))
+  slug      String        @unique
+  name      String
+  sortOrder Int           @default(0)
+  profiles  ProfileGoal[]
+}
+
+model Profile {
+  id                 String              @id @default(cuid(2))
+  userId             String              @unique
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug               String              @unique
+  headline           String?
+  bio                String?
+  homeChapterId      String?
+  homeChapter        Chapter?            @relation(fields: [homeChapterId], references: [id])
+  /// ISO 3166-1 alpha-2 country of origin
+  originCountryCode  String?             @db.VarChar(2)
+  /// ISO 639-1 codes
+  languages          String[]
+  industryId         String?
+  industry           Industry?           @relation(fields: [industryId], references: [id])
+  skills             String[]
+  arrivalDate        DateTime?
+  residenceSituation ResidenceSituation?
+  openToCoffee       Boolean             @default(false)
+  foundingNumber     Int?
+  onboardingStep     Int                 @default(0)
+  // Per-field visibility for the public profile
+  isPublic           Boolean             @default(true)
+  showBio            Boolean             @default(true)
+  showOrigin         Boolean             @default(true)
+  showLanguages      Boolean             @default(true)
+  showIndustry       Boolean             @default(true)
+  showSkills         Boolean             @default(true)
+  goals              ProfileGoal[]
+  isDemo             Boolean             @default(false)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  @@unique([homeChapterId, foundingNumber])
+  @@index([originCountryCode])
+}
+
+model ProfileGoal {
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  goalId    String
+  goal      Goal    @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@id([profileId, goalId])
+}
+
+/// A role in a chapter; chapterId null means global (admin).
+model ChapterRole {
+  id        String   @id @default(cuid(2))
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  role      RoleName
+  createdAt DateTime @default(now())
+
+  @@unique([userId, chapterId, role])
+  @@index([chapterId, role])
+}
+
+model Consent {
+  id        String      @id @default(cuid(2))
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      ConsentType
+  granted   Boolean
+  updatedAt DateTime    @updatedAt
+  createdAt DateTime    @default(now())
+
+  @@unique([userId, type])
+}
+
+// ─── Billing ──────────────────────────────────────────────────────────────────────────────────
+
+/// Prices come from these rows, never from code. priceStatus = proposal shows the
+/// "Proposed prices · net of VAT · Test mode" banner.
+model Plan {
+  id              String           @id @default(cuid(2))
+  code            String           @unique
+  tier            PlanTier
+  name            String
+  interval        BillingInterval?
+  amountMinor     Int
+  currency        String           @db.VarChar(3)
+  /// Verified Provider: fee per accepted lead, in minor units.
+  perLeadFeeMinor Int?
+  /// Corporate: "from" price, sold through a contact form.
+  contactOnly     Boolean          @default(false)
+  features        String[]
+  priceStatus     PriceStatus      @default(proposal)
+  sortOrder       Int              @default(0)
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  subscriptions   Subscription[]
+}
+
+model Subscription {
+  id                   String             @id @default(cuid(2))
+  userId               String
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId               String
+  plan                 Plan               @relation(fields: [planId], references: [id])
+  status               SubscriptionStatus
+  stripeSubscriptionId String?            @unique
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  isDemo               Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@index([userId])
+}
+
+// ─── Events ───────────────────────────────────────────────────────────────────────────────────
+
+/// EiB session formats (docs/FACTS.md): Connect & Collaborate, Guest Speaker, ...
+model EventFormat {
+  id                 String  @id @default(cuid(2))
+  slug               String  @unique
+  name               String
+  description        String
+  defaultDurationMin Int
+  sortOrder          Int     @default(0)
+  events             Event[]
+}
+
+model Venue {
+  id        String   @id @default(cuid(2))
+  chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  name      String
+  address   String?
+  mapUrl    String?
+  isDemo    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  events    Event[]
+
+  @@index([chapterId])
+}
+
+model Event {
+  id          String      @id @default(cuid(2))
+  slug        String      @unique
+  chapterId   String
+  chapter     Chapter     @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  formatId    String
+  format      EventFormat @relation(fields: [formatId], references: [id])
+  title       String
+  summary     String
+  description String
+  startsAt    DateTime
+  endsAt      DateTime
+  venueId     String?
+  venue       Venue?      @relation(fields: [venueId], references: [id])
+  onlineUrl   String?
+  capacity    Int
+  status      EventStatus @default(draft)
+  coverImage  String?
+  createdById String?
+  createdBy   User?       @relation(fields: [createdById], references: [id])
+  isDemo      Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  ticketTypes  TicketType[]
+  tickets      Ticket[]
+  checkIns     CheckIn[]
+  sponsorships Sponsorship[]
+  photos       EventPhoto[]
+  connections  Connection[]
+  reviews      Review[]
+
+  @@index([chapterId, startsAt])
+  @@index([status, startsAt])
+}
+
+model TicketType {
+  id         String   @id @default(cuid(2))
+  eventId    String
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name       String
+  priceMinor Int
+  currency   String   @db.VarChar(3)
+  capacity   Int?
+  createdAt  DateTime @default(now())
+  tickets    Ticket[]
+}
+
+model Ticket {
+  id              String       @id @default(cuid(2))
+  eventId         String
+  event           Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  ticketTypeId    String
+  ticketType      TicketType   @relation(fields: [ticketTypeId], references: [id])
+  userId          String
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status          TicketStatus
+  /// Random single-use token encoded in the QR code.
+  qrToken         String       @unique
+  stripeSessionId String?      @unique
+  paidAt          DateTime?
+  isDemo          Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  checkIn         CheckIn?
+
+  @@unique([eventId, userId])
+  @@index([eventId, status])
+}
+
+model CheckIn {
+  id          String        @id @default(cuid(2))
+  ticketId    String        @unique
+  ticket      Ticket        @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  eventId     String
+  event       Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User          @relation("CheckInAttendee", fields: [userId], references: [id], onDelete: Cascade)
+  scannedById String?
+  scannedBy   User?         @relation("CheckInScanner", fields: [scannedById], references: [id])
+  method      CheckInMethod
+  checkedInAt DateTime      @default(now())
+
+  @@index([eventId])
+}
+
+model Sponsor {
+  id           String        @id @default(cuid(2))
+  name         String
+  website      String?
+  logoUrl      String?
+  isDemo       Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  sponsorships Sponsorship[]
+}
+
+model Sponsorship {
+  id          String   @id @default(cuid(2))
+  sponsorId   String
+  sponsor     Sponsor  @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tier        String
+  amountMinor Int?
+  currency    String?  @db.VarChar(3)
+  /// Signed-link token for the sponsor ROI report.
+  reportToken String   @unique
+  isDemo      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@unique([sponsorId, eventId])
+}
+
+model EventPhoto {
+  id            String   @id @default(cuid(2))
+  eventId       String
+  event         Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  url           String
+  alt           String
+  /// Labelled illustrated placeholder (never a stock photo presented as EiB).
+  isPlaceholder Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+}
+
+// ─── Network ──────────────────────────────────────────────────────────────────────────────────
+
+model Connection {
+  id           String           @id @default(cuid(2))
+  requesterId  String
+  requester    User             @relation("ConnectionRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addresseeId  String
+  addressee    User             @relation("ConnectionAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+  status       ConnectionStatus @default(pending)
+  metAtEventId String?
+  metAtEvent   Event?           @relation(fields: [metAtEventId], references: [id])
+  isDemo       Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  respondedAt  DateTime?
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId, status])
+}
+
+/// Cultural Bubble: members grouped by country or region of origin, across chapters.
+model Bubble {
+  id                String         @id @default(cuid(2))
+  slug              String         @unique
+  name              String
+  originCountryCode String         @db.VarChar(2)
+  description       String
+  isDemo            Boolean        @default(false)
+  createdAt         DateTime       @default(now())
+  members           BubbleMember[]
+  groups            Group[]
+}
+
+model BubbleMember {
+  bubbleId  String
+  bubble    Bubble   @relation(fields: [bubbleId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id])
+  isLead    Boolean  @default(false)
+  /// Opted in to appear on the Bubble page.
+  isVisible Boolean  @default(true)
+  joinedAt  DateTime @default(now())
+
+  @@id([bubbleId, userId])
+  @@index([chapterId])
+}
+
+model Group {
+  id        String    @id @default(cuid(2))
+  slug      String    @unique
+  name      String
+  kind      GroupKind
+  chapterId String?
+  chapter   Chapter?  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  bubbleId  String?
+  bubble    Bubble?   @relation(fields: [bubbleId], references: [id], onDelete: Cascade)
+  isDemo    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  posts     Post[]
+}
+
+model Post {
+  id        String         @id @default(cuid(2))
+  groupId   String
+  group     Group          @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  kind      PostKind       @default(post)
+  body      String
+  pinned    Boolean        @default(false)
+  hiddenAt  DateTime?
+  isDemo    Boolean        @default(false)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  reactions PostReaction[]
+  reports   PostReport[]
+
+  @@index([groupId, createdAt])
+}
+
+model PostReaction {
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emoji     String
+  createdAt DateTime @default(now())
+
+  @@id([postId, userId, emoji])
+}
+
+model PostReport {
+  id         String       @id @default(cuid(2))
+  postId     String
+  post       Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporterId String
+  reporter   User         @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reason     String
+  status     ReportStatus @default(open)
+  createdAt  DateTime     @default(now())
+
+  @@unique([postId, reporterId])
+}
+
+// ─── Marketplace ──────────────────────────────────────────────────────────────────────────────
+
+model ProviderCategory {
+  id         String     @id @default(cuid(2))
+  slug       String     @unique
+  name       String
+  sortOrder  Int        @default(0)
+  providers  Provider[]
+  businesses Business[]
+}
+
+model Business {
+  id          String            @id @default(cuid(2))
+  slug        String            @unique
+  ownerId     String
+  owner       User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  chapterId   String
+  chapter     Chapter           @relation(fields: [chapterId], references: [id])
+  categoryId  String?
+  category    ProviderCategory? @relation(fields: [categoryId], references: [id])
+  name        String
+  description String
+  website     String?
+  isDemo      Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([chapterId])
+}
+
+model Provider {
+  id                 String                 @id @default(cuid(2))
+  slug               String                 @unique
+  ownerId            String?
+  owner              User?                  @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  chapterId          String
+  chapter            Chapter                @relation(fields: [chapterId], references: [id])
+  categoryId         String
+  category           ProviderCategory       @relation(fields: [categoryId], references: [id])
+  name               String
+  description        String
+  services           String[]
+  languages          String[]
+  responseTimeHours  Int?
+  verificationStatus VerificationStatus     @default(none)
+  isDemo             Boolean                @default(false)
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  verifications      ProviderVerification[]
+  quoteRequests      QuoteRequest[]
+  reviews            Review[]
+
+  @@index([chapterId, categoryId])
+}
+
+/// Admin checklist behind the "Verified provider" badge.
+model ProviderVerification {
+  id                String    @id @default(cuid(2))
+  providerId        String
+  provider          Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  registryChecked   Boolean   @default(false)
+  referencesChecked Boolean   @default(false)
+  insuranceChecked  Boolean   @default(false)
+  notes             String?
+  verifiedById      String?
+  verifiedBy        User?     @relation(fields: [verifiedById], references: [id], onDelete: SetNull)
+  decidedAt         DateTime?
+  createdAt         DateTime  @default(now())
+
+  @@index([providerId])
+}
+
+model QuoteRequest {
+  id          String      @id @default(cuid(2))
+  providerId  String
+  provider    Provider    @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  requesterId String
+  requester   User        @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+  message     String
+  status      QuoteStatus @default(open)
+  acceptedAt  DateTime?
+  isDemo      Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  reviews     Review[]
+
+  @@index([providerId, status])
+}
+
+/// Reviews are allowed only after a shared quote request or event.
+model Review {
+  id             String        @id @default(cuid(2))
+  providerId     String
+  provider       Provider      @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  authorId       String
+  author         User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  rating         Int
+  body           String
+  quoteRequestId String?
+  quoteRequest   QuoteRequest? @relation(fields: [quoteRequestId], references: [id])
+  eventId        String?
+  event          Event?        @relation(fields: [eventId], references: [id])
+  isDemo         Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+
+  @@unique([providerId, authorId])
+}
+
+// ─── Knowledge and AI ─────────────────────────────────────────────────────────────────────────
+
+/// Index row for content/guides/<country>/<slug>.mdx (the MDX file is the source of truth).
+model Guide {
+  id           String        @id @default(cuid(2))
+  slug         String
+  countryCode  String        @db.VarChar(2)
+  country      Country       @relation(fields: [countryCode], references: [code])
+  title        String
+  lastVerified DateTime
+  status       ContentStatus @default(published)
+  updatedAt    DateTime      @updatedAt
+  chunks       GuideChunk[]
+
+  @@unique([countryCode, slug])
+}
+
+model GuideChunk {
+  id         String                      @id @default(cuid(2))
+  guideId    String
+  guide      Guide                       @relation(fields: [guideId], references: [id], onDelete: Cascade)
+  ordinal    Int
+  heading    String
+  content    String
+  sourceUrls String[]
+  /// all-MiniLM-L6-v2 embedding; written and queried with raw SQL (HNSW cosine index).
+  embedding  Unsupported("vector(384)")?
+
+  @@unique([guideId, ordinal])
+}
+
+/// Concierge log: question, cited chunks and AI provider only; never personal data. Kept 90 days.
+model ConciergeQuery {
+  id            String   @id @default(cuid(2))
+  question      String
+  citedChunkIds String[]
+  provider      String
+  answered      Boolean
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model RoadmapTemplate {
+  id          String        @id @default(cuid(2))
+  slug        String        @unique
+  countryCode String        @db.VarChar(2)
+  country     Country       @relation(fields: [countryCode], references: [code])
+  name        String
+  tasks       RoadmapTask[]
+}
+
+model RoadmapTask {
+  id            String               @id @default(cuid(2))
+  templateId    String
+  template      RoadmapTemplate      @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  slug          String
+  title         String
+  description   String
+  /// Guide slug in the same country, if any.
+  guideSlug     String?
+  /// Residence situations this task applies to; empty = everyone.
+  appliesTo     ResidenceSituation[]
+  /// Goal slugs that make this task relevant; empty = everyone.
+  forGoals      String[]
+  /// Slugs of tasks that must come first.
+  dependsOn     String[]
+  dueOffsetDays Int
+  sortOrder     Int                  @default(0)
+  userTasks     UserTask[]
+
+  @@unique([templateId, slug])
+}
+
+model UserTask {
+  id     String      @id @default(cuid(2))
+  userId String
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskId String
+  task   RoadmapTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  dueAt  DateTime
+  doneAt DateTime?
+
+  @@unique([userId, taskId])
+}
+
+// ─── Engagement and operations ────────────────────────────────────────────────────────────────
+
+model Application {
+  id        String            @id @default(cuid(2))
+  type      ApplicationType
+  status    ApplicationStatus @default(submitted)
+  userId    String?
+  user      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  chapterId String?
+  chapter   Chapter?          @relation(fields: [chapterId], references: [id])
+  name      String
+  email     String
+  /// Answers to the application form (shape depends on type).
+  answers   Json
+  isDemo    Boolean           @default(false)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([type, status])
+}
+
+model PointsEntry {
+  id        String   @id @default(cuid(2))
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  points    Int
+  reason    String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Badge {
+  id    String      @id @default(cuid(2))
+  slug  String      @unique
+  name  String
+  users UserBadge[]
+}
+
+model UserBadge {
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  awardedAt DateTime @default(now())
+
+  @@id([userId, badgeId])
+}
+
+/// Every admin write. Kept 1 year.
+model AuditLog {
+  id         String   @id @default(cuid(2))
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  chapterId  String?
+  chapter    Chapter? @relation(fields: [chapterId], references: [id], onDelete: SetNull)
+  action     String
+  entityType String
+  entityId   String
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([chapterId, createdAt])
+  @@index([entityType, entityId])
+}
+
+/// Fixed-window counters for lib/rate-limit.ts (Postgres-backed).
+model RateLimit {
+  key         String   @id
+  windowStart DateTime
+  count       Int
 }

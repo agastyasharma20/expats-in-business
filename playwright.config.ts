@@ -8,6 +8,8 @@ export default defineConfig({
   testDir: "tests/e2e",
   globalSetup: "./tests/e2e/global-setup.ts",
   fullyParallel: true,
+  // CI runners have 2 cores; more workers starve one production server (prefetches queue up).
+  workers: isCI ? 2 : undefined,
   // The first request to `next dev` compiles the route, which can take a while on Windows.
   timeout: isCI ? 30_000 : 90_000,
   expect: { timeout: isCI ? 5_000 : 30_000 },

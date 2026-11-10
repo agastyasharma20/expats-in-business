@@ -1,5 +1,14 @@
 # Decisions (newest first)
 
+- 2026-11-10 · The locale comes from `next/root-params` (in lib/i18n/request.ts and the locale layout). No page awaits `params` and `setRequestLocale` is gone (deprecated by next-intl). This removes the "URL data outside Suspense" instant-navigation insight on every page. As a result `app/layout.tsx` is gone, so `[locale]` is the root layout again; URLs outside any locale use `app/global-not-found.tsx` (`experimental.globalNotFound`). The legal pages are three static routes sharing `LegalPageView` instead of `[slug]` (`dynamicParams` is not supported with Cache Components). The `[...rest]` catch-all sets `instant = false` because it only ever 404s.
+
+- 2026-11-10 · Unbuilt nav destinations (Events, Members, Providers, Guides, Pricing, Sign in) render designed, noindex coming-soon pages with working actions, so the full navbar ships now and the crawler stays green. Each later milestone replaces its route.
+- 2026-11-10 · Social and contact links come from config/facts.ts, read from the EiB Connect page on 9 Nov 2026 and recorded with sources in docs/FACTS.md.
+- 2026-11-10 · The chapter preference is a first-party httpOnly cookie (eib-chapter, 1 year) set by a validated server action. It records a choice the visitor made, so it is treated as strictly necessary (see the cookie policy draft).
+- 2026-11-10 · Legal pages render MDX with next-mdx-remote-client inside "use cache". Request APIs are unavailable there, so translations take an explicit locale, links use ExternalLinkBase and getPathname, and facts reach the MDX through scope and <ContactEmail />. The same pipeline is meant for the M4 guides.
+- 2026-11-10 · 404 handling follows the next-intl pattern: a [...rest] catch-all under [locale], a pass-through app/layout.tsx and app/not-found.tsx. The (dev) route group became (tools) because next dev kept routing /styleguide to the catch-all.
+- 2026-11-10 · Playwright uses 2 workers in CI. Six workers on one production server queued route prefetches behind Chrome's 6-connections-per-host limit, which stalled navigations.
+
 - 2026-11-07 · Brand from the live site (docs/brand/BRAND.md): Deep Teal #093334, tint #C5E8EB and the real fonts Cabin + Nunito Sans replace the brief's starting values and Montserrat + Inter. EiB Green #12635A is kept for primary actions even though the live site doesn't use it, because the live CTA orange #FF3514 fails 4.5:1 with white. The orange stays as "ember" for decoration, with #C2260C for one highlight button.
 - 2026-11-07 · Logo: the original 3000 px raster is used (resized by scripts/brand-assets.mjs). It is **not** redrawn as SVG: it isn't a small raster, and a hand-traced "EB" would drift from the real artwork. Ask EiB for the vector source.
 - 2026-11-07 · Buttons use 8 px radius, not the live site's square corners. Colour changes on hover are instant; only transform (press) and opacity animate.

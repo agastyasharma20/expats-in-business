@@ -41,7 +41,7 @@ Package manager: npm. Node 24 LTS. OS of the developer: Windows 11 (PowerShell).
 - app/[locale]/(member) – dashboard, roadmap, concierge, connections, bubbles, settings
 - app/[locale]/(provider) – provider inbox and analytics
 - app/[locale]/(admin) – admin and chapter-lead tools
-- app/[locale]/(dev) – developer pages (/styleguide), development and demo mode only
+- app/[locale]/(tools) – developer pages (/styleguide), development and demo mode only
 - app/api – route handlers only for external callers (stripe webhook, concierge stream, pulse SSE, ics, checkin, health)
 - components/ui (shadcn) · components/motion · components/layout · components/<feature>
 - lib/ (auth, permissions, ai, db, env, rate-limit, i18n, money, time, chapters, nav, roadmap) · server/actions/<feature>.ts
@@ -113,6 +113,7 @@ Package manager: npm. Node 24 LTS. OS of the developer: Windows 11 (PowerShell).
 
 - Windows: use `cross-env` for env vars in scripts; paths via node:path; line endings LF (.gitattributes).
 - Prisma 7: run `prisma generate` explicitly; client output is in generated/prisma; import from `@/generated/prisma/client`.
+- Locale: read it with `getTranslations()` / `getLocale()` (backed by next/root-params). Never await `params` just for the locale and never call setRequestLocale. If a page needs another param, read it inside <Suspense> or use static routes.
 - Next 16.4 has Cache Components on: request-time data (DB, cookies) must sit inside <Suspense> after `await connection()` or use "use cache". Read node_modules/next/dist/docs before using a new API.
 - `npm run typecheck` runs `next typegen` first (PageProps/LayoutProps are generated types).
 - TypeScript is pinned to 6.0.x because typescript-eslint does not support TS 7 yet.

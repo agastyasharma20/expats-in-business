@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 import { Badge } from "@/components/ui/badge";
 import { ButtonsSection } from "@/components/styleguide/buttons-section";
@@ -25,22 +25,17 @@ const sectionIds = [
   "motion",
 ] as const;
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/[locale]/styleguide">): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "styleguide" });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("styleguide");
   return { title: t("metaTitle"), robots: { index: false, follow: false } };
 }
 
-export default async function StyleguidePage({ params }: PageProps<"/[locale]/styleguide">) {
+export default async function StyleguidePage() {
   if (!areDevToolsEnabled()) notFound();
-  const { locale } = await params;
-  setRequestLocale(locale);
   const t = await getTranslations("styleguide");
 
   return (
-    <main className="container-page flex flex-col gap-16 py-12">
+    <div className="container-page flex flex-col gap-16 py-12">
       <header className="flex flex-col gap-4">
         <p className="eyebrow text-brand-700">{t("eyebrow")}</p>
         <h1 className="text-display-sm md:text-display">{t("title")}</h1>
@@ -70,6 +65,6 @@ export default async function StyleguidePage({ params }: PageProps<"/[locale]/st
       <FormsSection />
       <FeedbackSection />
       <MotionSection />
-    </main>
+    </div>
   );
 }

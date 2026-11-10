@@ -88,6 +88,13 @@ export const contrastPairs: ContrastPair[] = [
   { id: "focusRingOnCanvas", foreground: "brand-700", background: "canvas", level: "nonText" },
   { id: "focusRingOnWash", foreground: "brand-700", background: "brand-50", level: "nonText" },
   { id: "focusRingOnTint", foreground: "brand-700", background: "brand-100", level: "nonText" },
+  { id: "focusRingOnDark", foreground: "on-dark", background: "brand-950", level: "nonText" },
+  {
+    id: "darkControlBorder",
+    foreground: "on-dark-muted",
+    background: "brand-950",
+    level: "nonText",
+  },
   { id: "outlineButtonBorder", foreground: "brand-950", background: "surface", level: "nonText" },
   { id: "dashedBorderOnCanvas", foreground: "line-strong", background: "canvas", level: "nonText" },
 ];

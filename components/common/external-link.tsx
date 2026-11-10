@@ -1,25 +1,31 @@
 import { ExternalLinkIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+
 import { cn } from "@/lib/utils";
 
-type ExternalLinkProps = Omit<React.ComponentProps<"a">, "target" | "rel"> & {
+type ExternalLinkBaseProps = Omit<React.ComponentProps<"a">, "target" | "rel"> & {
   href: string;
+  /** Screen-reader text appended to the link, e.g. "(opens in a new tab)". */
+  newTabLabel: string;
   /** Hide the trailing icon, e.g. when the link already shows a brand icon. */
   hideIcon?: boolean;
 };
 
+export type ExternalLinkProps = Omit<ExternalLinkBaseProps, "newTabLabel">;
+
 /**
  * Link to another site: opens in a new tab with rel="noopener noreferrer", shows an icon and tells
  * screen-reader users it opens a new tab. Styled like every other link (fixes old-portal bug 2).
+ * Use this base directly where request APIs are unavailable (inside "use cache").
  */
-function ExternalLink({
+export function ExternalLinkBase({
   href,
   className,
   children,
   hideIcon = false,
+  newTabLabel,
   ...props
-}: ExternalLinkProps) {
-  const t = useTranslations("common");
+}: ExternalLinkBaseProps) {
   return (
     <a
       href={href}
@@ -33,9 +39,13 @@ function ExternalLink({
     >
       {children}
       {hideIcon ? null : <ExternalLinkIcon aria-hidden="true" className="size-4 shrink-0" />}
-      <span className="sr-only"> {t("opensInNewTab")}</span>
+      <span className="sr-only"> {newTabLabel}</span>
     </a>
   );
 }
 
-export { ExternalLink, type ExternalLinkProps };
+/** ExternalLink with the translated "opens in a new tab" label. */
+export function ExternalLink(props: ExternalLinkProps) {
+  const t = useTranslations("common");
+  return <ExternalLinkBase {...props} newTabLabel={t("opensInNewTab")} />;
+}

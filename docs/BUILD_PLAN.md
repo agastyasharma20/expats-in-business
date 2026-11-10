@@ -65,6 +65,22 @@ Lists that EiB may rename or extend become seeded DB tables (managed in admin) o
 
 ## Milestones
 
+### Milestone map (as built)
+
+Milestones follow the prompts the developer sends, which reorder the original proposal below.
+The feature scope stays the same; the original sections keep their content for reference.
+
+| Milestone | Scope                                                                                                                                                          | Tag    |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| M1        | Scaffolding and tooling                                                                                                                                        | v0.1.0 |
+| M2        | Brand from the live site, design system, motion, /styleguide                                                                                                   | v0.2.0 |
+| M3        | Layout: nav config, header, footer, switchers, coming-soon pages, legal MDX, 404/error, link crawler                                                           | v0.3.0 |
+| M4        | Full data model, deterministic demo seed, Poland guides (MDX, official sources), demo:reset, money/time libs                                                   | v0.4.0 |
+| M5        | Homepage from the database (skyline, stats, events, Bubbles, chapters), SEO, Lighthouse ≥ 90                                                                   | v0.5.0 |
+| M6+       | Assigned as prompts arrive (auth and onboarding, chapters, events, check-in, billing, marketplace, concierge, roadmap, community, admin, i18n, demo hardening) |        |
+
+### Original proposal (reference)
+
 Each entry: **Goal · Acceptance criteria · Files · Tests · Risks.**
 
 ### M1 Scaffolding and tooling (v0.1.0)

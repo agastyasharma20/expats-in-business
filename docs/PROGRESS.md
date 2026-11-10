@@ -3,9 +3,66 @@
 | Milestone                  | Status                  | Branch / tag                        | Notes |
 | -------------------------- | ----------------------- | ----------------------------------- | ----- |
 | M1 Scaffolding and tooling | done                    | develop · v0.1.0                    |       |
-| M2 Brand and design system | done; reviewer approved | feat/m02-design → v0.2.0 (proposed) |       |
+| M2 Brand and design system | done; reviewer approved | develop · v0.2.0 (local)            |       |
+| M3 Layout and navigation   | built; awaiting review  | feat/m03-layout → v0.3.0 (proposed) |       |
 
 ## Log
+
+### 2026-11-10 · M3 Layout, navigation, legal pages and crawler
+
+**Built**
+
+- **Catalogues:** pl and uk message files copied from en and marked `_status: TODO`. `npm run messages:sync` fills new keys, and a unit test keeps all three key-for-key.
+- **Config:** `config/facts.ts` holds the verified contact and social links, taken from the EiB Connect page and sourced in FACTS.md. `lib/nav.ts` is the single source for the header, mobile menu and footer, with tests for duplicate hrefs and labels (old bug 11).
+- **Header:** sticky, and shrinks on scroll with transforms only. Desktop nav marks the current page (aria-current). Below 1024 px a mobile Sheet takes over. Also a skip link and one `<main>` landmark.
+- **Switchers:**
+  - Chapter switcher: Global, Kraków (live) and Warsaw (launching) from the database, behind Suspense, saved by a validated server action.
+  - Language switcher: en, pl and uk.
+- **Footer:** Deep Teal, with nav columns, contact, Messenger, WhatsApp and the four social links, plus white focus rings. That adds the on-dark focus-ring pair carried over from the M2 review.
+- **Coming-soon pages:** Events, Members, Providers, Guides, Pricing and Sign in, each with two working actions.
+- **Legal:** `/legal/privacy`, `/legal/terms` and `/legal/cookies` come from MDX through shared prose components, with the "Draft: to be reviewed by a lawyer" banner. They contain no invented entity or address, only labelled TODOs (old bug 8).
+- **404 and error pages:** styled 404 inside and outside a locale, plus `error.tsx` (retry) and `global-error.tsx`.
+- **Home:** the milestone home links to `/styleguide` in development and demo mode.
+- **Crawler:**
+  - `npm run crawl`: link crawler.
+  - `tests/e2e/crawl.spec.ts`: every nav and footer route in 3 locales with axe, click-every-button, no raw markdown, safe external links, 404.
+
+**Fixed along the way**
+
+- **Cached MDX:** the legal pages crashed when external links rendered inside `"use cache"`, because next-intl fell back to `headers()`. Translations there now take an explicit locale.
+- **Unstyled email links:** raw JSX `<a>` in MDX skipped the styled mapping, so email links were unstyled (bug class 2). Fixed with `<ContactEmail />`.
+- **Footer wrapping:** the footer contact column wrapped the email mid-word, so it's wider now.
+- **Route group:** renamed `(dev)` to `(tools)`, because `next dev` resolved `/styleguide` to the new catch-all.
+- **E2E stalls:** with 6 workers, e2e navigations stalled behind queued prefetches. CI now uses 2 workers, and the full suite takes 1.6 minutes.
+- **Two broken commits:** `ef8064f` went in with typecheck errors because the command chain didn't stop on a failed check. The next commit fixed it, and every commit is now gated on `npm run check`'s exit code.
+
+**How to test**
+
+1. `npm run dev`, then try / at 1440 and 375 px:
+   - the header nav and its active state
+   - the mobile menu
+   - Chapter → Kraków (a toast appears and the label changes)
+   - Language → Polski
+   - the footer links
+   - /legal/privacy
+   - /anything for the 404
+2. `npm run check` (96 unit tests) · `npm run crawl` (needs a running app) · `npm run build`, then `PORT=3100 CI=1 E2E_EXPECT_DB=true npm run e2e` (64 tests).
+
+**Verified**
+
+- `npm run check` green.
+- `npm run crawl` green: 33 pages, no broken or duplicate links, no unsafe external links.
+- e2e 64/64 against a production build with the database.
+- Screenshots reviewed at 1440 and 375 px.
+
+**Known gaps**
+
+- pl and uk UI text is still English (until M15). Legal drafts are English-only and say so.
+- The chapter choice is stored but changes nothing else yet; chapter pages come later.
+- Events, Members, Providers, Guides, Pricing and Sign in are coming-soon pages.
+- In dev, every 404 logs a Next "Could not validate `instant`" console error from the catch-all. It doesn't appear in production.
+
+**Old portal bugs addressed**: 8 (legal pages render, no raw markdown), 11 (single nav source, duplicates tested), 2 (external links styled and safe everywhere, including MDX).
 
 ### 2026-11-07 · M2 Brand and design system
 

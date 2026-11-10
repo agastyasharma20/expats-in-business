@@ -29,6 +29,12 @@ export const facts = {
     source: "https://expatsinbusiness.org/",
     lastReviewed: "2026-11-09",
   },
+  "org.sessionsHeld": {
+    value: "35+",
+    status: "verified",
+    source: "https://www.youtube.com/@expatsinbusiness",
+    lastReviewed: "2026-11-10",
+  },
   "contact.email": {
     value: "info.expatsinbusiness@gmail.com",
     status: "verified",

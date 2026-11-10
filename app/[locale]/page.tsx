@@ -1,27 +1,30 @@
-import { Suspense } from "react";
-import { getTranslations } from "next-intl/server";
+import { BubblesTeaser } from "@/components/home/bubbles-teaser";
+import { ChaptersStrip } from "@/components/home/chapters-strip";
+import { CtaBand } from "@/components/home/cta-band";
+import { Hero } from "@/components/home/hero";
+import { HowItWorks } from "@/components/home/how-it-works";
+import { PartnerPlaceholders, TestimonialPlaceholders } from "@/components/home/placeholders";
+import { StatsStrip } from "@/components/home/stats-strip";
+import { UpcomingEvents } from "@/components/home/upcoming-events";
+import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 
-import { DatabaseStatus } from "@/components/system/database-status";
-import { buttonVariants } from "@/components/ui/button";
-import { areDevToolsEnabled } from "@/lib/dev-tools";
-import { Link } from "@/lib/i18n/navigation";
-
-export default async function HomePage() {
-  const t = await getTranslations("home");
-
+/**
+ * Homepage, rendered on the server from the database through cached queries (lib/home/queries.ts),
+ * so it prerenders as a static shell. Section order follows brief 3J.
+ */
+export default function HomePage() {
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center gap-6 px-4 py-16">
-      <p className="eyebrow text-brand-700">{t("eyebrow")}</p>
-      <h1 className="text-h1">{t("title")}</h1>
-      <p className="text-muted-foreground">{t("intro")}</p>
-      <Suspense fallback={<p className="text-muted-foreground">{t("dbChecking")}</p>}>
-        <DatabaseStatus />
-      </Suspense>
-      {areDevToolsEnabled() ? (
-        <Link href="/styleguide" className={`${buttonVariants({ variant: "outline" })} self-start`}>
-          {t("styleguideLink")}
-        </Link>
-      ) : null}
-    </div>
+    <>
+      <OrganizationJsonLd baseUrl={process.env.APP_URL ?? "http://localhost:3000"} />
+      <Hero />
+      <StatsStrip />
+      <UpcomingEvents />
+      <HowItWorks />
+      <BubblesTeaser />
+      <ChaptersStrip />
+      <PartnerPlaceholders />
+      <TestimonialPlaceholders />
+      <CtaBand />
+    </>
   );
 }

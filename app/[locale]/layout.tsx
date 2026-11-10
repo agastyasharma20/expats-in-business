@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { getMessages, getTranslations } from "next-intl/server";
 import { locale as rootLocale } from "next/root-params";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { MAIN_CONTENT_ID, SkipLink } from "@/components/layout/skip-link";
-import { MotionProvider } from "@/components/motion/motion-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { bodyFont, headingFont } from "@/lib/fonts";
 import { routing } from "@/lib/i18n/routing";
 
 import "../globals.css";
+
+/** Only these namespaces are used by client components; the rest stay on the server (smaller JS). */
+const CLIENT_NAMESPACES = ["common", "nav", "chapter", "language", "errors"] as const;
+
+function pickClientMessages(messages: Record<string, unknown>) {
+  return Object.fromEntries(CLIENT_NAMESPACES.map((key) => [key, messages[key]]));
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -39,21 +45,15 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[locale]"
       className={`${bodyFont.variable} ${headingFont.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <NextIntlClientProvider>
-          <MotionProvider>
-            <TooltipProvider>
-              <SkipLink />
-              <SiteHeader />
-              <main
-                id={MAIN_CONTENT_ID}
-                tabIndex={-1}
-                className="flex flex-1 flex-col outline-none"
-              >
-                {children}
-              </main>
-              <SiteFooter />
-            </TooltipProvider>
-          </MotionProvider>
+        <NextIntlClientProvider messages={pickClientMessages(await getMessages())}>
+          <TooltipProvider>
+            <SkipLink />
+            <SiteHeader />
+            <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex flex-1 flex-col outline-none">
+              {children}
+            </main>
+            <SiteFooter />
+          </TooltipProvider>
           <Toaster />
         </NextIntlClientProvider>
       </body>

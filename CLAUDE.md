@@ -81,7 +81,9 @@ Package manager: npm. Node 24 LTS. OS of the developer: Windows 11 (PowerShell).
 - Use components/motion (Reveal, StatCounter, PageTransition, SuccessCheck). Animate only transform and opacity;
   the only exceptions are SVG line drawing (pathLength: success tick, skyline) and the skeleton shimmer.
 - Micro 120–180ms, entrances 400–600ms with 60ms stagger, nothing over 600ms except counters (1.2s) and the skyline (1.6s).
-- MotionConfig reducedMotion="user" wraps the app; CSS transitions have prefers-reduced-motion fallbacks. No CLS from animation.
+- Prefer CSS keyframes (animate-rise, animate-draw, animate-page-enter) for public pages: they run on first paint and keep JS small.
+  Pages that use Motion components (`m.*`, SuccessCheck, Reveal) wrap them in <MotionProvider> (MotionConfig reducedMotion="user" +
+  LazyMotion); it is not in the root layout, so pages without Motion ship none. CSS has prefers-reduced-motion fallbacks. No CLS.
 
 ## Security and privacy rules
 

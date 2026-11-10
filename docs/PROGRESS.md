@@ -1,12 +1,71 @@
 # Progress log
 
-| Milestone                  | Status                  | Branch / tag                        | Notes |
-| -------------------------- | ----------------------- | ----------------------------------- | ----- |
-| M1 Scaffolding and tooling | done                    | develop · v0.1.0                    |       |
-| M2 Brand and design system | done; reviewer approved | develop · v0.2.0 (local)            |       |
-| M3 Layout and navigation   | built; awaiting review  | feat/m03-layout → v0.3.0 (proposed) |       |
+| Milestone                  | Status                        | Branch / tag                               | Notes                            |
+| -------------------------- | ----------------------------- | ------------------------------------------ | -------------------------------- |
+| M1 Scaffolding and tooling | done                          | develop · v0.1.0                           |                                  |
+| M2 Brand and design system | done; reviewer approved       | develop · v0.2.0 (local)                   |                                  |
+| M3 Layout and navigation   | done                          | develop · v0.3.0                           |                                  |
+| M4 Data, seed, guides      | done; reviewer findings fixed | feat/m04-m05-data-home · v0.4.0            |                                  |
+| M5 Homepage                | done                          | feat/m04-m05-data-home → v0.5.0 (proposed) | Lighthouse mobile 99/100/100/100 |
 
 ## Log
+
+### 2026-11-10 · M4 + M5 Data, seed, guides and homepage (one branch, two tags)
+
+**M4 built**
+
+- **Schema:** every model in brief section 5 plus Better Auth's core tables.
+  - cuid2 ids, money in minor units, chapterId/countryCode.
+  - Lookup tables for formats, industries, goals and provider categories.
+  - pgvector with an HNSW cosine index on `GuideChunk.embedding`.
+  - Chapter deletes never cascade into tickets, payments or sponsorships.
+- **Seed:** a base layer (real configuration, upserted) and a demo layer (fixed faker seed, `isDemo`, replaced on each run).
+  - 120 members including the 6 demo accounts, and 8 Bubbles of 7+ members with leads.
+  - 30 providers, and 24 past + 6 upcoming events with 575 check-ins, demo sponsors and labelled placeholder photos.
+  - 160 connections and 140 chapter votes across 12 cities.
+- **`npm run demo:reset`:** 2–8 s, timing logged. Output is identical for a pinned `SEED_REFERENCE_DATE`.
+- **8 Poland guides** (`content/guides/pl`): PESEL, trusted profile, MOS, banking, NFZ, ZUS, KSeF and the Kraków Information Point.
+  - Every statement is from an official page opened on 10 Nov 2026; anything unverified is a visible TODO.
+  - `lib/content/guides.ts` only allows official https sources, enforced by tests.
+- **Libraries:** `lib/money.ts` and `lib/time.ts` (Intl-based, safe across daylight-saving changes), with unit tests.
+
+**M5 built**
+
+- **Homepage from the database:**
+  - Hero with an original line-drawn Kraków skyline (8 paths, CSS stroke draw).
+  - Stats strip: the 35+ sessions fact, plus database counts tagged "Demo data".
+  - Next 3 events as equal-height cards (chapter timezone, venue, places, price).
+  - How it works, a Bubbles teaser (5+ members only) and a chapters strip with the most requested cities.
+  - Partner tiles reading "permission pending", labelled placeholder testimonials and a Deep Teal CTA.
+- **SEO:** Organization JSON-LD from verified facts, and a per-locale OG image.
+- **`npm run lighthouse`:** mobile audit against a production server. Result on `/`: **Performance 99, Accessibility 100, Best Practices 100, SEO 100**; LCP 0.9 s, CLS 0, TBT 100 ms.
+- **JS:** the homepage's own client JS is about 54 kB gzipped, under the 150 kB budget. Total first-load JS is 194 kB, including about 139 kB of Next.js and React baseline.
+
+**Fixed along the way**
+
+- **Cached failures:** cached queries swallowed errors, so a failure was cached as "no data", even across restarts. Loaders now throw (nothing is cached), and wrappers fall back to empty states and log.
+- **Hero hidden until hydration:** hero text and CTAs were invisible until JavaScript loaded (Motion's initial state). They're now CSS keyframes, and the h1 only moves, so LCP is text.
+- **Negative counter numbers:** StatCounter showed negative numbers mid-count, because the rAF timestamp came before `performance.now()`.
+- **Lost border:** `buttonVariants` on links lost the outline border (cva doesn't merge classes).
+- **OG image 500:** route handlers can't read `next/root-params` yet.
+- **Review findings:** the reviewer subagent's guide and schema findings (see the fix(m04) commit).
+- **Stale processes:** orphaned `migrate dev`, `next dev` and `next start` processes from earlier runs held a Prisma lock and served stale builds. They're cleaned up, and their database sessions were ended.
+
+**How to test**
+
+1. `npm run demo:reset`, then `npm run dev`, then open http://localhost:3000.
+2. `npm run check` (118 unit tests) · `npm run build` · then:
+   - `npx next start -p 3200`
+   - `E2E_BASE_URL=http://localhost:3200 CI=1 E2E_EXPECT_DB=true npx playwright test` (70 tests)
+   - `CRAWL_BASE_URL=http://localhost:3200 npm run crawl` (36 pages)
+   - `LH_BASE_URL=http://localhost:3200 npm run lighthouse`
+
+**Known gaps**
+
+- The guides have TODOs. Banking's source is from 2017; health insurance via employment is still unsourced; the Information Point's details come from a January 2024 page.
+- Guides have no pages or embeddings yet (/guides is coming soon); those arrive with the concierge milestone.
+- Event cards link to the Events coming-soon page until event pages exist.
+- Some event-format durations and descriptions in the base catalogue are editable defaults, not EiB facts.
 
 ### 2026-11-10 · M3 Layout, navigation, legal pages and crawler
 

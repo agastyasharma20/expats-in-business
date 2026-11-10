@@ -11,22 +11,33 @@ export { CHAPTER_COOKIE, GLOBAL_CHAPTER, type ChapterOption };
  * chapter-in-a-box admin can revalidate it. Returns [] when the database is unreachable, so the
  * header still renders (Global only).
  */
-export async function getChapterOptions(): Promise<ChapterOption[]> {
+async function loadChapterOptions(): Promise<ChapterOption[]> {
   "use cache";
   cacheLife("minutes");
   cacheTag("chapters");
+  // Throws on failure so a failure is never cached (see getChapterOptions).
+  const chapters = await getDb().chapter.findMany({
+    where: { status: { in: ["live", "launching"] } },
+    select: { slug: true, name: true, status: true },
+    orderBy: [{ status: "asc" }, { name: "asc" }],
+  });
+  return chapters.map((chapter) => ({
+    slug: chapter.slug,
+    name: chapter.name,
+    status: chapter.status === "live" ? "live" : "launching",
+  }));
+}
+
+/**
+ * Chapters a visitor can pick: live first, then launching. Cached for minutes and tagged so the
+ * chapter-in-a-box admin can revalidate it. Returns [] when the database is unreachable, so the
+ * header still renders (Global only).
+ */
+export async function getChapterOptions(): Promise<ChapterOption[]> {
   try {
-    const chapters = await getDb().chapter.findMany({
-      where: { status: { in: ["live", "launching"] } },
-      select: { slug: true, name: true, status: true },
-      orderBy: [{ status: "asc" }, { name: "asc" }],
-    });
-    return chapters.map((chapter) => ({
-      slug: chapter.slug,
-      name: chapter.name,
-      status: chapter.status === "live" ? "live" : "launching",
-    }));
-  } catch {
+    return await loadChapterOptions();
+  } catch (error) {
+    console.error("[chapters] query failed, showing Global only:", error);
     return [];
   }
 }

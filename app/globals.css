@@ -190,6 +190,40 @@
   --duration-micro: 150ms;
   --duration-entrance: 500ms;
   --animate-shimmer: shimmer 1.4s linear infinite;
+  /* CSS entrances run on first paint, without waiting for JavaScript (above-the-fold content). */
+  --animate-rise: rise var(--duration-entrance) var(--ease-brand) both;
+  --animate-rise-move: rise-move var(--duration-entrance) var(--ease-brand) both;
+  --animate-draw: draw 1s var(--ease-brand) both;
+  --animate-page-enter: page-enter 200ms var(--ease-brand) both;
+
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  /* Transform only: for the LCP heading, which must paint at full opacity immediately. */
+  @keyframes rise-move {
+    from {
+      transform: translateY(12px);
+    }
+  }
+  /* SVG line drawing; paths use pathLength="1" with stroke-dasharray: 1. */
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
 
   @keyframes shimmer {
     from {

@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   // 404 for URLs outside any locale (app/global-not-found.tsx); [locale] stays the root layout so
   // next/root-params can provide the locale.
-  experimental: { globalNotFound: true },
+  experimental: { globalNotFound: true, authInterrupts: true },
   partialPrefetching: true,
   poweredByHeader: false,
   turbopack: {

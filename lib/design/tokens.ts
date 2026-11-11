@@ -89,6 +89,7 @@ export const contrastPairs: ContrastPair[] = [
   { id: "focusRingOnWash", foreground: "brand-700", background: "brand-50", level: "nonText" },
   { id: "focusRingOnTint", foreground: "brand-700", background: "brand-100", level: "nonText" },
   { id: "focusRingOnDark", foreground: "on-dark", background: "brand-950", level: "nonText" },
+  { id: "pulseProgressBar", foreground: "brand-100", background: "brand-950", level: "nonText" },
   {
     id: "darkControlBorder",
     foreground: "on-dark-muted",

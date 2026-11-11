@@ -16,6 +16,8 @@ import "../globals.css";
 
 /** Only these namespaces are used by client components; the rest stay on the server (smaller JS). */
 const CLIENT_NAMESPACES = [
+  "scanner",
+  "pulse",
   "common",
   "nav",
   "chapter",

@@ -1,15 +1,73 @@
 # Progress log
 
-| Milestone                  | Status                        | Branch / tag                               | Notes                            |
-| -------------------------- | ----------------------------- | ------------------------------------------ | -------------------------------- |
-| M1 Scaffolding and tooling | done                          | develop · v0.1.0                           |                                  |
-| M2 Brand and design system | done; reviewer approved       | develop · v0.2.0 (local)                   |                                  |
-| M3 Layout and navigation   | done                          | develop · v0.3.0                           |                                  |
-| M4 Data, seed, guides      | done; reviewer findings fixed | feat/m04-m05-data-home · v0.4.0            |                                  |
-| M5 Homepage                | done                          | feat/m04-m05-data-home → v0.5.0 (proposed) | Lighthouse mobile 99/100/100/100 |
-| M6 Accounts and profiles   | done                          | feat/m06-auth · v0.6.0                     | 80/80 e2e, crawler green         |
+| Milestone                  | Status                        | Branch / tag                               | Notes                               |
+| -------------------------- | ----------------------------- | ------------------------------------------ | ----------------------------------- |
+| M1 Scaffolding and tooling | done                          | develop · v0.1.0                           |                                     |
+| M2 Brand and design system | done; reviewer approved       | develop · v0.2.0 (local)                   |                                     |
+| M3 Layout and navigation   | done                          | develop · v0.3.0                           |                                     |
+| M4 Data, seed, guides      | done; reviewer findings fixed | feat/m04-m05-data-home · v0.4.0            |                                     |
+| M5 Homepage                | done                          | feat/m04-m05-data-home → v0.5.0 (proposed) | Lighthouse mobile 99/100/100/100    |
+| M6 Accounts and profiles   | done                          | feat/m06-auth · v0.6.0                     | 80/80 e2e, crawler green            |
+| M7 Events and ticketing    | done                          | develop · v0.7.0                           | builder, check-in, Pulse, Who I met |
+| M8 Membership and billing  | done; security review fixed   | develop · v0.8.0                           | Lighthouse /pricing 96/100/100/100  |
 
 ## Log
+
+### 2026-11-11 · M8 Membership, billing and entitlements
+
+**Shipped**
+
+- **/pricing** built from the Plan table (no price in code): Community, Member Plus, Business, Verified Provider, Corporate. Banner "Test mode · proposed prices, not yet approved · net of VAT". Equal-height plan cards, per-lead fee shown for providers, FAQ. Static page: the monthly/yearly switch is two radio buttons and CSS `:has()`, so it works without JavaScript. Lighthouse (mobile) 96 / 100 / 100 / 100.
+- **Subscriptions** (`server/actions/billing.ts`): Stripe Checkout in subscription mode with the amount and interval from the Plan row; a Stripe customer per member (stored once). Without keys, demo mode simulates an active plan and says so. Existing Stripe subscribers switch plans in the billing portal (no double billing).
+- **Webhook** syncs `customer.subscription.*` and subscription checkouts (`lib/billing/sync.ts`); our ids travel in subscription metadata; one active plan per member.
+- **Settings, Billing**: current plan, price, "renews on" or "ends on", cancel at period end and resume (Stripe first when real), Stripe portal when configured.
+- **Entitlements**: `past_due` keeps access while Stripe retries the card (shared `ENTITLED_STATUSES`); `hasEntitlement` reads the tiers from the session.
+- **/pricing/corporate**: enquiry form to the team inbox, rate-limited.
+- Navigation: Pricing is live.
+
+**Security review** (reviewer subagent over M6–M8; no critical findings). Fixed:
+
+- High: a lapsed hold could overbook (`renewHold`, re-decided claims); a stale or cheaper Checkout session could confirm a ticket and an old session's expiry could cancel a newer hold (tickets now confirm only from their current session at the ticket-type amount while a place is free; anything else is refunded; stale sessions are expired).
+- Medium: webhook marker removed when handling fails, so Stripe retries; open redirect via `/\` on sign-in (`lib/safe-redirect.ts`); double subscriptions; Checkout `expires_at` below Stripe's 30-minute minimum (now 31 min, hold 35 min) and idempotency-key reuse.
+- Low: online links https only; Pulse origins respect `showOrigin` and private profiles.
+- Accepted for now (documented): Pulse streams are not capped per user (leads only, 4 h maximum); contact and corporate form limits key on `x-forwarded-for`, which a client can set; behind the production proxy use the platform's client IP or add a captcha (M16 hardening).
+
+**Verification**: `npm run check` green (161 unit tests); production build; Playwright 98/98 at 1440 and 375 px including axe; link crawler green on 117 pages; Lighthouse `/` 99/100/100/100 and `/pricing` 96/100/100/100.
+
+### 2026-11-11 · M7 part 2: check-in, Pulse, Who I met, event builder
+
+**Shipped**
+
+- **Event builder** `/admin/events/new` (chapter leads for their own chapters, admins everywhere): format with its usual length, date and time in the chapter's timezone, venue of that chapter or an https online link, places, price; publishes straight away; audit-logged. The e2e test builds two events well under the two-minute target.
+- **Admin events** `/admin/events`: upcoming and last two weeks, with Check-in, Pulse and public-page links.
+- **Door check-in** `/admin/events/[id]/check-in`: camera QR scanning (`@zxing/browser`, lazy-loaded) and manual name search; big colour-and-icon result (never colour alone) with vibration; `/api/checkin` checks the chapter permission, allows 60 scans per minute, rejects malformed tokens, and a ticket checks in once (unique CheckIn row, safe for two scanners at once). Wrong-event, unconfirmed and unknown tickets never reveal a name.
+- **Pulse** `/admin/events/[id]/pulse`: big-screen live view over Server-Sent Events (every 3 s, auto-reconnect): checked in, room filled, arrivals in the last 10 minutes, countries only for groups of 5 or more.
+- **Who I met** `/met/[slug]`: after check-in, opt in to be visible to other attendees who also opted in; one-tap connection request; the other person accepts or declines on `/connections` (double opt-in). The ticket page links to it after check-in.
+- Shared `lib/slug.ts` (Polish letters) and `lib/audit.ts`.
+
+**Tests**: `tests/e2e/checkin.spec.ts` (builder, waitlist promotion on cancel, manual check-in and single use through the API, members get 403 on scanning, Pulse SSE, Who I met to accepted connection); unit tests for scan classification and token parsing. Test sign-ins now happen once per run in `tests/e2e/global-setup.ts` (shared personas), so the suite stays under the 5-per-minute sign-in limit.
+
+### 2026-11-11 · M7 part 1: events, RSVP, waitlist, payments, tickets
+
+**Shipped**
+
+- **/events**: upcoming and past sessions, filtered by format through plain links (shareable, no JavaScript needed), equal-height cards, designed empty state. **/events/formats** explains each session type with its usual length (old bug 9).
+- **/events/[slug]**: date and time in the chapter's timezone (with the zone name), venue, address and map link (styled external link), price, places left, waitlist size, description, schema.org Event JSON-LD, and an **.ics** download (`/api/events/[slug]/ics`, RFC 5545: UTC times, escaping, 75-octet folding).
+- **RSVP** (`server/actions/rsvp.ts`, `lib/events/`): free sessions confirm straight away; paid sessions hold a place for 30 minutes while the member pays; full sessions put people on the waitlist. The event row is locked (`SELECT … FOR UPDATE`), so two people can never take the last place. Cancelling (or an expired or failed payment) promotes the oldest waitlisted member at once and emails them; a promoted paid ticket is held and the email asks them to pay.
+- **Payments**: Stripe Checkout in test mode only (live keys are refused). BLIK and Przelewy24 are offered for PLN, card everywhere; the amount always comes from the database; one Checkout session per hold (idempotency key). Without Stripe keys, demo mode simulates the payment and the ticket page says so.
+- **Webhook** `/api/stripe/webhook`: signature verified; each Stripe event handled once (`StripeEvent` table, migration `20261111120000_stripe_events`); status changes are conditional (reserved → confirmed or cancelled), so retries are harmless.
+- **/tickets/[id]**: owner-only page with the QR code (a random token, never the ticket id; server-rendered SVG in brand colours), status, payment notice, online joining link, pay and cancel buttons. Emails for confirmation, waitlist and promotion link to it.
+- Navigation: Events is live.
+
+**Verification**: `npm run check` green (148 unit tests, including capacity, waitlist order, reservation window and .ics); production build; full Playwright suite 86/86 (new `tests/e2e/events.spec.ts`: filters and axe, event facts and .ics, sign-in prompt, free RSVP → QR → cancel, paid ticket via simulated payment, webhook rejects unsigned calls); link crawler green on 60 pages.
+
+**Notes**
+
+- The waitlist end-to-end path (fill an event, promote on cancel) is covered by unit tests of the pure rules and the row-locked transaction; a browser test needs a full event fixture and is planned with the event builder in part 2.
+- Real Stripe payments need test keys in `.env` and `npm run stripe:listen` for the webhook; without them, demo mode simulates payment.
+- Cancelling a paid ticket shows "refund within 5 working days" but does not refund automatically yet (a Stripe refund call arrives with the admin tools).
+
+**Next (M7 part 2)**: check-in scanner (QR, manual search, single-use, rate-limited), Pulse live screen (SSE), "Who I met" with one-tap connection requests, event builder for chapter leads; then tag v0.7.0.
 
 ### 2026-11-11 · M6 Accounts, onboarding, profiles, settings and help
 

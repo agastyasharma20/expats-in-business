@@ -6,6 +6,7 @@ import { SignInForms } from "@/components/auth/sign-in-forms";
 import { googleEnabled } from "@/lib/auth/auth";
 import { getSessionUser } from "@/lib/auth/session";
 import { getEnv } from "@/lib/env";
+import { safeNext } from "@/lib/safe-redirect";
 
 // Personalised (session + ?next): rendered per request.
 export const instant = false;
@@ -19,14 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title"), robots: { index: false } };
 }
 
-/** Only same-site paths are allowed as return targets (no open redirects). */
-function safeNext(value: string | string[] | undefined): string {
-  const next = Array.isArray(value) ? value[0] : value;
-  return next && next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
-}
-
 export default async function SignInPage({ searchParams }: PageProps<"/[locale]/sign-in">) {
-  const next = safeNext((await searchParams).next);
+  const next = safeNext((await searchParams).next, getEnv().APP_URL);
   if (await getSessionUser()) redirect(next);
   const t = await getTranslations("auth");
   const demo = getEnv().DEMO_MODE ? { password: "Demo!2026", accounts: DEMO_ACCOUNTS } : null;

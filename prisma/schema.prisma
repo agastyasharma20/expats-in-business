@@ -994,3 +994,10 @@ model RateLimit {
   windowStart DateTime
   count       Int
 }
+
+/// Stripe webhook events already handled (idempotency: Stripe retries and may deliver twice).
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now())
+}

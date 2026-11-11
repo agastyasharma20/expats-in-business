@@ -7,8 +7,44 @@
 | M3 Layout and navigation   | done                          | develop · v0.3.0                           |                                  |
 | M4 Data, seed, guides      | done; reviewer findings fixed | feat/m04-m05-data-home · v0.4.0            |                                  |
 | M5 Homepage                | done                          | feat/m04-m05-data-home → v0.5.0 (proposed) | Lighthouse mobile 99/100/100/100 |
+| M6 Accounts and profiles   | done                          | feat/m06-auth · v0.6.0                     | 80/80 e2e, crawler green         |
 
 ## Log
+
+### 2026-11-11 · M6 Accounts, onboarding, profiles, settings and help
+
+**Shipped**
+
+- **Sign-in** (Better Auth): magic link through Mailpit (15 min, single use), password sign-in for demo accounts (listed on /sign-in in demo mode only), Google only when keys exist. 5 sign-in attempts per minute per IP; only same-site `?next=` targets (no open redirect); inline validation instead of silent native popups.
+- **Guards**: the `(member)` layout redirects once to /sign-in; the `(admin)` layout calls `requirePermission("admin.access")` and renders the styled 403 (`app/[locale]/forbidden.tsx`). No middleware redirect chains.
+- **Permissions**: `lib/auth/permissions.ts` (roles, actions, plan entitlements) with a unit-tested matrix.
+- **Onboarding**: 6 steps (chapter, origin, languages, industry, goals, arrival). Each step saves on its own; you can go back but not skip ahead; finishing assigns the chapter's founding-member number (race-safe).
+- **Dashboard**: founding badge, next session, people you could meet. Every stat card links to its list (/my/events, /connections, /my/businesses), each with a designed empty state.
+- **Public profile** /members/[slug]: per-field visibility (`lib/member/visibility.ts`, unit-tested; email never exposed), demo label, copy link with a manual fallback when the clipboard is blocked.
+- **Settings** tabs as real URLs: Profile (fields and visibility), Account (name, language), Email (secondary addresses verified by an emailed link; hashed single-use tokens, 24 h), Billing (placeholder until M8), Privacy (JSON data export; deletion scheduled after 30 days and cancellable).
+- **Help** /help: FAQ and a contact form to `ADMIN_INBOX_EMAIL`, rate-limited 5 per hour per IP; linked from the footer.
+- **Header account menu**: dashboard, my profile, settings, admin (only when permitted), sign out. Streams in under Suspense, so the shell stays static.
+- **Country hero panoramas**: `components/home/hero-art/` is a registry keyed by ISO country code. Poland is original line art (Tatras under a Łowicz-style paper-cut sun, Wawel and St Mary's, Warsaw's Palace of Culture, the Gdańsk crane, storks, the Vistula); any other country falls back to a world-connections design. Chosen from the visitor's chapter; Global uses the hub with the most live chapters. Replaces the hard-coded Kraków skyline (CLAUDE.md rule 6). CSS line drawing plus pop-in accents; reduced-motion safe; no layout shift.
+
+**Old portal bugs fixed** (tests in `tests/e2e/auth.spec.ts` unless noted)
+
+| Bug                                    | Fix                                                  | Test                                                                                      |
+| -------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 1, 13 Dead dashboard stat cards, icons | Every card links to its filtered list                | `every dashboard stat card navigates (bugs 1, 13)`                                        |
+| 3 "Need help" did nothing              | /help with FAQ and contact form                      | `help form sends a message to the team (bug 3)`                                           |
+| 4 Copy profile link did nothing        | Clipboard API with a manual fallback                 | `visitors cannot see fields switched off (bug 14); copy link fills the clipboard (bug 4)` |
+| 5 Secondary email never verified       | Emailed single-use link, hashed token                | `a secondary email is verified through the Mailpit link (bug 5)`                          |
+| 6 Account edits lost on reload         | Server Action writes and revalidates                 | `account edits persist after reload (bug 6)`                                              |
+| 7 Slow sign-in                         | Magic link to dashboard under 2 s (production build) | `magic link signs in to the dashboard in under 2 s (bug 7)`                               |
+| 14 Private fields visible to visitors  | Per-field visibility with an owner-only override     | the bug 4 test above, plus `tests/unit/visibility.test.ts`                                |
+
+**Verification**: `npm run check` green (141 unit tests); production build; full Playwright suite 80/80 at 1440 and 375 px including axe; link crawler green on 39 pages.
+
+**Notes and decisions**
+
+- /admin shows the styled 403 with HTTP status 200: the static shell streams before the layout guard runs, so the status cannot change afterwards. The test asserts the content.
+- Windows testing gotcha: stopping a background `npx next start` kills the shell but not the node server, which keeps serving the old build. Run the server and the tests in one command and kill the server's PID afterwards.
+- The hero art reads the chapter cookie outside `try`, so prerendering bails out to Suspense instead of caching the world design for everyone.
 
 ### 2026-11-10 · M4 + M5 Data, seed, guides and homepage (one branch, two tags)
 

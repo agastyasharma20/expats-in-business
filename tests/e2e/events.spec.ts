@@ -1,0 +1,111 @@
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test, type Browser, type Page } from "@playwright/test";
+
+/**
+ * M7 part 1 acceptance: list and filters, event page facts, .ics, RSVP → QR ticket → cancel,
+ * paid ticket (simulated payment in demo mode without Stripe keys), webhook rejects unsigned calls.
+ */
+test.skip(process.env.E2E_EXPECT_DB !== "true", "needs the seeded database");
+test.describe.configure({ mode: "serial" });
+test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop", "desktop only"));
+
+const MEMBER = "karim@demo.eib.local";
+let storage: Awaited<ReturnType<Awaited<ReturnType<Browser["newContext"]>>["storageState"]>>;
+
+test.beforeAll(async ({ browser }) => {
+  const context = await browser.newContext();
+  const res = await context.request.post("/api/auth/sign-in/email", {
+    data: { email: MEMBER, password: "Demo!2026" },
+  });
+  expect(res.ok()).toBeTruthy();
+  storage = await context.storageState();
+  await context.close();
+});
+
+/** First upcoming card matching a price kind with places left, opened. */
+async function openEvent(page: Page, kind: "free" | "paid") {
+  await page.goto("/events");
+  const cards = page.getByTestId("event-list").getByRole("listitem").filter({ hasNotText: "Full" });
+  const card =
+    kind === "free"
+      ? cards.filter({ hasText: "Free" }).first()
+      : cards.filter({ hasNotText: "Free" }).first();
+  await card.getByRole("link").click();
+  await expect(page).toHaveURL(/\/events\/(?!formats)[^/?]+(\?.*)?$/);
+  await expect(page.getByRole("link", { name: "All sessions" })).toBeVisible();
+}
+
+test("events list filters by time and format, and passes axe", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/events");
+  await expect(page.getByTestId("event-list").getByRole("listitem").first()).toBeVisible();
+  const { violations } = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+  expect(violations).toEqual([]);
+
+  await page.getByRole("link", { name: "Past", exact: true }).click();
+  await expect(page).toHaveURL(/when=past/);
+  await expect(page.getByRole("link", { name: "Past", exact: true })).toHaveAttribute(
+    "aria-current",
+    "true",
+  );
+
+  await page.goto("/events/formats");
+  const first = page.getByRole("listitem").first();
+  await first.getByRole("link").click();
+  await expect(page).toHaveURL(/format=/);
+});
+
+test("event page shows date, venue, price, places, and a working .ics", async ({
+  page,
+  request,
+}) => {
+  await openEvent(page, "free");
+  for (const label of ["When", "Where", "Price", "Places"])
+    await expect(page.getByText(label, { exact: true })).toBeVisible();
+  await expect(page.locator('script[type="application/ld+json"]').first()).toBeAttached();
+  const slug = new URL(page.url()).pathname.split("/").pop();
+  const ics = await request.get(`/api/events/${slug}/ics`);
+  expect(ics.headers()["content-type"]).toContain("text/calendar");
+  expect(await ics.text()).toContain("BEGIN:VEVENT");
+});
+
+test("visitors are asked to sign in before reserving", async ({ page }) => {
+  await openEvent(page, "free");
+  await expect(page.getByRole("link", { name: "Sign in to reserve a place" })).toHaveAttribute(
+    "href",
+    /sign-in\?next=/,
+  );
+});
+
+test("a member reserves a free place, gets a QR ticket and can cancel", async ({ browser }) => {
+  const page = await (await browser.newContext({ storageState: storage })).newPage();
+  await openEvent(page, "free");
+  const eventUrl = page.url();
+  await page.getByRole("button", { name: "Reserve a free place" }).click();
+  await expect(page).toHaveURL(/\/tickets\//);
+  await expect(page.getByText("Confirmed")).toBeVisible();
+  await expect(page.getByRole("img", { name: /QR code for checking in/ })).toBeVisible();
+
+  await page.getByTestId("cancel-ticket").getByRole("button").click();
+  await expect(page.getByText("Cancelled", { exact: true })).toBeVisible();
+  await page.goto(eventUrl);
+  await expect(page.getByRole("button", { name: "Reserve a free place" })).toBeVisible();
+});
+
+test("a paid ticket goes through (simulated) payment and is confirmed", async ({ browser }) => {
+  const page = await (await browser.newContext({ storageState: storage })).newPage();
+  await openEvent(page, "paid");
+  await page.getByRole("button", { name: /Buy ticket/ }).click();
+  await expect(page).toHaveURL(/\/tickets\/.+payment=(simulated|success)|checkout\.stripe\.com/);
+  if (page.url().includes("payment=simulated")) {
+    await expect(page.getByText(/Test mode: payment simulated/)).toBeVisible();
+    await expect(page.getByRole("img", { name: /QR code/ })).toBeVisible();
+  }
+});
+
+test("the Stripe webhook rejects unsigned requests", async ({ request }) => {
+  const res = await request.post("/api/stripe/webhook", {
+    data: { type: "checkout.session.completed" },
+  });
+  expect([400, 503]).toContain(res.status());
+});

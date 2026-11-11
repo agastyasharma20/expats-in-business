@@ -8,8 +8,31 @@
 | M4 Data, seed, guides      | done; reviewer findings fixed | feat/m04-m05-data-home · v0.4.0            |                                  |
 | M5 Homepage                | done                          | feat/m04-m05-data-home → v0.5.0 (proposed) | Lighthouse mobile 99/100/100/100 |
 | M6 Accounts and profiles   | done                          | feat/m06-auth · v0.6.0                     | 80/80 e2e, crawler green         |
+| M7 Events and ticketing    | part 1 of 2 done              | feat/m07-events                            | 86/86 e2e, crawler 60 pages      |
 
 ## Log
+
+### 2026-11-11 · M7 part 1: events, RSVP, waitlist, payments, tickets
+
+**Shipped**
+
+- **/events**: upcoming and past sessions, filtered by format through plain links (shareable, no JavaScript needed), equal-height cards, designed empty state. **/events/formats** explains each session type with its usual length (old bug 9).
+- **/events/[slug]**: date and time in the chapter's timezone (with the zone name), venue, address and map link (styled external link), price, places left, waitlist size, description, schema.org Event JSON-LD, and an **.ics** download (`/api/events/[slug]/ics`, RFC 5545: UTC times, escaping, 75-octet folding).
+- **RSVP** (`server/actions/rsvp.ts`, `lib/events/`): free sessions confirm straight away; paid sessions hold a place for 30 minutes while the member pays; full sessions put people on the waitlist. The event row is locked (`SELECT … FOR UPDATE`), so two people can never take the last place. Cancelling (or an expired or failed payment) promotes the oldest waitlisted member at once and emails them; a promoted paid ticket is held and the email asks them to pay.
+- **Payments**: Stripe Checkout in test mode only (live keys are refused). BLIK and Przelewy24 are offered for PLN, card everywhere; the amount always comes from the database; one Checkout session per hold (idempotency key). Without Stripe keys, demo mode simulates the payment and the ticket page says so.
+- **Webhook** `/api/stripe/webhook`: signature verified; each Stripe event handled once (`StripeEvent` table, migration `20261111120000_stripe_events`); status changes are conditional (reserved → confirmed or cancelled), so retries are harmless.
+- **/tickets/[id]**: owner-only page with the QR code (a random token, never the ticket id; server-rendered SVG in brand colours), status, payment notice, online joining link, pay and cancel buttons. Emails for confirmation, waitlist and promotion link to it.
+- Navigation: Events is live.
+
+**Verification**: `npm run check` green (148 unit tests, including capacity, waitlist order, reservation window and .ics); production build; full Playwright suite 86/86 (new `tests/e2e/events.spec.ts`: filters and axe, event facts and .ics, sign-in prompt, free RSVP → QR → cancel, paid ticket via simulated payment, webhook rejects unsigned calls); link crawler green on 60 pages.
+
+**Notes**
+
+- The waitlist end-to-end path (fill an event, promote on cancel) is covered by unit tests of the pure rules and the row-locked transaction; a browser test needs a full event fixture and is planned with the event builder in part 2.
+- Real Stripe payments need test keys in `.env` and `npm run stripe:listen` for the webhook; without them, demo mode simulates payment.
+- Cancelling a paid ticket shows "refund within 5 working days" but does not refund automatically yet (a Stripe refund call arrives with the admin tools).
+
+**Next (M7 part 2)**: check-in scanner (QR, manual search, single-use, rate-limited), Pulse live screen (SSE), "Who I met" with one-tap connection requests, event builder for chapter leads; then tag v0.7.0.
 
 ### 2026-11-11 · M6 Accounts, onboarding, profiles, settings and help
 

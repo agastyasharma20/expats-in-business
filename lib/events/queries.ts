@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cacheLife, cacheTag } from "next/cache";
+
 import type { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
 import type { HomeEvent } from "@/lib/home/queries";
@@ -70,7 +72,11 @@ export async function listEvents(filters: EventFilters, take = 24): Promise<Home
   return rows.map(toCard);
 }
 
-export function listFormats() {
+/** Session formats change rarely: cached, so /events/formats prerenders. */
+export async function listFormats() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("formats");
   return getDb().eventFormat.findMany({
     orderBy: { sortOrder: "asc" },
     select: { slug: true, name: true, description: true, defaultDurationMin: true },

@@ -666,7 +666,8 @@
     "errors": {
       "default": "That did not work. Please try again.",
       "closed": "This session is no longer taking reservations.",
-      "rateLimited": "Too many attempts. Try again later."
+      "rateLimited": "Too many attempts. Try again later.",
+      "full": "The hold ran out and the session filled up, so you are back on the waitlist."
     },
     "formats": {
       "title": "Session formats",
@@ -690,7 +691,7 @@
     "paid": "Payment received. See you there.",
     "paidOn": "Paid on {date}",
     "waitlistHelp": "You are in line. If a place opens, we move you up automatically and email you.",
-    "reservedHelp": "Your place is held for 30 minutes. Complete the payment to confirm it.",
+    "reservedHelp": "Your place is held for 35 minutes. Complete the payment to confirm it.",
     "cancelledHelp": "This ticket is cancelled. You can reserve again from the session page while places last.",
     "cancel": "Cancel my place",
     "cancelWaitlist": "Leave the waitlist",

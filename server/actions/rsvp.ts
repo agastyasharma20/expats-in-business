@@ -1,5 +1,7 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
+
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -7,8 +9,8 @@ import { z } from "zod";
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { getEnv } from "@/lib/env";
-import { PAYMENT_WINDOW_MINUTES } from "@/lib/events/capacity";
-import { claimTicket, promoteWaitlist, sendTicketEmail } from "@/lib/events/tickets";
+import { CHECKOUT_SESSION_MINUTES } from "@/lib/events/capacity";
+import { claimTicket, promoteWaitlist, renewHold, sendTicketEmail } from "@/lib/events/tickets";
 import { rateLimit } from "@/lib/rate-limit";
 import { getStripe, paymentMethodsFor } from "@/lib/stripe";
 
@@ -16,7 +18,22 @@ import type { ActionState } from "./account";
 
 const rsvpSchema = z.object({ eventId: z.string().min(1), ticketTypeId: z.string().min(1) });
 
-/** Sends the member to pay for a reserved ticket. The amount always comes from the database. */
+/** Closes a checkout session that must no longer be paid (cancelled ticket, replaced session). */
+async function expireSession(sessionId: string | null) {
+  const stripe = getStripe();
+  if (!stripe || !sessionId) return;
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (session.status === "open") await stripe.checkout.sessions.expire(sessionId);
+  } catch {
+    // already expired or unknown: nothing to close
+  }
+}
+
+/**
+ * Sends the member to pay for a reserved ticket. The amount comes from the database; an open
+ * session is reused (double clicks, back button), and only the ticket's current session can confirm it.
+ */
 async function startCheckout(ticketId: string): Promise<string> {
   const db = getDb();
   const ticket = await db.ticket.findUniqueOrThrow({
@@ -39,6 +56,12 @@ async function startCheckout(ticketId: string): Promise<string> {
     await sendTicketEmail(ticketId, "confirmed");
     return `/tickets/${ticketId}?payment=simulated`;
   }
+  if (ticket.stripeSessionId) {
+    const current = await stripe.checkout.sessions
+      .retrieve(ticket.stripeSessionId)
+      .catch(() => null);
+    if (current?.status === "open" && current.url) return current.url;
+  }
   const session = await stripe.checkout.sessions.create(
     {
       mode: "payment",
@@ -55,13 +78,13 @@ async function startCheckout(ticketId: string): Promise<string> {
         },
       ],
       metadata: { ticketId },
+      payment_intent_data: { metadata: { ticketId } },
       client_reference_id: ticketId,
-      expires_at: Math.floor(Date.now() / 1000) + PAYMENT_WINDOW_MINUTES * 60,
+      expires_at: Math.floor(Date.now() / 1000) + CHECKOUT_SESSION_MINUTES * 60,
       success_url: `${appUrl}/tickets/${ticketId}?payment=success`,
       cancel_url: `${appUrl}/events/${ticket.event.slug}?payment=cancelled`,
     },
-    // One session per reservation, even if the button is pressed twice.
-    { idempotencyKey: `checkout-${ticketId}-${ticket.updatedAt.getTime()}` },
+    { idempotencyKey: `checkout-${ticketId}-${randomBytes(8).toString("hex")}` },
   );
   await db.ticket.update({ where: { id: ticketId }, data: { stripeSessionId: session.id } });
   return session.url!;
@@ -89,13 +112,14 @@ export async function rsvp(_prev: ActionState, form: FormData): Promise<ActionSt
   if (!(await rateLimit(`rsvp:${user.id}`, 20, 3600)).ok)
     return { ok: false, message: "rateLimited" };
 
-  const ticket = await claimTicket({
+  const { ticket, staleSessionId } = await claimTicket({
     eventId: parsed.data.eventId,
     ticketTypeId: ticketType.id,
     userId: user.id,
     paid: ticketType.priceMinor > 0,
     capacity: event.capacity,
   });
+  await expireSession(staleSessionId);
   revalidateTag("events", "max");
   revalidatePath(`/events/${event.slug}`);
   if (ticket.status === "waitlisted") {
@@ -112,10 +136,15 @@ export async function payTicket(_prev: ActionState, form: FormData): Promise<Act
   const user = await requireUser();
   const ticket = await getDb().ticket.findFirst({
     where: { id: String(form.get("ticketId")), userId: user.id, status: "reserved" },
+    select: { id: true, event: { select: { slug: true } } },
   });
   if (!ticket) return { ok: false, message: "invalid" };
-  // Refresh the hold so the payment window starts now.
-  await getDb().ticket.update({ where: { id: ticket.id }, data: { updatedAt: new Date() } });
+  // Only renew the hold if a place is still free; otherwise back to the waitlist.
+  if (!(await renewHold(ticket.id))) {
+    revalidatePath(`/tickets/${ticket.id}`);
+    revalidateTag("events", "max");
+    return { ok: false, message: "full" };
+  }
   redirect(await startCheckout(ticket.id));
 }
 
@@ -127,7 +156,12 @@ export async function cancelTicket(_prev: ActionState, form: FormData): Promise<
     include: { event: { select: { slug: true, startsAt: true } } },
   });
   if (!ticket || ticket.event.startsAt < new Date()) return { ok: false, message: "invalid" };
-  await getDb().ticket.update({ where: { id: ticket.id }, data: { status: "cancelled" } });
+  await getDb().ticket.update({
+    where: { id: ticket.id },
+    data: { status: "cancelled", stripeSessionId: null },
+  });
+  // An unpaid open session must not be payable any more.
+  if (!ticket.paidAt) await expireSession(ticket.stripeSessionId);
   await promoteWaitlist(ticket.eventId);
   revalidateTag("events", "max");
   revalidatePath(`/events/${ticket.event.slug}`);

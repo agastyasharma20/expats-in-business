@@ -42,6 +42,21 @@ export async function subscribe(_prev: ActionState, form: FormData): Promise<Act
 
   const stripe = getStripe();
   const appUrl = getEnv().APP_URL;
+  // Already paying through Stripe: switch plans in the portal (prorated) instead of a second subscription.
+  const existing = await db.subscription.findFirst({
+    where: {
+      userId: user.id,
+      status: { in: [...ENTITLED_STATUSES] },
+      stripeSubscriptionId: { not: null },
+    },
+  });
+  if (existing && stripe) {
+    const portal = await stripe.billingPortal.sessions.create({
+      customer: await customerFor(user.id),
+      return_url: `${appUrl}/settings/billing`,
+    });
+    redirect(portal.url);
+  }
   if (!stripe) {
     if (!getEnv().DEMO_MODE) return { ok: false, message: "unavailable" };
     // Demo without Stripe keys: one active plan at a time, labelled as simulated on the billing page.

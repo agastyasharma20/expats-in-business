@@ -2,7 +2,10 @@
  * Capacity rules for RSVPs (pure, unit-tested). A place is taken by a confirmed ticket or by a
  * reserved one still inside its payment window; everything else waits in line, first come first served.
  */
-export const PAYMENT_WINDOW_MINUTES = 30;
+/** How long a reserved place is held. Longer than a checkout session, so a hold outlives its payment. */
+export const PAYMENT_WINDOW_MINUTES = 35;
+/** Stripe Checkout session lifetime (Stripe requires at least 30 minutes). */
+export const CHECKOUT_SESSION_MINUTES = 31;
 
 export type RsvpDecision = "confirmed" | "reserved" | "waitlisted";
 

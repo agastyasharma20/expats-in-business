@@ -12,7 +12,7 @@ test("pricing shows plans from the database, labelled as proposals, and passes a
   await page.goto("/pricing");
   await expect(page.getByTestId("pricing-banner")).toContainText("Test mode");
   await expect(page.getByTestId("pricing-banner")).toContainText("net of VAT");
-  await expect(page.getByTestId("plan-community")).toBeVisible();
+  await expect(page.locator('[data-testid="plan-community"]:visible')).toHaveCount(1);
   await expect(page.getByTestId("plan-plus-month")).toBeVisible();
   await expect(page.getByTestId("plan-plus-year")).toBeHidden();
 

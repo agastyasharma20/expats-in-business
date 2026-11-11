@@ -667,7 +667,8 @@
     "errors": {
       "default": "That did not work. Please try again.",
       "closed": "This session is no longer taking reservations.",
-      "rateLimited": "Too many attempts. Try again later."
+      "rateLimited": "Too many attempts. Try again later.",
+      "full": "The hold ran out and the session filled up, so you are back on the waitlist."
     },
     "formats": {
       "title": "Session formats",

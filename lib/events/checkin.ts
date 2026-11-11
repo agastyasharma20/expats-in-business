@@ -67,7 +67,7 @@ export async function pulseSnapshot(eventId: string) {
     db.$queryRaw<{ code: string; count: bigint }[]>`
       SELECT p."originCountryCode" AS code, COUNT(*) AS count
       FROM "CheckIn" c JOIN "Profile" p ON p."userId" = c."userId"
-      WHERE c."eventId" = ${eventId} AND p."originCountryCode" IS NOT NULL
+      WHERE c."eventId" = ${eventId} AND p."originCountryCode" IS NOT NULL AND p."showOrigin" = true AND p."isPublic" = true
       GROUP BY p."originCountryCode" HAVING COUNT(*) >= 5 ORDER BY count DESC LIMIT 6`,
   ]);
   return {

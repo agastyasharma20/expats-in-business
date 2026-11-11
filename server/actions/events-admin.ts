@@ -26,7 +26,7 @@ const schema = z.object({
   duration: z.coerce.number().int().min(15).max(720).optional(),
   venueId: z.string().optional(),
   online: z.preprocess((v) => v === "on", z.boolean()),
-  onlineUrl: z.union([z.url().max(500), z.literal("")]).optional(),
+  onlineUrl: z.union([z.url({ protocol: /^https$/ }).max(500), z.literal("")]).optional(),
   capacity: z.coerce.number().int().min(1).max(5000),
   price: z.coerce.number().min(0).max(100_000),
   publish: z.preprocess((v) => v === "on", z.boolean()),

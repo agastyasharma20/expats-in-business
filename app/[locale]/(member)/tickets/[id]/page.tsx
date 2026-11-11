@@ -151,7 +151,7 @@ async function TicketView({ params, searchParams }: Props) {
             action={payTicket}
             submitLabel={e("pay")}
             pendingLabel={e("processing")}
-            errorTexts={{ default: e("errors.default") }}
+            errorTexts={{ default: e("errors.default"), full: e("errors.full") }}
           >
             <input type="hidden" name="ticketId" value={ticket.id} />
           </ActionForm>

@@ -25,7 +25,7 @@ describe("capacity", () => {
 
   it("expires reservations after the payment window", () => {
     const now = new Date("2026-11-11T12:00:00Z");
-    expect(reservationCutoff(now).toISOString()).toBe("2026-11-11T11:30:00.000Z");
+    expect(reservationCutoff(now).toISOString()).toBe("2026-11-11T11:25:00.000Z");
   });
 });
 

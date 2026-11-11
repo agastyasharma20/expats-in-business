@@ -48,3 +48,26 @@ describe("slugify", () => {
     expect(slugify("x".repeat(80)).length).toBe(60);
   });
 });
+
+describe("safeNext", () => {
+  const app = "http://localhost:3000";
+  it("keeps same-site paths with query and hash", async () => {
+    const { safeNext } = await import("@/lib/safe-redirect");
+    expect(safeNext("/events/x?a=1#b", app)).toBe("/events/x?a=1#b");
+    expect(safeNext(["/settings", "/x"], app)).toBe("/settings");
+  });
+  it("rejects open-redirect tricks", async () => {
+    const { safeNext } = await import("@/lib/safe-redirect");
+    for (const bad of [
+      "//evil.example",
+      "/\\evil.example",
+      "https://evil.example",
+      "/\tevil",
+      "evil",
+      undefined,
+      "",
+    ]) {
+      expect(safeNext(bad, app)).toBe("/dashboard");
+    }
+  });
+});

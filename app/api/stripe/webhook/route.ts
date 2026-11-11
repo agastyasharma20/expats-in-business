@@ -1,14 +1,63 @@
 import { revalidatePath, revalidateTag } from "next/cache";
+import type Stripe from "stripe";
 
 import { syncSubscription } from "@/lib/billing/sync";
 import { getDb } from "@/lib/db";
 import { getEnv } from "@/lib/env";
-import { promoteWaitlist, sendTicketEmail } from "@/lib/events/tickets";
+import { confirmPaidTicket, releaseSession } from "@/lib/events/tickets";
 import { getStripe } from "@/lib/stripe";
 
+/** Refunds a payment that cannot become a ticket (stale session, wrong amount, session full). */
+async function refund(stripe: Stripe, session: Stripe.Checkout.Session, reason: string) {
+  const intent =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id;
+  if (!intent) return;
+  await stripe.refunds.create(
+    { payment_intent: intent, reason: "requested_by_customer", metadata: { eib_reason: reason } },
+    { idempotencyKey: `refund-${intent}` },
+  );
+}
+
+async function handle(stripe: Stripe, event: Stripe.Event) {
+  switch (event.type) {
+    case "checkout.session.completed":
+    case "checkout.session.async_payment_succeeded": {
+      const session = event.data.object;
+      const ticketId = session.metadata?.ticketId;
+      if (ticketId && session.mode === "payment" && session.payment_status === "paid") {
+        const result = await confirmPaidTicket(ticketId, {
+          id: session.id,
+          amountTotal: session.amount_total,
+          currency: session.currency,
+        });
+        if (result === "mismatch" || result === "full") await refund(stripe, session, result);
+      }
+      if (session.mode === "subscription" && typeof session.subscription === "string") {
+        await syncSubscription(await stripe.subscriptions.retrieve(session.subscription));
+      }
+      return;
+    }
+    case "checkout.session.expired":
+    case "checkout.session.async_payment_failed": {
+      const session = event.data.object;
+      if (session.metadata?.ticketId) await releaseSession(session.metadata.ticketId, session.id);
+      return;
+    }
+    case "customer.subscription.created":
+    case "customer.subscription.updated":
+    case "customer.subscription.deleted":
+      await syncSubscription(event.data.object);
+      return;
+    default:
+      return;
+  }
+}
+
 /**
- * Stripe webhook: signature verified, each event handled once (StripeEvent table), and status
- * changes are conditional (reserved → confirmed/cancelled), so retries and replays are harmless.
+ * Stripe webhook: signature verified; each event handled once (StripeEvent). The marker is removed
+ * again if handling fails, so Stripe's retry gets another chance instead of being dropped.
  */
 export async function POST(request: Request) {
   const stripe = getStripe();
@@ -17,7 +66,7 @@ export async function POST(request: Request) {
   if (!stripe || !secret) return Response.json({ error: "stripe-not-configured" }, { status: 503 });
   if (!signature) return Response.json({ error: "missing-signature" }, { status: 400 });
 
-  let event;
+  let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(await request.text(), signature, secret);
   } catch {
@@ -30,45 +79,12 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ received: true, duplicate: true });
   }
-
-  if (
-    event.type === "checkout.session.completed" ||
-    event.type === "checkout.session.async_payment_succeeded"
-  ) {
-    const session = event.data.object;
-    const ticketId = session.metadata?.ticketId;
-    if (ticketId && session.payment_status === "paid") {
-      const { count } = await db.ticket.updateMany({
-        where: { id: ticketId, status: "reserved" },
-        data: { status: "confirmed", paidAt: new Date(), stripeSessionId: session.id },
-      });
-      if (count) await sendTicketEmail(ticketId, "confirmed");
-    }
-    if (session.mode === "subscription" && typeof session.subscription === "string") {
-      await syncSubscription(await stripe.subscriptions.retrieve(session.subscription));
-    }
-  } else if (
-    event.type === "customer.subscription.created" ||
-    event.type === "customer.subscription.updated" ||
-    event.type === "customer.subscription.deleted"
-  ) {
-    await syncSubscription(event.data.object);
-  } else if (
-    event.type === "checkout.session.expired" ||
-    event.type === "checkout.session.async_payment_failed"
-  ) {
-    const ticketId = event.data.object.metadata?.ticketId;
-    if (ticketId) {
-      const ticket = await db.ticket.findUnique({
-        where: { id: ticketId },
-        select: { eventId: true },
-      });
-      const { count } = await db.ticket.updateMany({
-        where: { id: ticketId, status: "reserved" },
-        data: { status: "cancelled" },
-      });
-      if (count && ticket) await promoteWaitlist(ticket.eventId);
-    }
+  try {
+    await handle(stripe, event);
+  } catch (error) {
+    await db.stripeEvent.delete({ where: { id: event.id } }).catch(() => undefined);
+    console.error("[stripe] webhook handling failed, Stripe will retry:", event.type, error);
+    return Response.json({ error: "handler-failed" }, { status: 500 });
   }
   revalidateTag("events", "max");
   revalidatePath("/", "layout");

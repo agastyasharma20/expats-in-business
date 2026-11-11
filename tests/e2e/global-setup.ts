@@ -14,6 +14,7 @@ export const PERSONAS = {
   admin: "admin@demo.eib.local",
   karim: "karim@demo.eib.local",
   priya: "priya@demo.eib.local",
+  marta: "marta.provider@demo.eib.local",
 } as const;
 export const AUTH_DIR = path.join("test-results", ".auth");
 export const authFile = (persona: keyof typeof PERSONAS) => path.join(AUTH_DIR, `${persona}.json`);

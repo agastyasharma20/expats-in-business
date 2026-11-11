@@ -312,7 +312,11 @@
     "admin": "Admin",
     "signOut": "Sign out",
     "account": "Account menu",
-    "help": "Help"
+    "help": "Help",
+    "businesses": "Businesses",
+    "notifications": "Notifications",
+    "providerArea": "Provider area",
+    "connections": "Connections"
   },
   "chapter": {
     "label": "Chapter",
@@ -902,5 +906,197 @@
     "resumed": "Your plan continues.",
     "seePlans": "See plans",
     "change": "Change plan"
+  },
+  "directory": {
+    "search": "Search",
+    "searchPlaceholder": "Name or headline",
+    "apply": "Apply filters",
+    "clear": "Clear all",
+    "any": "Any",
+    "results": "{count, plural, =0 {No results} one {# result} other {# results}}",
+    "previous": "Previous page",
+    "next": "Next page",
+    "pageOf": "Page {page} of {pages}",
+    "demo": "Demo profile",
+    "pagination": "Pagination",
+    "filters": "Filters"
+  },
+  "members": {
+    "title": "Members",
+    "lead": "Find founders, freelancers and professionals in the community. Everyone decides what their profile shows.",
+    "visitorNote": "Sign in to see languages, industries and origins, and to filter by them.",
+    "signIn": "Sign in",
+    "industry": "Industry",
+    "skill": "Skill",
+    "skillPlaceholder": "For example: react",
+    "language": "Language",
+    "origin": "Country of origin",
+    "originHint": "Only countries with at least 5 visible members are listed.",
+    "chapter": "Chapter",
+    "coffee": "Open to coffee",
+    "emptyTitle": "No members match",
+    "emptyDescription": "Try fewer filters, or search for part of a name.",
+    "connect": "Connect",
+    "connectMessage": "Add a note (optional)",
+    "connectMessageHint": "Say where you met or why you want to connect. Max 300 characters.",
+    "sendRequest": "Send request",
+    "requestSent": "Request sent. You connect when they accept.",
+    "pending": "Request pending",
+    "connected": "Connected",
+    "contact": "Contact",
+    "contactHint": "Shared because you are connected.",
+    "errors": {
+      "default": "That did not work. Please try again.",
+      "exists": "There is already a request between you.",
+      "declined": "This person declined an earlier request.",
+      "rateLimited": "You have sent many requests today. Try again tomorrow."
+    }
+  },
+  "providers": {
+    "title": "Service providers",
+    "lead": "Legal, tax, relocation, housing, language and insurance help. Verified providers passed the checks on our criteria page.",
+    "category": "Category",
+    "language": "Language",
+    "verifiedOnly": "Verified only",
+    "verified": "Verified provider",
+    "verifiedLink": "What verified means",
+    "pending": "Verification pending",
+    "responseTime": "Usually replies within {hours} hours",
+    "rating": "{rating} out of 5",
+    "reviews": "{count, plural, =0 {No reviews yet} one {# review} other {# reviews}}",
+    "services": "Services",
+    "languages": "Languages",
+    "chapter": "Chapter",
+    "emptyTitle": "No providers match",
+    "emptyDescription": "Try another category or language.",
+    "demo": "Demo provider",
+    "quote": {
+      "title": "Request a quote",
+      "lead": "Describe what you need. The provider replies in their inbox; your contact details are shared only if they accept.",
+      "message": "What do you need?",
+      "send": "Send request",
+      "sending": "Sending…",
+      "sent": "Request sent. You get a notification when the provider replies.",
+      "limit": "You can send {count} quote requests a day.",
+      "signIn": "Sign in to request a quote",
+      "own": "This is your provider profile.",
+      "errors": {
+        "default": "Please describe your request (at least 20 characters).",
+        "rateLimited": "You have sent 5 quote requests today. Try again tomorrow."
+      }
+    },
+    "review": {
+      "title": "Reviews",
+      "write": "Write a review",
+      "rating": "Rating",
+      "stars": "{count, plural, one {# star} other {# stars}}",
+      "body": "Your review",
+      "submit": "Publish review",
+      "thanks": "Thank you. Your review is published.",
+      "notEligible": "Reviews come only from members who sent this provider a quote request or attended a session with them.",
+      "already": "You reviewed this provider.",
+      "signIn": "Sign in to write a review",
+      "empty": "No reviews yet.",
+      "errors": {
+        "default": "Please choose a rating and write at least 20 characters.",
+        "noInteraction": "Only members who sent a quote request or attended a session with this provider can review it.",
+        "alreadyReviewed": "You already reviewed this provider.",
+        "owner": "You cannot review your own provider profile."
+      }
+    },
+    "responseLabel": "Response time"
+  },
+  "criteria": {
+    "title": "What “verified provider” means",
+    "lead": "The badge is given only after the EiB team checked every item below. We re-check when something changes.",
+    "registry": {
+      "title": "Registered business",
+      "body": "We look the provider up in the official business register of their country (in Poland: KRS or CEIDG) and match the name and registration number."
+    },
+    "references": {
+      "title": "References",
+      "body": "We contact at least two clients the provider worked with and ask about the service."
+    },
+    "insurance": {
+      "title": "Insurance",
+      "body": "Where the profession requires it (for example tax advisers and lawyers), we check that professional liability insurance is in place."
+    },
+    "notGuarantee": "Verification is a check, not a guarantee. Always agree scope and price in writing before work starts.",
+    "browse": "Browse verified providers"
+  },
+  "businesses": {
+    "title": "Member businesses",
+    "lead": "Businesses run by members of the community.",
+    "category": "Category",
+    "owner": "Run by {name}",
+    "website": "Website",
+    "emptyTitle": "No businesses match",
+    "emptyDescription": "Try another search, or list your own business with the Business plan.",
+    "list": "See the Business plan",
+    "demo": "Demo business"
+  },
+  "providerArea": {
+    "nav": "Provider area",
+    "inbox": "Inbox",
+    "analytics": "Analytics",
+    "inboxTitle": "Quote requests",
+    "inboxLead": "Reply to members who asked for a quote. Contact details appear after you accept.",
+    "empty": "No quote requests yet. Requests from members appear here.",
+    "from": "From {name}",
+    "accept": "Accept",
+    "decline": "Decline",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "open": "Waiting for your reply",
+    "contact": "Contact: {email}",
+    "status": "Verification: {status}",
+    "statuses": {
+      "none": "not requested",
+      "pending": "pending review",
+      "verified": "verified",
+      "rejected": "not approved"
+    },
+    "requestVerification": "Request verification",
+    "verificationRequested": "Verification requested. The team will review your profile.",
+    "analyticsTitle": "Profile analytics",
+    "analyticsLead": "Totals for the last 30 days. Counts only: we never record who viewed your profile.",
+    "views": "Profile views",
+    "quoteRequests": "Quote requests",
+    "acceptRate": "Accepted requests",
+    "week": "Week starting {date}",
+    "table": "Weekly totals",
+    "providers": "Your provider profiles"
+  },
+  "adminProviders": {
+    "title": "Provider verification",
+    "lead": "Check every criterion before approving. The badge appears only after approval.",
+    "queue": "Waiting for review",
+    "empty": "No providers are waiting for review.",
+    "review": "Review",
+    "checklist": "Checklist",
+    "notes": "Internal notes",
+    "approve": "Approve and give the badge",
+    "reject": "Reject",
+    "approved": "Approved. The badge is now shown.",
+    "rejected": "Rejected. The provider was notified.",
+    "incomplete": "Tick every required check before approving.",
+    "history": "Earlier decisions",
+    "manage": "Verify providers"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "bell": "{count, plural, =0 {Notifications} one {Notifications, # unread} other {Notifications, # unread}}",
+    "empty": "No notifications yet.",
+    "markRead": "Mark all as read",
+    "marked": "All caught up.",
+    "types": {
+      "connectionRequest": "{name} wants to connect with you",
+      "connectionAccepted": "{name} accepted your connection request",
+      "quoteRequest": "{name} sent you a quote request",
+      "quoteAccepted": "{provider} accepted your quote request",
+      "quoteDeclined": "{provider} declined your quote request",
+      "verificationApproved": "Your provider profile is now verified",
+      "verificationRejected": "Your verification was not approved. Check the criteria and try again."
+    }
   }
 }

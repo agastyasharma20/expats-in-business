@@ -10,8 +10,31 @@
 | M6 Accounts and profiles   | done                          | feat/m06-auth · v0.6.0                     | 80/80 e2e, crawler green            |
 | M7 Events and ticketing    | done                          | develop · v0.7.0                           | builder, check-in, Pulse, Who I met |
 | M8 Membership and billing  | done; security review fixed   | develop · v0.8.0                           | Lighthouse /pricing 96/100/100/100  |
+| M9 Directory and providers | done                          | develop · v0.9.0                           | 104/104 e2e, crawler 200 pages      |
 
 ## Log
+
+### 2026-11-12 · M9 Directory, connections and verified providers
+
+**Shipped**
+
+- **/members**: search by name or headline plus filters (chapter, industry, language, origin, skill, open to coffee) as a plain GET form, so filters combine, live in the URL, survive reloads and work without JavaScript. Strict parsing (`lib/directory/filters.ts`): malformed values are dropped and wildcards stripped. Privacy: a filter only matches members who show that field (filtering on a hidden field would reveal it); visitors see name, headline and chapter only and cannot filter by private fields even with a crafted URL; the origin list offers only countries with 5+ visible members.
+- **Connections** from profiles: double opt-in with an optional note, 20 requests a day, no new request after a decline; the contact email appears only to the two people after acceptance (profile panel and /connections).
+- **Notifications**: connection requests and acceptances, quote requests and replies, verification decisions; header bell with unread count, /notifications with mark-all-read. Messages are stored as type + values and rendered in the reader's language.
+- **/providers** and provider pages: categories, language and verified filters, ProviderCard with rating, response time and a Verified badge that links to the criteria page; services, languages, reviews. **/businesses** with category filter (8 labelled demo businesses).
+- **Reviews** only for members who sent the provider a quote request or attended a session with its owner; never the owner, once per member; checked again on the server (`lib/directory/eligibility.ts`).
+- **Quote requests** (5 per member per day) → provider inbox (accept or decline; the requester's email appears after accepting) with notification and a link-only email.
+- **Analytics** for providers: views and quote requests from daily counters (`ProviderDailyStat`), weekly table and accept rate; no per-viewer data is ever stored.
+- **Verification**: owners request it; admins work a queue and a checklist built from `config/verification.ts`, the same list the public **/providers/verification-criteria** page shows; approval requires every check, is audited, and is the only way to get the badge.
+- **Database**: GIN indexes on profile languages and skills, B-tree indexes for chapter, industry and coffee filters, and `pg_trgm` trigram indexes on member, provider and business names and headlines (migration `20261112090000_directory`).
+- Shared `Fact` component with valid definition-list markup (axe `definition-list`/`dlitem` fix, also on the event page).
+
+**Verification**: `npm run check` green (173 unit tests); production build; Playwright 104/104 including the new `tests/e2e/directory.spec.ts` (filters combine in the URL, visitor limits and crafted URLs, ineligible member cannot review until a quote request, badge only after approval with all checks, double opt-in with contact after acceptance and notifications, provider inbox and analytics, 403 for non-providers, axe on each page); link crawler green on 200 pages.
+
+**Notes**
+
+- Migration gotcha: Better Auth's user table is mapped to `"user"`; raw SQL must use that name.
+- The lead fee per accepted request (Verified Provider plan) is not recorded yet; it belongs with provider billing in a later milestone.
 
 ### 2026-11-11 · M8 Membership, billing and entitlements
 

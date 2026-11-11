@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LockIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { ConnectPanel } from "@/components/directory/connect-panel";
 import { CopyLinkButton } from "@/components/member/copy-link-button";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -91,6 +92,7 @@ async function ProfileView({ params }: { params: Props["params"] }) {
           </Link>
         ) : null}
       </div>
+      <ConnectPanel slug={slug} profileUserId={row.userId} viewerId={viewer?.id ?? null} />
     </article>
   );
 }

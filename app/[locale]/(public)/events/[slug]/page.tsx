@@ -13,6 +13,7 @@ import {
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { ExternalLink } from "@/components/common/external-link";
+import { Fact } from "@/components/common/fact";
 import { EventJsonLd } from "@/components/events/event-json-ld";
 import { RsvpPanel } from "@/components/events/rsvp-panel";
 import { Badge } from "@/components/ui/badge";
@@ -32,26 +33,6 @@ export const instant = false;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const event = await getEventBySlug((await params).slug);
   return event ? { title: event.title, description: event.summary } : {};
-}
-
-function Fact({
-  icon: Icon,
-  label,
-  children,
-}: {
-  icon: typeof MapPinIcon;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex gap-3">
-      <Icon aria-hidden="true" className="mt-1 size-5 shrink-0 text-brand-700" />
-      <div className="flex flex-col">
-        <dt className="eyebrow text-muted-foreground">{label}</dt>
-        <dd className="text-ink">{children}</dd>
-      </div>
-    </div>
-  );
 }
 
 async function EventView({ params, searchParams }: Props) {

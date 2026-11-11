@@ -170,6 +170,7 @@ model User {
   scans               CheckIn[]              @relation("CheckInScanner")
   connectionsSent     Connection[]           @relation("ConnectionRequester")
   connectionsReceived Connection[]           @relation("ConnectionAddressee")
+  notifications       Notification[]
   bubbles             BubbleMember[]
   posts               Post[]
   reactions           PostReaction[]
@@ -386,6 +387,10 @@ model Profile {
 
   @@unique([homeChapterId, foundingNumber])
   @@index([originCountryCode])
+  @@index([homeChapterId, industryId])
+  @@index([openToCoffee])
+  @@index([languages], type: Gin)
+  @@index([skills], type: Gin)
 }
 
 model ProfileGoal {
@@ -631,6 +636,8 @@ model Connection {
   status       ConnectionStatus @default(pending)
   metAtEventId String?
   metAtEvent   Event?           @relation(fields: [metAtEventId], references: [id])
+  /// Optional note with the request (max 300 characters).
+  message      String?
   isDemo       Boolean          @default(false)
   createdAt    DateTime         @default(now())
   respondedAt  DateTime?
@@ -778,6 +785,7 @@ model Provider {
   verifications      ProviderVerification[]
   quoteRequests      QuoteRequest[]
   reviews            Review[]
+  dailyStats         ProviderDailyStat[]
 
   @@index([chapterId, categoryId])
   @@index([ownerId])
@@ -1000,4 +1008,30 @@ model StripeEvent {
   id          String   @id
   type        String
   processedAt DateTime @default(now())
+}
+
+/// In-app notifications (connection requests, quotes, verification decisions). No email content stored.
+model Notification {
+  id        String    @id @default(cuid(2))
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  /// Message key and values; rendered in the reader's language.
+  data      Json
+  href      String
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt, createdAt])
+}
+
+/// Aggregated provider analytics per day: counters only, never who viewed or asked.
+model ProviderDailyStat {
+  providerId    String
+  provider      Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  day           DateTime @db.Date
+  views         Int      @default(0)
+  quoteRequests Int      @default(0)
+
+  @@id([providerId, day])
 }

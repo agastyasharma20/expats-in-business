@@ -24,8 +24,8 @@ export type ExternalNavItem = {
 
 export const mainNav = [
   { id: "events", href: "/events", labelKey: "nav.events", status: "live" },
-  { id: "members", href: "/members", labelKey: "nav.members", status: "comingSoon" },
-  { id: "providers", href: "/providers", labelKey: "nav.providers", status: "comingSoon" },
+  { id: "members", href: "/members", labelKey: "nav.members", status: "live" },
+  { id: "providers", href: "/providers", labelKey: "nav.providers", status: "live" },
   { id: "guides", href: "/guides", labelKey: "nav.guides", status: "comingSoon" },
   { id: "pricing", href: "/pricing", labelKey: "nav.pricing", status: "live" },
 ] as const satisfies readonly NavItem[];
@@ -34,6 +34,11 @@ export const accountNav = {
   signIn: { id: "signIn", href: "/sign-in", labelKey: "nav.signIn", status: "live" },
   help: { id: "help", href: "/help", labelKey: "nav.help", status: "live" },
 } as const satisfies Record<string, NavItem>;
+
+/** Directory pages linked from the footer (the header keeps the five main sections). */
+export const directoryNav = [
+  { id: "businesses", href: "/businesses", labelKey: "nav.businesses", status: "live" },
+] as const satisfies readonly NavItem[];
 
 export const legalNav = [
   { id: "privacy", href: "/legal/privacy", labelKey: "nav.privacy", status: "live" },
@@ -53,7 +58,7 @@ export const footerColumns = [
   {
     id: "platform",
     headingKey: "footer.platform",
-    items: [...mainNav, accountNav.signIn, accountNav.help],
+    items: [...mainNav, ...directoryNav, accountNav.signIn, accountNav.help],
   },
   { id: "legal", headingKey: "footer.legal", items: legalNav },
 ] as const;

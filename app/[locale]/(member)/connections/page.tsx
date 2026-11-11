@@ -17,6 +17,7 @@ async function PendingRequests({ userId }: { userId: string }) {
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
+        message: true,
         requester: { select: { name: true } },
         metAtEvent: { select: { title: true } },
       },
@@ -36,6 +37,7 @@ async function PendingRequests({ userId }: { userId: string }) {
           <li key={request.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
             <div className="flex flex-col">
               <span className="font-semibold text-brand-950">{request.requester.name}</span>
+              {request.message ? <p className="text-small text-ink">“{request.message}”</p> : null}
               {request.metAtEvent ? (
                 <span className="text-small text-muted-foreground">
                   {t("metAt", { event: request.metAtEvent.title })}
@@ -89,7 +91,11 @@ export default async function ConnectionsPage() {
           id: row.id,
           title: row.person.name,
           href: row.person.profile ? `/members/${row.person.profile.slug}` : undefined,
-          meta: [row.person.profile?.headline, row.metAt ? t("metAt", { event: row.metAt }) : null]
+          meta: [
+            row.person.profile?.headline,
+            row.metAt ? t("metAt", { event: row.metAt }) : null,
+            row.person.email,
+          ]
             .filter(Boolean)
             .join(" · "),
         }))}

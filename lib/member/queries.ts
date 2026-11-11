@@ -64,8 +64,12 @@ export async function getMyConnections(userId: string) {
       id: true,
       metAtEvent: { select: { title: true } },
       requesterId: true,
-      requester: { select: { name: true, profile: { select: { slug: true, headline: true } } } },
-      addressee: { select: { name: true, profile: { select: { slug: true, headline: true } } } },
+      requester: {
+        select: { name: true, email: true, profile: { select: { slug: true, headline: true } } },
+      },
+      addressee: {
+        select: { name: true, email: true, profile: { select: { slug: true, headline: true } } },
+      },
     },
   });
   return rows.map((row) => ({

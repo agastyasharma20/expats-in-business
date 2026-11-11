@@ -104,17 +104,32 @@ export async function seedCommunity(ctx: SeedContext, people: DemoPeople, events
         notes: "Demo verification",
       })),
   });
-  await db.business.create({
-    data: {
-      id: createId(),
-      slug: "karim-demo-digital-studio",
-      ownerId: byKey.karim!,
-      chapterId: chapters.live.id,
-      categoryId: null,
-      name: "Karim Demo Digital Studio",
-      description: "Demo business: one-person digital agency (fictional).",
-      isDemo: true,
-    },
+  // Member businesses (fictional, labelled): Karim's studio plus a spread across categories.
+  const businessIdeas = [
+    ["Digital Studio", null],
+    ["Translation Collective", "language"],
+    ["Relocation Concierge", "relocation"],
+    ["Flat Finder", "housing"],
+    ["Startup Bookkeeping", "tax-accounting"],
+    ["Visa Paperwork Help", "legal"],
+    ["Expat Insurance Desk", "insurance"],
+    ["Polish Lessons Online", "language"],
+  ] as const;
+  await db.business.createMany({
+    data: businessIdeas.map(([idea, category], i) => {
+      const ownerId = i === 0 ? byKey.karim! : userIds[30 + i]!;
+      const name = i === 0 ? "Karim Demo Digital Studio" : `Demo business: ${idea}`;
+      return {
+        id: createId(),
+        slug: i === 0 ? "karim-demo-digital-studio" : `${slugify(name)}-${i}`,
+        ownerId,
+        chapterId: chapters.live.id,
+        categoryId: category ? (categories.find((c) => c.slug === category)?.id ?? null) : null,
+        name,
+        description: "Demo business: fictional listing created for the platform demo.",
+        isDemo: true,
+      };
+    }),
   });
 
   const quotes = providers.slice(0, 10).map((p, i) => ({

@@ -2,11 +2,14 @@ import { CalendarDaysIcon, MapPinIcon, UsersIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { buttonVariants } from "@/components/ui/button";
+import { isAdmin } from "@/lib/auth/permissions";
+import { requirePermission } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
 
 export default async function AdminPage() {
-  const t = await getTranslations("admin");
+  const user = await requirePermission("admin.access");
+  const [t, p] = await Promise.all([getTranslations("admin"), getTranslations("adminProviders")]);
   const db = getDb();
   const [members, events, chapters] = await Promise.all([
     db.user.count(),
@@ -26,6 +29,14 @@ export default async function AdminPage() {
         <Link href="/admin/events" className={buttonVariants({ className: "self-start" })}>
           {t("manageEvents")}
         </Link>
+        {isAdmin(user) ? (
+          <Link
+            href="/admin/providers"
+            className={buttonVariants({ variant: "outline", className: "self-start" })}
+          >
+            {p("manage")}
+          </Link>
+        ) : null}
       </header>
       <dl className="grid gap-4 sm:grid-cols-3">
         {cards.map((card) => (

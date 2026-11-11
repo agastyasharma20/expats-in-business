@@ -15,14 +15,21 @@ import {
 import { authClient } from "@/lib/auth/client";
 import { Link, useRouter } from "@/lib/i18n/navigation";
 
-type UserMenuProps = { name: string; profileSlug: string | null; showAdmin: boolean };
+type UserMenuProps = {
+  name: string;
+  profileSlug: string | null;
+  showAdmin: boolean;
+  showProvider: boolean;
+};
 
 /** Signed-in account menu: every item navigates or acts. */
-export function UserMenu({ name, profileSlug, showAdmin }: UserMenuProps) {
+export function UserMenu({ name, profileSlug, showAdmin, showProvider }: UserMenuProps) {
   const t = useTranslations("nav");
   const items = [
     { href: "/dashboard", label: t("dashboard") },
     ...(profileSlug ? [{ href: `/members/${profileSlug}`, label: t("myProfile") }] : []),
+    { href: "/connections", label: t("connections") },
+    ...(showProvider ? [{ href: "/provider/inbox", label: t("providerArea") }] : []),
     { href: "/settings/profile", label: t("settings") },
     ...(showAdmin ? [{ href: "/admin", label: t("admin") }] : []),
   ];

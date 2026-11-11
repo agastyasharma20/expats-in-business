@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { firstName, notify } from "@/lib/notifications";
 import { rateLimit } from "@/lib/rate-limit";
 
 import type { ActionState } from "./account";
@@ -70,6 +71,16 @@ export async function respondConnection(_prev: ActionState, form: FormData): Pro
     data: { status: accept ? "accepted" : "declined", respondedAt: new Date() },
   });
   if (!count) return { ok: false };
+  if (accept) {
+    const connection = await getDb().connection.findUnique({
+      where: { id: String(form.get("id")) },
+      select: { requesterId: true },
+    });
+    if (connection)
+      await notify(connection.requesterId, "connectionAccepted", "/connections", {
+        name: firstName(user.name),
+      });
+  }
   revalidatePath("/connections");
   revalidatePath("/dashboard");
   return { ok: true, message: accept ? "accepted" : "declined" };

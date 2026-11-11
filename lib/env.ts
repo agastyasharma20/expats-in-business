@@ -54,7 +54,12 @@ export const envSchema = z.object({
   OPENROUTER_API_KEY: optional(z.string()),
   OPENROUTER_MODEL: optional(z.string()),
   ANTHROPIC_API_KEY: optional(z.string()),
+  ANTHROPIC_MODEL: optional(z.string()),
   AI_DAILY_FREE_QUOTA: z.coerce.number().int().nonnegative().default(10),
+  /** Cosine similarity a guide passage needs before the concierge may answer from it. */
+  AI_SIMILARITY_THRESHOLD: z.coerce.number().min(0).max(1).default(0.4),
+  /** Where the local embedding model is cached (downloaded once, then works offline). */
+  MODEL_CACHE_DIR: z.string().default(".cache/models"),
 
   // Stripe: test mode only
   STRIPE_SECRET_KEY: optional(

@@ -51,3 +51,6 @@ desktop.ini
 .idea/
 *.log
 npm-debug.log*
+
+# Local model cache (embeddings)
+.cache/

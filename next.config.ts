@@ -14,6 +14,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Local embeddings run on onnxruntime-node (native): load from node_modules, never bundle.
+  serverExternalPackages: ["@huggingface/transformers", "onnxruntime-node"],
   cacheComponents: true,
   // 404 for URLs outside any locale (app/global-not-found.tsx); [locale] stays the root layout so
   // next/root-params can provide the locale.

@@ -316,7 +316,8 @@
     "businesses": "Businesses",
     "notifications": "Notifications",
     "providerArea": "Provider area",
-    "connections": "Connections"
+    "connections": "Connections",
+    "concierge": "Concierge"
   },
   "chapter": {
     "label": "Chapter",
@@ -1097,6 +1098,73 @@
       "quoteDeclined": "{provider} declined your quote request",
       "verificationApproved": "Your provider profile is now verified",
       "verificationRejected": "Your verification was not approved. Check the criteria and try again."
+    }
+  },
+  "guides": {
+    "title": "Guides",
+    "lead": "Step-by-step guides for living and working in Poland. Every statement links to an official source.",
+    "lastVerified": "Last verified {date}",
+    "sources": "Official sources",
+    "sourcesLead": "This guide is based only on these pages. Rules change: check them before you act.",
+    "disclaimer": "General information, not legal advice.",
+    "related": "Related guides",
+    "ask": "Ask the concierge",
+    "askLead": "Have a question this guide does not answer? The concierge answers from these guides and cites them.",
+    "draft": "Draft: this guide is being checked and is not used by the concierge yet.",
+    "back": "All guides",
+    "read": "Read the guide",
+    "emptyTitle": "No guides yet",
+    "emptyDescription": "Guides for this country are being written.",
+    "count": "{count, plural, one {# official source} other {# official sources}}"
+  },
+  "concierge": {
+    "title": "Expat Concierge",
+    "lead": "Ask about PESEL, residence, banking, health insurance, ZUS or e-invoicing. Answers come only from our guides and always cite them.",
+    "label": "General information, not legal advice",
+    "placeholder": "Ask a question, for example: How do I get a PESEL number?",
+    "question": "Your question",
+    "ask": "Ask",
+    "asking": "Looking it up…",
+    "stop": "Stop",
+    "suggested": "Suggested questions",
+    "suggestions": {
+      "pesel": "How do I get a PESEL number?",
+      "trustedProfile": "Do I need a trusted profile to apply for residence?",
+      "ksef": "When is KSeF e-invoicing mandatory?",
+      "bank": "How do I open a bank account in Poland?",
+      "freeHelp": "Where can foreigners get free help in Kraków?"
+    },
+    "sources": "Sources",
+    "sourceChip": "{title}, last verified {date}",
+    "readGuide": "Open guide",
+    "official": "Official page",
+    "you": "You",
+    "assistant": "Concierge",
+    "remaining": "{count, plural, =0 {No free questions left today} one {# free question left today} other {# free questions left today}}",
+    "unlimited": "Unlimited questions with Member Plus",
+    "privacy": "Do not type personal details. Emails, phone numbers and ID numbers are removed before your question is processed.",
+    "signInTitle": "Sign in to ask the concierge",
+    "signInLead": "The concierge is free for members: 10 questions a day.",
+    "signIn": "Sign in",
+    "handoff": {
+      "title": "We could not answer this from our guides",
+      "lowSimilarity": "None of our guides covers this question closely enough to answer it safely.",
+      "noAnswer": "Our guides do not answer this clearly, so we will not guess.",
+      "noCitation": "The answer could not be linked to a guide, so we did not show it.",
+      "unknownCitation": "The answer referred to a source we did not provide, so we did not show it.",
+      "error": "The concierge is not available right now.",
+      "provider": "Ask a verified provider",
+      "providerLead": "Legal, tax and relocation experts checked by the EiB team.",
+      "freeHelp": "Free help: Information Point for Foreigners",
+      "freeHelpLead": "Free advice in several languages at the Multicultural Centre.",
+      "guides": "Browse the guides"
+    },
+    "errors": {
+      "rateLimited": "One moment: too many questions in a row. Try again in a minute.",
+      "quota": "You have used today's {limit} free questions. They reset tomorrow, or upgrade for unlimited questions.",
+      "invalid": "Please type a question of at least a few words.",
+      "network": "Connection lost. Check your connection and try again.",
+      "signIn": "Please sign in again."
     }
   }
 }

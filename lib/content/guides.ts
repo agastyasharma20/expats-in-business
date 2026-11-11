@@ -50,6 +50,10 @@ export const guideFrontmatterSchema = z.object({
     )
     .min(1),
   disclaimer: z.string().default(GUIDE_DISCLAIMER),
+  /** Only verified guides are embedded for the concierge; drafts render with a banner but are never cited. */
+  verificationStatus: z.enum(["verified", "draft"]).default("verified"),
+  /** Slugs of related guides shown at the end of the page. */
+  related: z.array(z.string().regex(/^[a-z0-9-]+$/)).default([]),
   /** Set for city-specific guides (chapter slug); omitted = applies to the whole country. */
   chapter: z
     .string()

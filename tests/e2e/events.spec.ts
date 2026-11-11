@@ -15,7 +15,12 @@ const storage = authFile("karim");
 /** First upcoming card matching a price kind with places left, opened. */
 async function openEvent(page: Page, kind: "free" | "paid") {
   await page.goto("/events");
-  const cards = page.getByTestId("event-list").getByRole("listitem").filter({ hasNotText: "Full" });
+  // Skip full sessions and those created by other specs running in parallel ("E2E …").
+  const cards = page
+    .getByTestId("event-list")
+    .getByRole("listitem")
+    .filter({ hasNotText: "Full" })
+    .filter({ hasNotText: /E2E / });
   const card =
     kind === "free"
       ? cards.filter({ hasText: "Free" }).first()

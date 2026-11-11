@@ -23,7 +23,7 @@ export type ExternalNavItem = {
 };
 
 export const mainNav = [
-  { id: "events", href: "/events", labelKey: "nav.events", status: "comingSoon" },
+  { id: "events", href: "/events", labelKey: "nav.events", status: "live" },
   { id: "members", href: "/members", labelKey: "nav.members", status: "comingSoon" },
   { id: "providers", href: "/providers", labelKey: "nav.providers", status: "comingSoon" },
   { id: "guides", href: "/guides", labelKey: "nav.guides", status: "comingSoon" },

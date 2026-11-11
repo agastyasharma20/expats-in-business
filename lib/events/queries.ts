@@ -73,7 +73,7 @@ export async function listEvents(filters: EventFilters, take = 24): Promise<Home
 export function listFormats() {
   return getDb().eventFormat.findMany({
     orderBy: { sortOrder: "asc" },
-    select: { slug: true, name: true, description: true },
+    select: { slug: true, name: true, description: true, defaultDurationMin: true },
   });
 }
 

@@ -1,9 +1,10 @@
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/lib/i18n/navigation";
 
-import { Skyline } from "./skyline";
+import { HeroArt } from "./hero-art";
 
 /** 60ms stagger for the CSS entrances. */
 const delay = (index: number) => ({ animationDelay: `${index * 60}ms` });
@@ -17,7 +18,7 @@ export async function Hero() {
 
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden bg-surface">
-      <div className="container-page relative z-10 flex flex-col items-start gap-6 pt-14 pb-40 md:pt-20 md:pb-56">
+      <div className="container-page relative z-10 flex flex-col items-start gap-6 pt-14 pb-44 md:pt-20 md:pb-60 lg:pb-72">
         <p className="eyebrow animate-rise text-brand-700" style={delay(0)}>
           {t("eyebrow")}
         </p>
@@ -43,7 +44,10 @@ export async function Hero() {
           </Link>
         </div>
       </div>
-      <Skyline className="pointer-events-none absolute inset-x-0 bottom-0 text-brand-500/70" />
+      {/* Country panorama for the visitor's chapter; streams in and draws itself (no layout shift: absolutely positioned). */}
+      <Suspense>
+        <HeroArt className="pointer-events-none absolute inset-x-0 bottom-0 text-brand-500/70" />
+      </Suspense>
     </section>
   );
 }

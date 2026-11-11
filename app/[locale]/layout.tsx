@@ -15,7 +15,18 @@ import { routing } from "@/lib/i18n/routing";
 import "../globals.css";
 
 /** Only these namespaces are used by client components; the rest stay on the server (smaller JS). */
-const CLIENT_NAMESPACES = ["common", "nav", "chapter", "language", "errors"] as const;
+const CLIENT_NAMESPACES = [
+  "common",
+  "nav",
+  "chapter",
+  "language",
+  "errors",
+  "auth",
+  "onboarding",
+  "settings",
+  "profile",
+  "help",
+] as const;
 
 function pickClientMessages(messages: Record<string, unknown>) {
   return Object.fromEntries(CLIENT_NAMESPACES.map((key) => [key, messages[key]]));

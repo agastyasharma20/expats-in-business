@@ -90,3 +90,11 @@ test("health endpoint reports status and database @smoke", async ({ request }) =
   expect(typeof body.db).toBe("boolean");
   if (expectDb) expect(body.db).toBe(true);
 });
+
+test("hero shows the panorama of the visitor's country (Poland for the seeded chapters)", async ({
+  page,
+}) => {
+  test.skip(process.env.E2E_EXPECT_DB !== "true", "needs the seeded database");
+  await page.goto("/");
+  await expect(page.locator('[data-hero-art="PL"]')).toBeAttached();
+});

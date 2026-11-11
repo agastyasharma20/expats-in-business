@@ -186,8 +186,23 @@ model User {
   auditEntries        AuditLog[]
   eventsCreated       Event[]
   verificationsDone   ProviderVerification[]
+  userEmails          UserEmail[]
 
   @@map("user")
+}
+
+/// Secondary email addresses; verified by a single-use link (token stored hashed).
+model UserEmail {
+  id             String    @id @default(cuid(2))
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email          String    @unique
+  tokenHash      String?   @unique
+  tokenExpiresAt DateTime?
+  verifiedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@index([userId])
 }
 
 model Session {

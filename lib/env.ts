@@ -39,6 +39,10 @@ export const envSchema = z.object({
   // Email
   SMTP_HOST: z.string().default("localhost"),
   SMTP_PORT: z.coerce.number().int().positive().default(1025),
+  ADMIN_INBOX_EMAIL: z.preprocess(
+    (x) => (x === "" ? undefined : x),
+    z.email().default("admin@demo.eib.local"),
+  ),
   EMAIL_FROM: z.string().min(3).default("Expats in Business <no-reply@demo.eib.local>"),
 
   // AI

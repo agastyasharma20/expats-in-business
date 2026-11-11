@@ -202,7 +202,8 @@
       "outlineButtonBorder": "Outline button border",
       "dashedBorderOnCanvas": "Empty state border on the page",
       "focusRingOnDark": "Focus ring on Deep Teal (footer)",
-      "darkControlBorder": "Button border on Deep Teal (footer)"
+      "darkControlBorder": "Button border on Deep Teal (footer)",
+      "pulseProgressBar": "Pulse progress bar on Deep Teal"
     },
     "type": {
       "display": "Display: the business network for internationals",
@@ -796,5 +797,110 @@
     "accepted": "Connected.",
     "declined": "Request declined.",
     "metAt": "Met at {event}"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "lead": "The community is free. Paid plans add tools for members, businesses and service providers.",
+    "banner": "Test mode · proposed prices, not yet approved · prices net of VAT. No real payments are taken.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "yearlySave": "2 months free",
+    "billing": "Billing period",
+    "perMonth": "/ month",
+    "perYear": "/ year",
+    "free": "Free",
+    "from": "From {price} / year",
+    "perLead": "+ {fee} per accepted lead",
+    "current": "Your plan",
+    "join": "Join free",
+    "choose": "Choose {plan}",
+    "contact": "Talk to us",
+    "processing": "One moment…",
+    "popular": "Most popular",
+    "tiers": {
+      "community": "For everyone who wants to meet people and find their way.",
+      "plus": "For members who want more from the community.",
+      "business": "For founders and freelancers who want to be found.",
+      "provider": "For verified service providers who help internationals.",
+      "corporate": "For companies onboarding international staff."
+    },
+    "features": {
+      "profile": "Member profile",
+      "events": "Free sessions and RSVPs",
+      "directory": "Member directory",
+      "guides": "Guides with official sources",
+      "bubbles": "Cultural Bubbles",
+      "roadmap": "Landing Roadmap",
+      "concierge-10-per-day": "AI concierge, 10 questions a day",
+      "concierge-unlimited": "Unlimited AI concierge",
+      "coffee-roulette-priority": "Coffee Roulette priority",
+      "early-event-access": "Early access to sessions",
+      "workshop-discounts": "Workshop discounts",
+      "deadline-reminders": "Deadline reminders",
+      "business-listing": "Business listing in the directory",
+      "lead-inbox": "Lead inbox",
+      "featured-in-bubble": "Featured in your Cultural Bubble",
+      "workshop-seats-2": "2 workshop seats a year",
+      "verified-badge": "Verified provider badge",
+      "quote-requests": "Quote requests from members",
+      "analytics": "Profile analytics",
+      "plus-seats-25": "Up to 25 Member Plus seats",
+      "branded-onboarding-2": "2 branded onboarding sessions",
+      "aggregate-report": "Aggregate engagement report"
+    },
+    "faqTitle": "Questions about plans",
+    "faq": {
+      "vat": {
+        "q": "Are prices with VAT?",
+        "a": "Prices are shown net of VAT. VAT is added at checkout where it applies."
+      },
+      "cancel": {
+        "q": "Can I cancel?",
+        "a": "Yes, any time in Settings, Billing. You keep the plan until the end of the period you paid for."
+      },
+      "methods": {
+        "q": "How can I pay?",
+        "a": "By card, and in Poland also with BLIK or Przelewy24."
+      }
+    },
+    "errors": {
+      "default": "That did not work. Please try again.",
+      "unavailable": "Payments are not available right now. Please try again later."
+    }
+  },
+  "corporate": {
+    "title": "EiB for companies",
+    "lead": "Help your international team settle in and connect: Member Plus seats, branded onboarding sessions and an aggregate report. Tell us about your company and we reply within a few working days.",
+    "company": "Company",
+    "name": "Your name",
+    "email": "Work email",
+    "size": "International employees",
+    "sizes": {
+      "s": "1–10",
+      "m": "11–50",
+      "l": "51–250",
+      "xl": "More than 250"
+    },
+    "message": "What do you need?",
+    "send": "Send enquiry",
+    "sending": "Sending…",
+    "sent": "Thank you. We received your enquiry and reply within a few working days.",
+    "error": "Please fill in all fields (message at least 10 characters).",
+    "rateLimited": "You have sent several enquiries already. Try again later."
+  },
+  "billing": {
+    "current": "Current plan: {plan}",
+    "community": "You are on the free Community plan.",
+    "renews": "Renews on {date}.",
+    "ends": "Ends on {date}. You keep the plan until then.",
+    "simulated": "Test mode: subscription simulated because Stripe test keys are not configured.",
+    "success": "Thank you. Your plan is active.",
+    "manage": "Manage billing",
+    "cancel": "Cancel at period end",
+    "resume": "Keep my plan",
+    "cancelled": "Your plan ends at the end of this period.",
+    "resumed": "Your plan continues.",
+    "seePlans": "See plans",
+    "change": "Change plan"
   }
 }

@@ -1,5 +1,6 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
+import { syncSubscription } from "@/lib/billing/sync";
 import { getDb } from "@/lib/db";
 import { getEnv } from "@/lib/env";
 import { promoteWaitlist, sendTicketEmail } from "@/lib/events/tickets";
@@ -43,6 +44,15 @@ export async function POST(request: Request) {
       });
       if (count) await sendTicketEmail(ticketId, "confirmed");
     }
+    if (session.mode === "subscription" && typeof session.subscription === "string") {
+      await syncSubscription(await stripe.subscriptions.retrieve(session.subscription));
+    }
+  } else if (
+    event.type === "customer.subscription.created" ||
+    event.type === "customer.subscription.updated" ||
+    event.type === "customer.subscription.deleted"
+  ) {
+    await syncSubscription(event.data.object);
   } else if (
     event.type === "checkout.session.expired" ||
     event.type === "checkout.session.async_payment_failed"
@@ -61,5 +71,6 @@ export async function POST(request: Request) {
     }
   }
   revalidateTag("events", "max");
+  revalidatePath("/", "layout");
   return Response.json({ received: true });
 }

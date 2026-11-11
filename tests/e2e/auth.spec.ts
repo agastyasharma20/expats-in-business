@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type APIRequestContext, type Browser } from "@playwright/test";
+import { authFile } from "./global-setup";
+import { expect, test, type APIRequestContext } from "@playwright/test";
 
 /**
  * M6 acceptance: sign-in, onboarding-gated dashboard, settings persistence, email verification,
@@ -8,13 +9,12 @@ import { expect, test, type APIRequestContext, type Browser } from "@playwright/
  */
 const MAILPIT = process.env.MAILPIT_URL ?? "http://localhost:8025";
 const MEMBER = "priya@demo.eib.local";
-const PASSWORD = "Demo!2026";
 
 test.skip(process.env.E2E_EXPECT_DB !== "true", "needs the seeded database and Mailpit");
 test.describe.configure({ mode: "serial" });
 test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop", "desktop only"));
 
-let storage: Awaited<ReturnType<Awaited<ReturnType<Browser["newContext"]>>["storageState"]>>;
+const storage = authFile("priya");
 
 async function latestLink(request: APIRequestContext, to: string, pattern: RegExp, after: number) {
   for (let i = 0; i < 40; i += 1) {
@@ -31,16 +31,6 @@ async function latestLink(request: APIRequestContext, to: string, pattern: RegEx
   }
   throw new Error(`no email for ${to}`);
 }
-
-test.beforeAll(async ({ browser }) => {
-  const context = await browser.newContext();
-  const res = await context.request.post("/api/auth/sign-in/email", {
-    data: { email: MEMBER, password: PASSWORD },
-  });
-  expect(res.ok()).toBeTruthy();
-  storage = await context.storageState();
-  await context.close();
-});
 
 test("signed-out visitors are sent to sign-in, and the page passes axe", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });

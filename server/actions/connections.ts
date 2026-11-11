@@ -18,7 +18,7 @@ export async function setWhoIMet(_prev: ActionState, form: FormData): Promise<Ac
     update: { granted },
     create: { userId: user.id, type: "who_i_met", granted },
   });
-  revalidatePath("/events", "layout");
+  revalidatePath("/met/[slug]", "page");
   return { ok: true };
 }
 
@@ -57,7 +57,7 @@ export async function requestConnection(_prev: ActionState, form: FormData): Pro
       data: { requesterId: user.id, addresseeId, metAtEventId: eventId, status: "pending" },
     });
   }
-  revalidatePath("/events", "layout");
+  revalidatePath("/met/[slug]", "page");
   return { ok: true };
 }
 

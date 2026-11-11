@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type Browser, type Page } from "@playwright/test";
+import { authFile } from "./global-setup";
+import { expect, test, type Page } from "@playwright/test";
 
 /**
  * M7 part 1 acceptance: list and filters, event page facts, .ics, RSVP → QR ticket → cancel,
@@ -9,18 +10,7 @@ test.skip(process.env.E2E_EXPECT_DB !== "true", "needs the seeded database");
 test.describe.configure({ mode: "serial" });
 test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop", "desktop only"));
 
-const MEMBER = "karim@demo.eib.local";
-let storage: Awaited<ReturnType<Awaited<ReturnType<Browser["newContext"]>>["storageState"]>>;
-
-test.beforeAll(async ({ browser }) => {
-  const context = await browser.newContext();
-  const res = await context.request.post("/api/auth/sign-in/email", {
-    data: { email: MEMBER, password: "Demo!2026" },
-  });
-  expect(res.ok()).toBeTruthy();
-  storage = await context.storageState();
-  await context.close();
-});
+const storage = authFile("karim");
 
 /** First upcoming card matching a price kind with places left, opened. */
 async function openEvent(page: Page, kind: "free" | "paid") {
@@ -94,8 +84,26 @@ test("a member reserves a free place, gets a QR ticket and can cancel", async ({
 
 test("a paid ticket goes through (simulated) payment and is confirmed", async ({ browser }) => {
   const page = await (await browser.newContext({ storageState: storage })).newPage();
-  await openEvent(page, "paid");
-  await page.getByRole("button", { name: /Buy ticket/ }).click();
+  // Pick a paid session this persona has no ticket for yet (the demo seed gives some tickets).
+  await page.goto("/events");
+  const paid = page
+    .getByTestId("event-list")
+    .getByRole("listitem")
+    .filter({ hasNotText: "Full" })
+    .filter({ hasNotText: "Free" });
+  await expect(paid.first()).toBeVisible(); // the list streams in under Suspense
+  const hrefs = await paid
+    .getByRole("link")
+    .evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+  const buy = page.getByRole("button", { name: /Buy ticket/ });
+  for (const href of hrefs) {
+    await page.goto(href!);
+    await expect(
+      page.getByTestId("rsvp-form").or(page.getByTestId("rsvp-status")).first(),
+    ).toBeVisible();
+    if (await buy.isVisible()) break;
+  }
+  await buy.click();
   await expect(page).toHaveURL(/\/tickets\/.+payment=(simulated|success)|checkout\.stripe\.com/);
   if (page.url().includes("payment=simulated")) {
     await expect(page.getByText(/Test mode: payment simulated/)).toBeVisible();

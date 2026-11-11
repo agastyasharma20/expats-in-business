@@ -1,3 +1,4 @@
+import { ENTITLED_STATUSES } from "@/lib/billing/rules";
 import { headers } from "next/headers";
 import { forbidden, redirect } from "next/navigation";
 import { cache } from "react";
@@ -22,7 +23,7 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
       image: true,
       roles: { select: { role: true, chapterId: true } },
       subscriptions: {
-        where: { status: { in: ["active", "trialing"] } },
+        where: { status: { in: [...ENTITLED_STATUSES] } },
         select: { plan: { select: { tier: true } } },
       },
       _count: { select: { providers: true } },

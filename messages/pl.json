@@ -1004,7 +1004,8 @@
         "alreadyReviewed": "You already reviewed this provider.",
         "owner": "You cannot review your own provider profile."
       }
-    }
+    },
+    "responseLabel": "Response time"
   },
   "criteria": {
     "title": "What “verified provider” means",

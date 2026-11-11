@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeftIcon, ClockIcon, LanguagesIcon, MapPinIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { Fact } from "@/components/common/fact";
 import { QuotePanel, ReviewPanel } from "@/components/directory/provider-actions";
 import { Rating, VerifiedBadge } from "@/components/directory/provider-card";
 import { Badge } from "@/components/ui/badge";
@@ -59,28 +60,16 @@ async function ProviderView({ params }: { params: Props["params"] }) {
           <p className="max-w-prose text-lg text-ink">{provider.description}</p>
         </header>
         <dl className="grid gap-5 sm:grid-cols-3">
-          <div className="flex gap-3">
-            <LanguagesIcon aria-hidden="true" className="mt-1 size-5 text-brand-700" />
-            <div>
-              <dt className="eyebrow text-muted-foreground">{t("languages")}</dt>
-              <dd>{provider.languages.map((l) => languages.of(l)).join(", ")}</dd>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <MapPinIcon aria-hidden="true" className="mt-1 size-5 text-brand-700" />
-            <div>
-              <dt className="eyebrow text-muted-foreground">{t("chapter")}</dt>
-              <dd>{provider.chapter.name}</dd>
-            </div>
-          </div>
+          <Fact icon={LanguagesIcon} label={t("languages")}>
+            {provider.languages.map((l) => languages.of(l)).join(", ")}
+          </Fact>
+          <Fact icon={MapPinIcon} label={t("chapter")}>
+            {provider.chapter.name}
+          </Fact>
           {provider.responseTimeHours ? (
-            <div className="flex gap-3">
-              <ClockIcon aria-hidden="true" className="mt-1 size-5 text-brand-700" />
-              <div>
-                <dt className="sr-only">{t("responseTime", { hours: "" })}</dt>
-                <dd>{t("responseTime", { hours: provider.responseTimeHours })}</dd>
-              </div>
-            </div>
+            <Fact icon={ClockIcon} label={t("responseLabel")}>
+              {t("responseTime", { hours: provider.responseTimeHours })}
+            </Fact>
           ) : null}
         </dl>
         <section aria-labelledby="services-title" className="flex flex-col gap-3">

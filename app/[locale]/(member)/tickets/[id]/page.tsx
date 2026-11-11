@@ -156,6 +156,11 @@ async function TicketView({ params, searchParams }: Props) {
             <input type="hidden" name="ticketId" value={ticket.id} />
           </ActionForm>
         ) : null}
+        {ticket.checkIn ? (
+          <Link href={`/met/${ticket.event.slug}`} className={buttonVariants()}>
+            {t("whoIMet")}
+          </Link>
+        ) : null}
         <Link
           href={`/events/${ticket.event.slug}`}
           className={buttonVariants({ variant: "outline" })}

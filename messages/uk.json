@@ -619,7 +619,8 @@
     "lead": "Command centre. Tools arrive in a later milestone.",
     "members": "Members",
     "events": "Events",
-    "chapters": "Chapters"
+    "chapters": "Chapters",
+    "manageEvents": "Manage events"
   },
   "events": {
     "title": "Sessions",
@@ -696,6 +697,104 @@
     "cancelled": "Cancelled. Your place went to the next person in line.",
     "cancelledPaid": "Cancelled. The team will refund your payment within 5 working days.",
     "event": "Session page",
-    "online": "Joining link"
+    "online": "Joining link",
+    "whoIMet": "Who I met"
+  },
+  "adminEvents": {
+    "title": "Events",
+    "lead": "Create sessions, check people in at the door and show the live Pulse screen.",
+    "new": "New event",
+    "empty": "No events in your chapters yet. Create the first one; it takes under two minutes.",
+    "checkIn": "Check-in",
+    "pulse": "Pulse",
+    "view": "Public page",
+    "going": "{count} going",
+    "nav": "Admin sections",
+    "dashboard": "Overview",
+    "builder": {
+      "title": "New event",
+      "lead": "Fill in the essentials. Times are in the chapter's timezone ({zone}).",
+      "chapter": "Chapter",
+      "format": "Format",
+      "titleField": "Title",
+      "summary": "Short summary",
+      "summaryHint": "One sentence for cards and search results.",
+      "description": "Description",
+      "date": "Date",
+      "start": "Start time",
+      "duration": "Length (minutes)",
+      "durationHint": "Leave empty to use the format's usual length.",
+      "venue": "Venue",
+      "online": "Online session (no venue)",
+      "onlineUrl": "Joining link (online only)",
+      "capacity": "Places",
+      "price": "Price ({currency})",
+      "priceHint": "0 for a free session. Net of VAT; test mode only.",
+      "publish": "Publish now",
+      "create": "Create event",
+      "creating": "Creating…",
+      "errors": {
+        "default": "Check the fields: title, summary, date, time and places are required.",
+        "past": "The start time is in the past.",
+        "venue": "Choose a venue, or mark the session as online with a joining link."
+      }
+    }
+  },
+  "scanner": {
+    "title": "Check-in: {event}",
+    "lead": "Point the camera at a ticket's QR code, or search for a name.",
+    "start": "Start camera",
+    "stop": "Stop camera",
+    "cameraError": "The camera is not available. Allow camera access, use HTTPS on phones, or check people in by name below.",
+    "count": "{checkedIn} of {confirmed} checked in",
+    "search": "Search attendees",
+    "searchPlaceholder": "Type a name",
+    "checkIn": "Check in",
+    "done": "Checked in",
+    "noMatch": "No attendee matches that name.",
+    "result": {
+      "ok": "Welcome, {name}!",
+      "already": "{name} is already checked in",
+      "wrongEvent": "This ticket is for another session",
+      "notConfirmed": "This ticket is not confirmed (waitlist or unpaid)",
+      "invalid": "Not a valid EiB ticket",
+      "rateLimited": "Too many scans. Wait a few seconds.",
+      "error": "Check-in failed. Try again."
+    }
+  },
+  "pulse": {
+    "title": "Pulse",
+    "live": "Live",
+    "reconnecting": "Reconnecting…",
+    "checkedIn": "Checked in",
+    "ofConfirmed": "of {confirmed} going",
+    "capacity": "Room filled",
+    "recent": "Arrived in the last 10 minutes",
+    "origins": "Where people come from",
+    "originsHidden": "Countries appear once 5 or more people from one country have arrived.",
+    "updated": "Updated {time}"
+  },
+  "met": {
+    "title": "Who I met at {event}",
+    "lead": "People who checked in and chose to be visible here. Send a request; you connect when they accept.",
+    "optInTitle": "Show me to people I met",
+    "optInLead": "Only people who checked in at the same session see you, and only if they opt in too. You can switch this off any time.",
+    "optIn": "Show me",
+    "optOut": "Hide me",
+    "visible": "You are visible to other attendees who opted in.",
+    "empty": "Nobody else has opted in yet. Check back later; people often do this on their way home.",
+    "connect": "Connect",
+    "requested": "Request sent",
+    "connected": "Connected",
+    "notAttended": "This page opens once you have checked in at the session.",
+    "sent": "Request sent. You connect when they accept."
+  },
+  "connectionsPending": {
+    "title": "Requests waiting for you",
+    "accept": "Accept",
+    "decline": "Decline",
+    "accepted": "Connected.",
+    "declined": "Request declined.",
+    "metAt": "Met at {event}"
   }
 }

@@ -1,7 +1,9 @@
 import { CalendarDaysIcon, MapPinIcon, UsersIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { buttonVariants } from "@/components/ui/button";
 import { getDb } from "@/lib/db";
+import { Link } from "@/lib/i18n/navigation";
 
 export default async function AdminPage() {
   const t = await getTranslations("admin");
@@ -21,6 +23,9 @@ export default async function AdminPage() {
       <header className="flex flex-col gap-2">
         <h1 className="text-h1">{t("title")}</h1>
         <p className="text-muted-foreground">{t("lead")}</p>
+        <Link href="/admin/events" className={buttonVariants({ className: "self-start" })}>
+          {t("manageEvents")}
+        </Link>
       </header>
       <dl className="grid gap-4 sm:grid-cols-3">
         {cards.map((card) => (

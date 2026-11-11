@@ -26,7 +26,9 @@ export default async function FormatsPage() {
             className="flex flex-col items-start gap-3 rounded-xl border border-line bg-surface p-6 shadow-card"
           >
             <h2 className="text-h3">{format.name}</h2>
-            <p className="text-small font-semibold text-brand-700">{t("duration", { minutes: format.defaultDurationMin })}</p>
+            <p className="text-small font-semibold text-brand-700">
+              {t("duration", { minutes: format.defaultDurationMin })}
+            </p>
             <p className="flex-1 text-muted-foreground">{format.description}</p>
             <Link
               href={`/events?format=${format.slug}`}

@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { slugify } from "@/lib/slug";
 import { ONBOARDING_STEPS, RESIDENCE_SITUATIONS as RESIDENCE } from "@/lib/onboarding";
 
 import type { ActionState } from "./account";
@@ -27,13 +28,7 @@ const stepSchemas = {
 };
 
 function slugFor(name: string, id: string) {
-  const base = name
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-  return `${base || "member"}-${id.slice(-6)}`;
+  return `${slugify(name) || "member"}-${id.slice(-6)}`;
 }
 
 /** Next founding number in a chapter (first `foundingLimit` members), retried once on a race. */

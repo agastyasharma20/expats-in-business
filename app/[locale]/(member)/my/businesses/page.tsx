@@ -5,6 +5,9 @@ import { ListPage } from "@/components/member/list-page";
 import { requireUser } from "@/lib/auth/session";
 import { getMyBusinesses } from "@/lib/member/queries";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export default async function MyBusinessesPage() {
   const user = await requireUser("/my/businesses");
   const [t, nav, rows] = await Promise.all([

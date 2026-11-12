@@ -49,7 +49,7 @@ test("magic link signs in to the dashboard in under 2 s (bug 7)", async ({ page,
   const link = await latestLink(request, MEMBER, /https?:\/\/\S+magic-link\/verify\S+/, sentAt);
   const started = Date.now();
   await page.goto(link);
-  await expect(page.getByRole("heading", { level: 1, name: /Welcome back/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /^Good (morning|afternoon|evening),/ })).toBeVisible();
   expect(Date.now() - started).toBeLessThan(2000);
 });
 

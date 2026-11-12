@@ -6,6 +6,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getMyTickets } from "@/lib/member/queries";
 import { formatInZone } from "@/lib/time";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export default async function MyEventsPage() {
   const user = await requireUser("/my/events");
   const [t, d, locale, tickets] = await Promise.all([

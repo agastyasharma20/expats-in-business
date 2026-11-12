@@ -10,6 +10,9 @@ import { Link } from "@/lib/i18n/navigation";
 import { ONBOARDING_STEPS } from "@/lib/onboarding";
 import { saveOnboardingStep } from "@/server/actions/onboarding";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("onboarding");
   return { title: t("title"), robots: { index: false } };

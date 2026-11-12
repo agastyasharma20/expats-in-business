@@ -8,6 +8,9 @@ import { getDb } from "@/lib/db";
 import { getMyConnections } from "@/lib/member/queries";
 import { respondConnection } from "@/server/actions/connections";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 /** Requests addressed to me: accept or decline (double opt-in). */
 async function PendingRequests({ userId }: { userId: string }) {
   const [t, pending] = await Promise.all([

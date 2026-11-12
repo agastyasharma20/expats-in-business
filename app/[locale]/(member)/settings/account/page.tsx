@@ -8,6 +8,9 @@ import { getDb } from "@/lib/db";
 import { locales } from "@/lib/i18n/routing";
 import { updateAccount } from "@/server/actions/account";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 const selectClass =
   "min-h-11 w-full rounded-md border border-line-strong bg-surface px-3 text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 

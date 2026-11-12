@@ -16,6 +16,9 @@ import { Link } from "@/lib/i18n/navigation";
 import { formatInZone } from "@/lib/time";
 import { cancelTicket, payTicket } from "@/server/actions/rsvp";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 type Props = PageProps<"/[locale]/tickets/[id]">;
 
 export const metadata: Metadata = { robots: { index: false } };

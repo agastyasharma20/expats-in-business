@@ -5,6 +5,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { providerStats, quoteOutcomes } from "@/lib/directory/stats";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export const metadata: Metadata = { robots: { index: false } };
 
 /** Aggregated analytics from daily counters. There are no individual viewers to show: none are stored. */

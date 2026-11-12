@@ -14,6 +14,9 @@ import { aiIntro } from "@/lib/roadmap/ai-intro";
 import { introTemplate } from "@/lib/roadmap/intro";
 import { progressOf, syncRoadmap } from "@/lib/roadmap/service";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("roadmap");
   return { title: t("title"), robots: { index: false } };

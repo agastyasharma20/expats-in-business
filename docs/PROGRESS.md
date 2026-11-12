@@ -13,8 +13,49 @@
 | M9 Directory and providers | done                          | develop · v0.9.0                           | 104/104 e2e, crawler 200 pages      |
 | M10 Guides and concierge   | done; prompt safety approved  | develop · v0.10.0                          | 109/109 e2e, demo works offline     |
 | M11 Landing Roadmap        | done                          | develop · v0.11.0                          | 6 scenarios TDD, reminders job      |
+| M12 Community + admin      | done; pending review          | feat/m12-community → v0.12.0 (proposed)    | community e2e, command centre       |
 
 ## Log
+
+### 2026-11-12 · M12 Community, command centre, dashboard and security hardening
+
+Covers BUILD_PLAN M13 (community) and the core of M14 (admin command centre). Numbering note: this log numbers milestones in the order they shipped, one behind BUILD_PLAN.md.
+
+**Community**
+
+- **Groups** (`/community`, `/community/[slug]`): chapter and Bubble groups; posts, questions and moderator announcements (pinned automatically); reactions from a fixed allow-list with optimistic updates; report with a reason; authors delete their own posts; "older posts" pagination; group guidelines. Who can post: Bubble members (Bubble groups), home-chapter members (chapter groups), moderators everywhere.
+- **Moderation** (`/moderation`): reported posts in the groups you moderate (Bubble Lead: own Bubble; chapter lead or moderator: own chapter; admin: all). Keep (restore, dismiss reports) or remove (author notified). Audited. Auto-hide after 3 distinct reports.
+- **Bubbles** (`/bubbles`, `/bubbles/[slug]`): server-rendered SVG world map (no map JS) shaded by members, counts under 5 hidden, each shaded country a labelled, keyboard-focusable link; the list alternative is always shown; map behind the `bubblesMap` flag. Bubble page: lead, opted-in members, Bubble sessions (Event.bubbleId), group link, join/leave, show/hide me (hidden by default).
+- **Coffee Roulette** (`/roulette`, `npm run jobs -- roulette`): opt in per chapter or joined Bubble; weekly idempotent draw (unique scope + week); no repeats within 8 weeks; trios for odd numbers; Member Plus first; everyone must accept, any decline cancels; emails shown only after confirmation; placeholder café labelled "no partnership yet" (config/roulette.ts).
+
+**Dashboard**: time-of-day greeting in the chapter timezone, quick actions, pending-connection banner, four animated stat cards (all links), roadmap with the next three steps, profile-strength ring naming what is missing, next session, Coffee Roulette state, unread notifications, activity from your groups, suggested people.
+
+**Admin command centre** (sub-navigation on every admin page, Ctrl/Cmd+K command palette)
+
+- **Overview**: 8 KPI cards (chapter leads see only their chapters), sign-ups and check-ins over 30 days (SVG bars with tooltips and a table view), member-journey funnel up to "made a connection", recent activity, chapter health table (flags chapters without a lead).
+- **Members** (admin only): search, status and role filters, pagination; grant/revoke chapter roles; suspend (ends every session) / reinstate; CSV export (same-origin only, 10 an hour, audited, safe against formula injection).
+- **Audit log** viewer with an action filter. **Settings**: feature-flag toggles, site banner, chapter announcements (max 5 a day). **Roulette**: per-scope stats and "draw now". **System**: DB latency, payments/AI/proxy checks, rate-limit pressure per bucket (aggregated, no ids), latest migration, last job runs.
+
+**Security**: static CSP + COOP/CORP + HSTS (https only) + camera for the scanner only; Postgres-backed per-account limits on every new write and on Better Auth; suspension enforced at sign-in and on every request; every id from a form re-checked server-side; plain-text posts with invisible and bidi characters stripped. Details in docs/DECISIONS.md.
+
+**Schema**: migration `20261112150000_community` (roulette tables, Event.bubbleId, User.suspendedAt/suspendedReason, Post.removedAt, PostReport.resolvedAt/resolvedById, SiteSetting, audit index). Demo seed `prisma/seed/demo/engagement.ts`: labelled demo posts and reactions, one reported post, two Bubble sessions, a roulette round including Priya and Karim.
+
+**How to test**
+
+1. `npm run demo:reset`, then `npm run dev`. As Priya (`priya@demo.eib.local` / `Demo!2026`): /dashboard, /community/bubble-in (post, react, report), /bubbles, /roulette (accept the match).
+2. As admin (`admin@demo.eib.local`): /admin (press Ctrl+K), /moderation (remove the reported post), /admin/members (suspend a demo member, then try to sign in as them), /admin/settings (turn the Bubbles map off and look at /bubbles; set a banner), /admin/audit, /admin/system.
+3. `npm run check` and `npm run build`; start the production server on port 3000 with `AI_PROVIDER=demo`, then `CI=1 E2E_BASE_URL=http://localhost:3000 E2E_EXPECT_DB=true npx playwright test`.
+
+**Verified**: `npm run check` green (unit tests include tests/unit/community.test.ts, admin-rules.test.ts and roulette.test.ts); production build; Playwright 123 passed, 1 flaky (magic-link 2 s timing), 0 failed, including the new tests/e2e/community.spec.ts; manual browser pass at 1024/1280 and 375 px (dashboard, groups, Bubbles map, moderation, admin pages).
+
+**Known gaps**
+
+- Under parallel e2e load two timing tests are sensitive: "magic link to dashboard < 2 s" (2.0 to 2.4 s while the crawler runs, 0.7 s idle) and the free-ticket redirect (5 s budget). Both pass on retry.
+- Restart the server after `npm run demo:reset`: cached venue lists otherwise point at deleted rows (the event builder shows no venues).
+- This database had no guide embeddings (fresh Docker volume): run `npm run embed` after setup, or the concierge e2e fails.
+- Not built yet from M14: applications board, /admin/catalogs (formats, categories, plans), signed sponsor report with a print stylesheet.
+- The CSP still allows inline scripts (needed by the streamed App Router bootstrap without nonces).
+- pl/uk strings for the new screens fall back to English until M15.
 
 ### 2026-11-12 · M11 Landing Roadmap 30/60/90
 

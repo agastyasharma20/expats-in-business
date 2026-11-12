@@ -11,6 +11,9 @@ import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
 import { requestVerification, respondQuote } from "@/server/actions/directory";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export const metadata: Metadata = { robots: { index: false } };
 
 /** Quote requests for the providers this member owns; the requester's email appears only after accepting. */

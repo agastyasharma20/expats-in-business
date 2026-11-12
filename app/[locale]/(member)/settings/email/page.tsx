@@ -9,6 +9,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { addEmail, removeEmail, resendEmail } from "@/server/actions/email";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 async function VerifyNotice({
   searchParams,
 }: {

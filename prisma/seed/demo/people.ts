@@ -54,6 +54,15 @@ type Account = {
   roles: { role: RoleName; global?: boolean }[];
 };
 
+/** Fixed onboarding answers for personas used in demos and roadmap scenarios (others are random). */
+const PERSONA_PROFILE: Record<
+  string,
+  { residence: "non_eu_employee" | "non_eu_founder"; arrivalDaysAgo: number }
+> = {
+  priya: { residence: "non_eu_employee", arrivalDaysAgo: 10 },
+  karim: { residence: "non_eu_founder", arrivalDaysAgo: 20 },
+};
+
 /** Demo sign-in accounts (brief 3L). Fictional composites; "Demo" surname keeps them obviously fake. */
 const accounts: Account[] = [
   {
@@ -167,6 +176,7 @@ export async function seedPeople(ctx: SeedContext): Promise<DemoPeople> {
   });
 
   const profiles = users.map((u, index) => {
+    const persona = u.key ? PERSONA_PROFILE[u.key] : undefined;
     const inWarsaw = index >= 6 && index % 9 === 0;
     const chapterId = inWarsaw ? chapters.launching.id : chapters.live.id;
     return {
@@ -198,12 +208,14 @@ export async function seedPeople(ctx: SeedContext): Promise<DemoPeople> {
         { min: 2, max: 4 },
       ),
       arrivalDate: new Date(
-        today.getTime() - faker.number.int({ min: 30, max: 3000 }) * 86_400_000,
+        today.getTime() -
+          (persona?.arrivalDaysAgo ?? faker.number.int({ min: 30, max: 3000 })) * 86_400_000,
       ),
       residenceSituation:
-        u.origin === "PL" || u.origin === "IT" || u.origin === "ES" || u.origin === "DE"
+        persona?.residence ??
+        (u.origin === "PL" || u.origin === "IT" || u.origin === "ES" || u.origin === "DE"
           ? ("eu_citizen" as const)
-          : faker.helpers.arrayElement(RESIDENCE.slice(1)),
+          : faker.helpers.arrayElement(RESIDENCE.slice(1))),
       openToCoffee: faker.datatype.boolean({ probability: 0.6 }),
       foundingNumber: index + 1 <= 500 && !inWarsaw ? index + 1 : null,
       onboardingStep: 6,

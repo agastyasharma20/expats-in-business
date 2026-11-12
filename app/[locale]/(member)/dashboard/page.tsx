@@ -3,12 +3,14 @@ import { redirect } from "next/navigation";
 import { AwardIcon, BriefcaseIcon, CalendarDaysIcon, UsersIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { ProgressRing } from "@/components/roadmap/progress-ring";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { Link } from "@/lib/i18n/navigation";
 import { ONBOARDING_STEPS } from "@/lib/onboarding";
 import { getDashboard } from "@/lib/member/queries";
+import { progressOf, syncRoadmap } from "@/lib/roadmap/service";
 import { formatInZone } from "@/lib/time";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,7 +22,14 @@ export default async function DashboardPage() {
   const user = await requireUser();
   const data = await getDashboard(user.id);
   if ((data.profile?.onboardingStep ?? 0) < ONBOARDING_STEPS.length) redirect("/onboarding");
-  const [t, locale] = await Promise.all([getTranslations("dashboard"), getLocale()]);
+  const [t, r, locale, roadmap] = await Promise.all([
+    getTranslations("dashboard"),
+    getTranslations("roadmap"),
+    getLocale(),
+    syncRoadmap(user.id),
+  ]);
+  const progress = progressOf(roadmap);
+  const nextStep = roadmap.find((i) => !i.doneAt);
 
   // Every card is a link to the filtered list (old bugs 1 and 13: dead stat cards and icons).
   const cards = [
@@ -65,6 +74,29 @@ export default async function DashboardPage() {
           </li>
         ))}
       </ul>
+
+      <section
+        aria-labelledby="roadmap-title"
+        className="flex flex-col gap-4 rounded-xl border border-line bg-surface p-6 shadow-card sm:flex-row sm:items-center"
+        data-testid="dashboard-roadmap"
+      >
+        <ProgressRing
+          percent={progress.percent}
+          label={r("progressLabel", { percent: progress.percent })}
+        />
+        <div className="flex flex-1 flex-col gap-1">
+          <h2 id="roadmap-title" className="text-h3">
+            {t("roadmap")}
+          </h2>
+          <p className="text-ink">
+            {r("progress", { done: progress.done, total: progress.total })}
+          </p>
+          {nextStep ? <p className="text-small text-muted-foreground">{nextStep.title}</p> : null}
+        </div>
+        <Link href="/roadmap" className={buttonVariants()}>
+          {r("dashboardCta")}
+        </Link>
+      </section>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section

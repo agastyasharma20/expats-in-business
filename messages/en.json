@@ -323,7 +323,8 @@
     "bubbles": "Bubbles",
     "roulette": "Coffee Roulette",
     "moderation": "Moderation",
-    "festivals": "Festivals"
+    "festivals": "Festivals",
+    "involved": "Get involved"
   },
   "chapter": {
     "label": "Chapter",
@@ -1156,7 +1157,9 @@
       "announcement": "{text}",
       "stallAccepted": "Your stall application was accepted. The team will contact you by email.",
       "stallWaitlisted": "Your stall application is on the waiting list.",
-      "stallDeclined": "Your stall application was not accepted this time."
+      "stallDeclined": "Your stall application was not accepted this time.",
+      "applicationAccepted": "Your application to get involved was accepted. The team will contact you by email.",
+      "applicationDeclined": "Your application to get involved was not accepted this time. Thank you for offering."
     }
   },
   "guides": {
@@ -1508,6 +1511,22 @@
         "draft": "Festival unpublished",
         "cancelled": "Festival cancelled",
         "export": "Attendee list exported"
+      },
+      "application": {
+        "move": "Application moved"
+      },
+      "catalog": {
+        "format": {
+          "create": "Format created",
+          "update": "Format updated"
+        },
+        "category": {
+          "create": "Category created",
+          "update": "Category updated"
+        },
+        "plan": {
+          "update": "Plan price changed"
+        }
       }
     },
     "health": {
@@ -1550,7 +1569,9 @@
       "audit": "Audit log",
       "settings": "Settings",
       "system": "System",
-      "festivals": "Festivals"
+      "festivals": "Festivals",
+      "applications": "Applications",
+      "catalogs": "Catalogs"
     }
   },
   "adminMembers": {
@@ -2047,5 +2068,112 @@
     },
     "privacy": "Aggregates only. Any number under 5 is hidden so no attendee can be identified.",
     "generated": "Generated on {date} by the Expats in Business platform."
+  },
+  "involved": {
+    "eyebrow": "Get involved",
+    "title": "Help shape the community",
+    "lead": "Speak at a session, share your expat business story, or contribute your skills. The chapter team reads every application.",
+    "ways": {
+      "speaker": {
+        "title": "Speak at a session",
+        "text": "Share what you know in a Guest Speaker session or a Business Development workshop."
+      },
+      "story": {
+        "title": "Share your story",
+        "text": "Tell how you built your career or business abroad, for the community and the podcast."
+      },
+      "contributor": {
+        "title": "Contribute",
+        "text": "Help with guides, translations, design, photography or organising events."
+      }
+    },
+    "signIn": "Sign in to apply",
+    "fields": {
+      "type": "How do you want to get involved?",
+      "topic": "Topic or idea (one line)",
+      "pitch": "Tell us more",
+      "pitchHint": "At least 40 characters: what, for whom, and what people will take away.",
+      "link": "Link to your work (optional)"
+    },
+    "privacy": "Your name and account email are shared with the chapter team only, to reply to you.",
+    "send": "Send application",
+    "sending": "Sending…",
+    "sent": "Thank you! The team will reply by email.",
+    "mine": "Your applications",
+    "none": "You have not applied yet.",
+    "status": {
+      "submitted": "Received",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "declined": "Not this time"
+    },
+    "errors": {
+      "default": "Please fill in a topic and at least 40 characters, and use an https:// link.",
+      "exists": "You already have an open application of this kind.",
+      "rateLimited": "Too many applications today. Try again tomorrow."
+    }
+  },
+  "adminApplications": {
+    "title": "Applications",
+    "lead": "Speakers, stories and contributors. Move each card along; applicants are notified when you accept or decline.",
+    "status": {
+      "submitted": "New",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    },
+    "types": {
+      "speaker": "Speaker",
+      "story": "Story",
+      "contributor": "Contributor"
+    },
+    "move": {
+      "submitted": "Back to new",
+      "in_review": "Review",
+      "accepted": "Accept",
+      "declined": "Decline"
+    },
+    "moved": {
+      "submitted": "Moved back.",
+      "in_review": "Moved to review.",
+      "accepted": "Accepted: the applicant is notified.",
+      "declined": "Declined: the applicant is notified."
+    },
+    "read": "Read the pitch",
+    "global": "No chapter",
+    "demo": "Demo",
+    "empty": "Nothing here.",
+    "error": "Could not move the application."
+  },
+  "adminCatalogs": {
+    "title": "Catalogs",
+    "lead": "Change formats, provider categories and plan prices without a deploy. Every change is in the audit log.",
+    "plans": "Plans and prices",
+    "plansNote": "New checkouts use the new price at once. Existing subscriptions keep the price they signed up with. Prices marked Proposal are shown as proposals on /pricing.",
+    "oneOff": "contact only",
+    "amount": "Price ({currency})",
+    "status": "Status",
+    "active": "On sale",
+    "priceStatus": {
+      "proposal": "Proposal",
+      "approved": "Approved"
+    },
+    "formats": "Event formats",
+    "newFormat": "New format",
+    "categories": "Provider categories",
+    "newCategory": "New category",
+    "name": "Name",
+    "minutes": "Minutes",
+    "order": "Order",
+    "description": "Description",
+    "save": "Save",
+    "add": "Add",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "errors": {
+      "default": "Please check the fields.",
+      "exists": "A category with this name already exists.",
+      "rateLimited": "Too many changes in a short time. Wait a minute."
+    }
   }
 }

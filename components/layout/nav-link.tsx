@@ -15,8 +15,7 @@ type NavLinkProps = {
 /** Internal link that marks the current page with aria-current (and a visible underline). */
 export function NavLink({ href, children, className, onNavigate, exact }: NavLinkProps) {
   const pathname = usePathname();
-  const current =
-    pathname === href || (!exact && href !== "/" && pathname.startsWith(`${href}/`));
+  const current = pathname === href || (!exact && href !== "/" && pathname.startsWith(`${href}/`));
 
   return (
     <Link

@@ -21,7 +21,9 @@ export type NotificationType =
   | "announcement"
   | "stallAccepted"
   | "stallWaitlisted"
-  | "stallDeclined";
+  | "stallDeclined"
+  | "applicationAccepted"
+  | "applicationDeclined";
 
 export async function notify(
   userId: string,

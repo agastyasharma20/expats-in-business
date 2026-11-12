@@ -195,3 +195,47 @@ describe("demo adapter answers pass the gate", async () => {
     expect(judgeAnswer(answer, passages)).toMatchObject({ ok: true, cited: ["c1", "c2"] });
   });
 });
+
+describe("review follow-ups", async () => {
+  const { clientIp } = await import("@/lib/client-ip");
+  const { factTokens } = await import("@/lib/ai/citations");
+
+  it("drops invented numbers, fees and codes even in short cited sentences", () => {
+    expect(judgeAnswer("The fee is 9999 PLN. [[c1]]", passages)).toEqual({
+      ok: false,
+      reason: "ungrounded",
+    });
+    expect(judgeAnswer("You must stay over 45 days. [[c1]]", passages)).toEqual({
+      ok: false,
+      reason: "ungrounded",
+    });
+    expect(
+      judgeAnswer("You get a PESEL automatically for a stay of over 30 days. [[c1]]", passages),
+    ).toMatchObject({ ok: true });
+  });
+
+  it("ignores digits inside citation ids when collecting facts", () => {
+    expect([...factTokens("Over 30 days [[c1x9]]")]).toEqual(["30"]);
+    expect([...factTokens("10,000 PLN and 2026")]).toEqual(["10000", "2026", "PLN"]);
+  });
+
+  it("redacts Ukrainian and Polish names without touching ordinary questions", () => {
+    expect(redactPersonalData("мене звати Олена Шевченко")).not.toContain("Олена");
+    expect(redactPersonalData("Nazywam się Jan Nowak")).not.toContain("Nowak");
+    for (const q of [
+      "This is about residence permits",
+      "Jestem obywatelem Ukrainy, czy potrzebuję PESEL?",
+      "Я студент, як отримати PESEL?",
+    ]) {
+      expect(redactPersonalData(q)).toBe(q);
+    }
+  });
+
+  it("trusts X-Forwarded-For only through configured proxy hops", () => {
+    expect(clientIp("1.2.3.4", 0)).toBeNull();
+    expect(clientIp("6.6.6.6, 1.2.3.4", 1)).toBe("1.2.3.4");
+    expect(clientIp("6.6.6.6, 1.2.3.4, 10.0.0.1", 2)).toBe("1.2.3.4");
+    expect(clientIp("not-an-ip", 1)).toBeNull();
+    expect(clientIp(null, 1)).toBeNull();
+  });
+});

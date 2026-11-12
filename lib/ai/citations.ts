@@ -94,10 +94,26 @@ export function contentStems(text: string): Set<string> {
  */
 export const MIN_GROUNDING = 0.5;
 
+/**
+ * Exact facts of a text: numbers (dates, fees, deadlines, thresholds; separators removed) and
+ * all-caps codes (PLN, ZUS, KSeF-style acronyms). Citation markers are removed first, since ids
+ * contain digits.
+ */
+export function factTokens(text: string): Set<string> {
+  const clean = text.replace(CITATION, " ");
+  const numbers = (clean.match(/\d+(?:[.,]\d+)*/g) ?? []).map((n) => n.replace(/[.,]/g, ""));
+  const codes = clean.match(/\b[A-Z]{2,6}\b/g) ?? [];
+  return new Set([...numbers, ...codes]);
+}
+
 export function isGrounded(sentence: string, citedPassages: string[]): boolean {
+  // Every number and code must appear in a cited passage: no invented fees, dates or deadlines.
+  const passageText = citedPassages.join(" ");
+  const sourceFacts = factTokens(passageText);
+  for (const fact of factTokens(sentence)) if (!sourceFacts.has(fact)) return false;
   const words = contentStems(sentence);
   if (words.size < 3) return true;
-  const source = contentStems(citedPassages.join(" "));
+  const source = contentStems(passageText);
   let shared = 0;
   for (const word of words) if (source.has(word)) shared += 1;
   return shared / words.size >= MIN_GROUNDING;

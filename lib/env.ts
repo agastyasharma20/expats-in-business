@@ -45,6 +45,9 @@ export const envSchema = z.object({
   ),
   EMAIL_FROM: z.string().min(3).default("Expats in Business <no-reply@demo.eib.local>"),
 
+  /** Proxies in front of the app that append to X-Forwarded-For (0 = do not trust the header). */
+  TRUSTED_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(0),
+
   // AI
   AI_PROVIDER: z.enum(aiProviders).default("demo"),
   GROQ_API_KEY: optional(z.string()),

@@ -33,8 +33,10 @@ const RULES: { label: string; pattern: RegExp }[] = [
   // Self-introductions: "my name is Anna Kowalska", "nazywam się …", "мене звати …".
   {
     label: "[name]",
+    // Unicode-aware boundary (plain \b ignores Cyrillic). Only the trigger phrase is
+    // case-insensitive; the name itself must be capitalised, so "this is about…" stays intact.
     pattern:
-      /\b(?:my name is|i am called|i'm called|this is|nazywam się|mam na imię|jestem|мене звати|я)\s+\p{Lu}[\p{L}'-]+(?:\s+\p{Lu}[\p{L}'-]+){0,2}/giu,
+      /(?<![\p{L}\d])(?:[Mm]y [Nn]ame [Ii]s|I am called|I'm called|[Nn]azywam się|[Mm]am na imię|[Мм]ене звати|[Мм]оє ім'я|[Мм]еня зовут)\s+\p{Lu}[\p{L}'-]+(?:\s+\p{Lu}[\p{L}'-]+){0,2}/gu,
   },
 ];
 

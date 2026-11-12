@@ -9,6 +9,7 @@ import { retrieve } from "@/lib/ai/retrieval";
 import { hasEntitlement } from "@/lib/auth/permissions";
 import { getSessionUser } from "@/lib/auth/session";
 import { conciergeCountry, sourceTitles } from "@/lib/content/guide-index";
+import { clientIp } from "@/lib/client-ip";
 import { getDb } from "@/lib/db";
 import { getEnv } from "@/lib/env";
 import { rateLimit } from "@/lib/rate-limit";
@@ -54,11 +55,11 @@ export async function POST(request: Request) {
   const question = normaliseQuestion(parsed.data.question);
   if (question.length < 3) return Response.json({ error: "invalid" }, { status: 400 });
 
-  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+  const ip = clientIp((await headers()).get("x-forwarded-for"), getEnv().TRUSTED_PROXY_HOPS);
   const day = utcDay();
   if (!(await rateLimit(`concierge-burst:${user.id}`, 5, 60)).ok)
     return Response.json({ error: "rateLimited" }, { status: 429 });
-  if (!(await rateLimit(`concierge-ip:${ip}:${day}`, PER_IP_DAILY, 86_400)).ok)
+  if (ip && !(await rateLimit(`concierge-ip:${ip}:${day}`, PER_IP_DAILY, 86_400)).ok)
     return Response.json({ error: "rateLimited" }, { status: 429 });
   const env = getEnv();
   const daily = hasEntitlement(user, "concierge.unlimited")

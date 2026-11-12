@@ -11,6 +11,9 @@ import { getDb } from "@/lib/db";
 import { addDays, utcToZoned } from "@/lib/time";
 import { createEvent } from "@/server/actions/events-admin";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export const metadata: Metadata = { robots: { index: false } };
 
 const selectClass =

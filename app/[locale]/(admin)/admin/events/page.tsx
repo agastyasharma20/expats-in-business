@@ -9,6 +9,9 @@ import { requirePermission } from "@/lib/auth/session";
 import { Link } from "@/lib/i18n/navigation";
 import { formatInZone } from "@/lib/time";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("adminEvents");
   return { title: t("title"), robots: { index: false } };

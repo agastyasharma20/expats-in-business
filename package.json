@@ -26,7 +26,7 @@
     "db:seed": "tsx prisma/seed/index.ts",
     "demo:reset": "tsx scripts/demo-reset.ts",
     "embed": "tsx scripts/embed-guides.ts",
-    "jobs": "node scripts/stub.mjs jobs 8",
+    "jobs": "tsx scripts/jobs.ts",
     "stripe:listen": "node scripts/stub.mjs stripe:listen 7",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

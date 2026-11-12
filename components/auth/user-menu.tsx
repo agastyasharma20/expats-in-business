@@ -27,6 +27,8 @@ export function UserMenu({ name, profileSlug, showAdmin, showProvider }: UserMen
   const t = useTranslations("nav");
   const items = [
     { href: "/dashboard", label: t("dashboard") },
+    { href: "/roadmap", label: t("roadmap") },
+    { href: "/concierge", label: t("concierge") },
     ...(profileSlug ? [{ href: `/members/${profileSlug}`, label: t("myProfile") }] : []),
     { href: "/connections", label: t("connections") },
     ...(showProvider ? [{ href: "/provider/inbox", label: t("providerArea") }] : []),

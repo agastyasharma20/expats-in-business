@@ -318,7 +318,8 @@
     "notifications": "Notifications",
     "providerArea": "Provider area",
     "connections": "Connections",
-    "concierge": "Concierge"
+    "concierge": "Concierge",
+    "roadmap": "Roadmap"
   },
   "chapter": {
     "label": "Chapter",
@@ -1168,5 +1169,37 @@
       "network": "Connection lost. Check your connection and try again.",
       "signIn": "Please sign in again."
     }
+  },
+  "roadmap": {
+    "title": "Your Landing Roadmap",
+    "lead": "A step-by-step plan for your first 90 days, chosen from your onboarding answers. Every step links to a guide with official sources.",
+    "intro1": "Your Landing Roadmap has {total} steps for your first 90 days.",
+    "intro2Week": "Start with “{first}” this week; every step links to a guide with official sources.",
+    "intro2": "Start with “{first}”; every step links to a guide with official sources.",
+    "progress": "{done} of {total} steps done",
+    "progressLabel": "Roadmap progress: {percent}%",
+    "columns": {
+      "30": "First 30 days",
+      "60": "Days 31 to 60",
+      "90": "Days 61 to 90"
+    },
+    "due": "Due {date}",
+    "overdue": "Overdue since {date}",
+    "doneOn": "Done on {date}",
+    "after": "After: {steps}",
+    "guide": "Read the guide",
+    "official": "Official page",
+    "markDone": "Mark as done",
+    "markOpen": "Mark as not done",
+    "doneToast": "Step done. Well done!",
+    "export": "Add deadlines to my calendar",
+    "editAnswers": "Change my answers",
+    "editHint": "Your plan updates when you change your answers. Completed steps are kept.",
+    "step": "Step {n} of {total}",
+    "emptyTitle": "Your roadmap is almost ready",
+    "emptyDescription": "Finish your profile (chapter, residence situation and arrival date) and we build your plan.",
+    "finish": "Finish my profile",
+    "label": "General information, not legal advice. Always check the official source.",
+    "dashboardCta": "Open my roadmap"
   }
 }

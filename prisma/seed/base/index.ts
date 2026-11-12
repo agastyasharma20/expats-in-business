@@ -107,14 +107,13 @@ export async function seedBase(db: PrismaClient) {
   for (const [index, task] of roadmapTasks.entries()) {
     const data = {
       title: task.title,
-      description: task.guideSlug
-        ? `See the "${task.guideSlug}" guide for the official steps and sources.`
-        : "A step to help you feel at home in the community.",
+      description: task.why,
       guideSlug: task.guideSlug,
       appliesTo: task.appliesTo,
       forGoals: task.forGoals,
       dependsOn: task.dependsOn,
       dueOffsetDays: task.due,
+      skipForCitizens: task.skipForCitizens ?? false,
       sortOrder: index,
     };
     await db.roadmapTask.upsert({

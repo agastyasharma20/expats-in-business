@@ -199,15 +199,18 @@ const NON_EU: ResidenceSituation[] = [
 export const roadmapTasks = [
   {
     slug: "pesel",
+    why: "Many other steps, such as a trusted profile, need your PESEL number. The guide shows both ways to get one.",
     title: "Get your PESEL number",
     guideSlug: "pesel",
     appliesTo: [],
     forGoals: [],
     dependsOn: [],
     due: 30,
+    skipForCitizens: true,
   },
   {
     slug: "trusted-profile",
+    why: "A trusted profile lets you handle official matters online, including the online residence application.",
     title: "Set up your trusted profile",
     guideSlug: "trusted-profile",
     appliesTo: [],
@@ -217,15 +220,18 @@ export const roadmapTasks = [
   },
   {
     slug: "mos-application",
+    why: "Residents from outside the EU apply for residence online. The guide lists the steps and what you need first.",
     title: "Apply for residence online (MOS)",
     guideSlug: "mos-residence-application",
     appliesTo: NON_EU,
     forGoals: [],
     dependsOn: [],
     due: 30,
+    skipForCitizens: true,
   },
   {
     slug: "bank-account",
+    why: "A local account makes salary, rent and bills simpler. The guide explains the basic payment account.",
     title: "Open a bank account",
     guideSlug: "banking-basics",
     appliesTo: [],
@@ -235,6 +241,7 @@ export const roadmapTasks = [
   },
   {
     slug: "health-insurance",
+    why: "Know how you are covered before you need a doctor. The guide explains the basics.",
     title: "Sort out health insurance",
     guideSlug: "health-insurance-basics",
     appliesTo: [],
@@ -244,6 +251,7 @@ export const roadmapTasks = [
   },
   {
     slug: "address-registration",
+    why: "Registering your address is also how many people get their PESEL number automatically.",
     title: "Register your address",
     guideSlug: "pesel",
     appliesTo: [],
@@ -253,6 +261,7 @@ export const roadmapTasks = [
   },
   {
     slug: "tax-basics",
+    why: "If you work for yourself, social insurance and tax registration come early. The guide covers ZUS for sole traders.",
     title: "Learn the tax basics",
     guideSlug: "zus-sole-traders",
     appliesTo: [],
@@ -262,6 +271,7 @@ export const roadmapTasks = [
   },
   {
     slug: "ksef",
+    why: "VAT-registered businesses issue invoices through KSeF. The guide explains who must use it and from when.",
     title: "Prepare for KSeF e-invoicing",
     guideSlug: "ksef-e-invoicing",
     appliesTo: [],
@@ -271,6 +281,7 @@ export const roadmapTasks = [
   },
   {
     slug: "join-bubble",
+    why: "People from your home country who already made the move are the fastest source of useful tips.",
     title: "Join your Cultural Bubble",
     guideSlug: null,
     appliesTo: [],
@@ -280,6 +291,7 @@ export const roadmapTasks = [
   },
   {
     slug: "first-session",
+    why: "Meet founders, freelancers and professionals in your city, and the locals who work with them.",
     title: "Come to your first EiB session",
     guideSlug: null,
     appliesTo: [],
@@ -295,4 +307,7 @@ export const roadmapTasks = [
   forGoals: string[];
   dependsOn: string[];
   due: number;
+  skipForCitizens?: boolean;
+  /** Why it matters (no legal detail: that lives in the sourced guide). */
+  why: string;
 }[];

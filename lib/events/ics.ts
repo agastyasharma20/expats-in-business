@@ -61,3 +61,44 @@ export function buildIcs(event: IcsEvent): string {
   ];
   return `${lines.map(fold).join("\r\n")}\r\n`;
 }
+
+export type IcsTask = {
+  uid: string;
+  title: string;
+  description: string;
+  url: string;
+  date: Date;
+  stamp: Date;
+};
+
+function dateValue(date: Date): string {
+  return date.toISOString().slice(0, 10).replace(/-/g, "");
+}
+
+/** Calendar with one all-day event per task (roadmap deadlines). Same escaping and folding rules. */
+export function buildTaskCalendar(name: string, tasks: readonly IcsTask[]): string {
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Expats in Business//Roadmap//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    `X-WR-CALNAME:${escapeIcs(name)}`,
+  ];
+  for (const task of tasks) {
+    const next = new Date(task.date.getTime() + 86_400_000);
+    lines.push(
+      "BEGIN:VEVENT",
+      `UID:${task.uid}`,
+      `DTSTAMP:${stamp(task.stamp)}`,
+      `DTSTART;VALUE=DATE:${dateValue(task.date)}`,
+      `DTEND;VALUE=DATE:${dateValue(next)}`,
+      `SUMMARY:${escapeIcs(task.title)}`,
+      `DESCRIPTION:${escapeIcs(`${task.description}\n\n${task.url}`)}`,
+      `URL:${task.url}`,
+      "END:VEVENT",
+    );
+  }
+  lines.push("END:VCALENDAR");
+  return `${lines.map(fold).join("\r\n")}\r\n`;
+}

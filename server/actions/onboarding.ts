@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { slugify } from "@/lib/slug";
 import { ONBOARDING_STEPS, RESIDENCE_SITUATIONS as RESIDENCE } from "@/lib/onboarding";
+import { syncRoadmap } from "@/lib/roadmap/service";
 
 import type { ActionState } from "./account";
 

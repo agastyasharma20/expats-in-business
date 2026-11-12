@@ -294,3 +294,23 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Print: reports and tickets print without site chrome, colours kept for charts and badges. */
+@media print {
+  #site-header,
+  #site-footer,
+  nav,
+  [data-print-hide],
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+  body {
+    background: white;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .container-page {
+    max-width: none;
+    padding: 0;
+  }
+}

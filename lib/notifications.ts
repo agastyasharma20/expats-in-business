@@ -18,7 +18,10 @@ export type NotificationType =
   | "rouletteMatch"
   | "rouletteConfirmed"
   | "rouletteDeclined"
-  | "announcement";
+  | "announcement"
+  | "stallAccepted"
+  | "stallWaitlisted"
+  | "stallDeclined";
 
 export async function notify(
   userId: string,

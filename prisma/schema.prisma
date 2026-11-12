@@ -75,6 +75,40 @@ enum EventStatus {
   cancelled
 }
 
+/// session = regular chapter meetup; festival = large cultural event with tiers, programme,
+/// volunteers, stalls and partners.
+enum EventKind {
+  session
+  festival
+}
+
+enum ProgrammeKind {
+  performance
+  talk
+  workshop
+  food
+  family
+  exhibition
+  other
+}
+
+enum StallCategory {
+  food
+  crafts
+  culture
+  services
+  nonprofit
+  other
+}
+
+enum StallStatus {
+  submitted
+  accepted
+  waitlisted
+  declined
+  withdrawn
+}
+
 enum TicketStatus {
   reserved
   confirmed
@@ -191,6 +225,8 @@ model User {
   chapterVotes        ChapterRequestVote[]
   auditEntries        AuditLog[]
   eventsCreated       Event[]
+  volunteerSignups    VolunteerSignup[]
+  stallApplications   StallApplication[]
   verificationsDone   ProviderVerification[]
   userEmails          UserEmail[]
 
@@ -503,31 +539,40 @@ model Venue {
 }
 
 model Event {
-  id          String      @id @default(cuid(2))
-  slug        String      @unique
-  chapterId   String
-  chapter     Chapter     @relation(fields: [chapterId], references: [id], onDelete: Restrict)
-  formatId    String
-  format      EventFormat @relation(fields: [formatId], references: [id])
-  title       String
-  summary     String
-  description String
-  startsAt    DateTime
-  endsAt      DateTime
-  venueId     String?
-  venue       Venue?      @relation(fields: [venueId], references: [id])
+  id             String      @id @default(cuid(2))
+  slug           String      @unique
+  chapterId      String
+  chapter        Chapter     @relation(fields: [chapterId], references: [id], onDelete: Restrict)
+  formatId       String
+  format         EventFormat @relation(fields: [formatId], references: [id])
+  title          String
+  summary        String
+  description    String
+  startsAt       DateTime
+  endsAt         DateTime
+  venueId        String?
+  venue          Venue?      @relation(fields: [venueId], references: [id])
   /// Cultural Bubble this session belongs to (shown on the Bubble page).
-  bubbleId    String?
-  bubble      Bubble?     @relation(fields: [bubbleId], references: [id], onDelete: SetNull)
-  onlineUrl   String?
-  capacity    Int
-  status      EventStatus @default(draft)
-  coverImage  String?
-  createdById String?
-  createdBy   User?       @relation(fields: [createdById], references: [id])
-  isDemo      Boolean     @default(false)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  bubbleId       String?
+  bubble         Bubble?     @relation(fields: [bubbleId], references: [id], onDelete: SetNull)
+  onlineUrl      String?
+  capacity       Int
+  status         EventStatus @default(draft)
+  kind           EventKind   @default(session)
+  /// One line under the festival title.
+  tagline        String?
+  /// Places one order may book (festivals: families and groups). Sessions stay at 1.
+  maxPerOrder    Int         @default(1)
+  volunteersOpen Boolean     @default(false)
+  stallsOpen     Boolean     @default(false)
+  /// Stall fee in minor units (shown to applicants; invoiced by the team after acceptance).
+  stallFeeMinor  Int?
+  coverImage     String?
+  createdById    String?
+  createdBy      User?       @relation(fields: [createdById], references: [id])
+  isDemo         Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 
   ticketTypes  TicketType[]
   tickets      Ticket[]
@@ -536,21 +581,30 @@ model Event {
   photos       EventPhoto[]
   connections  Connection[]
   reviews      Review[]
+  programme    EventProgrammeItem[]
+  shifts       VolunteerShift[]
+  stalls       StallApplication[]
+  faqs         EventFaq[]
 
   @@index([chapterId, startsAt])
   @@index([status, startsAt])
+  @@index([kind, startsAt])
 }
 
 model TicketType {
-  id         String   @id @default(cuid(2))
-  eventId    String
-  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  name       String
-  priceMinor Int
-  currency   String   @db.VarChar(3)
-  capacity   Int?
-  createdAt  DateTime @default(now())
-  tickets    Ticket[]
+  id          String    @id @default(cuid(2))
+  eventId     String
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name        String
+  priceMinor  Int
+  currency    String    @db.VarChar(3)
+  capacity    Int?
+  description String?
+  sortOrder   Int       @default(0)
+  /// Early-bird style tiers stop selling at this moment.
+  salesEndAt  DateTime?
+  createdAt   DateTime  @default(now())
+  tickets     Ticket[]
 }
 
 model Ticket {
@@ -562,6 +616,8 @@ model Ticket {
   userId          String
   user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   status          TicketStatus
+  /// Party size: one order and one QR code admit this many people.
+  quantity        Int          @default(1)
   /// Random single-use token encoded in the QR code.
   qrToken         String       @unique
   stripeSessionId String?      @unique
@@ -1115,4 +1171,84 @@ model SiteSetting {
   value       Json
   updatedById String?
   updatedAt   DateTime @updatedAt
+}
+
+// ─── Festivals ────────────────────────────────────────────────────────────────────────────────
+
+model EventProgrammeItem {
+  id          String        @id @default(cuid(2))
+  eventId     String
+  event       Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  kind        ProgrammeKind @default(other)
+  /// Free text: "Main stage", "Kids corner", "Food court".
+  stage       String?
+  /// Performer or speaker as announced (names only with their permission).
+  performer   String?
+  startsAt    DateTime
+  endsAt      DateTime
+  createdAt   DateTime      @default(now())
+
+  @@index([eventId, startsAt])
+}
+
+model VolunteerShift {
+  id          String            @id @default(cuid(2))
+  eventId     String
+  event       Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  role        String
+  description String?
+  startsAt    DateTime
+  endsAt      DateTime
+  capacity    Int
+  createdAt   DateTime          @default(now())
+  signups     VolunteerSignup[]
+
+  @@index([eventId])
+}
+
+model VolunteerSignup {
+  shiftId   String
+  shift     VolunteerShift @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
+
+  @@id([shiftId, userId])
+  @@index([userId])
+}
+
+/// Vendor, exhibitor or community stall. Contact goes through the applicant's account email.
+model StallApplication {
+  id           String        @id @default(cuid(2))
+  eventId      String
+  event        Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName String
+  category     StallCategory
+  description  String
+  website      String?
+  status       StallStatus   @default(submitted)
+  reviewNote   String?
+  reviewedById String?
+  reviewedAt   DateTime?
+  isDemo       Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([eventId, userId])
+  @@index([eventId, status])
+}
+
+model EventFaq {
+  id        String @id @default(cuid(2))
+  eventId   String
+  event     Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String
+  sortOrder Int    @default(0)
+
+  @@index([eventId])
 }

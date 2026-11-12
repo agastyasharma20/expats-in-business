@@ -322,7 +322,8 @@
     "community": "Community",
     "bubbles": "Bubbles",
     "roulette": "Coffee Roulette",
-    "moderation": "Moderation"
+    "moderation": "Moderation",
+    "festivals": "Festivals"
   },
   "chapter": {
     "label": "Chapter",
@@ -727,7 +728,8 @@
       "lead": "What to expect at each kind of EiB session.",
       "duration": "About {minutes} minutes",
       "see": "See {format} sessions"
-    }
+    },
+    "festivalsLink": "Big cultural festivals"
   },
   "ticket": {
     "title": "Your ticket",
@@ -752,7 +754,8 @@
     "cancelledPaid": "Cancelled. The team will refund your payment within 5 working days.",
     "event": "Session page",
     "online": "Joining link",
-    "whoIMet": "Who I met"
+    "whoIMet": "Who I met",
+    "admits": "{count, plural, one {Admits # person} other {Admits # people}}"
   },
   "adminEvents": {
     "title": "Events",
@@ -1150,7 +1153,10 @@
       "rouletteMatch": "Your Coffee Roulette match for this week is ready",
       "rouletteConfirmed": "Your Coffee Roulette match is confirmed: say hello",
       "rouletteDeclined": "{name} cannot make it this week; your match is cancelled",
-      "announcement": "{text}"
+      "announcement": "{text}",
+      "stallAccepted": "Your stall application was accepted. The team will contact you by email.",
+      "stallWaitlisted": "Your stall application is on the waiting list.",
+      "stallDeclined": "Your stall application was not accepted this time."
     }
   },
   "guides": {
@@ -1494,6 +1500,14 @@
       },
       "roulette": {
         "run": "Roulette drawn"
+      },
+      "festival": {
+        "create": "Festival created",
+        "update": "Festival updated",
+        "published": "Festival published",
+        "draft": "Festival unpublished",
+        "cancelled": "Festival cancelled",
+        "export": "Attendee list exported"
       }
     },
     "health": {
@@ -1523,7 +1537,8 @@
     "quickGroup": "Quick actions",
     "quick": {
       "newEvent": "Create a session",
-      "dashboard": "My dashboard"
+      "dashboard": "My dashboard",
+      "newFestival": "Create a festival"
     },
     "sections": {
       "overview": "Overview",
@@ -1534,7 +1549,8 @@
       "roulette": "Roulette",
       "audit": "Audit log",
       "settings": "Settings",
-      "system": "System"
+      "system": "System",
+      "festivals": "Festivals"
     }
   },
   "adminMembers": {
@@ -1712,5 +1728,324 @@
   },
   "banner": {
     "label": "Site notice"
+  },
+  "festival": {
+    "eyebrow": "EiB festivals",
+    "listTitle": "Cultural festivals",
+    "listLead": "Our biggest days: music, food, talks and stalls from the communities in our chapters. Buy tickets for your whole group, volunteer, or bring a stall.",
+    "upcoming": "Coming up",
+    "past": "Past festivals",
+    "badge": "Festival",
+    "demo": "Demo festival",
+    "demoPartner": "Demo partner",
+    "ended": "Ended",
+    "cancelled": "Cancelled",
+    "emptyTitle": "No festival announced yet",
+    "emptyText": "Festivals are announced here first. Meanwhile, join a regular session.",
+    "seeSessions": "See sessions",
+    "fromPrice": "Tickets from {price}",
+    "freeEntry": "Free entry",
+    "getTickets": "Get tickets",
+    "when": "When",
+    "where": "Where",
+    "capacity": "Capacity",
+    "placesLeft": "{left} of {capacity} places left",
+    "about": "About the festival",
+    "countdownLabel": "Time until the festival opens",
+    "units": {
+      "days": "days",
+      "hours": "hours",
+      "minutes": "min"
+    },
+    "nav": {
+      "label": "Festival sections",
+      "tickets": "Tickets",
+      "programme": "Programme",
+      "partners": "Partners",
+      "volunteer": "Volunteer",
+      "stalls": "Stalls",
+      "faq": "FAQ"
+    },
+    "chooseTier": "Choose a ticket",
+    "free": "Free",
+    "people": "People",
+    "fewer": "One person fewer",
+    "more": "One more person",
+    "total": "Total",
+    "processing": "One moment…",
+    "soldOut": "Sold out",
+    "buy": "{count, plural, one {Buy 1 ticket} other {Buy # tickets}}",
+    "reserve": "{count, plural, one {Reserve 1 place} other {Reserve # places}}",
+    "paymentNote": "One QR code admits your whole group. Payment by card, BLIK or Przelewy24 in test mode.",
+    "waitlisted": "This tier is full right now, so you are on the waitlist. We email you as soon as places free up.",
+    "tierState": {
+      "onSale": "On sale",
+      "lowStock": "Only {left} left",
+      "soldOut": "Sold out",
+      "ended": "Sales ended"
+    },
+    "ticketStatus": {
+      "confirmed": "{count, plural, one {You have a ticket} other {You have tickets for # people}}",
+      "reserved": "Your places are held while you pay",
+      "waitlisted": "You are on the waitlist"
+    },
+    "viewTicket": "View my ticket",
+    "salesClosed": "Ticket sales are closed.",
+    "signInToBuy": "Sign in to get tickets",
+    "days": "Festival days",
+    "stages": "Stages: {list}",
+    "kinds": {
+      "performance": "Performance",
+      "talk": "Talk",
+      "workshop": "Workshop",
+      "food": "Food",
+      "family": "Family",
+      "exhibition": "Exhibition",
+      "other": "Programme"
+    },
+    "partnerTiers": {
+      "headline": "Headline partner",
+      "gold": "Gold partner",
+      "silver": "Silver partner",
+      "community": "Community partner",
+      "media": "Media partner"
+    },
+    "volunteerLead": "Festivals run on volunteers. Pick a shift that suits you: you get a crew briefing and meet people from every chapter.",
+    "shiftFill": "{taken} of {capacity} volunteers",
+    "joinShift": "Volunteer for this shift",
+    "leaveShift": "Leave this shift",
+    "shiftFull": "Shift full",
+    "shiftJoined": "Thank you! You are on the volunteer crew.",
+    "shiftLeft": "You left the shift.",
+    "signInToVolunteer": "Sign in to volunteer",
+    "stallLead": "Food, crafts, culture and community stalls are welcome. Tell us about yours and the team will reply by email.",
+    "stallFee": "Stall fee: {fee}, invoiced after acceptance.",
+    "stallSent": "Application sent. We will reply by email.",
+    "stallWithdrawn": "Application withdrawn.",
+    "withdraw": "Withdraw application",
+    "signInToApply": "Sign in to apply for a stall",
+    "stallStatus": {
+      "submitted": "Application for {name} received: under review",
+      "accepted": "{name} is accepted. Check your email for next steps.",
+      "waitlisted": "{name} is on the waiting list",
+      "declined": "{name} was not accepted this time. You can apply again.",
+      "withdrawn": "Withdrawn"
+    },
+    "stallCategories": {
+      "food": "Food and drink",
+      "crafts": "Crafts and design",
+      "culture": "Culture and heritage",
+      "services": "Services for internationals",
+      "nonprofit": "Non-profit or community",
+      "other": "Other"
+    },
+    "stall": {
+      "name": "Stall or business name",
+      "category": "Category",
+      "description": "What will you offer?",
+      "hint": "At least 30 characters: products, languages spoken, power or water needs.",
+      "website": "Website (optional)",
+      "submit": "Send application"
+    },
+    "errors": {
+      "default": "That did not work. Please try again.",
+      "closed": "This is no longer open.",
+      "tierClosed": "Sales for this ticket have ended. Please pick another one.",
+      "invalid": "Please check the number of people.",
+      "rateLimited": "Too many attempts. Try again in a few minutes.",
+      "full": "The places ran out while you were paying, so you are on the waitlist.",
+      "shift": "Could not change the shift. It may be full, overlapping another of your shifts, or closed.",
+      "stall": "Please complete all fields (description at least 30 characters, website starting with https://).",
+      "exists": "You already applied for this festival."
+    }
+  },
+  "adminFestivals": {
+    "title": "Festivals",
+    "lead": "Large cultural events: ticket tiers, group orders, programme, volunteers, stalls and partners in one console.",
+    "new": "New festival",
+    "newTitle": "Create a festival",
+    "newLead": "Start with the essentials. You add tiers, programme, volunteer shifts, stalls and partners in the console.",
+    "create": "Create draft",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "save": "Save changes",
+    "draftNote": "The festival starts as a draft that only organisers can see. Publish it from the console when the checklist is complete.",
+    "defaultTier": "General admission",
+    "emptyTitle": "No festivals yet",
+    "emptyText": "Create your first festival: it stays a private draft until you publish it.",
+    "sold": "{taken} of {capacity} places sold ({pct}%)",
+    "pendingStalls": "{count, plural, one {# stall to review} other {# stalls to review}}",
+    "demo": "Demo festival",
+    "free": "Free",
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "cancelled": "Cancelled"
+    },
+    "statusToast": {
+      "published": "Festival published. It is now live on /festivals.",
+      "draft": "Festival moved back to draft.",
+      "cancelled": "Festival cancelled."
+    },
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "cancel": "Cancel festival",
+    "restore": "Restore as draft",
+    "viewPublic": "Public page",
+    "checkIn": "Door check-in",
+    "attendees": "Attendee list (CSV)",
+    "tabsLabel": "Festival console sections",
+    "tabs": {
+      "overview": "Overview",
+      "tickets": "Tickets",
+      "programme": "Programme",
+      "volunteers": "Volunteers",
+      "stalls": "Stalls",
+      "partners": "Partners & FAQ",
+      "settings": "Settings"
+    },
+    "stats": {
+      "sold": "Places sold",
+      "revenue": "Ticket revenue",
+      "checkedIn": "Checked in",
+      "waitlist": "On waitlist",
+      "volunteers": "Volunteers",
+      "stalls": "Stalls to review"
+    },
+    "checklistTitle": "Launch checklist",
+    "checklistLabel": "Festival {percent}% ready",
+    "done": "done",
+    "todo": "to do",
+    "checklist": {
+      "details": "Tagline and a description of at least 80 characters",
+      "venue": "Venue chosen",
+      "tiers": "At least one ticket tier",
+      "programme": "At least 3 programme items",
+      "faq": "At least 3 FAQ answers",
+      "partners": "At least one partner",
+      "volunteers": "Volunteer shifts (if volunteering is open)",
+      "published": "Published"
+    },
+    "tierSold": "{sold} of {cap} sold",
+    "salesEnd": "early-bird deadline set",
+    "remove": "Remove {name}",
+    "addTier": "Add ticket tier",
+    "addItem": "Add to programme",
+    "addShift": "Add volunteer shift",
+    "addPartner": "Add partner",
+    "addFaq": "Add question",
+    "programmeEmpty": "No programme yet. Add performances, talks, workshops and food slots.",
+    "timezoneNote": "Times are in the chapter timezone ({tz}).",
+    "stagePlaceholder": "Main stage",
+    "rolePlaceholder": "Welcome desk",
+    "partners": "Partners",
+    "faq": "Frequently asked questions",
+    "reportLink": "sponsor report",
+    "permissionNote": "Only add partners who agreed in writing to appear on the page.",
+    "volunteersClosed": "Volunteering is closed on the public page. Open it in Settings.",
+    "stallsEmpty": "No stall applications yet.",
+    "stallsClosed": "Stall applications are closed. Open them in Settings.",
+    "decision": "Decision",
+    "note": "Note for the team (internal)",
+    "saveDecision": "Save decision",
+    "shiftFill": "{taken} of {capacity} volunteers",
+    "kinds": {
+      "performance": "Performance",
+      "talk": "Talk",
+      "workshop": "Workshop",
+      "food": "Food",
+      "family": "Family",
+      "exhibition": "Exhibition",
+      "other": "Other"
+    },
+    "partnerTiers": {
+      "headline": "Headline partner",
+      "gold": "Gold partner",
+      "silver": "Silver partner",
+      "community": "Community partner",
+      "media": "Media partner"
+    },
+    "stallCategories": {
+      "food": "Food and drink",
+      "crafts": "Crafts and design",
+      "culture": "Culture and heritage",
+      "services": "Services",
+      "nonprofit": "Non-profit",
+      "other": "Other"
+    },
+    "stallStatus": {
+      "submitted": "New",
+      "accepted": "Accepted",
+      "waitlisted": "Waiting list",
+      "declined": "Declined",
+      "withdrawn": "Withdrawn"
+    },
+    "fields": {
+      "chapter": "Chapter",
+      "title": "Festival name",
+      "tagline": "Tagline (one line)",
+      "summary": "Short summary (cards and search)",
+      "description": "Description",
+      "startDate": "First day",
+      "startTime": "Opens at",
+      "endDate": "Last day",
+      "endTime": "Closes at",
+      "venue": "Venue",
+      "capacity": "Total capacity",
+      "maxPerOrder": "Max people per order",
+      "tierName": "Ticket name",
+      "tierPrice": "Price",
+      "tierCapacity": "Places in this tier (empty = shared)",
+      "tierDescription": "What is included",
+      "sortOrder": "Order",
+      "salesEndDate": "Sales end (date, optional)",
+      "salesEndTime": "Sales end (time)",
+      "itemTitle": "Title",
+      "itemDescription": "Description",
+      "kind": "Type",
+      "stage": "Stage or area",
+      "performer": "Performer or speaker",
+      "date": "Date",
+      "start": "Start",
+      "end": "End",
+      "role": "Role",
+      "shiftCapacity": "Volunteers needed",
+      "shiftDescription": "What the shift involves",
+      "partnerName": "Partner name",
+      "website": "Website",
+      "partnerTier": "Partner level",
+      "question": "Question",
+      "answer": "Answer",
+      "stallFee": "Stall fee ({currency}, optional)",
+      "volunteersOpen": "Open volunteer sign-up on the public page",
+      "stallsOpen": "Open stall applications on the public page"
+    },
+    "errors": {
+      "default": "Please check the highlighted fields.",
+      "venue": "Pick a venue in the selected chapter.",
+      "past": "The festival must start in the future.",
+      "dates": "The end must be after the start (festivals last at most 14 days).",
+      "tierInUse": "This tier already has tickets, so it cannot be removed.",
+      "shiftInUse": "Volunteers signed up for this shift, so it cannot be removed.",
+      "capacity": "Capacity cannot be lower than the places already sold.",
+      "noTiers": "Add at least one ticket tier before publishing.",
+      "rateLimited": "Too many changes in a short time. Wait a minute."
+    },
+    "cancelConfirm": "Cancelling tells every visitor the festival will not happen. Ticket holders keep their tickets until you refund them in Stripe.",
+    "cancelYes": "Yes, cancel the festival"
+  },
+  "sponsorReport": {
+    "eyebrow": "Partner report for {sponsor}",
+    "tier": "Partnership level: {tier}",
+    "print": "Print or save as PDF",
+    "hidden": "Fewer than 5",
+    "numbers": {
+      "registered": "People registered",
+      "attended": "People checked in",
+      "countries": "Countries of origin (5+ people each)",
+      "programme": "Programme items"
+    },
+    "privacy": "Aggregates only. Any number under 5 is hidden so no attendee can be identified.",
+    "generated": "Generated on {date} by the Expats in Business platform."
   }
 }

@@ -75,6 +75,11 @@ async function TicketView({ params, searchParams }: Props) {
       <header className="flex flex-col items-start gap-2">
         <Badge variant={STATUS_VARIANT[ticket.status]}>{t(`status.${ticket.status}`)}</Badge>
         <h1 className="text-h1">{ticket.event.title}</h1>
+        {ticket.quantity > 1 ? (
+          <p className="font-heading text-h3 font-bold text-brand-950" data-testid="ticket-party">
+            {t("admits", { count: ticket.quantity })}
+          </p>
+        ) : null}
         <p className="text-muted-foreground">
           {formatInZone(ticket.event.startsAt, zone, locale, {
             dateStyle: "full",

@@ -39,6 +39,7 @@ export const accountNav = {
 export const directoryNav = [
   { id: "businesses", href: "/businesses", labelKey: "nav.businesses", status: "live" },
   { id: "bubbles", href: "/bubbles", labelKey: "nav.bubbles", status: "live" },
+  { id: "festivals", href: "/festivals", labelKey: "nav.festivals", status: "live" },
 ] as const satisfies readonly NavItem[];
 
 export const legalNav = [

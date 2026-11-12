@@ -10,6 +10,7 @@ import { CommandPalette } from "./command-palette";
 export const ADMIN_SECTIONS = [
   { key: "overview", href: "/admin", adminOnly: false },
   { key: "events", href: "/admin/events", adminOnly: false },
+  { key: "festivals", href: "/admin/festivals", adminOnly: false },
   { key: "members", href: "/admin/members", adminOnly: true },
   { key: "providers", href: "/admin/providers", adminOnly: true },
   { key: "moderation", href: "/moderation", adminOnly: false },
@@ -25,6 +26,7 @@ export async function AdminNav({ user }: { user: SessionUser }) {
   const sections = ADMIN_SECTIONS.filter((s) => !s.adminOnly || isAdmin(user));
   const quick = [
     { href: "/admin/events/new", label: t("quick.newEvent"), group: t("quickGroup") },
+    { href: "/admin/festivals/new", label: t("quick.newFestival"), group: t("quickGroup") },
     { href: "/dashboard", label: t("quick.dashboard"), group: t("quickGroup") },
   ];
   return (

@@ -4,6 +4,7 @@ import { seedCommunity } from "./community";
 import { resetRandom, type SeedContext } from "./context";
 import { seedEngagement } from "./engagement";
 import { seedEvents } from "./events";
+import { seedFestival } from "./festival";
 import { seedPeople } from "./people";
 
 /** Removes every demo record (isDemo = true); cascades take tickets, roles, votes and the rest. */
@@ -44,4 +45,5 @@ export async function seedDemo(db: PrismaClient, today: Date) {
   const events = await seedEvents(ctx, people);
   await seedCommunity(ctx, people, events);
   await seedEngagement(ctx, people, events);
+  await seedFestival(ctx, people);
 }

@@ -28,11 +28,17 @@ export async function checkIn(input: {
       eventId: true,
       userId: true,
       status: true,
+      quantity: true,
       user: { select: { name: true } },
       checkIn: { select: { checkedInAt: true } },
     },
   });
-  const verdict = classifyScan(ticket, input.eventId);
+  const classified = classifyScan(ticket, input.eventId);
+  // Group tickets: door staff see how many people this one QR code admits.
+  const verdict =
+    ticket && ticket.quantity > 1 && "name" in classified && classified.name
+      ? { ...classified, name: `${classified.name} (×${ticket.quantity})` }
+      : classified;
   if (verdict.status !== "ok" || !ticket) return verdict;
   try {
     await db.checkIn.create({

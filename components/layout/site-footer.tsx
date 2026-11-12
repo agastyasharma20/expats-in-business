@@ -23,7 +23,7 @@ export function SiteFooter() {
   const email = getFact("contact.email").value;
 
   return (
-    <footer className="bg-brand-950 text-on-dark [--ring:var(--on-dark)]">
+    <footer id="site-footer" className="bg-brand-950 text-on-dark [--ring:var(--on-dark)]">
       <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-6">
         <div className="flex flex-col gap-4 lg:col-span-2">
           <Logo tone="white" className="h-10 self-start" />

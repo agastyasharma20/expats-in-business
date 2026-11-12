@@ -20,3 +20,16 @@ export function getFeatureFlags(env: Pick<Env, `FEATURE_${string}` & keyof Env>)
     paidTickets: env.FEATURE_PAID_TICKETS,
   };
 }
+
+export const FLAG_NAMES = ["coffeeRoulette", "sessionPulse", "bubblesMap", "paidTickets"] as const;
+
+/** Env defaults plus admin overrides (SiteSetting "featureFlags"); unknown or bad values are ignored. */
+export function mergeFlags(defaults: FeatureFlags, overrides: unknown): FeatureFlags {
+  if (!overrides || typeof overrides !== "object" || Array.isArray(overrides)) return defaults;
+  const merged = { ...defaults };
+  for (const name of FLAG_NAMES) {
+    const value = (overrides as Record<string, unknown>)[name];
+    if (typeof value === "boolean") merged[name] = value;
+  }
+  return merged;
+}

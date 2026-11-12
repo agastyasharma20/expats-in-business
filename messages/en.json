@@ -318,7 +318,11 @@
     "providerArea": "Provider area",
     "connections": "Connections",
     "concierge": "Concierge",
-    "roadmap": "Roadmap"
+    "roadmap": "Roadmap",
+    "community": "Community",
+    "bubbles": "Bubbles",
+    "roulette": "Coffee Roulette",
+    "moderation": "Moderation"
   },
   "chapter": {
     "label": "Chapter",
@@ -486,7 +490,8 @@
     "stats": {
       "events": "Sessions joined",
       "connections": "Connections",
-      "businesses": "Businesses"
+      "businesses": "Businesses",
+      "bubbles": "Bubbles joined"
     },
     "suggested": "People you could meet",
     "noSuggested": "Complete your profile to get suggestions.",
@@ -507,6 +512,56 @@
     "myBusinesses": {
       "title": "Your businesses",
       "empty": "You have not listed a business yet. Business listings come with the Business plan."
+    },
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
+      "evening": "Good evening, {name}"
+    },
+    "quick": {
+      "label": "Quick actions",
+      "events": "Find a session",
+      "concierge": "Ask the concierge",
+      "community": "Open groups"
+    },
+    "pending": "{count, plural, one {# person wants to connect with you} other {# people want to connect with you}}",
+    "roadmapDone": "Every step is done. Well done.",
+    "browseMembers": "Browse members",
+    "strength": {
+      "title": "Profile strength",
+      "label": "Profile {percent}% complete",
+      "missing": "Add {items} so members and matching can find you.",
+      "complete": "Your profile is complete.",
+      "items": {
+        "headline": "a headline",
+        "bio": "a short bio",
+        "chapter": "your home chapter",
+        "origin": "your country of origin",
+        "languages": "your languages",
+        "skills": "your skills",
+        "goals": "your goals"
+      }
+    },
+    "activity": {
+      "title": "From your groups",
+      "all": "All groups",
+      "empty": "No new posts in your groups. Join a Bubble to see more.",
+      "cta": "Browse Bubbles"
+    },
+    "roulette": {
+      "title": "Coffee Roulette",
+      "confirmed": "Confirmed",
+      "waiting": "Waiting for answers",
+      "with": "With {names}",
+      "answer": "Answer your match",
+      "open": "See details",
+      "empty": "Meet one or two members for coffee each week.",
+      "join": "Join Coffee Roulette"
+    },
+    "inbox": {
+      "title": "Unread",
+      "all": "All notifications",
+      "empty": "You are all caught up."
     }
   },
   "profile": {
@@ -619,14 +674,6 @@
     "sent": "Thanks. Your message was sent; we usually reply within a few days.",
     "rateLimited": "You have sent several messages already. Try again later.",
     "error": "Please fill in all fields (message at least 10 characters)."
-  },
-  "admin": {
-    "title": "Admin",
-    "lead": "Command centre: events, check-in and the live Pulse screen. More tools arrive with the admin milestone.",
-    "members": "Members",
-    "events": "Events",
-    "chapters": "Chapters",
-    "manageEvents": "Manage events"
   },
   "events": {
     "title": "Sessions",
@@ -1098,7 +1145,12 @@
       "quoteAccepted": "{provider} accepted your quote request",
       "quoteDeclined": "{provider} declined your quote request",
       "verificationApproved": "Your provider profile is now verified",
-      "verificationRejected": "Your verification was not approved. Check the criteria and try again."
+      "verificationRejected": "Your verification was not approved. Check the criteria and try again.",
+      "postRemoved": "A moderator removed one of your posts after a report",
+      "rouletteMatch": "Your Coffee Roulette match for this week is ready",
+      "rouletteConfirmed": "Your Coffee Roulette match is confirmed: say hello",
+      "rouletteDeclined": "{name} cannot make it this week; your match is cancelled",
+      "announcement": "{text}"
     }
   },
   "guides": {
@@ -1200,5 +1252,465 @@
     "finish": "Finish my profile",
     "label": "General information, not legal advice. Always check the official source.",
     "dashboardCta": "Open my roadmap"
+  },
+  "community": {
+    "eyebrow": "Community",
+    "title": "Groups",
+    "lead": "Chapter groups and Cultural Bubbles: ask questions, share tips and read announcements.",
+    "groups": "Your groups",
+    "discover": "Discover more groups",
+    "posts": "{count, plural, =0 {No posts yet} one {# post} other {# posts}}",
+    "active": "Active {when}",
+    "kind": {
+      "chapter": "Chapter",
+      "bubble": "Bubble"
+    },
+    "demo": "Demo group",
+    "emptyTitle": "No groups yet",
+    "emptyDescription": "Join a Cultural Bubble or set your home chapter to see your groups here.",
+    "bubbles": "Browse Bubbles",
+    "moderation": "Moderation queue"
+  },
+  "group": {
+    "back": "All groups",
+    "composer": "Write a post",
+    "bodyHint": "Be kind and concrete. Never share other people's personal data.",
+    "count": "{count} / {max}",
+    "kind": "Type of post",
+    "kinds": {
+      "post": "Post",
+      "question": "Question",
+      "announcement": "Announcement"
+    },
+    "publish": "Publish",
+    "publishing": "Publishing…",
+    "published": "Posted.",
+    "feed": "Posts",
+    "pinned": "Pinned",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "pinnedToast": "Post pinned.",
+    "unpinnedToast": "Post unpinned.",
+    "delete": "Delete",
+    "deleted": "Post deleted.",
+    "reactions": "Reactions",
+    "react": "React with {emoji}, {count} so far",
+    "report": "Report",
+    "reportTitle": "Report this post",
+    "reportLead": "Moderators of this group review every report. The post is hidden for you right away.",
+    "reportReason": "What is wrong with this post?",
+    "reportSend": "Send report",
+    "reported": "Thanks for the report. A moderator will review it.",
+    "underReview": "Hidden while a moderator reviews reports. Only you and moderators can see it.",
+    "openReports": "{count, plural, one {# open report} other {# open reports}}",
+    "demo": "Demo post",
+    "youModerate": "You moderate this group",
+    "bubblePage": "Bubble page",
+    "cannotPost": "Join this Bubble to post here.",
+    "cannotPostChapter": "Only members of this chapter can post here.",
+    "join": "Join the Bubble",
+    "setChapter": "Set your home chapter",
+    "emptyTitle": "No posts yet",
+    "empty": "Start the conversation: ask a question or share a tip.",
+    "older": "Show older posts",
+    "rulesTitle": "Group guidelines",
+    "rules": {
+      "kind": "Be kind and assume good intent.",
+      "privacy": "Never post someone else's contact details or documents.",
+      "selling": "No spam or repeated sales pitches; use the providers directory.",
+      "report": "Report anything that breaks these rules; moderators decide quickly."
+    },
+    "errors": {
+      "default": "Please write between 3 and 2000 characters.",
+      "links": "Please include at most 3 links.",
+      "duplicate": "You already posted this text today.",
+      "rateLimited": "You are posting a lot. Try again in a few minutes.",
+      "forbidden": "You cannot do that in this group.",
+      "reportDefault": "Please describe the problem (at least 5 characters)."
+    },
+    "demoGroup": "Demo group"
+  },
+  "moderation": {
+    "title": "Moderation queue",
+    "lead": "Reported posts in groups you moderate. Keep a post to restore it, or remove it. Every decision is logged.",
+    "reports": "{count, plural, one {# report} other {# reports}}",
+    "autoHidden": "Hidden automatically",
+    "reason": "Reason: {reason}",
+    "keep": "Keep post",
+    "kept": "Post restored.",
+    "remove": "Remove post",
+    "removedToast": "Post removed and the author notified.",
+    "emptyTitle": "All clear",
+    "empty": "Nothing to review. Thanks for keeping the community friendly.",
+    "toCommunity": "Back to groups"
+  },
+  "bubbles": {
+    "eyebrow": "Cultural Bubbles",
+    "title": "Find your Bubble",
+    "lead": "Members grouped by country of origin, across every chapter. Each Bubble has a lead who welcomes newcomers.",
+    "map": "World map of Cultural Bubbles. Each shaded country links to its Bubble.",
+    "list": "All Bubbles",
+    "country": "Country of origin",
+    "fewer": "Fewer than 5 members",
+    "count": "{count} members",
+    "joinedBadge": "Joined",
+    "demo": "Demo Bubble",
+    "legend": "Darker means more members. Counts under 5 are never shown, to protect privacy.",
+    "legendFew": "Fewer",
+    "legendMany": "More",
+    "hover": "{country}: {count} members",
+    "hoverHidden": "{country}: fewer than 5 members",
+    "back": "All Bubbles",
+    "join": "Join this Bubble",
+    "joined": "Welcome to the Bubble. You stay hidden from the member list until you choose to show yourself.",
+    "leave": "Leave",
+    "left": "You left the Bubble.",
+    "rateLimited": "Too many changes. Try again in a few minutes.",
+    "signInToJoin": "Sign in to join",
+    "showMe": "Show me on this page",
+    "hideMe": "Hide me from this page",
+    "shownToast": "You are now listed on the Bubble page.",
+    "hiddenToast": "You are hidden from the Bubble page.",
+    "lead1": "Bubble lead",
+    "leadNone": "Lead wanted: ask your chapter team if you would like to lead this Bubble.",
+    "group": "Open the Bubble group",
+    "events": "Bubble sessions",
+    "noEvents": "No Bubble sessions planned yet. Suggest one to your Bubble lead.",
+    "allEvents": "All sessions",
+    "visibleMembers": "Members who show themselves here",
+    "visibleEmpty": "No members chose to be listed yet."
+  },
+  "roulette": {
+    "eyebrow": "Meet someone new",
+    "title": "Coffee Roulette",
+    "lead": "Once a week we match you with one or two members: people with shared goals and skills you can learn from, never someone you met in the last 8 weeks.",
+    "priority": "Member Plus: priority matching",
+    "howTitle": "How it works",
+    "how": {
+      "join": {
+        "title": "Join a roulette",
+        "text": "In your chapter, your Bubbles, or both."
+      },
+      "match": {
+        "title": "Get matched on Monday",
+        "text": "A pair, or a trio when the numbers are odd."
+      },
+      "meet": {
+        "title": "Everyone accepts, then meet",
+        "text": "Contact details appear once everyone accepts."
+      }
+    },
+    "optInTitle": "Where to be matched",
+    "chapter": "Chapter {name}",
+    "bubble": "{name}",
+    "inScope": "You are in the next draw",
+    "notInScope": "Not taking part",
+    "optIn": "Join",
+    "optOut": "Leave",
+    "joined": "You are in. Matching runs every Monday.",
+    "left": "You left this roulette.",
+    "error": "That did not work. Try again in a minute.",
+    "noScopesTitle": "Nowhere to match you yet",
+    "noScopes": "Set your home chapter or join a Cultural Bubble to take part.",
+    "browseBubbles": "Browse Bubbles",
+    "matchesTitle": "Your matches",
+    "noMatches": "No match yet. Matching runs every Monday for everyone who joined.",
+    "week": "Week of {date}",
+    "cafe": "Suggested place: {cafe}",
+    "cafeNote": "Placeholder: no café partnership exists yet. Meet anywhere you like.",
+    "accept": "Accept",
+    "accepted": "You accepted. We will tell you when everyone has.",
+    "decline": "Decline",
+    "declinedToast": "Match declined.",
+    "status": {
+      "proposed": "Waiting for answers",
+      "confirmed": "Confirmed",
+      "declined": "Cancelled"
+    },
+    "you": {
+      "accepted": "You accepted. Waiting for the others."
+    }
+  },
+  "admin": {
+    "title": "Command centre",
+    "lead": "Members, sessions, check-ins and community health at a glance. Every change you make here is logged.",
+    "scopeGlobal": "All chapters",
+    "scopeChapters": "{count, plural, one {Your chapter} other {Your # chapters}}",
+    "newEvent": "New session",
+    "needsAction": "Action",
+    "kpi": {
+      "members": "Members",
+      "newMembers": "New in 30 days",
+      "upcoming": "Upcoming sessions",
+      "checkIns": "Check-ins in 30 days",
+      "reports": "Open reports",
+      "verifications": "Pending verifications",
+      "concierge": "Concierge questions in 30 days",
+      "suspended": "Suspended accounts"
+    },
+    "charts": {
+      "signups": "Sign-ups, last 30 days",
+      "signupsLabel": "Bar chart of daily sign-ups over the last 30 days",
+      "checkIns": "Check-ins, last 30 days",
+      "checkInsLabel": "Bar chart of daily check-ins over the last 30 days",
+      "table": "Show as table"
+    },
+    "funnel": {
+      "title": "Member journey",
+      "signedUp": "Signed up",
+      "onboarded": "Started onboarding",
+      "attended": "Attended a session",
+      "connected": "Made a connection",
+      "step": "{pct}% of previous step"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "all": "Audit log",
+      "system": "System",
+      "empty": "Nothing logged yet."
+    },
+    "actions": {
+      "post": {
+        "pin": "Post pinned",
+        "unpin": "Post unpinned",
+        "remove": "Post removed",
+        "keep": "Reported post kept"
+      },
+      "member": {
+        "suspend": "Member suspended",
+        "reinstate": "Member reinstated",
+        "export": "Members exported"
+      },
+      "role": {
+        "grant": "Role granted",
+        "revoke": "Role revoked"
+      },
+      "setting": {
+        "flag": "Feature flag changed",
+        "banner": "Site banner changed"
+      },
+      "broadcast": {
+        "send": "Announcement sent"
+      },
+      "roulette": {
+        "run": "Roulette drawn"
+      }
+    },
+    "health": {
+      "title": "Chapter health",
+      "chapter": "Chapter",
+      "status": "Status",
+      "members": "Members",
+      "sessions": "Sessions, next 30 days",
+      "checkIns": "Check-ins, last 30 days",
+      "leads": "Leads",
+      "noLead": "None",
+      "statuses": {
+        "live": "Live",
+        "launching": "Launching",
+        "requested": "Requested"
+      }
+    }
+  },
+  "adminShell": {
+    "label": "Admin sections",
+    "search": "Jump to…",
+    "paletteTitle": "Go to an admin page",
+    "paletteHint": "Type to filter, use the arrow keys to move and Enter to open.",
+    "placeholder": "Type a page or action",
+    "noResults": "Nothing matches.",
+    "sectionsGroup": "Sections",
+    "quickGroup": "Quick actions",
+    "quick": {
+      "newEvent": "Create a session",
+      "dashboard": "My dashboard"
+    },
+    "sections": {
+      "overview": "Overview",
+      "events": "Sessions",
+      "members": "Members",
+      "providers": "Providers",
+      "moderation": "Moderation",
+      "roulette": "Roulette",
+      "audit": "Audit log",
+      "settings": "Settings",
+      "system": "System"
+    }
+  },
+  "adminMembers": {
+    "title": "Members",
+    "lead": "Search accounts, manage chapter roles, suspend abuse. Admin accounts and your own are read-only.",
+    "search": "Name or email",
+    "searchPlaceholder": "e.g. Priya",
+    "status": "Status",
+    "roleFilter": "Role",
+    "apply": "Apply filters",
+    "results": "{count, plural, one {# member} other {# members}}",
+    "export": "Export CSV",
+    "demo": "Demo",
+    "joined": "joined {date}",
+    "checkIns": "{count, plural, one {# check-in} other {# check-ins}}",
+    "viewProfile": "View public profile",
+    "locked": "This account is read-only here (your own or another admin).",
+    "role": "Role",
+    "chapter": "Chapter",
+    "grant": "Grant role",
+    "granted": "Role granted.",
+    "revoked": "Role revoked.",
+    "revokeLabel": "Revoke {role} in {chapter}",
+    "suspend": "Suspend",
+    "suspended": "Member suspended and signed out everywhere.",
+    "reinstate": "Reinstate",
+    "reinstated": "Member reinstated.",
+    "reason": "Reason (internal, optional)",
+    "saving": "Saving…",
+    "pagination": "Pages",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {pages}",
+    "statuses": {
+      "all": "All",
+      "active": "Active",
+      "suspended": "Suspended",
+      "deletion": "Deletion requested"
+    },
+    "roles": {
+      "any": "Any role",
+      "member": "Member",
+      "admin": "Admin",
+      "chapter_lead": "Chapter lead",
+      "moderator": "Moderator",
+      "bubble_lead": "Bubble lead"
+    },
+    "errors": {
+      "default": "That did not work. Check the form and try again.",
+      "forbidden": "You cannot change this account.",
+      "rateLimited": "Too many changes in a short time. Wait a minute."
+    }
+  },
+  "adminAudit": {
+    "title": "Audit log",
+    "lead": "Every admin and moderator decision, newest first. Details never contain personal data.",
+    "action": "Action",
+    "allActions": "All actions",
+    "apply": "Filter",
+    "when": "When",
+    "who": "Who",
+    "entity": "Target",
+    "details": "Details",
+    "system": "System",
+    "empty": "No entries match.",
+    "pagination": "Pages",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {pages}"
+  },
+  "adminSettings": {
+    "title": "Settings",
+    "lead": "Change how the platform behaves without a deploy. Every change is logged.",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "flags": {
+      "title": "Feature flags",
+      "lead": "Turn features off if they cause trouble; navigation hides them at once.",
+      "on": "On",
+      "off": "Off",
+      "turnOn": "Turn on",
+      "turnOff": "Turn off",
+      "names": {
+        "coffeeRoulette": "Coffee Roulette",
+        "sessionPulse": "Session Pulse",
+        "bubblesMap": "Bubbles map",
+        "paidTickets": "Paid tickets"
+      },
+      "help": {
+        "coffeeRoulette": "Weekly member matching and its pages.",
+        "sessionPulse": "Live audience screen during sessions.",
+        "bubblesMap": "World map on /bubbles (the list always stays).",
+        "paidTickets": "Stripe checkout for paid sessions."
+      }
+    },
+    "banner": {
+      "title": "Site banner",
+      "lead": "A short notice at the top of every page, for example planned maintenance.",
+      "text": "Text (up to 200 characters)",
+      "tone": "Style",
+      "info": "Information",
+      "warning": "Warning",
+      "enabled": "Show the banner"
+    },
+    "broadcast": {
+      "title": "Announcement",
+      "lead": "Sends an in-app notification to every active member of a chapter. At most 5 a day.",
+      "audience": "Who receives it",
+      "everyone": "Every member",
+      "text": "Message (10 to 280 characters)",
+      "send": "Send announcement",
+      "sent": "Sent to {value} members."
+    },
+    "errors": {
+      "default": "That did not work. Try again.",
+      "rateLimited": "Limit reached. Try again later.",
+      "banner": "Write at least 3 characters to show the banner.",
+      "broadcast": "Write between 10 and 280 characters."
+    }
+  },
+  "adminRoulette": {
+    "title": "Coffee Roulette",
+    "lead": "Draws for the week of {week}. The weekly job runs on Mondays; you can draw a scope now.",
+    "kind": {
+      "chapter": "Chapter roulette",
+      "bubble": "Bubble roulette"
+    },
+    "drawn": "Drawn",
+    "notDrawn": "Not drawn yet",
+    "stats": {
+      "participants": "Joined",
+      "matches": "Matches",
+      "confirmed": "Confirmed"
+    },
+    "run": "Draw now",
+    "ran": "Matches created and members notified.",
+    "already": "This week is already drawn.",
+    "error": "Could not draw. Try again.",
+    "empty": "Nobody has joined a roulette yet."
+  },
+  "adminSystem": {
+    "title": "System",
+    "lead": "Health of the database, jobs, rate limits and configuration. Secrets are never shown.",
+    "ok": "OK",
+    "attention": "Needs attention",
+    "ms": "{ms} ms",
+    "testMode": "test mode",
+    "notConfigured": "not configured",
+    "never": "never",
+    "on": "on",
+    "off": "off",
+    "checks": {
+      "database": "Database",
+      "stripe": "Payments",
+      "ai": "AI provider",
+      "proxy": "Trusted proxy hops"
+    },
+    "limits": {
+      "title": "Rate limits, last hour",
+      "lead": "Requests counted per limit bucket. A sudden spike usually means automation.",
+      "bucket": "Bucket",
+      "keys": "Clients",
+      "hits": "Requests",
+      "empty": "No limited requests in the last hour."
+    },
+    "runtime": {
+      "title": "Runtime",
+      "mode": "Mode",
+      "node": "Node.js",
+      "migration": "Latest migration",
+      "roulette": "Last roulette draw",
+      "reminders": "Last roadmap reminder"
+    }
+  },
+  "banner": {
+    "label": "Site notice"
   }
 }

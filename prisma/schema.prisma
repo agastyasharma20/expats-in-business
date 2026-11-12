@@ -157,6 +157,9 @@ model User {
   stripeCustomerId    String?   @unique
   /// Set when the member asks to delete the account; hard delete after 30 days.
   deletionRequestedAt DateTime?
+  /// Set by an admin: the account cannot sign in and all its sessions are revoked.
+  suspendedAt         DateTime?
+  suspendedReason     String?
   isDemo              Boolean   @default(false)
 
   sessions            Session[]
@@ -171,6 +174,8 @@ model User {
   connectionsSent     Connection[]           @relation("ConnectionRequester")
   connectionsReceived Connection[]           @relation("ConnectionAddressee")
   notifications       Notification[]
+  rouletteOptIns      RouletteOptIn[]
+  rouletteMatches     RouletteMatchMember[]
   bubbles             BubbleMember[]
   posts               Post[]
   reactions           PostReaction[]
@@ -511,6 +516,9 @@ model Event {
   endsAt      DateTime
   venueId     String?
   venue       Venue?      @relation(fields: [venueId], references: [id])
+  /// Cultural Bubble this session belongs to (shown on the Bubble page).
+  bubbleId    String?
+  bubble      Bubble?     @relation(fields: [bubbleId], references: [id], onDelete: SetNull)
   onlineUrl   String?
   capacity    Int
   status      EventStatus @default(draft)
@@ -657,6 +665,7 @@ model Bubble {
   createdAt         DateTime       @default(now())
   members           BubbleMember[]
   groups            Group[]
+  events            Event[]
 }
 
 model BubbleMember {
@@ -698,7 +707,10 @@ model Post {
   kind      PostKind       @default(post)
   body      String
   pinned    Boolean        @default(false)
+  /// Hidden from everyone but the author and moderators while reports are reviewed.
   hiddenAt  DateTime?
+  /// Removed by a moderator (kept for the audit trail, never shown).
+  removedAt DateTime?
   isDemo    Boolean        @default(false)
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
@@ -721,16 +733,19 @@ model PostReaction {
 }
 
 model PostReport {
-  id         String       @id @default(cuid(2))
-  postId     String
-  post       Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
-  reporterId String
-  reporter   User         @relation(fields: [reporterId], references: [id], onDelete: Cascade)
-  reason     String
-  status     ReportStatus @default(open)
-  createdAt  DateTime     @default(now())
+  id           String       @id @default(cuid(2))
+  postId       String
+  post         Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporterId   String
+  reporter     User         @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reason       String
+  status       ReportStatus @default(open)
+  createdAt    DateTime     @default(now())
+  resolvedAt   DateTime?
+  resolvedById String?
 
   @@unique([postId, reporterId])
+  @@index([status])
 }
 
 // ─── Marketplace ──────────────────────────────────────────────────────────────────────────────
@@ -998,6 +1013,7 @@ model AuditLog {
 
   @@index([chapterId, createdAt])
   @@index([entityType, entityId])
+  @@index([createdAt])
 }
 
 /// Fixed-window counters for lib/rate-limit.ts (Postgres-backed).
@@ -1038,4 +1054,65 @@ model ProviderDailyStat {
   quoteRequests Int      @default(0)
 
   @@id([providerId, day])
+}
+
+/// Coffee Roulette opt-in, per scope: "chapter:<id>" or "bubble:<id>".
+model RouletteOptIn {
+  id        String   @id @default(cuid(2))
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scopeKey  String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, scopeKey])
+  @@index([scopeKey])
+}
+
+/// One weekly matching run per scope (idempotent: a second run in the same week does nothing).
+model RouletteRound {
+  id        String          @id @default(cuid(2))
+  scopeKey  String
+  weekStart DateTime        @db.Date
+  createdAt DateTime        @default(now())
+  matches   RouletteMatch[]
+
+  @@unique([scopeKey, weekStart])
+}
+
+enum RouletteStatus {
+  proposed
+  confirmed
+  declined
+}
+
+/// A pair or trio. Confirmed only when every member accepts; any decline cancels it.
+model RouletteMatch {
+  id        String                @id @default(cuid(2))
+  roundId   String
+  round     RouletteRound         @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  status    RouletteStatus        @default(proposed)
+  /// Placeholder partner café (labelled; no partnerships exist yet).
+  cafe      String?
+  createdAt DateTime              @default(now())
+  members   RouletteMatchMember[]
+}
+
+model RouletteMatchMember {
+  matchId     String
+  match       RouletteMatch @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accepted    Boolean?
+  respondedAt DateTime?
+
+  @@id([matchId, userId])
+  @@index([userId])
+}
+
+/// Admin-editable settings without a deploy (feature flag overrides, site banner). Audited.
+model SiteSetting {
+  key         String   @id
+  value       Json
+  updatedById String?
+  updatedAt   DateTime @updatedAt
 }

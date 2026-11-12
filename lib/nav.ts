@@ -38,6 +38,7 @@ export const accountNav = {
 /** Directory pages linked from the footer (the header keeps the five main sections). */
 export const directoryNav = [
   { id: "businesses", href: "/businesses", labelKey: "nav.businesses", status: "live" },
+  { id: "bubbles", href: "/bubbles", labelKey: "nav.bubbles", status: "live" },
 ] as const satisfies readonly NavItem[];
 
 export const legalNav = [

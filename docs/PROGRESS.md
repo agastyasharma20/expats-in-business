@@ -12,8 +12,24 @@
 | M8 Membership and billing  | done; security review fixed   | develop · v0.8.0                           | Lighthouse /pricing 96/100/100/100  |
 | M9 Directory and providers | done                          | develop · v0.9.0                           | 104/104 e2e, crawler 200 pages      |
 | M10 Guides and concierge   | done; prompt safety approved  | develop · v0.10.0                          | 109/109 e2e, demo works offline     |
+| M11 Landing Roadmap        | done                          | develop · v0.11.0                          | 6 scenarios TDD, reminders job      |
 
 ## Log
+
+### 2026-11-12 · M11 Landing Roadmap 30/60/90
+
+**Shipped** (test-driven: `tests/unit/roadmap.test.ts` was written before the rules)
+
+- **`lib/roadmap/rules.ts`**, a pure, deterministic function: onboarding answers + country + arrival date → ordered tasks. Selection by residence situation, goals (founders imply "find clients") and `skipForCitizens` (a Polish returnee needs no PESEL or residence application); dependency-first order (Kahn) with the brief's sequence as tie-break; due date = arrival + day 7/30/60/90 offset, never before a dependency.
+- **Scenarios** (unit tests): Priya (non-EU employee), Karim (non-EU founder: + tax basics, KSeF after tax basics), student, family member, EU citizen (no MOS), Polish returnee (no PESEL, no MOS; trusted profile no longer waits for PESEL).
+- **Regeneration** (`mergeRoadmap`, `syncRoadmap`): completed steps are always kept, new ones added, open ones that no longer apply removed, open due dates follow a changed arrival date. Runs on every onboarding save once onboarding is complete.
+- **/roadmap**: three columns (first 30 days, 31–60, 61–90) on desktop, numbered stepper on mobile; each step shows why it matters, the guide link, the official page, due or overdue date, dependencies, and a done toggle (real form; SuccessCheck draws in; toast). Progress ring and count, "Add deadlines to my calendar" (.ics, all-day events, open steps only), "Change my answers".
+- **Dashboard**: roadmap card with progress ring, next step and link.
+- **AI intro**: two sentences from task titles only (no personal data); rejected unless 1–2 plain sentences, no links or numbers; cached per plan; template fallback with AI_PROVIDER=demo or offline. The AI never sees or changes selection or order (unit test).
+- **Reminders**: `npm run jobs -- reminders` emails each member once about steps due in about 7 days (`UserTask.remindedAt`; a changed due date resets it). `scripts/jobs.ts` is the job runner (roulette arrives in M12).
+- Seed: "why it matters" text per task (no legal detail; that lives in sourced guides); Priya and Karim have fixed residence situations and recent arrival dates for demos. Migration `20261112130000_roadmap` (`RoadmapTask.skipForCitizens`, `UserTask.remindedAt`).
+
+**Verification**: `npm run check` green (236 unit tests incl. 18 roadmap); production build; Playwright 112 passed, 1 flaky (waitlist redirect timing, passed on retry), including `tests/e2e/roadmap.spec.ts` (founder plan in columns with official link and axe, done persists, editing onboarding regenerates and keeps the completed step, calendar export, dashboard ring); reminder job verified against Mailpit (one email, none on the second run); crawler green on 200 pages.
 
 ### 2026-11-12 · M10 Guides and AI concierge
 

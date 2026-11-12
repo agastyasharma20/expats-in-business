@@ -102,6 +102,9 @@ export async function saveOnboardingStep(_prev: ActionState, form: FormData): Pr
     where: { id: profile.id },
     data: { onboardingStep: Math.max(profile.onboardingStep, index + 1) },
   });
+  // Once onboarding is complete, any changed answer updates the roadmap (completed steps are kept).
+  if (Math.max(profile.onboardingStep, index + 1) >= ONBOARDING_STEPS.length)
+    await syncRoadmap(user.id);
 
   if (index === ONBOARDING_STEPS.length - 1) {
     const done = await db.profile.findUnique({

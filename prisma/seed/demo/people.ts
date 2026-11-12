@@ -212,12 +212,10 @@ export async function seedPeople(ctx: SeedContext): Promise<DemoPeople> {
           (persona?.arrivalDaysAgo ?? faker.number.int({ min: 30, max: 3000 })) * 86_400_000,
       ),
       residenceSituation:
-        (persona?.residence ?? u.origin === "PL") ||
-        u.origin === "IT" ||
-        u.origin === "ES" ||
-        u.origin === "DE"
+        persona?.residence ??
+        (u.origin === "PL" || u.origin === "IT" || u.origin === "ES" || u.origin === "DE"
           ? ("eu_citizen" as const)
-          : faker.helpers.arrayElement(RESIDENCE.slice(1)),
+          : faker.helpers.arrayElement(RESIDENCE.slice(1))),
       openToCoffee: faker.datatype.boolean({ probability: 0.6 }),
       foundingNumber: index + 1 <= 500 && !inWarsaw ? index + 1 : null,
       onboardingStep: 6,

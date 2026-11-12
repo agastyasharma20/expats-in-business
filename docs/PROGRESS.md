@@ -15,8 +15,23 @@
 | M11 Landing Roadmap        | done                          | develop · v0.11.0                          | 6 scenarios TDD, reminders job      |
 | M12 Community + admin      | done; pending review          | feat/m12-community → v0.12.0 (proposed)    | community e2e, command centre       |
 | M13 Festivals              | done; pending review          | feat/m13-festivals → v0.13.0 (proposed)    | group tickets, console, stalls      |
+| M14 Admin tools + SEO base | done; pending review          | feat/m13-festivals → v0.14.0 (proposed)    | 132/132 e2e (CI=1), sitemap         |
 
 ## Log
+
+### 2026-11-13 · M14 completed: applications board, catalogs, sponsor report; SEO basics
+
+**Built**
+
+- **Get involved** (`/get-involved`, footer link): members apply to speak, share their story or contribute. Name and email come from the account (nothing extra collected); one open application per kind; 3 an hour, 6 a day; text cleaned like posts. Members see the status of their applications.
+- **Applications board** (`/admin/applications`): New → In review → Accepted / Declined columns with one-click moves, pitch and link on each card; chapter leads see their chapter only; every move audited with from/to; applicants notified on accept/decline.
+- **Catalogs** (`/admin/catalogs`, admin only): edit plan prices, proposal/approved status and "on sale"; edit or add event formats and provider categories. New checkouts use a new price at once; existing subscriptions keep theirs. Audit entries record old and new amounts. Cache tags (`plans`, `formats`, `directory`) refresh the public pages immediately.
+- **Signed sponsor report** shipped with M13 (`/sponsor-report/<token>`).
+- **SEO**: `robots.txt` (member, admin, API, token and tool URLs disallowed in every locale) and `sitemap.xml` (46 URLs in the demo: static pages, guides, upcoming sessions and festivals, Bubbles) with en/pl/uk alternates.
+
+**Verified**: `npm run check` green (281 unit tests); production build; Playwright 132 passed, 0 failed, 1 flaky (free reservation redirect over 5 s under load, then the waitlist promotion passed on retry); robots and sitemap fetched from the production server.
+
+**Not done yet (M15/M16)**: Polish and Ukrainian translations of all new screens; Lighthouse pass on the new pages; demo script and handover README for v1.0.0-demo.
 
 ### 2026-11-13 · M13 Festivals (big cultural events)
 

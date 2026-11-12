@@ -11,8 +11,30 @@
 | M7 Events and ticketing    | done                          | develop · v0.7.0                           | builder, check-in, Pulse, Who I met |
 | M8 Membership and billing  | done; security review fixed   | develop · v0.8.0                           | Lighthouse /pricing 96/100/100/100  |
 | M9 Directory and providers | done                          | develop · v0.9.0                           | 104/104 e2e, crawler 200 pages      |
+| M10 Guides and concierge   | done; prompt safety approved  | develop · v0.10.0                          | 109/109 e2e, demo works offline     |
 
 ## Log
+
+### 2026-11-12 · M10 Guides and AI concierge
+
+**Shipped**
+
+- **/guides** and **/guides/[slug]** (prerendered): last-verified badge, official sources box (https, allow-listed hosts in `config/official-sources.ts`), "General information, not legal advice" disclaimer, related guides, "Ask the concierge". Frontmatter gains `verificationStatus` (drafts are never embedded) and `related`.
+- **`npm run embed`** (`scripts/embed-guides.ts`, part of setup): heading-aware ~500-token chunks (TODO notes excluded), local all-MiniLM-L6-v2 embeddings (384-d, cached in `MODEL_CACHE_DIR`, offline after the first run), pgvector HNSW; idempotent per guide. 8 guides → 29 chunks in 18 s. The model is warmed at server start (`instrumentation.ts`).
+- **`lib/ai/provider.ts`**: one interface over groq → gemini → openrouter → anthropic → demo (AI SDK v7 `streamText`, `instructions`, first-chunk and total timeouts, SDK retries off). `lib/ai/chain.ts` falls back on 429, 408, 5xx, timeouts and network errors (unit-tested with fake adapters), demo always last.
+- **Retrieval** (`lib/ai/retrieval.ts`): top 5 passages by cosine similarity in the member's country, threshold 0.4 (calibrated: on-topic 0.49–0.82, off-topic and injection ≤ 0.20); keyword fallback needs two real terms.
+- **Answer gate** (`lib/ai/concierge.ts`): the whole answer is buffered and judged before anything is sent. Every sentence must cite a retrieved passage, contain no malformed citation, not be NO_ANSWER in any spelling, and be grounded: its content words largely, and every number, date, amount and code entirely, must appear in the cited passage. Otherwise a handoff card (verified providers, free Information Point for Foreigners). Only cited sources reach the browser.
+- **Privacy**: questions are redacted (email, phone, PESEL, NIP, IBAN and Polish account numbers, cards, documents, street addresses, postcodes, self-introduced names in EN/PL/UK, URLs) before the model and the log; the prompt contains only the question and passages, wrapped as escaped data with injection rules; `ConciergeQuery` stores the redacted question, cited chunk ids, provider and outcome only.
+- **Abuse limits**: members only; 5/min burst; 10/day free (unlimited with Member Plus); per-IP daily limit through `TRUSTED_PROXY_HOPS`; platform-wide daily budget (`AI_GLOBAL_DAILY_BUDGET`) after which the offline demo adapter answers; 4 KB request cap; SSE closes cleanly on disconnect.
+- **/concierge**: chat with suggested questions, numbered citations linked to source chips (guide, official page, last verified), Stop, quota hint, privacy note.
+
+**Reviews**: prompt-safety reviewer: first "changes required" (uncited text could be shown), then "approved with notes" after the fixes; its blocking note (numbers not grounded) is fixed. Open notes: a sentence could still negate passage words (label and source links stay visible); verified email not yet required (global budget caps cost).
+
+**Verification**: `npm run check` green (217 unit tests); production build; Playwright 109/109 including `tests/e2e/concierge.spec.ts` with `AI_PROVIDER=demo` (cited answer with official gov.pl link, off-topic handoff, injection not answered, guide page sources and disclaimer, axe); crawler green on 200 pages; zero server errors.
+
+**Also fixed**: DB pool connection timeout 2 s → 10 s (spurious failures under load); `demo:reset` removes events created by demo accounts; event `<head>` metadata cached and time-independent; guide pages `instant = false` (header reads the URL during background re-renders).
+
+**Notes**: answers are in English until translated guides exist (grounding compares against the English text). AI SDK installed as v7 (the brief says v6; v7 is current; checked against the installed docs because Context7 is not configured). The project now lives in `D:\eib-platform` (C: was full).
 
 ### 2026-11-12 · M9 Directory, connections and verified providers
 

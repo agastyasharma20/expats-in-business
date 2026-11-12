@@ -4,20 +4,15 @@ import path from "node:path";
 import { getFrontmatter } from "next-mdx-remote-client/utils";
 import { z } from "zod";
 
+import { OFFICIAL_SOURCE_HOSTS } from "@/config/official-sources";
+
 /**
  * Guides live in content/guides/<country>/<slug>.mdx. Every legal, tax or immigration statement
  * must come from an official source listed in `sources` (CLAUDE.md rule 4). The concierge may only
  * answer from these files.
  */
 
-/** Hosts accepted as official sources (government and public bodies only). */
-export const OFFICIAL_SOURCE_HOSTS = [
-  /(^|\.)gov\.pl$/,
-  /(^|\.)krakow\.pl$/,
-  /(^|\.)zus\.pl$/,
-  /(^|\.)knf\.gov\.pl$/,
-  /(^|\.)europa\.eu$/,
-];
+export { OFFICIAL_SOURCE_HOSTS } from "@/config/official-sources";
 
 export function isOfficialSource(url: string): boolean {
   try {
@@ -50,6 +45,10 @@ export const guideFrontmatterSchema = z.object({
     )
     .min(1),
   disclaimer: z.string().default(GUIDE_DISCLAIMER),
+  /** Only verified guides are embedded for the concierge; drafts render with a banner but are never cited. */
+  verificationStatus: z.enum(["verified", "draft"]).default("verified"),
+  /** Slugs of related guides shown at the end of the page. */
+  related: z.array(z.string().regex(/^[a-z0-9-]+$/)).default([]),
   /** Set for city-specific guides (chapter slug); omitted = applies to the whole country. */
   chapter: z
     .string()

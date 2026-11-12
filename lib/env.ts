@@ -45,6 +45,9 @@ export const envSchema = z.object({
   ),
   EMAIL_FROM: z.string().min(3).default("Expats in Business <no-reply@demo.eib.local>"),
 
+  /** Proxies in front of the app that append to X-Forwarded-For (0 = do not trust the header). */
+  TRUSTED_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(0),
+
   // AI
   AI_PROVIDER: z.enum(aiProviders).default("demo"),
   GROQ_API_KEY: optional(z.string()),
@@ -54,7 +57,14 @@ export const envSchema = z.object({
   OPENROUTER_API_KEY: optional(z.string()),
   OPENROUTER_MODEL: optional(z.string()),
   ANTHROPIC_API_KEY: optional(z.string()),
+  ANTHROPIC_MODEL: optional(z.string()),
   AI_DAILY_FREE_QUOTA: z.coerce.number().int().nonnegative().default(10),
+  /** Model calls per day across all members; beyond it answers come from the offline demo adapter. */
+  AI_GLOBAL_DAILY_BUDGET: z.coerce.number().int().nonnegative().default(500),
+  /** Cosine similarity a guide passage needs before the concierge may answer from it. */
+  AI_SIMILARITY_THRESHOLD: z.coerce.number().min(0).max(1).default(0.4),
+  /** Where the local embedding model is cached (downloaded once, then works offline). */
+  MODEL_CACHE_DIR: z.string().default(".cache/models"),
 
   // Stripe: test mode only
   STRIPE_SECRET_KEY: optional(

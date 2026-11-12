@@ -26,7 +26,7 @@ export const mainNav = [
   { id: "events", href: "/events", labelKey: "nav.events", status: "live" },
   { id: "members", href: "/members", labelKey: "nav.members", status: "live" },
   { id: "providers", href: "/providers", labelKey: "nav.providers", status: "live" },
-  { id: "guides", href: "/guides", labelKey: "nav.guides", status: "comingSoon" },
+  { id: "guides", href: "/guides", labelKey: "nav.guides", status: "live" },
   { id: "pricing", href: "/pricing", labelKey: "nav.pricing", status: "live" },
 ] as const satisfies readonly NavItem[];
 

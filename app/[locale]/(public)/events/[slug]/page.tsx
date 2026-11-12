@@ -20,7 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { placesLeft } from "@/lib/events/capacity";
-import { getEventBySlug } from "@/lib/events/queries";
+import { getEventBySlug, getEventMeta } from "@/lib/events/queries";
 import { Link } from "@/lib/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 import { formatInZone } from "@/lib/time";
@@ -31,7 +31,7 @@ type Props = PageProps<"/[locale]/events/[slug]">;
 export const instant = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const event = await getEventBySlug((await params).slug);
+  const event = await getEventMeta((await params).slug);
   return event ? { title: event.title, description: event.summary } : {};
 }
 

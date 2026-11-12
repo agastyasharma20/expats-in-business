@@ -9,20 +9,30 @@ import type { Passage } from "./prompt";
 const SENTENCES_PER_PASSAGE = 2;
 const MAX_PASSAGES = 2;
 
-function firstSentences(text: string, count: number): string {
+function firstSentences(text: string, count: number): string[] {
   const flat = text
     .replace(/\n+/g, " ")
     .replace(/^[-*]\s+/gm, "")
     .replace(/\s+-\s+/g, " ");
   const sentences = flat.match(/[^.!?]+[.!?]+/g) ?? [flat];
-  return sentences.slice(0, count).join(" ").trim();
+  return sentences
+    .slice(0, count)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
 }
 
 export function composeDemoAnswer(passages: Passage[]): string {
-  return passages
-    .slice(0, MAX_PASSAGES)
-    .map((p) => `${firstSentences(p.content, SENTENCES_PER_PASSAGE)} [[${p.id}]]`)
-    .join(" ");
+  return (
+    passages
+      .slice(0, MAX_PASSAGES)
+      // Every sentence carries its own citation (the answer gate requires one per sentence).
+      .flatMap((p) =>
+        firstSentences(p.content, SENTENCES_PER_PASSAGE).map(
+          (sentence) => `${sentence} [[${p.id}]]`,
+        ),
+      )
+      .join(" ")
+  );
 }
 
 export function createDemoAdapter(passages: Passage[], delayMs = 12): Adapter {

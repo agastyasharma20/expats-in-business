@@ -110,3 +110,14 @@ export function getMyTicket(eventId: string, userId: string) {
     select: { id: true, status: true, updatedAt: true },
   });
 }
+
+/** Title and summary for <head> only: cached and time-independent (safe while prerendering). */
+export async function getEventMeta(slug: string) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("events");
+  return getDb().event.findFirst({
+    where: { slug, status: { not: "draft" } },
+    select: { title: true, summary: true },
+  });
+}

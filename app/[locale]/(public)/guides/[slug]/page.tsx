@@ -13,6 +13,11 @@ import { routing } from "@/lib/i18n/routing";
 
 type Props = PageProps<"/[locale]/guides/[slug]">;
 
+// Prerendered from generateStaticParams; when Next re-renders a page in the background (cache
+// refresh), the header reads the URL outside Suspense, so opt out of instant validation (as on
+// /members/[slug]). Pages stay static.
+export const instant = false;
+
 /** Every guide is known at build time, so each page is prerendered (static, fast). */
 export async function generateStaticParams() {
   return (await allGuides()).map((g) => ({ slug: g.slug }));

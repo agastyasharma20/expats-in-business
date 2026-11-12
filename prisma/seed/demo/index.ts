@@ -8,7 +8,10 @@ import { seedPeople } from "./people";
 /** Removes every demo record (isDemo = true); cascades take tickets, roles, votes and the rest. */
 export async function clearDemo(db: PrismaClient) {
   await db.chapterRequest.deleteMany({ where: { isDemo: true } });
-  await db.event.deleteMany({ where: { isDemo: true } });
+  // Also events that demo accounts created during a demo (event builder), and any left at demo venues.
+  await db.event.deleteMany({
+    where: { OR: [{ isDemo: true }, { createdBy: { isDemo: true } }, { venue: { isDemo: true } }] },
+  });
   await db.sponsor.deleteMany({ where: { isDemo: true } });
   await db.venue.deleteMany({ where: { isDemo: true } });
   await db.group.deleteMany({ where: { isDemo: true } });

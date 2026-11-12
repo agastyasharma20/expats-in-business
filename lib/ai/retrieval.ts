@@ -74,9 +74,11 @@ export async function retrieve(
       FROM "GuideChunk" c JOIN "Guide" g ON g.id = c."guideId"
       WHERE g."countryCode" = ${countryCode} AND g.status = 'published'
         AND to_tsvector('english', c.heading || ' ' || c.content) @@ websearch_to_tsquery('english', ${question})
+        AND numnode(websearch_to_tsquery('english', ${question})) >= 3 -- at least two real search terms
       ORDER BY score DESC
       LIMIT ${TOP_K}`;
-    const relevant = rows.filter((r) => Number(r.score) >= 0.1);
+    // Stricter than the vector path: a single common word must not pull in an unrelated passage.
+    const relevant = rows.filter((r) => Number(r.score) >= 0.3);
     return {
       passages: toPassages(relevant, sourceTitles),
       mode: "keyword",

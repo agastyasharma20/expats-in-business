@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { SendIcon, ShieldAlertIcon, SquareIcon } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,7 +26,6 @@ type ServerEvent =
   | { type: "quota"; remaining: number | null }
   | { type: "sources"; sources: Passage[] }
   | { type: "text"; text: string }
-  | { type: "reset" }
   | { type: "handoff"; reason: HandoffReason }
   | { type: "done"; cited: string[] };
 
@@ -51,7 +50,6 @@ export function ChatPanel({
   unlimited: boolean;
 }) {
   const t = useTranslations("concierge");
-  const locale = useLocale();
   const [turns, setTurns] = useState<Turn[]>([]);
   const [question, setQuestion] = useState(initialQuestion ?? "");
   const [busy, setBusy] = useState(false);
@@ -60,7 +58,10 @@ export function ChatPanel({
   const abort = useRef<AbortController | null>(null);
   const end = useRef<HTMLDivElement>(null);
 
-  useEffect(() => end.current?.scrollIntoView({ block: "nearest" }), [turns]);
+  // Braces matter: an effect may only return a cleanup function.
+  useEffect(() => {
+    end.current?.scrollIntoView({ block: "nearest" });
+  }, [turns]);
   useEffect(() => () => abort.current?.abort(), []);
 
   const updateLast = (
@@ -91,7 +92,7 @@ export function ChatPanel({
       const res = await fetch("/api/concierge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, locale }),
+        body: JSON.stringify({ question: q }),
         signal: controller.signal,
       });
       if (!res.ok || !res.body) {
@@ -115,17 +116,23 @@ export function ChatPanel({
           else if (event.type === "sources") updateLast(() => ({ sources: event.sources }));
           else if (event.type === "text")
             updateLast((turn) => ({ text: turn.text ? `${turn.text} ${event.text}` : event.text }));
-          else if (event.type === "reset") updateLast(() => ({ text: "", cited: [] }));
           else if (event.type === "handoff")
             updateLast(() => ({ text: "", handoff: event.reason, streaming: false }));
           else if (event.type === "done")
             updateLast(() => ({ cited: event.cited, streaming: false }));
         }
       }
-      updateLast(() => ({ streaming: false }));
+      // Text counts only if the server confirmed the answer (done); otherwise show the handoff.
+      updateLast((turn) =>
+        turn.cited.length || turn.handoff
+          ? { streaming: false }
+          : { streaming: false, text: "", handoff: "error" },
+      );
     } catch (err) {
       if ((err as Error).name !== "AbortError") setError(t("errors.network"));
-      updateLast((turn) => ({ streaming: false, handoff: turn.text ? turn.handoff : "error" }));
+      updateLast((turn) =>
+        turn.cited.length ? { streaming: false } : { streaming: false, text: "", handoff: "error" },
+      );
     } finally {
       setBusy(false);
       abort.current = null;

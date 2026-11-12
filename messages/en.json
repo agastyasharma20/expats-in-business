@@ -1157,7 +1157,8 @@
       "providerLead": "Legal, tax and relocation experts checked by the EiB team.",
       "freeHelp": "Free help: Information Point for Foreigners",
       "freeHelpLead": "Free advice in several languages at the Multicultural Centre.",
-      "guides": "Browse the guides"
+      "guides": "Browse the guides",
+      "ungrounded": "Part of the answer could not be matched to what our guides say, so we did not show it."
     },
     "errors": {
       "rateLimited": "One moment: too many questions in a row. Try again in a minute.",

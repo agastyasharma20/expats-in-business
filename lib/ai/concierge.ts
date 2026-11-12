@@ -1,20 +1,22 @@
 /**
- * Answer orchestration (pure: the provider stream is injected, so it is unit-tested with fakes).
- * Sentences are released only after their citations are checked against the retrieved passages.
- * Any unknown citation, an explicit NO_ANSWER, or an answer without a single valid citation ends
- * in a handoff instead of an answer.
+ * Answer gate (pure: the provider stream is injected, so it is unit-tested with fakes).
+ *
+ * Nothing the model writes reaches the user until the complete answer has passed every check:
+ * each sentence carries at least one citation, every citation is one of the retrieved passages,
+ * no citation is malformed, no sentence is a NO_ANSWER variant, and each sentence is grounded in
+ * the passages it cites (shared content words). Any failure turns the whole answer into a handoff.
+ * Only then are the cited sources and the sentences sent. Uncited text is never shown.
  */
 import type { ChainEvent, ProviderName } from "./chain";
-import { checkCitations, extractCitations, SentenceBuffer } from "./citations";
-import { NO_ANSWER, type Passage } from "./prompt";
+import { extractCitations, hasMalformedCitation, isGrounded, SentenceBuffer } from "./citations";
+import type { Passage } from "./prompt";
 
 export type HandoffReason =
-  "lowSimilarity" | "noAnswer" | "noCitation" | "unknownCitation" | "error";
+  "lowSimilarity" | "noAnswer" | "noCitation" | "unknownCitation" | "ungrounded" | "error";
 
 export type ConciergeEvent =
   | { type: "sources"; sources: Passage[] }
   | { type: "text"; text: string }
-  | { type: "reset" }
   | { type: "handoff"; reason: HandoffReason }
   | { type: "done"; cited: string[]; provider: ProviderName | null };
 
@@ -24,6 +26,37 @@ export type Outcome = {
   provider: ProviderName | null;
   reason?: HandoffReason;
 };
+
+/** NO_ANSWER in any spelling the model might produce ("no answer", "No_Answer.", …). */
+const NO_ANSWER_PATTERN = /\bno[\s_-]*answer\b/i;
+
+export type Verdict =
+  { ok: true; sentences: string[]; cited: string[] } | { ok: false; reason: HandoffReason };
+
+/** Checks a complete answer against the retrieved passages (pure). */
+export function judgeAnswer(text: string, passages: Passage[]): Verdict {
+  const byId = new Map(passages.map((p) => [p.id, p]));
+  if (NO_ANSWER_PATTERN.test(text)) return { ok: false, reason: "noAnswer" };
+  const buffer = new SentenceBuffer();
+  const sentences = [...buffer.push(text), ...buffer.flush()].map((s) => s.trim()).filter(Boolean);
+  if (!sentences.length) return { ok: false, reason: "noCitation" };
+  const cited = new Set<string>();
+  for (const sentence of sentences) {
+    if (hasMalformedCitation(sentence)) return { ok: false, reason: "unknownCitation" };
+    const ids = extractCitations(sentence);
+    if (!ids.length) return { ok: false, reason: "noCitation" };
+    if (ids.some((id) => !byId.has(id))) return { ok: false, reason: "unknownCitation" };
+    if (
+      !isGrounded(
+        sentence,
+        ids.map((id) => byId.get(id)!.content),
+      )
+    )
+      return { ok: false, reason: "ungrounded" };
+    for (const id of ids) cited.add(id);
+  }
+  return { ok: true, sentences, cited: [...cited] };
+}
 
 export async function* orchestrate(
   passages: Passage[],
@@ -39,77 +72,28 @@ export async function* orchestrate(
     yield fail("lowSimilarity");
     return;
   }
-  const allowed = new Set(passages.map((p) => p.id));
-  yield { type: "sources", sources: passages };
 
-  let buffer = new SentenceBuffer();
-  let cited = new Set<string>();
-  // The opening text is held back while it could still be the NO_ANSWER sentinel.
-  let held = "";
-  let holding = true;
-
-  /** Checks each sentence before release; returns a handoff to stop, or null to continue. */
-  function* release(sentences: string[]): Generator<ConciergeEvent, ConciergeEvent | null> {
-    for (const sentence of sentences) {
-      if (sentence.includes(NO_ANSWER)) return fail("noAnswer");
-      if (!checkCitations(sentence, allowed, false).ok) return fail("unknownCitation");
-      for (const id of extractCitations(sentence)) cited.add(id);
-      yield { type: "text", text: sentence };
-    }
-    return null;
-  }
-
+  let answer = "";
   try {
     for await (const event of stream()) {
-      if (event.type === "provider") {
-        provider = event.name;
-        continue;
-      }
-      if (event.type === "reset") {
-        buffer = new SentenceBuffer();
-        cited = new Set();
-        held = "";
-        holding = true;
-        yield { type: "reset" };
-        continue;
-      }
-      let text = event.text;
-      if (holding) {
-        held += text;
-        const start = held.trimStart();
-        if (start.startsWith(NO_ANSWER)) {
-          yield fail("noAnswer");
-          return;
-        }
-        if (NO_ANSWER.startsWith(start)) continue;
-        holding = false;
-        text = held;
-        held = "";
-      }
-      const stop = yield* release(buffer.push(text));
-      if (stop) {
-        yield stop;
-        return;
-      }
-    }
-    if (holding && held.trim()) {
-      yield fail(held.trim() === NO_ANSWER ? "noAnswer" : "noCitation");
-      return;
-    }
-    const stop = yield* release(buffer.flush());
-    if (stop) {
-      yield stop;
-      return;
+      if (event.type === "provider") provider = event.name;
+      else if (event.type === "reset")
+        answer = ""; // the next provider starts over
+      else answer += event.text;
     }
   } catch {
     yield fail("error");
     return;
   }
 
-  if (!cited.size) {
-    yield fail("noCitation");
+  const verdict = judgeAnswer(answer, passages);
+  if (!verdict.ok) {
+    yield fail(verdict.reason);
     return;
   }
-  onOutcome({ answered: true, cited: [...cited], provider });
-  yield { type: "done", cited: [...cited], provider };
+  // Only the passages the answer actually cites are sent to the browser, after the checks.
+  yield { type: "sources", sources: passages.filter((p) => verdict.cited.includes(p.id)) };
+  for (const sentence of verdict.sentences) yield { type: "text", text: sentence };
+  onOutcome({ answered: true, cited: verdict.cited, provider });
+  yield { type: "done", cited: verdict.cited, provider };
 }

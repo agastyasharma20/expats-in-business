@@ -35,11 +35,20 @@ function escapeData(text: string): string {
   return text.replace(/</g, "‹").replace(/>/g, "›");
 }
 
+/** Attribute values also escape & and ", so data can never leave its attribute. */
+function escapeAttribute(text: string): string {
+  return escapeData(text.replace(/&/g, "&amp;").replace(/"/g, "&quot;"));
+}
+
+/** Passage ids are cuid2 values; anything else is dropped rather than placed in the prompt. */
+const SAFE_ID = /^[A-Za-z0-9_-]{1,64}$/;
+
 export function buildPrompt(question: string, passages: Passage[]): string {
   const blocks = passages
+    .filter((p) => SAFE_ID.test(p.id))
     .map(
       (p) =>
-        `<passage id="${p.id}" guide="${escapeData(p.guideTitle)}" section="${escapeData(p.heading)}">\n${escapeData(p.content)}\n</passage>`,
+        `<passage id="${p.id}" guide="${escapeAttribute(p.guideTitle)}" section="${escapeAttribute(p.heading)}">\n${escapeData(p.content)}\n</passage>`,
     )
     .join("\n");
   return `<passages>\n${blocks}\n</passages>\n\n<question>\n${escapeData(question)}\n</question>`;

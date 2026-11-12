@@ -4,20 +4,15 @@ import path from "node:path";
 import { getFrontmatter } from "next-mdx-remote-client/utils";
 import { z } from "zod";
 
+import { OFFICIAL_SOURCE_HOSTS } from "@/config/official-sources";
+
 /**
  * Guides live in content/guides/<country>/<slug>.mdx. Every legal, tax or immigration statement
  * must come from an official source listed in `sources` (CLAUDE.md rule 4). The concierge may only
  * answer from these files.
  */
 
-/** Hosts accepted as official sources (government and public bodies only). */
-export const OFFICIAL_SOURCE_HOSTS = [
-  /(^|\.)gov\.pl$/,
-  /(^|\.)krakow\.pl$/,
-  /(^|\.)zus\.pl$/,
-  /(^|\.)knf\.gov\.pl$/,
-  /(^|\.)europa\.eu$/,
-];
+export { OFFICIAL_SOURCE_HOSTS } from "@/config/official-sources";
 
 export function isOfficialSource(url: string): boolean {
   try {

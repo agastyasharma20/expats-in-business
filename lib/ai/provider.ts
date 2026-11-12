@@ -98,7 +98,11 @@ export function buildAdapters(passages: Passage[]): Adapter[] {
   ];
 }
 
-export function generate(request: StreamRequest & { passages: Passage[] }) {
-  const adapters = orderAdapters(buildAdapters(request.passages), getEnv().AI_PROVIDER);
+/** demoOnly: the global daily budget is spent, so no paid or rate-limited provider is called. */
+export function generate(request: StreamRequest & { passages: Passage[]; demoOnly?: boolean }) {
+  const all = buildAdapters(request.passages);
+  const adapters = request.demoOnly
+    ? all.filter((a) => a.name === "demo")
+    : orderAdapters(all, getEnv().AI_PROVIDER);
   return runChain(adapters, request);
 }

@@ -18,7 +18,7 @@ async function openEvent(page: Page, kind: "free" | "paid") {
   // Skip full sessions and those created by other specs running in parallel ("E2E …").
   const cards = page
     .getByTestId("event-list")
-    .getByRole("listitem")
+    .locator(":scope > li")
     .filter({ hasNotText: "Full" })
     .filter({ hasNotText: /E2E / });
   const card =
@@ -33,7 +33,7 @@ async function openEvent(page: Page, kind: "free" | "paid") {
 test("events list filters by time and format, and passes axe", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/events");
-  await expect(page.getByTestId("event-list").getByRole("listitem").first()).toBeVisible();
+  await expect(page.getByTestId("event-list").locator(":scope > li").first()).toBeVisible();
   const { violations } = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
   expect(violations).toEqual([]);
 
@@ -93,7 +93,7 @@ test("a paid ticket goes through (simulated) payment and is confirmed", async ({
   await page.goto("/events");
   const paid = page
     .getByTestId("event-list")
-    .getByRole("listitem")
+    .locator(":scope > li")
     .filter({ hasNotText: "Full" })
     .filter({ hasNotText: "Free" });
   await expect(paid.first()).toBeVisible(); // the list streams in under Suspense

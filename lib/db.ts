@@ -9,8 +9,11 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 function createClient(): PrismaClient {
   const adapter = new PrismaPg({
     connectionString: getEnv().DATABASE_URL,
-    // Fail fast when the database is down instead of hanging a request.
-    connectionTimeoutMillis: 2_000,
+    // Under load (parallel build workers, Docker networking on Windows) a new connection can take a
+    // few seconds; 2 s caused spurious failures. The health check keeps its own 2.5 s probe.
+    connectionTimeoutMillis: 10_000,
+    max: 10,
+    idleTimeoutMillis: 30_000,
   });
   return new PrismaClient({ adapter });
 }

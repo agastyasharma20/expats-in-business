@@ -64,3 +64,41 @@ export class SentenceBuffer {
     return rest ? [rest] : [];
   }
 }
+
+/** Any "[[" or "]]" left after removing well-formed citations means a malformed citation. */
+export function hasMalformedCitation(text: string): boolean {
+  return /\[\[|\]\]/.test(text.replace(CITATION, ""));
+}
+
+const STOPWORDS = new Set(
+  "about above after again also another because been before being below between both cannot could does doing down during each from further have having here into itself more most must only other ought over same should some such than that their theirs them then there these they this those through under until very were what when where which while with would your yours will shall need needs".split(
+    " ",
+  ),
+);
+
+/** Content words of a text: lowercase, letters only, 4+ letters, no stop words, 5-letter stems. */
+export function contentStems(text: string): Set<string> {
+  const words = text
+    .replace(CITATION, " ")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/\p{Diacritic}/gu, "")
+    .match(/\p{L}{4,}/gu);
+  return new Set((words ?? []).filter((w) => !STOPWORDS.has(w)).map((w) => w.slice(0, 5)));
+}
+
+/**
+ * Grounding check: a sentence must share most of its content words with the passages it cites,
+ * so a model cannot attach a valid citation to invented facts. Short connective sentences (under
+ * 3 content words) pass on their citation alone.
+ */
+export const MIN_GROUNDING = 0.5;
+
+export function isGrounded(sentence: string, citedPassages: string[]): boolean {
+  const words = contentStems(sentence);
+  if (words.size < 3) return true;
+  const source = contentStems(citedPassages.join(" "));
+  let shared = 0;
+  for (const word of words) if (source.has(word)) shared += 1;
+  return shared / words.size >= MIN_GROUNDING;
+}

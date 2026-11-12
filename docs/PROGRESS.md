@@ -14,8 +14,26 @@
 | M10 Guides and concierge   | done; prompt safety approved  | develop · v0.10.0                          | 109/109 e2e, demo works offline     |
 | M11 Landing Roadmap        | done                          | develop · v0.11.0                          | 6 scenarios TDD, reminders job      |
 | M12 Community + admin      | done; pending review          | feat/m12-community → v0.12.0 (proposed)    | community e2e, command centre       |
+| M13 Festivals              | done; pending review          | feat/m13-festivals → v0.13.0 (proposed)    | group tickets, console, stalls      |
 
 ## Log
+
+### 2026-11-13 · M13 Festivals (big cultural events)
+
+**Built**
+
+- **Public** `/festivals` (upcoming and past) and `/festivals/[slug]`: hero with live countdown and places left, sticky section nav, ticket tiers with live state (on sale, only N left, sold out, sales ended), group orders with a +/− party picker and running total, programme by day and stage, partners, volunteer shifts with fill bars, stall application form, FAQ, schema.org Festival JSON-LD with sub-events.
+- **Organiser console** `/admin/festivals` (list with sales bars and stalls to review), `/admin/festivals/new`, `/admin/festivals/[id]` with tabs: Overview (6 live stats: places sold, ticket revenue, checked in, waitlist, volunteers, stalls; launch checklist ring), Tickets (tiers with caps, early-bird deadlines, order), Programme, Volunteers (shifts and who signed up), Stalls (accept / waiting list / decline with note, applicant notified), Partners & FAQ (partners get a signed report link), Settings (details, capacity, max per order, volunteering and stalls switches, stall fee). Publish / unpublish, cancel behind a confirmation, door check-in, attendee CSV. All actions audited and rate-limited; chapter leads manage only their chapters.
+- **Ticket engine**: party size and tier caps throughout (claim, hold renewal, Stripe line quantity, webhook amount check, waitlist promotion); door check-in shows "(×3)" for groups; ticket page says "Admits 3 people".
+- **Sponsor report** `/sponsor-report/<token>` (M14 item): 192-bit token per sponsorship, aggregates only with counts under 5 hidden, no-referrer, noindex, print stylesheet and "Print or save as PDF".
+- **Business model** written up in `docs/BUSINESS_MODEL.md` (who pays for what, sequencing, open decisions; proposals only, no invented numbers).
+- Demo seed: "Demo: Festival of Cultures" (3 weeks out, two days, four demo tiers, eight programme items on five stages, four shifts, two placeholder partners with permission pending, three FAQs, group tickets, two stall applications).
+
+**Security checks done in the browser**: a party size changed to 15 in DevTools is refused by the server ("Please check the number of people") and no ticket is created; members get the 403 page on the console and 403 from the attendee export; shift sign-up locks the shift row, so the last place can't be taken twice, and overlapping shifts are refused.
+
+**How to test**: `npm run demo:reset`, `npm run dev`. As Priya: /festivals → Demo: Festival of Cultures → Family day pass → 3 people → Reserve → ticket "Admits 3 people"; volunteer for a shift; apply for a stall (as another member). As admin: /admin/festivals → console tabs; accept the stall; download the attendee CSV; open a partner's sponsor report and print it.
+
+**Known gaps**: stall fees are shown and invoiced by the team (no online stall payment yet); refunds for a cancelled festival are done in the Stripe dashboard; partner logos need written permission before upload (names only for now); pl/uk strings fall back to English.
 
 ### 2026-11-12 · M12 Community, command centre, dashboard and security hardening
 

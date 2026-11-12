@@ -1,7 +1,12 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 
-import { CHAPTER_COOKIE, GLOBAL_CHAPTER, type ChapterOption } from "./chapters-shared";
+import {
+  CHAPTER_COOKIE,
+  GLOBAL_CHAPTER,
+  preferredChapterFromHeader,
+  type ChapterOption,
+} from "./chapters-shared";
 import { getDb } from "./db";
 
 export { CHAPTER_COOKIE, GLOBAL_CHAPTER, type ChapterOption };
@@ -42,8 +47,11 @@ export async function getChapterOptions(): Promise<ChapterOption[]> {
   }
 }
 
-/** The visitor's chosen chapter slug from the preference cookie, or "global". */
+/**
+ * The visitor's chosen chapter slug from the preference cookie, or "global". Read from the
+ * request's Cookie header: `cookies()` hits a Next.js 16.4 invariant when a server action form is
+ * posted before hydration (no-JS submit) and the page re-renders in the action response.
+ */
 export async function getPreferredChapterSlug(): Promise<string> {
-  const value = (await cookies()).get(CHAPTER_COOKIE)?.value;
-  return value && /^[a-z0-9-]{1,64}$/.test(value) ? value : GLOBAL_CHAPTER;
+  return preferredChapterFromHeader((await headers()).get("cookie"));
 }

@@ -21,6 +21,7 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
       name: true,
       email: true,
       image: true,
+      suspendedAt: true,
       roles: { select: { role: true, chapterId: true } },
       subscriptions: {
         where: { status: { in: [...ENTITLED_STATUSES] } },
@@ -29,7 +30,9 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
       _count: { select: { providers: true } },
     },
   });
-  if (!user) return null;
+  // A suspended account is treated as signed out everywhere, even with a session cookie that
+  // predates the suspension (suspending also deletes its sessions; this covers the race).
+  if (!user || user.suspendedAt) return null;
   return {
     id: user.id,
     name: user.name,

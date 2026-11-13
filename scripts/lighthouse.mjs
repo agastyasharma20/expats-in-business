@@ -42,6 +42,10 @@ try {
     const { lhr, report } = result;
     const file = path.join(outDir, `${route.replace(/[^a-z0-9]+/gi, "_") || "home"}.html`);
     writeFileSync(file, Array.isArray(report) ? report[0] : report);
+    // LH_JSON=1 also keeps the raw result next to the HTML report (for scripted comparisons).
+    if (process.env.LH_JSON) writeFileSync(file.replace(/.html$/, ".json"), JSON.stringify(lhr));
+    const lcpError = lhr.runtimeError?.message ?? lhr.audits["largest-contentful-paint"]?.errorMessage;
+    if (lcpError) console.error(`  ! ${route}: ${lcpError}`);
 
     const scores = categories.map((id) => [id, Math.round((lhr.categories[id]?.score ?? 0) * 100)]);
     const metrics = ["largest-contentful-paint", "cumulative-layout-shift", "total-blocking-time"]

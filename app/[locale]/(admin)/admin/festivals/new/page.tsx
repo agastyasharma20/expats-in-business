@@ -35,6 +35,8 @@ export default async function NewFestivalPage() {
       venues: { select: { id: true, name: true }, orderBy: { name: "asc" } },
     },
   });
+  // Preselect a chapter that has venues: a launching chapter without one cannot host a festival yet.
+  const defaultChapter = (chapters.find((c) => c.venues.length) ?? chapters[0])?.id;
   const field = "flex flex-col gap-1 font-semibold text-ink";
   const input = cn(controlStyles, "h-11");
   const errors = {
@@ -58,7 +60,7 @@ export default async function NewFestivalPage() {
       >
         <label className={field}>
           {t("fields.chapter")}
-          <select name="chapterId" required className={input}>
+          <select name="chapterId" required defaultValue={defaultChapter} className={input}>
             {chapters.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name} ({c.currency}, {c.timezone})

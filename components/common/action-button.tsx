@@ -20,6 +20,12 @@ type ActionButtonProps = {
   "aria-label"?: string;
   "aria-pressed"?: boolean;
   testId?: string;
+  /**
+   * Show the toast as soon as the action resolves instead of after re-render. Use it where the
+   * refresh moves or removes this button (a card changing column), which would lose the message.
+   * Needs JavaScript, so the default keeps the no-JS form behaviour.
+   */
+  toastOnResolve?: boolean;
 };
 
 /** One-click server action as a real form (works without JavaScript); pending state and toasts. */
@@ -33,18 +39,34 @@ export function ActionButton({
   size = "sm",
   className,
   testId,
+  toastOnResolve = false,
   ...aria
 }: ActionButtonProps) {
-  const [state, formAction, pending] = useActionState(action, null);
-  const shown = useRef<ActionState>(null);
-  useEffect(() => {
-    if (!state || state === shown.current) return;
-    shown.current = state;
-    if (state.ok) {
-      const text = toasts?.[state.message ?? ""];
+  const notify = (result: ActionState) => {
+    if (!result) return;
+    if (result.ok) {
+      const text = toasts?.[result.message ?? ""];
       if (text) toast.success(text);
     } else if (errorText) toast.error(errorText);
-  }, [state, toasts, errorText]);
+  };
+  const [state, formAction, pending] = useActionState(
+    toastOnResolve
+      ? async (prev: ActionState, form: FormData) => {
+          const result = await action(prev, form);
+          notify(result);
+          return result;
+        }
+      : action,
+    null,
+  );
+  const shown = useRef<ActionState>(null);
+  useEffect(() => {
+    if (toastOnResolve || !state || state === shown.current) return;
+    shown.current = state;
+    notify(state);
+    // notify only reads props that are stable for one rendered button
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, toastOnResolve]);
 
   return (
     <form action={formAction} className="inline-flex">

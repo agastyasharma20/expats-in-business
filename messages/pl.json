@@ -325,7 +325,11 @@
     "roulette": "Kawowa ruletka",
     "moderation": "Moderacja",
     "festivals": "Festiwale",
-    "involved": "Zaangażuj się"
+    "involved": "Zaangażuj się",
+    "chapters": "Oddziały",
+    "ambassadors": "Ambasadorzy",
+    "volunteer": "Wolontariat",
+    "careers": "Kariera"
   },
   "chapter": {
     "label": "Oddział",
@@ -352,7 +356,8 @@
     "email": "Napisz do nas",
     "messenger": "Napisz na Messengerze",
     "whatsapp": "Dołącz do społeczności na WhatsAppie",
-    "copyright": "© {name}"
+    "copyright": "© {name}",
+    "grow": "Rozwijaj EiB"
   },
   "comingSoon": {
     "badge": "Wkrótce",
@@ -1160,7 +1165,12 @@
       "stallWaitlisted": "Twoje zgłoszenie stoiska jest na liście rezerwowej.",
       "stallDeclined": "Twoje zgłoszenie stoiska tym razem nie zostało przyjęte.",
       "applicationAccepted": "Twoje zgłoszenie zostało przyjęte. Zespół skontaktuje się z Tobą mailowo.",
-      "applicationDeclined": "Twoje zgłoszenie tym razem nie zostało przyjęte. Dziękujemy za chęć pomocy."
+      "applicationDeclined": "Twoje zgłoszenie tym razem nie zostało przyjęte. Dziękujemy za chęć pomocy.",
+      "ambassadorAccepted": "Witaj, ambasadorze! Twoje zgłoszenie zostało przyjęte. Zespół skontaktuje się z Tobą e-mailem.",
+      "ambassadorWaitlisted": "Twoje zgłoszenie na ambasadora jest na liście oczekujących.",
+      "ambassadorDeclined": "Tym razem Twoje zgłoszenie na ambasadora nie zostało przyjęte. Dziękujemy za chęć pomocy.",
+      "roleAccepted": "Twoja aplikacja na rolę została przyjęta. Zespół skontaktuje się z Tobą e-mailem.",
+      "roleDeclined": "Tym razem Twoja aplikacja na rolę nie została przyjęta. Dziękujemy za zgłoszenie."
     }
   },
   "guides": {
@@ -1531,6 +1541,14 @@
         "plan": {
           "update": "Zmieniono cenę planu"
         }
+      },
+      "ambassador": {
+        "review": "Rozpatrzono zgłoszenie ambasadora"
+      },
+      "opening": {
+        "create": "Utworzono rolę",
+        "update": "Zaktualizowano rolę",
+        "review": "Rozpatrzono aplikację na rolę"
       }
     },
     "health": {
@@ -1575,7 +1593,9 @@
       "system": "System",
       "festivals": "Festiwale",
       "applications": "Zgłoszenia",
-      "catalogs": "Katalogi"
+      "catalogs": "Katalogi",
+      "ambassadors": "Ambasadorzy",
+      "roles": "Role"
     }
   },
   "adminMembers": {
@@ -2227,6 +2247,317 @@
       "heading": "Masz nowe zapytanie ofertowe",
       "body": "Członek wysłał Ci zapytanie ofertowe. Otwórz skrzynkę, aby je przeczytać i odpowiedzieć.",
       "cta": "Otwórz skrzynkę"
+    }
+  },
+  "spotlight": {
+    "eyebrow": "Festiwal",
+    "demo": "Demo",
+    "cta": "Zobacz festiwal",
+    "inDays": "{count, plural, one {za # dzień} few {za # dni} many {za # dni} other {za # dnia}}",
+    "today": "dziś"
+  },
+  "chapters": {
+    "eyebrow": "Jedna globalna społeczność",
+    "title": "Oddziały na całym świecie",
+    "lead": "EiB rośnie miasto po mieście. Znajdź swój kraj i oddział miejski albo zagłosuj, by EiB pojawiło się w Twoim mieście.",
+    "ambassadorCta": "Zostań ambasadorem",
+    "countriesTitle": "Kraje",
+    "demoCountry": "Kraj demo",
+    "demo": "Demo",
+    "status": {
+      "live": "Aktywny",
+      "launching": "Startuje"
+    },
+    "noChapters": "Nie ma jeszcze oddziału. Zagłosuj poniżej, by go założyć.",
+    "requested": "Zgłoszone przez członków",
+    "votes": "{count, plural, one {# głos} few {# głosy} many {# głosów} other {# głosu}}",
+    "openHub": "Otwórz stronę: {country}",
+    "countryTitle": "EiB: {country}",
+    "countryEyebrow": "Kraj",
+    "chaptersLabel": "Oddziały",
+    "chapterCount": "{count, plural, =0 {Brak oddziałów} one {# oddział} few {# oddziały} many {# oddziałów} other {# oddziału}}",
+    "guidesLabel": "Poradniki",
+    "guideCount": "{count, plural, =0 {Brak poradników} one {# poradnik} few {# poradniki} many {# poradników} other {# poradnika}}",
+    "citiesTitle": "Oddziały miejskie: {country}",
+    "fewMembers": "Mniej niż 5 członków",
+    "members": "{count, plural, one {# członek} few {# członków} many {# członków} other {# członka}}",
+    "requestsTitle": "Miasta, o które proszą członkowie",
+    "ambassadorsTitle": "Ambasadorzy: {country}",
+    "becomeAmbassador": "Zostań ambasadorem",
+    "noAmbassadors": "Nie ma tu jeszcze ambasadorów. Możesz być pierwszą osobą.",
+    "chapterTitle": "EiB {city}",
+    "join": "Dołącz do EiB {city}",
+    "helpLaunch": "Pomóż uruchomić: {city}",
+    "allSessions": "Wszystkie spotkania",
+    "facts": {
+      "members": "Członkowie",
+      "sessions": "Nadchodzące spotkania",
+      "ambassadors": "Ambasadorzy",
+      "leads": "Liderzy oddziału"
+    },
+    "underFive": "Poniżej 5",
+    "upcoming": "Wkrótce: {city}",
+    "noSessions": "Nie zaplanowano jeszcze spotkań. Zajrzyj wkrótce.",
+    "launchingNote": "{city} startuje. Dołącz teraz, a jako pierwsza osoba dowiesz się o pierwszym spotkaniu.",
+    "cityAmbassadors": "Ambasadorzy: {city}",
+    "noCityAmbassadors": "{city} nie ma jeszcze ambasadora. Zgłoś się jako pierwsza osoba.",
+    "vote": {
+      "title": "Chcesz EiB w swoim mieście?",
+      "lead": "Zagłosuj na swoje miasto. Gdy zbierze się wystarczająco głosów, szukamy lidera oddziału i ambasadora.",
+      "cta": "Zagłosuj na miasto",
+      "submit": "Głosuj",
+      "sending": "Wysyłanie…",
+      "thanks": "Dziękujemy, Twój głos został zapisany.",
+      "country": "Kraj",
+      "city": "Miasto",
+      "placeholder": "Na przykład Gdańsk",
+      "signIn": "Zaloguj się, by głosować",
+      "errors": {
+        "default": "Nie udało się zapisać głosu. Sprawdź nazwę miasta i spróbuj ponownie.",
+        "rateLimited": "Oddano wiele głosów w krótkim czasie. Spróbuj później.",
+        "exists": "W tym mieście jest już oddział. Otwórz go z listy powyżej."
+      }
+    }
+  },
+  "ambassadors": {
+    "eyebrow": "Program ambasadorski",
+    "title": "Reprezentuj EiB tam, gdzie mieszkasz",
+    "lead": "Ambasadorzy witają nowe osoby, łączą ludzi i pomagają otwierać nowe oddziały EiB. Wybierz poziom globalny, krajowy lub miejski.",
+    "cta": "Zgłoś się na ambasadora",
+    "tiersTitle": "Trzy sposoby reprezentowania EiB",
+    "tiers": {
+      "global": {
+        "title": "Ambasador globalny",
+        "short": "Globalny",
+        "text": "Mów w imieniu EiB ponad granicami: online, na wydarzeniach partnerów i wszędzie, gdzie spotykają się osoby z zagranicy.",
+        "do1": "Przedstawiaj EiB społecznościom i organizacjom za granicą",
+        "do2": "Łącz krajowe społeczności i dziel się tym, co działa",
+        "do3": "Reprezentuj EiB na wydarzeniach międzynarodowych"
+      },
+      "country": {
+        "title": "Ambasador krajowy",
+        "short": "Krajowy",
+        "text": "Buduj EiB w jednym kraju: znajdź liderów oddziałów, zbieraj poradniki i otwieraj pierwsze miasta.",
+        "do1": "Pomagaj zakładać oddziały miejskie w swoim kraju",
+        "do2": "Proponuj lokalne poradniki i oficjalne źródła",
+        "do3": "Witaj nowych członków w swoim kraju"
+      },
+      "city": {
+        "title": "Ambasador miejski",
+        "short": "Miejski",
+        "text": "Bądź przyjazną twarzą EiB w swoim mieście: witaj ludzi na spotkaniach i zapraszaj nowe osoby.",
+        "do1": "Witaj nowe osoby na spotkaniach",
+        "do2": "Proponuj miejsca i lokalnych partnerów",
+        "do3": "Udostępniaj spotkania w swoich sieciach"
+      }
+    },
+    "benefitsTitle": "Co zyskujesz",
+    "benefits": {
+      "network": {
+        "title": "Szersza sieć kontaktów",
+        "text": "Poznawaj liderów oddziałów, członków i partnerów w całej społeczności EiB."
+      },
+      "skills": {
+        "title": "Praktyka przywództwa",
+        "text": "Planuj, prowadź i przemawiaj: prawdziwe doświadczenie, którym możesz się pochwalić."
+      },
+      "impact": {
+        "title": "Widoczny wpływ",
+        "text": "Pomagaj osobom z zagranicy szybciej poczuć się jak w domu."
+      }
+    },
+    "whoTitle": "Nasi ambasadorzy",
+    "none": "Nie ma jeszcze ambasadorów na liście. Zgłoszenia są otwarte.",
+    "applyTitle": "Zgłoś się",
+    "applyLead": "Napisz, gdzie chcesz reprezentować EiB i dlaczego. Członek zespołu przegląda każde zgłoszenie i odpowiada powiadomieniem.",
+    "signIn": "Zaloguj się, by się zgłosić",
+    "mine": "Moje zgłoszenia",
+    "noneMine": "Nie masz jeszcze zgłoszeń.",
+    "global": "Cały świat",
+    "demo": "Demo",
+    "status": {
+      "submitted": "Wysłane",
+      "in_review": "W ocenie",
+      "accepted": "Przyjęte",
+      "waitlisted": "Lista oczekujących",
+      "declined": "Nieprzyjęte",
+      "withdrawn": "Wycofane"
+    },
+    "withdraw": "Wycofaj",
+    "withdrawn": "Zgłoszenie wycofane.",
+    "sent": "Dziękujemy. Zgłoszenie dotarło, zespół je przejrzy.",
+    "errors": {
+      "default": "Nie udało się wysłać zgłoszenia. Sprawdź pola i spróbuj ponownie.",
+      "exists": "Masz już otwarte zgłoszenie na ten poziom.",
+      "rateLimited": "Wysłano kilka zgłoszeń w krótkim czasie. Spróbuj później."
+    },
+    "form": {
+      "tier": "Który poziom?",
+      "country": "Kraj",
+      "city": "Miasto",
+      "cityPlaceholder": "Na przykład Indore",
+      "motivation": "Dlaczego chcesz zostać ambasadorem?",
+      "motivationHint": "{count} z co najmniej 80 znaków",
+      "experience": "Doświadczenie",
+      "experienceHint": "Społeczności, wydarzenia lub wolontariat, w których brałeś(-aś) udział. Co najmniej 40 znaków.",
+      "languages": "Języki, którymi mówisz",
+      "hours": "Godziny w miesiącu: {hours}",
+      "linkedin": "Profil LinkedIn (opcjonalnie)",
+      "privacy": "Zgłoszenie widzi tylko zespół EiB. Po przyjęciu Twoje imię i miejsce pojawią się na tej stronie; możesz je ukryć w ustawieniach.",
+      "sending": "Wysyłanie…",
+      "submit": "Wyślij zgłoszenie"
+    }
+  },
+  "careers": {
+    "eyebrow": "Kariera",
+    "title": "Twórz EiB razem z nami",
+    "lead": "Pomóż rosnąć globalnej społeczności osób z zagranicy. Wybierz rolę dopasowaną do Twojego czasu i umiejętności.",
+    "honest": "EiB jest bezpłatne i prowadzone przez społeczność. Większość ról to wolontariat; każda rola jasno mówi, czy to wolontariat, staż czy praca płatna.",
+    "whyTitle": "Dlaczego warto",
+    "why": {
+      "mission": {
+        "title": "Prawdziwa misja",
+        "text": "Pomagaj osobom z zagranicy znaleźć pracę, przyjaciół i odnaleźć się w nowym kraju."
+      },
+      "growth": {
+        "title": "Miejsce na rozwój",
+        "text": "Odpowiadaj za część młodej platformy i zobacz, jak członkowie korzystają z Twojej pracy."
+      },
+      "people": {
+        "title": "Świetni ludzie",
+        "text": "Pracuj z założycielami, liderami oddziałów i wolontariuszami z wielu krajów."
+      }
+    },
+    "rolesTitle": "Otwarte role",
+    "volunteerLink": "Pomóż przy festiwalu",
+    "filter": "Filtruj role według rodzaju",
+    "all": "Wszystkie",
+    "kinds": {
+      "volunteer": "Wolontariat",
+      "internship": "Staż",
+      "part_time": "Część etatu",
+      "full_time": "Pełny etat"
+    },
+    "demo": "Demo",
+    "view": "Zobacz rolę",
+    "emptyTitle": "Brak otwartych ról",
+    "emptyText": "Nowe role pojawią się tu najpierw. Tymczasem możesz reprezentować EiB jako ambasador.",
+    "becomeAmbassador": "Zostań ambasadorem",
+    "back": "Wszystkie role",
+    "closed": "Zamknięta",
+    "closedText": "Ta rola nie przyjmuje teraz zgłoszeń.",
+    "responsibilities": "Czym się zajmiesz",
+    "requirements": "Kogo szukamy",
+    "applyTitle": "Aplikuj na tę rolę",
+    "message": "Dlaczego pasujesz do tej roli?",
+    "messageHint": "Co najmniej 40 znaków. Opisz doświadczenie i ile masz czasu.",
+    "portfolio": "Link do portfolio lub LinkedIn (opcjonalnie)",
+    "privacy": "Aplikację widzi tylko zespół EiB.",
+    "send": "Wyślij aplikację",
+    "sending": "Wysyłanie…",
+    "sent": "Dziękujemy. Aplikacja dotarła.",
+    "signIn": "Zaloguj się, by aplikować",
+    "withdraw": "Wycofaj aplikację",
+    "withdrawn": "Aplikacja wycofana.",
+    "status": {
+      "submitted": "Wysłana",
+      "in_review": "W ocenie",
+      "accepted": "Przyjęta",
+      "waitlisted": "Lista oczekujących",
+      "declined": "Nieprzyjęta",
+      "withdrawn": "Wycofana"
+    },
+    "errors": {
+      "default": "Nie udało się wysłać aplikacji. Sprawdź pola i spróbuj ponownie.",
+      "exists": "Już aplikujesz na tę rolę.",
+      "rateLimited": "Wysłano kilka aplikacji w krótkim czasie. Spróbuj później."
+    }
+  },
+  "volunteer": {
+    "eyebrow": "Wolontariat",
+    "title": "Kilka godzin, duża różnica",
+    "lead": "Pomóż przy festiwalu, poprowadź spotkanie albo przywitaj nowe osoby. Każde wydarzenie EiB tworzą wolontariusze.",
+    "ambassadorCta": "Zostań ambasadorem",
+    "careersCta": "Zobacz wszystkie role",
+    "howTitle": "Jak działa wolontariat",
+    "how": {
+      "pick": {
+        "title": "Wybierz dyżur lub rolę",
+        "text": "Wybierz dyżur na festiwalu albo stałą rolę poniżej."
+      },
+      "meet": {
+        "title": "Poznaj zespół",
+        "text": "Lider oddziału potwierdza zgłoszenie i mówi, czego się spodziewać."
+      },
+      "grow": {
+        "title": "Rozwijaj się z nami",
+        "text": "Stali wolontariusze mogą zostać ambasadorami lub liderami oddziałów."
+      }
+    },
+    "festivalsTitle": "Festiwale, które potrzebują rąk do pracy",
+    "festival": "Festiwal",
+    "demo": "Demo",
+    "openShifts": "{count, plural, =0 {Wszystkie dyżury są zajęte} one {# wolne miejsce dla wolontariusza} few {# wolne miejsca dla wolontariuszy} many {# wolnych miejsc dla wolontariuszy} other {# wolnego miejsca dla wolontariuszy}}",
+    "noFestivals": "Żaden festiwal nie potrzebuje teraz wolontariuszy.",
+    "rolesTitle": "Stałe role wolontariackie",
+    "noRoles": "Nie ma teraz otwartych stałych ról wolontariackich."
+  },
+  "adminGrowth": {
+    "ambassadorsTitle": "Zgłoszenia ambasadorów",
+    "ambassadorsLead": "Sprawdź, kto chce reprezentować EiB. Przyjęte osoby pojawiają się na publicznej stronie ambasadorów; każda decyzja jest zapisywana, a zgłaszający dostaje powiadomienie.",
+    "rolesTitle": "Role i kariera",
+    "rolesLead": "Twórz role wolontariackie, staże i płatne stanowiska, publikuj je na stronie kariery i rozpatruj aplikacje.",
+    "applicationsTitle": "Aplikacje",
+    "rolesList": "Wszystkie role",
+    "roleNew": "Nowa rola",
+    "roleCreate": "Utwórz rolę",
+    "roleSave": "Zapisz rolę",
+    "roleSaved": "Rola zapisana.",
+    "roleError": "Nie udało się zapisać roli. Sprawdź pola.",
+    "rateLimited": "Zbyt wiele zmian w krótkim czasie. Poczekaj chwilę.",
+    "saving": "Zapisywanie…",
+    "onePerLine": "Jedna pozycja w wierszu, maksymalnie 12.",
+    "viewPublic": "Otwórz stronę publiczną",
+    "applicants": "{count, plural, =0 {Brak kandydatów} one {# kandydat} few {# kandydatów} many {# kandydatów} other {# kandydata}}",
+    "hours": "{hours} godz. miesięcznie",
+    "demo": "Demo",
+    "read": "Przeczytaj zgłoszenie",
+    "empty": "Nic tu nie ma.",
+    "error": "Ta zmiana nie jest już możliwa. Odśwież stronę.",
+    "fields": {
+      "title": "Tytuł",
+      "team": "Zespół",
+      "kind": "Rodzaj",
+      "status": "Status",
+      "location": "Lokalizacja",
+      "commitment": "Zaangażowanie czasowe",
+      "summary": "Opis",
+      "responsibilities": "Obowiązki",
+      "requirements": "Wymagania"
+    },
+    "roleStatus": {
+      "draft": "Szkic",
+      "open": "Otwarta",
+      "closed": "Zamknięta"
+    },
+    "status": {
+      "submitted": "Nowe",
+      "in_review": "W ocenie",
+      "waitlisted": "Lista oczekujących",
+      "accepted": "Przyjęte",
+      "declined": "Odrzucone"
+    },
+    "move": {
+      "in_review": "Oceń",
+      "accepted": "Przyjmij",
+      "waitlisted": "Lista oczekujących",
+      "declined": "Odrzuć"
+    },
+    "moved": {
+      "in_review": "Przeniesiono do oceny.",
+      "accepted": "Przyjęto. Zgłaszający dostał powiadomienie.",
+      "waitlisted": "Przeniesiono na listę oczekujących. Zgłaszający dostał powiadomienie.",
+      "declined": "Odrzucono. Zgłaszający dostał powiadomienie."
     }
   }
 }

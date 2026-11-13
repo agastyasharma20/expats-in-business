@@ -121,6 +121,7 @@ export default async function ApplicationsPage() {
                               action={moveApplication}
                               fields={{ id: a.id, status: to }}
                               variant={to === "accepted" ? "default" : "outline"}
+                              toastOnResolve
                               toasts={{ [to]: t(`moved.${to}`) }}
                               errorText={t("error")}
                             >

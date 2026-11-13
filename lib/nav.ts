@@ -43,6 +43,14 @@ export const directoryNav = [
   { id: "involved", href: "/get-involved", labelKey: "nav.involved", status: "live" },
 ] as const satisfies readonly NavItem[];
 
+/** Ways to grow EiB: chapters, the ambassador programme, volunteering and roles (footer column). */
+export const growNav = [
+  { id: "chapters", href: "/chapters", labelKey: "nav.chapters", status: "live" },
+  { id: "ambassadors", href: "/ambassadors", labelKey: "nav.ambassadors", status: "live" },
+  { id: "volunteer", href: "/volunteer", labelKey: "nav.volunteer", status: "live" },
+  { id: "careers", href: "/careers", labelKey: "nav.careers", status: "live" },
+] as const satisfies readonly NavItem[];
+
 export const legalNav = [
   { id: "privacy", href: "/legal/privacy", labelKey: "nav.privacy", status: "live" },
   { id: "terms", href: "/legal/terms", labelKey: "nav.terms", status: "live" },
@@ -63,10 +71,11 @@ export const footerColumns = [
     headingKey: "footer.platform",
     items: [...mainNav, ...directoryNav, accountNav.signIn, accountNav.help],
   },
+  { id: "grow", headingKey: "footer.grow", items: growNav },
   { id: "legal", headingKey: "footer.legal", items: legalNav },
 ] as const;
 
 /** Every internal route the nav can reach; the link crawler starts from this list. */
 export function allInternalHrefs(): string[] {
-  return ["/", ...new Set([...mainNav, accountNav.signIn, ...legalNav].map((item) => item.href))];
+  return ["/", ...new Set([...mainNav, ...growNav, accountNav.signIn, ...legalNav].map((item) => item.href))];
 }

@@ -35,6 +35,8 @@ const CLIENT_NAMESPACES = [
   "group",
   "adminShell",
   "festival",
+  "spotlight",
+  "ambassadors",
 ] as const;
 
 function pickClientMessages(messages: Record<string, unknown>) {

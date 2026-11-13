@@ -24,7 +24,7 @@ export function SiteFooter() {
 
   return (
     <footer id="site-footer" className="bg-brand-950 text-on-dark [--ring:var(--on-dark)]">
-      <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-6">
+      <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-7">
         <div className="flex flex-col gap-4 lg:col-span-2">
           <Logo tone="white" className="h-10 self-start" />
           <p className="text-on-dark-muted">{getFact("org.tagline").value}</p>

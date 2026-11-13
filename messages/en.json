@@ -324,7 +324,11 @@
     "roulette": "Coffee Roulette",
     "moderation": "Moderation",
     "festivals": "Festivals",
-    "involved": "Get involved"
+    "involved": "Get involved",
+    "chapters": "Chapters",
+    "ambassadors": "Ambassadors",
+    "volunteer": "Volunteer",
+    "careers": "Careers"
   },
   "chapter": {
     "label": "Chapter",
@@ -351,7 +355,8 @@
     "email": "Email us",
     "messenger": "Message us on Messenger",
     "whatsapp": "Join the WhatsApp community",
-    "copyright": "© {name}"
+    "copyright": "© {name}",
+    "grow": "Grow with EiB"
   },
   "comingSoon": {
     "badge": "Coming soon",
@@ -1159,7 +1164,12 @@
       "stallWaitlisted": "Your stall application is on the waiting list.",
       "stallDeclined": "Your stall application was not accepted this time.",
       "applicationAccepted": "Your application to get involved was accepted. The team will contact you by email.",
-      "applicationDeclined": "Your application to get involved was not accepted this time. Thank you for offering."
+      "applicationDeclined": "Your application to get involved was not accepted this time. Thank you for offering.",
+      "ambassadorAccepted": "Welcome, ambassador! Your application was accepted. The team will contact you by email.",
+      "ambassadorWaitlisted": "Your ambassador application is on the waiting list.",
+      "ambassadorDeclined": "Your ambassador application was not accepted this time. Thank you for offering.",
+      "roleAccepted": "Your application for a role was accepted. The team will contact you by email.",
+      "roleDeclined": "Your application for a role was not accepted this time. Thank you for applying."
     }
   },
   "guides": {
@@ -1530,6 +1540,14 @@
         "plan": {
           "update": "Plan price changed"
         }
+      },
+      "ambassador": {
+        "review": "Ambassador application reviewed"
+      },
+      "opening": {
+        "create": "Role created",
+        "update": "Role updated",
+        "review": "Role application reviewed"
       }
     },
     "health": {
@@ -1574,7 +1592,9 @@
       "system": "System",
       "festivals": "Festivals",
       "applications": "Applications",
-      "catalogs": "Catalogs"
+      "catalogs": "Catalogs",
+      "ambassadors": "Ambassadors",
+      "roles": "Roles"
     }
   },
   "adminMembers": {
@@ -2226,6 +2246,317 @@
       "heading": "You have a new quote request",
       "body": "A member sent you a quote request. Open your inbox to read it and reply.",
       "cta": "Open inbox"
+    }
+  },
+  "spotlight": {
+    "eyebrow": "Festival",
+    "demo": "Demo",
+    "cta": "See the festival",
+    "inDays": "{count, plural, one {in # day} other {in # days}}",
+    "today": "today"
+  },
+  "chapters": {
+    "eyebrow": "One global community",
+    "title": "Chapters around the world",
+    "lead": "EiB grows city by city. Find your country hub and city chapter, or vote to bring EiB to your city.",
+    "ambassadorCta": "Become an ambassador",
+    "countriesTitle": "Countries",
+    "demoCountry": "Demo country",
+    "demo": "Demo",
+    "status": {
+      "live": "Live",
+      "launching": "Launching"
+    },
+    "noChapters": "No chapter yet. Vote below to start one.",
+    "requested": "Requested by members",
+    "votes": "{count, plural, one {# vote} other {# votes}}",
+    "openHub": "Open the {country} hub",
+    "countryTitle": "EiB in {country}",
+    "countryEyebrow": "Country hub",
+    "chaptersLabel": "Chapters",
+    "chapterCount": "{count, plural, =0 {No chapters yet} one {# chapter} other {# chapters}}",
+    "guidesLabel": "Guides",
+    "guideCount": "{count, plural, =0 {No guides yet} one {# guide} other {# guides}}",
+    "citiesTitle": "City chapters in {country}",
+    "fewMembers": "Fewer than 5 members",
+    "members": "{count, plural, one {# member} other {# members}}",
+    "requestsTitle": "Cities members asked for",
+    "ambassadorsTitle": "Ambassadors in {country}",
+    "becomeAmbassador": "Become an ambassador",
+    "noAmbassadors": "No ambassadors here yet. This could be you.",
+    "chapterTitle": "EiB {city}",
+    "join": "Join EiB {city}",
+    "helpLaunch": "Help launch {city}",
+    "allSessions": "All sessions",
+    "facts": {
+      "members": "Members",
+      "sessions": "Upcoming sessions",
+      "ambassadors": "Ambassadors",
+      "leads": "Chapter leads"
+    },
+    "underFive": "Under 5",
+    "upcoming": "Upcoming in {city}",
+    "noSessions": "No sessions are scheduled yet. Check back soon.",
+    "launchingNote": "{city} is launching. Join now and you will hear first when the first session is announced.",
+    "cityAmbassadors": "Ambassadors in {city}",
+    "noCityAmbassadors": "{city} has no ambassador yet. Apply to be the first.",
+    "vote": {
+      "title": "Want EiB in your city?",
+      "lead": "Vote for your city. When enough members ask, we look for a chapter lead and an ambassador.",
+      "cta": "Vote for a city",
+      "submit": "Vote",
+      "sending": "Sending…",
+      "thanks": "Thank you, your vote is in.",
+      "country": "Country",
+      "city": "City",
+      "placeholder": "For example, Gdańsk",
+      "signIn": "Sign in to vote",
+      "errors": {
+        "default": "We could not save your vote. Check the city name and try again.",
+        "rateLimited": "You have voted a lot in a short time. Try again later.",
+        "exists": "There is already a chapter in this city. Open it from the list above."
+      }
+    }
+  },
+  "ambassadors": {
+    "eyebrow": "Ambassador programme",
+    "title": "Represent EiB where you live",
+    "lead": "Ambassadors welcome newcomers, connect people and help EiB open new chapters. Choose global, country or city.",
+    "cta": "Apply to be an ambassador",
+    "tiersTitle": "Three ways to represent EiB",
+    "tiers": {
+      "global": {
+        "title": "Global ambassador",
+        "short": "Global",
+        "text": "Speak for EiB across borders: online, at partner events and wherever internationals meet.",
+        "do1": "Introduce EiB to communities and organisations abroad",
+        "do2": "Connect country hubs and share what works",
+        "do3": "Represent EiB at international events"
+      },
+      "country": {
+        "title": "Country ambassador",
+        "short": "Country",
+        "text": "Build EiB in one country: find chapter leads, gather guides and open the first cities.",
+        "do1": "Help start city chapters in your country",
+        "do2": "Suggest local guides and official sources",
+        "do3": "Welcome new members in your country"
+      },
+      "city": {
+        "title": "City ambassador",
+        "short": "City",
+        "text": "Be the friendly face of EiB in your city: greet people at sessions and invite newcomers.",
+        "do1": "Welcome newcomers at sessions",
+        "do2": "Suggest venues and local partners",
+        "do3": "Share sessions with your networks"
+      }
+    },
+    "benefitsTitle": "What you get",
+    "benefits": {
+      "network": {
+        "title": "A wider network",
+        "text": "Meet chapter leads, members and partners across the EiB community."
+      },
+      "skills": {
+        "title": "Leadership practice",
+        "text": "Plan, host and speak: real experience you can show."
+      },
+      "impact": {
+        "title": "Visible impact",
+        "text": "Help internationals feel at home faster in your city or country."
+      }
+    },
+    "whoTitle": "Our ambassadors",
+    "none": "No ambassadors are listed yet. Applications are open.",
+    "applyTitle": "Apply",
+    "applyLead": "Tell us where you want to represent EiB and why. A team member reviews every application and replies by notification.",
+    "signIn": "Sign in to apply",
+    "mine": "My applications",
+    "noneMine": "You have not applied yet.",
+    "global": "Worldwide",
+    "demo": "Demo",
+    "status": {
+      "submitted": "Submitted",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "waitlisted": "Waiting list",
+      "declined": "Not accepted",
+      "withdrawn": "Withdrawn"
+    },
+    "withdraw": "Withdraw",
+    "withdrawn": "Application withdrawn.",
+    "sent": "Thank you. Your application is in and the team will review it.",
+    "errors": {
+      "default": "We could not send your application. Check the fields and try again.",
+      "exists": "You already have an open application for this tier.",
+      "rateLimited": "You have sent several applications in a short time. Try again later."
+    },
+    "form": {
+      "tier": "Which tier?",
+      "country": "Country",
+      "city": "City",
+      "cityPlaceholder": "For example, Indore",
+      "motivation": "Why do you want to be an ambassador?",
+      "motivationHint": "{count} of at least 80 characters",
+      "experience": "Relevant experience",
+      "experienceHint": "Communities, events or volunteering you have done. At least 40 characters.",
+      "languages": "Languages you speak",
+      "hours": "Hours per month: {hours}",
+      "linkedin": "LinkedIn profile (optional)",
+      "privacy": "Only the EiB team sees your application. If you are accepted, your name and place appear on this page; you can hide it in your settings.",
+      "sending": "Sending…",
+      "submit": "Send application"
+    }
+  },
+  "careers": {
+    "eyebrow": "Careers",
+    "title": "Build EiB with us",
+    "lead": "Help a global community of internationals grow. Pick a role that fits your time and skills.",
+    "honest": "EiB is free and community-run. Most roles are volunteer roles; every role says clearly whether it is volunteer, an internship or paid.",
+    "whyTitle": "Why join",
+    "why": {
+      "mission": {
+        "title": "A real mission",
+        "text": "Help internationals find work, friends and their way around a new country."
+      },
+      "growth": {
+        "title": "Room to grow",
+        "text": "Own a piece of a young platform and see your work used by members."
+      },
+      "people": {
+        "title": "Great people",
+        "text": "Work with founders, chapter leads and volunteers from many countries."
+      }
+    },
+    "rolesTitle": "Open roles",
+    "volunteerLink": "Volunteer at a festival",
+    "filter": "Filter roles by type",
+    "all": "All",
+    "kinds": {
+      "volunteer": "Volunteer",
+      "internship": "Internship",
+      "part_time": "Part-time",
+      "full_time": "Full-time"
+    },
+    "demo": "Demo",
+    "view": "View role",
+    "emptyTitle": "No open roles right now",
+    "emptyText": "New roles appear here first. Meanwhile you can represent EiB as an ambassador.",
+    "becomeAmbassador": "Become an ambassador",
+    "back": "All roles",
+    "closed": "Closed",
+    "closedText": "This role is not taking applications right now.",
+    "responsibilities": "What you will do",
+    "requirements": "What we are looking for",
+    "applyTitle": "Apply for this role",
+    "message": "Why are you a good fit?",
+    "messageHint": "At least 40 characters. Mention your experience and how much time you have.",
+    "portfolio": "Portfolio or LinkedIn link (optional)",
+    "privacy": "Only the EiB team sees your application.",
+    "send": "Send application",
+    "sending": "Sending…",
+    "sent": "Thank you. Your application is in.",
+    "signIn": "Sign in to apply",
+    "withdraw": "Withdraw application",
+    "withdrawn": "Application withdrawn.",
+    "status": {
+      "submitted": "Submitted",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "waitlisted": "Waiting list",
+      "declined": "Not accepted",
+      "withdrawn": "Withdrawn"
+    },
+    "errors": {
+      "default": "We could not send your application. Check the fields and try again.",
+      "exists": "You have already applied for this role.",
+      "rateLimited": "You have sent several applications in a short time. Try again later."
+    }
+  },
+  "volunteer": {
+    "eyebrow": "Volunteer",
+    "title": "Give a few hours, make a big difference",
+    "lead": "Help at a festival, run a session or welcome newcomers. Every EiB event is made by volunteers.",
+    "ambassadorCta": "Become an ambassador",
+    "careersCta": "See all roles",
+    "howTitle": "How volunteering works",
+    "how": {
+      "pick": {
+        "title": "Pick a shift or role",
+        "text": "Choose a festival shift or an ongoing role below."
+      },
+      "meet": {
+        "title": "Meet the team",
+        "text": "A chapter lead confirms and tells you what to expect."
+      },
+      "grow": {
+        "title": "Grow with us",
+        "text": "Regular volunteers can become ambassadors or chapter leads."
+      }
+    },
+    "festivalsTitle": "Festivals that need hands",
+    "festival": "Festival",
+    "demo": "Demo",
+    "openShifts": "{count, plural, =0 {All shifts are full} one {# volunteer place open} other {# volunteer places open}}",
+    "noFestivals": "No festival needs volunteers right now.",
+    "rolesTitle": "Ongoing volunteer roles",
+    "noRoles": "No ongoing volunteer roles are open right now."
+  },
+  "adminGrowth": {
+    "ambassadorsTitle": "Ambassador applications",
+    "ambassadorsLead": "Review who wants to represent EiB. Accepting lists them on the public ambassadors page; every decision is logged and the applicant is told.",
+    "rolesTitle": "Roles and careers",
+    "rolesLead": "Write volunteer, internship and paid roles, open them on the careers page and review applications.",
+    "applicationsTitle": "Applications",
+    "rolesList": "All roles",
+    "roleNew": "New role",
+    "roleCreate": "Create role",
+    "roleSave": "Save role",
+    "roleSaved": "Role saved.",
+    "roleError": "The role could not be saved. Check the fields.",
+    "rateLimited": "Too many changes in a short time. Wait a moment.",
+    "saving": "Saving…",
+    "onePerLine": "One item per line, up to 12.",
+    "viewPublic": "Open the public page",
+    "applicants": "{count, plural, =0 {No applicants} one {# applicant} other {# applicants}}",
+    "hours": "{hours} h per month",
+    "demo": "Demo",
+    "read": "Read the application",
+    "empty": "Nothing here.",
+    "error": "This move is not possible any more. Reload the page.",
+    "fields": {
+      "title": "Title",
+      "team": "Team",
+      "kind": "Type",
+      "status": "Status",
+      "location": "Location",
+      "commitment": "Time commitment",
+      "summary": "Summary",
+      "responsibilities": "Responsibilities",
+      "requirements": "Requirements"
+    },
+    "roleStatus": {
+      "draft": "Draft",
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "status": {
+      "submitted": "New",
+      "in_review": "In review",
+      "waitlisted": "Waiting list",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    },
+    "move": {
+      "in_review": "Review",
+      "accepted": "Accept",
+      "waitlisted": "Waiting list",
+      "declined": "Decline"
+    },
+    "moved": {
+      "in_review": "Moved to review.",
+      "accepted": "Accepted. The applicant has been told.",
+      "waitlisted": "Moved to the waiting list. The applicant has been told.",
+      "declined": "Declined. The applicant has been told."
     }
   }
 }

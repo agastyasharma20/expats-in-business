@@ -23,7 +23,12 @@ export type NotificationType =
   | "stallWaitlisted"
   | "stallDeclined"
   | "applicationAccepted"
-  | "applicationDeclined";
+  | "applicationDeclined"
+  | "ambassadorAccepted"
+  | "ambassadorWaitlisted"
+  | "ambassadorDeclined"
+  | "roleAccepted"
+  | "roleDeclined";
 
 export async function notify(
   userId: string,

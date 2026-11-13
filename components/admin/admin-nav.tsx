@@ -15,6 +15,8 @@ export const ADMIN_SECTIONS = [
   { key: "providers", href: "/admin/providers", adminOnly: true },
   { key: "moderation", href: "/moderation", adminOnly: false },
   { key: "applications", href: "/admin/applications", adminOnly: false },
+  { key: "ambassadors", href: "/admin/ambassadors", adminOnly: true },
+  { key: "roles", href: "/admin/roles", adminOnly: true },
   { key: "roulette", href: "/admin/roulette", adminOnly: true },
   { key: "audit", href: "/admin/audit", adminOnly: false },
   { key: "catalogs", href: "/admin/catalogs", adminOnly: true },

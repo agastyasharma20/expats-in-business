@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cacheLife, cacheTag } from "next/cache";
+
 import type { Prisma } from "@/generated/prisma/client";
 import { managedChapterWhere } from "@/lib/admin/scope";
 import type { AuthUser } from "@/lib/auth/permissions";
@@ -49,8 +51,11 @@ export function listFestivals(when: "upcoming" | "past" = "upcoming") {
   });
 }
 
-/** Public festival page: tiers with live availability, programme, partners, FAQ, volunteering. */
-export async function getFestival(slug: string, viewerId: string | null) {
+async function loadFestivalPublic(slug: string) {
+  "use cache";
+  // Shared by every visitor: refreshed every 30 s and on any ticket or content change ("events").
+  cacheLife({ stale: 30, revalidate: 30, expire: 300 });
+  cacheTag("events", `festival:${slug}`);
   const db = getDb();
   const event = await db.event.findUnique({
     where: { slug },
@@ -72,32 +77,13 @@ export async function getFestival(slug: string, viewerId: string | null) {
   });
   if (!event || event.kind !== "festival" || event.status === "draft") return null;
   const now = new Date();
-  const [sold, taken, ticket, stall, mySignups] = await Promise.all([
+  const [sold, taken] = await Promise.all([
     soldByTier(event.id),
     db.ticket
       .aggregate({ _sum: { quantity: true }, where: { eventId: event.id, ...takenWhere(now) } })
       .then((r) => r._sum.quantity ?? 0),
-    viewerId
-      ? db.ticket.findUnique({
-          where: { eventId_userId: { eventId: event.id, userId: viewerId } },
-          select: { id: true, status: true, quantity: true },
-        })
-      : null,
-    viewerId
-      ? db.stallApplication.findUnique({
-          where: { eventId_userId: { eventId: event.id, userId: viewerId } },
-          select: { id: true, status: true, businessName: true },
-        })
-      : null,
-    viewerId
-      ? db.volunteerSignup.findMany({
-          where: { userId: viewerId, shift: { eventId: event.id } },
-          select: { shiftId: true },
-        })
-      : [],
   ]);
   const eventLeft = placesLeft(event.capacity, taken);
-  const mine = new Set(mySignups.map((s) => s.shiftId));
   return {
     ...event,
     taken,
@@ -112,14 +98,38 @@ export async function getFestival(slug: string, viewerId: string | null) {
         now,
       }),
     })),
-    shifts: event.shifts.map((shift) => ({
-      ...shift,
-      taken: shift._count.signups,
-      mine: mine.has(shift.id),
-    })),
-    ticket,
-    stall,
+    shifts: event.shifts.map((shift) => ({ ...shift, taken: shift._count.signups })),
   };
+}
+
+export type PublicFestival = NonNullable<Awaited<ReturnType<typeof loadFestivalPublic>>>;
+
+/**
+ * Public festival data (no viewer data inside, so it is safe to cache and share). Availability
+ * shown here is advisory: the RSVP action re-checks capacity under a row lock.
+ */
+export async function getFestivalPublic(slug: string) {
+  return loadFestivalPublic(slug);
+}
+
+/** What the signed-in viewer has at this festival: ticket, stall application, volunteer shifts. */
+export async function getFestivalViewer(eventId: string, userId: string) {
+  const db = getDb();
+  const [ticket, stall, signups] = await Promise.all([
+    db.ticket.findUnique({
+      where: { eventId_userId: { eventId, userId } },
+      select: { id: true, status: true, quantity: true },
+    }),
+    db.stallApplication.findUnique({
+      where: { eventId_userId: { eventId, userId } },
+      select: { id: true, status: true, businessName: true },
+    }),
+    db.volunteerSignup.findMany({
+      where: { userId, shift: { eventId } },
+      select: { shiftId: true },
+    }),
+  ]);
+  return { ticket, stall, shiftIds: new Set(signups.map((s) => s.shiftId)) };
 }
 
 /** Festivals in the chapters this user manages (admins: all). */

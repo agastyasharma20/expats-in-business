@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { z } from "zod";
 
 import { requireUser } from "@/lib/auth/session";
@@ -54,6 +54,8 @@ export async function joinShift(_prev: ActionState, form: FormData): Promise<Act
     return { message: "joined" as const, slug: shift.event.slug };
   });
   if (result.message !== "joined") return { ok: false, message: result.message };
+  // Read-your-writes: the shared festival cache shows the new shift count right away.
+  updateTag(`festival:${result.slug}`);
   revalidatePath(`/festivals/${result.slug}`);
   return { ok: true, message: "joined" };
 }
@@ -69,6 +71,7 @@ export async function leaveShift(_prev: ActionState, form: FormData): Promise<Ac
   });
   if (!shift || shift.startsAt <= new Date()) return { ok: false, message: "closed" };
   await db.volunteerSignup.deleteMany({ where: { shiftId: shiftId.data, userId: user.id } });
+  updateTag(`festival:${shift.event.slug}`);
   revalidatePath(`/festivals/${shift.event.slug}`);
   return { ok: true, message: "left" };
 }

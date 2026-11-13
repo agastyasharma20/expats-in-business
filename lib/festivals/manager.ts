@@ -1,6 +1,6 @@
 import "server-only";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag, updateTag } from "next/cache";
 import { forbidden } from "next/navigation";
 
 import { audit } from "@/lib/audit";
@@ -57,6 +57,8 @@ export async function afterFestivalChange(
     meta,
   });
   revalidateTag("events", "max");
+  // The organiser sees their change on the public page immediately (read-your-writes).
+  updateTag(`festival:${event.slug}`);
   revalidatePath(`/admin/festivals/${event.id}`);
   revalidatePath(`/festivals/${event.slug}`);
   revalidatePath("/festivals");

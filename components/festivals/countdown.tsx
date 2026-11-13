@@ -39,7 +39,7 @@ export function Countdown({ startsAt }: { startsAt: string }) {
     : null;
 
   return (
-    <div className="flex min-h-20 items-end gap-3" aria-label={t("countdownLabel")}>
+    <div role="timer" className="flex min-h-20 items-end gap-3" aria-label={t("countdownLabel")}>
       {units && target > (now ?? 0)
         ? units.map(([unit, value]) => (
             <span

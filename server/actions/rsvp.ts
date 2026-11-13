@@ -2,7 +2,7 @@
 
 import { randomBytes } from "node:crypto";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -133,6 +133,8 @@ export async function rsvp(_prev: ActionState, form: FormData): Promise<ActionSt
   });
   await expireSession(staleSessionId);
   revalidateTag("events", "max");
+  // Festivals: the buyer's next view of the page shows the new availability.
+  updateTag(`festival:${event.slug}`);
   revalidatePath(`/events/${event.slug}`);
   if (ticket.status === "waitlisted") {
     await sendTicketEmail(ticket.id, "waitlisted");

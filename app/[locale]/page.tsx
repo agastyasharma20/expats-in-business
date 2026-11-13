@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
+import { FestivalSpotlightBanner } from "@/components/festivals/spotlight";
 import { BubblesTeaser } from "@/components/home/bubbles-teaser";
 import { ChaptersStrip } from "@/components/home/chapters-strip";
 import { CtaBand } from "@/components/home/cta-band";
@@ -26,6 +28,9 @@ export default function HomePage() {
     <>
       <OrganizationJsonLd baseUrl={process.env.APP_URL ?? "http://localhost:3000"} />
       <Hero />
+      <Suspense fallback={null}>
+        <FestivalSpotlightBanner />
+      </Suspense>
       <StatsStrip />
       <UpcomingEvents />
       <HowItWorks />

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { useTranslations } from "next-intl";
 
 import { AccountNav, SignInButton } from "@/components/auth/account-nav";
+import { FestivalSpotlightPill } from "@/components/festivals/spotlight";
 import { Link } from "@/lib/i18n/navigation";
 import { mainNav } from "@/lib/nav";
 
@@ -43,6 +44,9 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-1">
+          <Suspense fallback={null}>
+            <FestivalSpotlightPill />
+          </Suspense>
           <div className="hidden items-center gap-1 lg:flex">
             <ChapterSwitcher />
             <LanguageSwitcher />

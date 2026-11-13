@@ -1,0 +1,80 @@
+/** Demo open roles: every title says "(demo)"; the paid role states its terms are placeholders. */
+export const demoRoles = [
+  {
+    slug: "demo-community-volunteer",
+    title: "Community volunteer (demo)",
+    team: "Chapters",
+    kind: "volunteer" as const,
+    location: "Any EiB city",
+    commitment: "4–8 hours a month",
+    summary:
+      "Demo role: welcome people at sessions, help set up and share events with your networks.",
+    responsibilities: [
+      "Welcome newcomers at sessions",
+      "Help set up and tidy the venue",
+      "Share upcoming sessions online",
+    ],
+    requirements: ["Friendly and reliable", "English at a conversational level"],
+  },
+  {
+    slug: "demo-festival-crew-lead",
+    title: "Festival crew lead (demo)",
+    team: "Festivals",
+    kind: "volunteer" as const,
+    location: "On site, festival city",
+    commitment: "Festival weeks",
+    summary: "Demo role: coordinate volunteer shifts on the day of a cultural festival.",
+    responsibilities: [
+      "Brief volunteers before each shift",
+      "Keep the shift plan up to date",
+      "Be the contact for stall holders",
+    ],
+    requirements: ["Event or team experience", "Calm under pressure"],
+  },
+  {
+    slug: "demo-content-creator",
+    title: "Content and social media creator (demo)",
+    team: "Marketing",
+    kind: "volunteer" as const,
+    location: "Remote",
+    commitment: "3–5 hours a week",
+    summary: "Demo role: turn sessions and member stories into posts, reels and newsletters.",
+    responsibilities: [
+      "Photograph and film sessions (with consent)",
+      "Write short posts in plain language",
+      "Plan a monthly content calendar",
+    ],
+    requirements: ["A portfolio of posts or videos", "Respect for members' privacy"],
+  },
+  {
+    slug: "demo-partnerships-intern",
+    title: "Partnerships intern (demo)",
+    team: "Partnerships",
+    kind: "internship" as const,
+    location: "Hybrid",
+    commitment: "3 months, 20 hours a week",
+    summary: "Demo role: research venues and partners and prepare outreach for new chapters.",
+    responsibilities: [
+      "Map venues and partners in launching cities",
+      "Draft partnership one-pagers",
+      "Track conversations in the CRM",
+    ],
+    requirements: ["Student or recent graduate", "Clear written English"],
+  },
+  {
+    slug: "demo-platform-engineer",
+    title: "Platform engineer (demo)",
+    team: "Product",
+    kind: "part_time" as const,
+    location: "Remote",
+    commitment: "Placeholder: terms to be confirmed",
+    summary:
+      "Demo role: shows how a paid role would look. No real opening; terms are placeholders.",
+    responsibilities: [
+      "Build features with Next.js and Postgres",
+      "Review pull requests",
+      "Keep the platform secure and fast",
+    ],
+    requirements: ["TypeScript and React experience", "Care for accessibility"],
+  },
+];

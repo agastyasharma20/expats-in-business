@@ -5,6 +5,7 @@ import { resetRandom, type SeedContext } from "./context";
 import { seedEngagement } from "./engagement";
 import { seedEvents } from "./events";
 import { seedFestival } from "./festival";
+import { seedGrowth } from "./growth";
 import { seedPeople } from "./people";
 
 /** Removes every demo record (isDemo = true); cascades take tickets, roles, votes and the rest. */
@@ -21,7 +22,11 @@ export async function clearDemo(db: PrismaClient) {
   await db.business.deleteMany({ where: { isDemo: true } });
   await db.application.deleteMany({ where: { isDemo: true } });
   await db.bubble.deleteMany({ where: { isDemo: true } });
+  await db.openRole.deleteMany({ where: { isDemo: true } });
+  await db.ambassador.deleteMany({ where: { isDemo: true } });
+  await db.ambassadorApplication.deleteMany({ where: { isDemo: true } });
   await db.user.deleteMany({ where: { isDemo: true } });
+  await db.chapter.deleteMany({ where: { isDemo: true, events: { none: {} } } });
   // Roulette rounds whose members were all demo accounts (cascade emptied them).
   await db.rouletteRound.deleteMany({ where: { matches: { every: { members: { none: {} } } } } });
   // Keep a demo country if a real (non-demo) chapter request now points at it.
@@ -46,4 +51,5 @@ export async function seedDemo(db: PrismaClient, today: Date) {
   await seedCommunity(ctx, people, events);
   await seedEngagement(ctx, people, events);
   await seedFestival(ctx, people);
+  await seedGrowth(ctx, people);
 }

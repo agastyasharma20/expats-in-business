@@ -23,13 +23,14 @@ async function loadChapterOptions(): Promise<ChapterOption[]> {
   // Throws on failure so a failure is never cached (see getChapterOptions).
   const chapters = await getDb().chapter.findMany({
     where: { status: { in: ["live", "launching"] } },
-    select: { slug: true, name: true, status: true },
+    select: { slug: true, name: true, status: true, timezone: true },
     orderBy: [{ status: "asc" }, { name: "asc" }],
   });
   return chapters.map((chapter) => ({
     slug: chapter.slug,
     name: chapter.name,
     status: chapter.status === "live" ? "live" : "launching",
+    timeZone: chapter.timezone,
   }));
 }
 
@@ -54,4 +55,13 @@ export async function getChapterOptions(): Promise<ChapterOption[]> {
  */
 export async function getPreferredChapterSlug(): Promise<string> {
   return preferredChapterFromHeader((await headers()).get("cookie"));
+}
+
+/**
+ * Default zone for dates formatted without an explicit chapter (relative times, generic dates):
+ * the first live chapter's zone, from the database (never hard-coded), UTC when there is none.
+ */
+export async function defaultTimeZone(): Promise<string> {
+  const options = await getChapterOptions();
+  return options.find((o) => o.status === "live")?.timeZone ?? "UTC";
 }

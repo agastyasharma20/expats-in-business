@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (locale) =>
   JSON.parse(readFileSync(path.join(root, "messages", `${locale}.json`), "utf8"));
-const STATUS = "TODO: copied from en, translate in M15 (machine-translated, reviewed: no)";
+const STATUS = "machine-translated, reviewed: no";
 
 /** Same shape as `source`, taking values from `existing` where they exist. */
 function merge(source, existing) {

@@ -1177,7 +1177,10 @@
     "read": "Read the guide",
     "emptyTitle": "No guides yet",
     "emptyDescription": "Guides for this country are being written.",
-    "count": "{count, plural, one {# official source} other {# official sources}}"
+    "count": "{count, plural, one {# official source} other {# official sources}}",
+    "machine": "Machine-translated summary, not reviewed yet.",
+    "englishBody": "The full guide below is in English, with its official sources.",
+    "machineShort": "Summary machine-translated · guide in English"
   },
   "concierge": {
     "title": "Expat Concierge",
@@ -2174,6 +2177,55 @@
       "default": "Please check the fields.",
       "exists": "A category with this name already exists.",
       "rateLimited": "Too many changes in a short time. Wait a minute."
+    }
+  },
+  "emails": {
+    "magicLink": {
+      "subject": "Your sign-in link",
+      "heading": "Sign in to Expats in Business",
+      "body": "Use this link to sign in. It works once and expires in 15 minutes. If you did not ask for it, ignore this email.",
+      "cta": "Sign in"
+    },
+    "verify": {
+      "subject": "Confirm your email address",
+      "heading": "Confirm your email address",
+      "body": "Confirm that {email} belongs to you. The link expires in {hours} hours.",
+      "cta": "Confirm email"
+    },
+    "ticket": {
+      "confirmed": {
+        "subject": "Your ticket: {event}",
+        "body": "You have a place. Show the QR code on your ticket page at the door.",
+        "cta": "Open my ticket"
+      },
+      "waitlisted": {
+        "subject": "Waitlist: {event}",
+        "body": "The session is full, so you are on the waitlist. We email you as soon as a place frees up.",
+        "cta": "View my waitlist spot"
+      },
+      "promotedReserved": {
+        "subject": "A place opened up: {event}",
+        "body": "A place is now held for you. Complete the payment within {minutes} minutes to keep it.",
+        "cta": "Pay and confirm"
+      },
+      "promotedConfirmed": {
+        "subject": "A place opened up: {event}",
+        "body": "Good news: you moved up from the waitlist and have a place.",
+        "cta": "Open my ticket"
+      }
+    },
+    "reminders": {
+      "subject": "Your roadmap: steps due next week",
+      "heading": "Coming up on your Landing Roadmap",
+      "intro": "These steps are due in about a week:",
+      "outro": "Each step links to a guide with official sources.",
+      "cta": "Open my roadmap"
+    },
+    "quote": {
+      "subject": "New quote request for {provider}",
+      "heading": "You have a new quote request",
+      "body": "A member sent you a quote request. Open your inbox to read it and reply.",
+      "cta": "Open inbox"
     }
   }
 }

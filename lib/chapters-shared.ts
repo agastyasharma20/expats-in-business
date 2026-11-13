@@ -6,6 +6,8 @@ export type ChapterOption = {
   slug: string;
   name: string;
   status: "live" | "launching";
+  /** IANA zone used to show this chapter's dates and times. */
+  timeZone: string;
 };
 
 /** Chapter slug from a raw Cookie header (pure; unknown or malformed values mean "global"). */

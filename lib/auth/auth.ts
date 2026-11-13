@@ -1,12 +1,15 @@
 import { createId } from "@paralleldrive/cuid2";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { magicLink } from "better-auth/plugins/magic-link";
 
 import { getDb } from "@/lib/db";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
+import { emailTranslator } from "@/lib/i18n/email";
+import { rateLimit } from "@/lib/rate-limit";
 
 const env = getEnv();
 const google =
@@ -29,6 +32,8 @@ export const auth = betterAuth({
   emailAndPassword: { enabled: true, disableSignUp: true, minPasswordLength: 8 },
   socialProviders: google,
   session: { expiresIn: 60 * 60 * 24 * 30, updateAge: 60 * 60 * 24 },
+  // Limits are stored in Postgres (lib/rate-limit.ts) so they hold across server instances and
+  // restarts; process memory would let a bot reset them by hitting another instance.
   rateLimit: {
     enabled: true,
     window: 60,
@@ -36,19 +41,45 @@ export const auth = betterAuth({
     customRules: {
       "/sign-in/email": { window: 60, max: 5 },
       "/sign-in/magic-link": { window: 60, max: 5 },
+      "/magic-link/verify": { window: 60, max: 10 },
+    },
+    customStorage: {
+      consume: async (key, rule) => {
+        const result = await rateLimit(`auth:${key}`, rule.max, rule.window);
+        return { allowed: result.ok, retryAfter: result.ok ? null : result.retryAfterSeconds };
+      },
+    },
+  },
+  databaseHooks: {
+    session: {
+      create: {
+        // Suspended accounts cannot start a session by any sign-in method.
+        before: async (session) => {
+          const user = await getDb().user.findUnique({
+            where: { id: session.userId },
+            select: { suspendedAt: true },
+          });
+          if (user?.suspendedAt) throw new APIError("FORBIDDEN", { message: "Account suspended" });
+        },
+      },
     },
   },
   plugins: [
     magicLink({
       expiresIn: 60 * 15,
       sendMagicLink: async ({ email, url }) => {
+        const account = await getDb().user.findUnique({
+          where: { email },
+          select: { locale: true },
+        });
+        const { t } = emailTranslator(account?.locale);
         const message = actionEmail({
-          heading: "Sign in to Expats in Business",
-          body: "Use this link to sign in. It works once and expires in 15 minutes. If you did not ask for it, ignore this email.",
-          cta: "Sign in",
+          heading: t("magicLink.heading"),
+          body: t("magicLink.body"),
+          cta: t("magicLink.cta"),
           url,
         });
-        await sendEmail({ to: email, subject: "Your sign-in link", ...message });
+        await sendEmail({ to: email, subject: t("magicLink.subject"), ...message });
       },
     }),
     nextCookies(),

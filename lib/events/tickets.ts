@@ -8,6 +8,7 @@ import type { TicketStatus } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
+import { emailTranslator, localizedUrl } from "@/lib/i18n/email";
 
 import {
   PAYMENT_WINDOW_MINUTES,
@@ -30,9 +31,51 @@ async function lockEvent(tx: Tx, eventId: string) {
   await tx.$queryRaw`SELECT id FROM "Event" WHERE id = ${eventId} FOR UPDATE`;
 }
 
-/** Places held by everyone except one ticket (so a ticket never competes with itself). */
-async function takenByOthers(tx: Tx, eventId: string, ticketId: string) {
-  return tx.ticket.count({ where: { eventId, id: { not: ticketId }, ...takenWhere() } });
+/** Places held (sum of party sizes), optionally in one tier and excluding one ticket. */
+async function placesTaken(
+  tx: Tx,
+  eventId: string,
+  options: { exceptTicketId?: string; ticketTypeId?: string } = {},
+) {
+  const result = await tx.ticket.aggregate({
+    _sum: { quantity: true },
+    where: {
+      eventId,
+      ...(options.exceptTicketId ? { id: { not: options.exceptTicketId } } : {}),
+      ...(options.ticketTypeId ? { ticketTypeId: options.ticketTypeId } : {}),
+      ...takenWhere(),
+    },
+  });
+  return result._sum.quantity ?? 0;
+}
+
+/** Whether a party of `quantity` fits the event and its tier right now (caller holds the lock). */
+async function fits(
+  tx: Tx,
+  ticket: { id?: string; eventId: string; ticketTypeId: string; quantity: number },
+) {
+  const [event, tier, taken, tierTaken] = await Promise.all([
+    tx.event.findUniqueOrThrow({ where: { id: ticket.eventId }, select: { capacity: true } }),
+    tx.ticketType.findUniqueOrThrow({
+      where: { id: ticket.ticketTypeId },
+      select: { capacity: true },
+    }),
+    placesTaken(tx, ticket.eventId, { exceptTicketId: ticket.id }),
+    placesTaken(tx, ticket.eventId, {
+      exceptTicketId: ticket.id,
+      ticketTypeId: ticket.ticketTypeId,
+    }),
+  ]);
+  return (
+    decideRsvp({
+      capacity: event.capacity,
+      taken,
+      paid: false,
+      quantity: ticket.quantity,
+      tierCapacity: tier.capacity,
+      tierTaken,
+    }) !== "waitlisted"
+  );
 }
 
 function holdExpired(ticket: { status: TicketStatus; updatedAt: Date }) {
@@ -49,7 +92,11 @@ export async function claimTicket(input: {
   userId: string;
   paid: boolean;
   capacity: number;
+  /** Party size, already validated against the event's maxPerOrder. */
+  quantity?: number;
+  tierCapacity?: number | null;
 }) {
+  const quantity = input.quantity ?? 1;
   return getDb().$transaction(async (tx) => {
     await lockEvent(tx, input.eventId);
     const existing = await tx.ticket.findUnique({
@@ -58,12 +105,22 @@ export async function claimTicket(input: {
     if (existing && existing.status !== "cancelled" && !holdExpired(existing)) {
       return { ticket: existing, staleSessionId: null };
     }
-    const taken = existing
-      ? await takenByOthers(tx, input.eventId, existing.id)
-      : await tx.ticket.count({ where: { eventId: input.eventId, ...takenWhere() } });
-    const status: TicketStatus = decideRsvp({ capacity: input.capacity, taken, paid: input.paid });
+    const except = { exceptTicketId: existing?.id };
+    const [taken, tierTaken] = await Promise.all([
+      placesTaken(tx, input.eventId, except),
+      placesTaken(tx, input.eventId, { ...except, ticketTypeId: input.ticketTypeId }),
+    ]);
+    const status: TicketStatus = decideRsvp({
+      capacity: input.capacity,
+      taken,
+      paid: input.paid,
+      quantity,
+      tierCapacity: input.tierCapacity,
+      tierTaken,
+    });
     const data = {
       status,
+      quantity,
       ticketTypeId: input.ticketTypeId,
       qrToken: newQrToken(),
       stripeSessionId: null,
@@ -84,14 +141,10 @@ export async function renewHold(ticketId: string): Promise<boolean> {
   return getDb().$transaction(async (tx) => {
     const ticket = await tx.ticket.findUniqueOrThrow({
       where: { id: ticketId },
-      select: { eventId: true },
+      select: { id: true, eventId: true, ticketTypeId: true, quantity: true },
     });
     await lockEvent(tx, ticket.eventId);
-    const event = await tx.event.findUniqueOrThrow({
-      where: { id: ticket.eventId },
-      select: { capacity: true },
-    });
-    const free = placesLeft(event.capacity, await takenByOthers(tx, ticket.eventId, ticketId)) > 0;
+    const free = await fits(tx, ticket);
     await tx.ticket.update({
       where: { id: ticketId },
       data: free ? { updatedAt: new Date() } : { status: "waitlisted", stripeSessionId: null },
@@ -124,16 +177,15 @@ export async function confirmPaidTicket(
       return "duplicate" as const;
     if (!ticket || ticket.status !== "reserved" || ticket.stripeSessionId !== session.id)
       return "mismatch" as const;
+    // The paid total must be exactly tier price x party size, in the tier's currency.
     if (
-      session.amountTotal !== ticket.ticketType.priceMinor ||
+      session.amountTotal !== ticket.ticketType.priceMinor * ticket.quantity ||
       session.currency?.toUpperCase() !== ticket.ticketType.currency.toUpperCase()
     ) {
       return "mismatch" as const;
     }
     await lockEvent(tx, ticket.eventId);
-    if (
-      placesLeft(ticket.event.capacity, await takenByOthers(tx, ticket.eventId, ticket.id)) === 0
-    ) {
+    if (!(await fits(tx, ticket))) {
       await tx.ticket.update({
         where: { id: ticket.id },
         data: { status: "waitlisted", stripeSessionId: null },
@@ -169,13 +221,24 @@ export async function promoteWaitlist(eventId: string) {
       where: { id: eventId },
       select: { capacity: true },
     });
-    const taken = await tx.ticket.count({ where: { eventId, ...takenWhere() } });
+    const taken = await placesTaken(tx, eventId);
     const waitlist = await tx.ticket.findMany({
       where: { eventId, status: "waitlisted" },
-      select: { id: true, createdAt: true, ticketType: { select: { priceMinor: true } } },
+      select: {
+        id: true,
+        eventId: true,
+        ticketTypeId: true,
+        quantity: true,
+        createdAt: true,
+        ticketType: { select: { priceMinor: true } },
+      },
     });
-    const chosen = pickPromotions(waitlist, placesLeft(event.capacity, taken));
-    for (const ticket of chosen) {
+    const candidates = pickPromotions(waitlist, placesLeft(event.capacity, taken));
+    const chosen: typeof candidates = [];
+    // Tier caps are re-checked one by one, so promotions never overfill a sold-out tier.
+    for (const ticket of candidates) {
+      if (!(await fits(tx, ticket))) continue;
+      chosen.push(ticket);
       await tx.ticket.update({
         where: { id: ticket.id },
         data: { status: ticket.ticketType.priceMinor > 0 ? "reserved" : "confirmed" },
@@ -195,30 +258,29 @@ export async function sendTicketEmail(
 ) {
   const ticket = await getDb().ticket.findUnique({
     where: { id: ticketId },
-    select: { status: true, user: { select: { email: true } }, event: { select: { title: true } } },
+    select: {
+      status: true,
+      user: { select: { email: true, locale: true } },
+      event: { select: { title: true } },
+    },
   });
   if (!ticket) return;
-  const url = new URL(`/tickets/${ticketId}`, getEnv().APP_URL).toString();
-  const reserved = ticket.status === "reserved";
-  const copy = {
-    confirmed: {
-      subject: `Your ticket: ${ticket.event.title}`,
-      body: "You have a place. Show the QR code on your ticket page at the door.",
-      cta: "Open my ticket",
-    },
-    waitlisted: {
-      subject: `Waitlist: ${ticket.event.title}`,
-      body: "The session is full, so you are on the waitlist. We email you as soon as a place frees up.",
-      cta: "View my waitlist spot",
-    },
-    promoted: {
-      subject: `A place opened up: ${ticket.event.title}`,
-      body: reserved
-        ? `A place is now held for you. Complete the payment within ${PAYMENT_WINDOW_MINUTES} minutes to keep it.`
-        : "Good news: you moved up from the waitlist and have a place.",
-      cta: reserved ? "Pay and confirm" : "Open my ticket",
-    },
-  }[reason];
-  const message = actionEmail({ heading: copy.subject, body: copy.body, cta: copy.cta, url });
-  await sendEmail({ to: ticket.user.email, subject: copy.subject, ...message });
+  // The member's own language (Settings, Account); English when none is saved.
+  const { locale, t } = emailTranslator(ticket.user.locale);
+  const url = localizedUrl(`/tickets/${ticketId}`, locale, getEnv().APP_URL);
+  const key =
+    reason === "promoted"
+      ? ticket.status === "reserved"
+        ? "promotedReserved"
+        : "promotedConfirmed"
+      : reason;
+  const event = ticket.event.title;
+  const subject = t(`ticket.${key}.subject`, { event });
+  const message = actionEmail({
+    heading: subject,
+    body: t(`ticket.${key}.body`, { minutes: PAYMENT_WINDOW_MINUTES }),
+    cta: t(`ticket.${key}.cta`),
+    url,
+  });
+  await sendEmail({ to: ticket.user.email, subject, ...message });
 }

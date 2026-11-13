@@ -11,6 +11,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export const metadata: Metadata = { robots: { index: false } };
 
 /** Verification queue (admins): pending providers first, then the latest decisions. */

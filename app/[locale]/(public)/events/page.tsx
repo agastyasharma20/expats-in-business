@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import type { Metadata } from "next";
 import { CalendarDaysIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -10,12 +11,13 @@ import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { listEvents, listFormats } from "@/lib/events/queries";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/events">;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("events");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/events", { title: t("title"), description: t("lead") });
 }
 
 function one(value: string | string[] | undefined) {
@@ -23,6 +25,8 @@ function one(value: string | string[] | undefined) {
 }
 
 async function EventResults({ searchParams }: { searchParams: Props["searchParams"] }) {
+  // "Upcoming" depends on the current time: render at request time (no prerender of new Date()).
+  await connection();
   const params = await searchParams;
   const when = one(params.when) === "past" ? "past" : "upcoming";
   const formats = await listFormats();
@@ -98,6 +102,9 @@ export default async function EventsPage({ searchParams }: Props) {
           className={buttonVariants({ variant: "link", size: "inline" })}
         >
           {t("formatsLink")}
+        </Link>
+        <Link href="/festivals" className={buttonVariants({ variant: "link", size: "inline" })}>
+          {t("festivalsLink")}
         </Link>
       </header>
       <Suspense fallback={<Skeleton className="h-96 w-full" />}>

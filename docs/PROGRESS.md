@@ -13,8 +13,136 @@
 | M9 Directory and providers | done                          | develop · v0.9.0                           | 104/104 e2e, crawler 200 pages      |
 | M10 Guides and concierge   | done; prompt safety approved  | develop · v0.10.0                          | 109/109 e2e, demo works offline     |
 | M11 Landing Roadmap        | done                          | develop · v0.11.0                          | 6 scenarios TDD, reminders job      |
+| M12 Community + admin      | done; pending review          | feat/m12-community → v0.12.0 (proposed)    | community e2e, command centre       |
+| M13 Festivals              | done; pending review          | feat/m13-festivals → v0.13.0 (proposed)    | group tickets, console, stalls      |
+| M14 Admin tools + SEO base | done; pending review          | feat/m13-festivals → v0.14.0 (proposed)    | 132/132 e2e (CI=1), sitemap         |
+| M15 i18n, SEO and quality  | done; pending native review   | feat/m15-i18n-quality → v0.15.0 (proposed) | Lighthouse 100×4 on 7 routes        |
+| M15b Growth                | done; pending review          | feat/m16-growth                            | chapters, ambassadors, careers      |
 
 ## Log
+
+### 2026-11-13 · RSVP and un-RSVP on every event and festival
+
+- **Un-RSVP where you RSVP'd**: event page, festival tickets panel and ticket page share one component with an inline two-step confirmation (no browser dialog; focus moves to "Yes, un-RSVP"; Escape or "Keep my place" closes it). Waitlist spots get "Leave the waitlist".
+- **Server**: `cancelTicket` validates the id with Zod, is rate-limited with RSVPs (20 per hour), refuses after check-in or start, cancels with a conditional update (a double click promotes the waitlist once), and refreshes the festival page at once.
+- **Fixes**: the event and festival builders preselect a chapter that has venues (the demo Indore chapter sorted first and made "Create" fail).
+- **Verified**: `npm run check` green (308 unit tests); e2e events, check-in (waitlist promotion via un-RSVP) and festivals all green on desktop; the new test covers RSVP → un-RSVP → RSVP again, focus and Escape.
+
+### 2026-11-13 · Growth: chapters, ambassadors, careers, volunteering, festival spotlight
+
+**Built**
+
+- **Chapters world view** (`/chapters`): every country with its landmark panorama, live and launching chapters and the cities members ask for; members vote for their city (rate-limited, duplicates ignored, refused where a chapter already exists).
+- **Country hubs** (`/countries/[code]`) and **city chapter pages** (`/chapters/[slug]`): facts (members shown only from 5), upcoming sessions, ambassadors, join or help-launch actions.
+- **India and Indore (demo)**: original line drawings of India Gate (with Lotus Temple, Himalaya and Ganga) and Rajwada Palace (storeys, jharokhas, corner chhatris, river Khan); lotus accents.
+- **Ambassador programme** (`/ambassadors`): global, country and city tiers, detailed application (place, motivation, experience, languages, hours, LinkedIn), my applications with withdraw, public list of ambassadors.
+- **Careers** (`/careers`, `/careers/[slug]`) with a filter by type, and **Volunteer** (`/volunteer`): festival shifts with open places, ongoing volunteer roles, ambassador path.
+- **Admin**: `/admin/ambassadors` and `/admin/roles` (review boards with only server-allowed moves, role editor draft/open/closed), audited, applicants notified; new sections in the command centre.
+- **Festival spotlight**: header pill and homepage banner with an animated ring and a days-until countdown for the next festival; seeded "Cultoura (demo edition)".
+- Footer column "Grow with EiB"; en, pl and uk strings with few/many plurals.
+
+**Verified**
+
+- `npm run check` green: 308 unit tests (new tests/unit/growth.test.ts: review moves, place and details validation incl. LinkedIn host and scheme, city keys, labels, nav).
+- All new routes 200 in en, pl and uk on the dev server; India and Indore art checked at 1440 px and the chapters page at 375 px (no sideways scroll).
+- e2e on the dev server (2 workers): growth.spec.ts 21/21 (pages + axe on desktop and mobile, panoramas, spotlight, careers filter, ambassador apply → admin accept, role apply and withdraw), festivals.spec.ts 5/5, admin-tools.spec.ts green.
+- Fixed during the work: chapter metadata no longer reads the clock while prerendering (cached `getChapterMeta`); the ambassador form gets country and language names from the server (Node and Chrome differ, which broke hydration); review-board buttons toast when the action resolves (`toastOnResolve`; the card moving column used to swallow the confirmation); the festival builder preselects a chapter that has venues (the new demo Indore chapter sorted first); the tamper e2e waits for hydration before editing the party size.
+
+### 2026-11-13 · M15 i18n, SEO and quality
+
+**Built**
+
+- **Polish and Ukrainian**: every user-facing string (about 1,700 per language) translated, with correct Slavic plurals (1 osoba / 2 osoby / 5 osób; 1 людина / 2 людини / 5 людей). Marked machine-translated, not reviewed. The language switcher now also remembers the choice for signed-in members.
+- **Emails in the member's language**: sign-in link, email verification, ticket confirmed/waitlisted/promoted, roadmap reminders and provider quote notices; links point to the member's language version.
+- **Guides**: Polish and Ukrainian titles and summaries for all 8 guides, labelled "machine-translated, not reviewed"; the guide body stays English with its official sources.
+- **Formats per chapter**: next-intl default timezone from the live chapter (database, not hard-coded); dates, numbers and currency follow the reader's language and the chapter's zone and currency.
+- **SEO**: canonical + hreflang (en, pl, uk, x-default) on every indexable public page; social cards for every session and festival; Article JSON-LD on guides; FAQPage on help and festival FAQs; Bubble pages indexable with real titles.
+- **Quality**: festival page restructured (cached public data, streamed viewer parts, skeleton with the hero's height), split into components; countdown gets `role="timer"`.
+- **Fixes**: messages deep-merged over English (no raw keys if a nested key is missing).
+
+**Verified**
+
+- `npm run check`: 296 unit tests, including catalogue checks (same keys, valid ICU, every placeholder kept, few/many plural forms), email language, hreflang and guide-summary units.
+- Lighthouse (mobile, production, installed Chrome): `/`, `/events`, `/festivals/demo-festival-of-cultures`, `/pricing`, `/pl`, `/uk/festivals/…`, `/uk/guides` all **100 / 100 / 100 / 100** (performance, accessibility, best practices, SEO), LCP 0.9 to 1.1 s, CLS 0 to 0.007.
+- New e2e: `tests/e2e/i18n.spec.ts` (html lang, translated headings, canonical and hreflang, axe clean in pl and uk, machine-translation label, festival OG image and FAQ JSON-LD, robots and sitemap) and `tests/e2e/quality.spec.ts` (reduced motion stops animations, skip link and visible focus in Ukrainian, no sideways scroll at 375 px on six localized pages).
+- A Polish sign-in email checked in Mailpit ("Twój link do logowania").
+
+**Known gaps**
+
+- Translations need a native-speaker review before launch (the status marker stays until then).
+- Concierge answers stay English (grounding compares against the English guides).
+- Legal documents are English only (labelled on the page).
+
+### 2026-11-13 · M14 completed: applications board, catalogs, sponsor report; SEO basics
+
+**Built**
+
+- **Get involved** (`/get-involved`, footer link): members apply to speak, share their story or contribute. Name and email come from the account (nothing extra collected); one open application per kind; 3 an hour, 6 a day; text cleaned like posts. Members see the status of their applications.
+- **Applications board** (`/admin/applications`): New → In review → Accepted / Declined columns with one-click moves, pitch and link on each card; chapter leads see their chapter only; every move audited with from/to; applicants notified on accept/decline.
+- **Catalogs** (`/admin/catalogs`, admin only): edit plan prices, proposal/approved status and "on sale"; edit or add event formats and provider categories. New checkouts use a new price at once; existing subscriptions keep theirs. Audit entries record old and new amounts. Cache tags (`plans`, `formats`, `directory`) refresh the public pages immediately.
+- **Signed sponsor report** shipped with M13 (`/sponsor-report/<token>`).
+- **SEO**: `robots.txt` (member, admin, API, token and tool URLs disallowed in every locale) and `sitemap.xml` (46 URLs in the demo: static pages, guides, upcoming sessions and festivals, Bubbles) with en/pl/uk alternates.
+
+**Verified**: `npm run check` green (281 unit tests); production build; Playwright 132 passed, 0 failed, 1 flaky (free reservation redirect over 5 s under load, then the waitlist promotion passed on retry); robots and sitemap fetched from the production server.
+
+**Not done yet (M15/M16)**: Polish and Ukrainian translations of all new screens; Lighthouse pass on the new pages; demo script and handover README for v1.0.0-demo.
+
+### 2026-11-13 · M13 Festivals (big cultural events)
+
+**Built**
+
+- **Public** `/festivals` (upcoming and past) and `/festivals/[slug]`: hero with live countdown and places left, sticky section nav, ticket tiers with live state (on sale, only N left, sold out, sales ended), group orders with a +/− party picker and running total, programme by day and stage, partners, volunteer shifts with fill bars, stall application form, FAQ, schema.org Festival JSON-LD with sub-events.
+- **Organiser console** `/admin/festivals` (list with sales bars and stalls to review), `/admin/festivals/new`, `/admin/festivals/[id]` with tabs: Overview (6 live stats: places sold, ticket revenue, checked in, waitlist, volunteers, stalls; launch checklist ring), Tickets (tiers with caps, early-bird deadlines, order), Programme, Volunteers (shifts and who signed up), Stalls (accept / waiting list / decline with note, applicant notified), Partners & FAQ (partners get a signed report link), Settings (details, capacity, max per order, volunteering and stalls switches, stall fee). Publish / unpublish, cancel behind a confirmation, door check-in, attendee CSV. All actions audited and rate-limited; chapter leads manage only their chapters.
+- **Ticket engine**: party size and tier caps throughout (claim, hold renewal, Stripe line quantity, webhook amount check, waitlist promotion); door check-in shows "(×3)" for groups; ticket page says "Admits 3 people".
+- **Sponsor report** `/sponsor-report/<token>` (M14 item): 192-bit token per sponsorship, aggregates only with counts under 5 hidden, no-referrer, noindex, print stylesheet and "Print or save as PDF".
+- **Business model** written up in `docs/BUSINESS_MODEL.md` (who pays for what, sequencing, open decisions; proposals only, no invented numbers).
+- Demo seed: "Demo: Festival of Cultures" (3 weeks out, two days, four demo tiers, eight programme items on five stages, four shifts, two placeholder partners with permission pending, three FAQs, group tickets, two stall applications).
+
+**Security checks done in the browser**: a party size changed to 15 in DevTools is refused by the server ("Please check the number of people") and no ticket is created; members get the 403 page on the console and 403 from the attendee export; shift sign-up locks the shift row, so the last place can't be taken twice, and overlapping shifts are refused.
+
+**How to test**: `npm run demo:reset`, `npm run dev`. As Priya: /festivals → Demo: Festival of Cultures → Family day pass → 3 people → Reserve → ticket "Admits 3 people"; volunteer for a shift; apply for a stall (as another member). As admin: /admin/festivals → console tabs; accept the stall; download the attendee CSV; open a partner's sponsor report and print it.
+
+**Known gaps**: stall fees are shown and invoiced by the team (no online stall payment yet); refunds for a cancelled festival are done in the Stripe dashboard; partner logos need written permission before upload (names only for now); pl/uk strings fall back to English.
+
+### 2026-11-12 · M12 Community, command centre, dashboard and security hardening
+
+Covers BUILD_PLAN M13 (community) and the core of M14 (admin command centre). Numbering note: this log numbers milestones in the order they shipped, one behind BUILD_PLAN.md.
+
+**Community**
+
+- **Groups** (`/community`, `/community/[slug]`): chapter and Bubble groups; posts, questions and moderator announcements (pinned automatically); reactions from a fixed allow-list with optimistic updates; report with a reason; authors delete their own posts; "older posts" pagination; group guidelines. Who can post: Bubble members (Bubble groups), home-chapter members (chapter groups), moderators everywhere.
+- **Moderation** (`/moderation`): reported posts in the groups you moderate (Bubble Lead: own Bubble; chapter lead or moderator: own chapter; admin: all). Keep (restore, dismiss reports) or remove (author notified). Audited. Auto-hide after 3 distinct reports.
+- **Bubbles** (`/bubbles`, `/bubbles/[slug]`): server-rendered SVG world map (no map JS) shaded by members, counts under 5 hidden, each shaded country a labelled, keyboard-focusable link; the list alternative is always shown; map behind the `bubblesMap` flag. Bubble page: lead, opted-in members, Bubble sessions (Event.bubbleId), group link, join/leave, show/hide me (hidden by default).
+- **Coffee Roulette** (`/roulette`, `npm run jobs -- roulette`): opt in per chapter or joined Bubble; weekly idempotent draw (unique scope + week); no repeats within 8 weeks; trios for odd numbers; Member Plus first; everyone must accept, any decline cancels; emails shown only after confirmation; placeholder café labelled "no partnership yet" (config/roulette.ts).
+
+**Dashboard**: time-of-day greeting in the chapter timezone, quick actions, pending-connection banner, four animated stat cards (all links), roadmap with the next three steps, profile-strength ring naming what is missing, next session, Coffee Roulette state, unread notifications, activity from your groups, suggested people.
+
+**Admin command centre** (sub-navigation on every admin page, Ctrl/Cmd+K command palette)
+
+- **Overview**: 8 KPI cards (chapter leads see only their chapters), sign-ups and check-ins over 30 days (SVG bars with tooltips and a table view), member-journey funnel up to "made a connection", recent activity, chapter health table (flags chapters without a lead).
+- **Members** (admin only): search, status and role filters, pagination; grant/revoke chapter roles; suspend (ends every session) / reinstate; CSV export (same-origin only, 10 an hour, audited, safe against formula injection).
+- **Audit log** viewer with an action filter. **Settings**: feature-flag toggles, site banner, chapter announcements (max 5 a day). **Roulette**: per-scope stats and "draw now". **System**: DB latency, payments/AI/proxy checks, rate-limit pressure per bucket (aggregated, no ids), latest migration, last job runs.
+
+**Security**: static CSP + COOP/CORP + HSTS (https only) + camera for the scanner only; Postgres-backed per-account limits on every new write and on Better Auth; suspension enforced at sign-in and on every request; every id from a form re-checked server-side; plain-text posts with invisible and bidi characters stripped. Details in docs/DECISIONS.md.
+
+**Schema**: migration `20261112150000_community` (roulette tables, Event.bubbleId, User.suspendedAt/suspendedReason, Post.removedAt, PostReport.resolvedAt/resolvedById, SiteSetting, audit index). Demo seed `prisma/seed/demo/engagement.ts`: labelled demo posts and reactions, one reported post, two Bubble sessions, a roulette round including Priya and Karim.
+
+**How to test**
+
+1. `npm run demo:reset`, then `npm run dev`. As Priya (`priya@demo.eib.local` / `Demo!2026`): /dashboard, /community/bubble-in (post, react, report), /bubbles, /roulette (accept the match).
+2. As admin (`admin@demo.eib.local`): /admin (press Ctrl+K), /moderation (remove the reported post), /admin/members (suspend a demo member, then try to sign in as them), /admin/settings (turn the Bubbles map off and look at /bubbles; set a banner), /admin/audit, /admin/system.
+3. `npm run check` and `npm run build`; start the production server on port 3000 with `AI_PROVIDER=demo`, then `CI=1 E2E_BASE_URL=http://localhost:3000 E2E_EXPECT_DB=true npx playwright test`.
+
+**Verified**: `npm run check` green (unit tests include tests/unit/community.test.ts, admin-rules.test.ts and roulette.test.ts); production build; Playwright 123 passed, 1 flaky (magic-link 2 s timing), 0 failed, including the new tests/e2e/community.spec.ts; manual browser pass at 1024/1280 and 375 px (dashboard, groups, Bubbles map, moderation, admin pages).
+
+**Known gaps**
+
+- Under parallel e2e load two timing tests are sensitive: "magic link to dashboard < 2 s" (2.0 to 2.4 s while the crawler runs, 0.7 s idle) and the free-ticket redirect (5 s budget). Both pass on retry.
+- Restart the server after `npm run demo:reset`: cached venue lists otherwise point at deleted rows (the event builder shows no venues).
+- This database had no guide embeddings (fresh Docker volume): run `npm run embed` after setup, or the concierge e2e fails.
+- Not built yet from M14: applications board, /admin/catalogs (formats, categories, plans), signed sponsor report with a print stylesheet.
+- The CSP still allows inline scripts (needed by the streamed App Router bootstrap without nonces).
+- pl/uk strings for the new screens fall back to English until M15.
 
 ### 2026-11-12 · M11 Landing Roadmap 30/60/90
 

@@ -9,6 +9,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
+import { emailTranslator } from "@/lib/i18n/email";
 import { rateLimit } from "@/lib/rate-limit";
 import { hashToken } from "@/lib/tokens";
 
@@ -16,27 +17,30 @@ import type { ActionState } from "./account";
 
 const TOKEN_HOURS = 24;
 
-async function sendVerification(email: string, token: string) {
+async function sendVerification(email: string, token: string, savedLocale: string | null) {
+  // API routes are not locale-prefixed; only the copy follows the member's language.
   const url = new URL(`/api/email/verify?token=${token}`, getEnv().APP_URL).toString();
+  const { t } = emailTranslator(savedLocale);
   const message = actionEmail({
-    heading: "Confirm your email address",
-    body: `Confirm that ${email} belongs to you. The link expires in ${TOKEN_HOURS} hours.`,
-    cta: "Confirm email",
+    heading: t("verify.heading"),
+    body: t("verify.body", { email, hours: TOKEN_HOURS }),
+    cta: t("verify.cta"),
     url,
   });
-  await sendEmail({ to: email, subject: "Confirm your email address", ...message });
+  await sendEmail({ to: email, subject: t("verify.subject"), ...message });
 }
 
 async function issueToken(id: string, email: string) {
   const token = randomBytes(24).toString("base64url");
-  await getDb().userEmail.update({
+  const row = await getDb().userEmail.update({
     where: { id },
     data: {
       tokenHash: hashToken(token),
       tokenExpiresAt: new Date(Date.now() + TOKEN_HOURS * 3_600_000),
     },
+    select: { user: { select: { locale: true } } },
   });
-  await sendVerification(email, token);
+  await sendVerification(email, token, row.user.locale);
 }
 
 /** Settings → Email: add a secondary address and email a verification link (old bug 5). */

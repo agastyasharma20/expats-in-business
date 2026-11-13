@@ -49,6 +49,16 @@ export const guideFrontmatterSchema = z.object({
   verificationStatus: z.enum(["verified", "draft"]).default("verified"),
   /** Slugs of related guides shown at the end of the page. */
   related: z.array(z.string().regex(/^[a-z0-9-]+$/)).default([]),
+  /**
+   * Machine-translated title and summary per UI locale (labelled "machine-translated, reviewed:
+   * no" on the page). The guide body and its sources stay in the original language.
+   */
+  translations: z
+    .partialRecord(
+      z.enum(["pl", "uk"]),
+      z.object({ title: z.string().min(3), description: z.string().min(10) }),
+    )
+    .default({}),
   /** Set for city-specific guides (chapter slug); omitted = applies to the whole country. */
   chapter: z
     .string()
@@ -82,4 +92,15 @@ export async function listGuides(country: string): Promise<GuideFile[]> {
     file.endsWith(".mdx"),
   );
   return Promise.all(files.map((file) => readGuide(country, file.replace(/\.mdx$/, ""))));
+}
+
+/**
+ * Title and summary in the reader's language when a translation exists (`machine` = true, so the
+ * page labels it "machine-translated, reviewed: no"); otherwise the original text.
+ */
+export function guideText(fm: GuideFrontmatter, locale: string) {
+  const translated = fm.translations[locale as "pl" | "uk"];
+  return translated
+    ? { title: translated.title, description: translated.description, machine: true }
+    : { title: fm.title, description: fm.description, machine: false };
 }

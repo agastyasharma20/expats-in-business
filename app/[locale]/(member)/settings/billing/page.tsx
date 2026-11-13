@@ -11,6 +11,9 @@ import { formatMoney } from "@/lib/money";
 import { getStripe } from "@/lib/stripe";
 import { openBillingPortal, setCancelAtPeriodEnd } from "@/server/actions/billing";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 type Props = PageProps<"/[locale]/settings/billing">;
 
 async function StatusNotice({ searchParams }: { searchParams: Props["searchParams"] }) {

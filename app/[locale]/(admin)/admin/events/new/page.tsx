@@ -11,6 +11,9 @@ import { getDb } from "@/lib/db";
 import { addDays, utcToZoned } from "@/lib/time";
 import { createEvent } from "@/server/actions/events-admin";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export const metadata: Metadata = { robots: { index: false } };
 
 const selectClass =
@@ -37,9 +40,10 @@ export default async function NewEventPage() {
       select: { id: true, name: true, defaultDurationMin: true },
     }),
   ]);
-  const first = chapters[0];
+  // Preselect a chapter with venues: a launching chapter without one cannot host in person yet.
+  const first = chapters.find((c) => c.venues.length) ?? chapters[0];
   if (!first) return <p className="container-page py-12">{t("errors.default")}</p>;
-  // Default: same weekday next week, 18:00 local, in the first chapter's zone.
+  // Default: same weekday next week, 18:00 local, in the preselected chapter's zone.
   const next = utcToZoned(addDays(new Date(), 7), first.timezone);
   const date = `${next.year}-${String(next.month).padStart(2, "0")}-${String(next.day).padStart(2, "0")}`;
 

@@ -13,7 +13,22 @@ export type NotificationType =
   | "quoteAccepted"
   | "quoteDeclined"
   | "verificationApproved"
-  | "verificationRejected";
+  | "verificationRejected"
+  | "postRemoved"
+  | "rouletteMatch"
+  | "rouletteConfirmed"
+  | "rouletteDeclined"
+  | "announcement"
+  | "stallAccepted"
+  | "stallWaitlisted"
+  | "stallDeclined"
+  | "applicationAccepted"
+  | "applicationDeclined"
+  | "ambassadorAccepted"
+  | "ambassadorWaitlisted"
+  | "ambassadorDeclined"
+  | "roleAccepted"
+  | "roleDeclined";
 
 export async function notify(
   userId: string,

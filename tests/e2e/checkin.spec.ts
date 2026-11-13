@@ -63,7 +63,8 @@ test("a full session waitlists, and a cancellation promotes the next person", as
   await reserve(priya, small, /Join the waitlist/);
   await expect(priya.getByTestId("rsvp-status")).toContainText("You are on the waitlist");
 
-  await karim.getByTestId("cancel-ticket").getByRole("button").click();
+  await karim.getByTestId("unrsvp-open").click();
+  await karim.getByRole("button", { name: "Yes, un-RSVP" }).click();
   await expect(karim.getByText("Cancelled", { exact: true })).toBeVisible();
 
   await priya.goto(`/events/${small}`);

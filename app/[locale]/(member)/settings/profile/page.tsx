@@ -10,6 +10,9 @@ import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
 import { updateProfile } from "@/server/actions/account";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 const FLAGS = [
   "isPublic",
   "showBio",

@@ -8,18 +8,25 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "@/lib/i18n/navigation";
 import { sendHelpMessage } from "@/server/actions/help";
+import { withAlternates } from "@/lib/seo";
+import { faqData, JsonLd } from "@/components/seo/json-ld";
 
 const FAQ = ["free", "signin", "profile", "delete"] as const;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("help");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/help", { title: t("title"), description: t("lead") });
 }
 
 export default async function HelpPage() {
   const t = await getTranslations("help");
   return (
     <div className="container-page grid gap-12 py-12 lg:grid-cols-2">
+      <JsonLd
+        data={faqData(
+          FAQ.map((key) => ({ question: t(`faq.${key}.q`), answer: t(`faq.${key}.a`) })),
+        )}
+      />
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-2">
           <h1 className="text-h1">{t("title")}</h1>

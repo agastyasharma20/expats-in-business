@@ -1,5 +1,6 @@
 import type { PrismaClient } from "@/generated/prisma/client";
 import { actionEmail, sendEmail } from "@/lib/email";
+import { emailTranslator, localizedUrl } from "@/lib/i18n/email";
 
 /** Reminder window: steps due in 6 to 8 days from now (the job runs daily, so each lands once). */
 export const REMINDER_DAYS = 7;
@@ -23,7 +24,7 @@ export async function sendRoadmapReminders(db: PrismaClient, appUrl: string, now
       id: true,
       dueAt: true,
       userId: true,
-      user: { select: { email: true } },
+      user: { select: { email: true, locale: true } },
       task: { select: { title: true } },
     },
     orderBy: { dueAt: "asc" },
@@ -31,23 +32,19 @@ export async function sendRoadmapReminders(db: PrismaClient, appUrl: string, now
   const byUser = new Map<string, typeof due>();
   for (const row of due) byUser.set(row.userId, [...(byUser.get(row.userId) ?? []), row]);
 
-  const url = new URL("/roadmap", appUrl).toString();
   let emails = 0;
   for (const rows of byUser.values()) {
+    const { locale, t } = emailTranslator(rows[0]!.user.locale);
     const list = rows
       .map((r) => `• ${r.task.title} (${r.dueAt.toISOString().slice(0, 10)})`)
       .join("\n");
     const message = actionEmail({
-      heading: "Coming up on your Landing Roadmap",
-      body: `These steps are due in about a week:\n\n${list}\n\nEach step links to a guide with official sources.`,
-      cta: "Open my roadmap",
-      url,
+      heading: t("reminders.heading"),
+      body: `${t("reminders.intro")}\n\n${list}\n\n${t("reminders.outro")}`,
+      cta: t("reminders.cta"),
+      url: localizedUrl("/roadmap", locale, appUrl),
     });
-    await sendEmail({
-      to: rows[0]!.user.email,
-      subject: "Your roadmap: steps due next week",
-      ...message,
-    });
+    await sendEmail({ to: rows[0]!.user.email, subject: t("reminders.subject"), ...message });
     await db.userTask.updateMany({
       where: { id: { in: rows.map((r) => r.id) } },
       data: { remindedAt: now },

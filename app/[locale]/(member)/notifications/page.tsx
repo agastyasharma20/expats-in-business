@@ -12,6 +12,9 @@ import type { NotificationType } from "@/lib/notifications";
 import { cn } from "@/lib/utils";
 import { markNotificationsRead } from "@/server/actions/directory";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("notifications");
   return { title: t("title"), robots: { index: false } };

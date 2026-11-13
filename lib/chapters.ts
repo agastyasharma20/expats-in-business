@@ -1,7 +1,12 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 
-import { CHAPTER_COOKIE, GLOBAL_CHAPTER, type ChapterOption } from "./chapters-shared";
+import {
+  CHAPTER_COOKIE,
+  GLOBAL_CHAPTER,
+  preferredChapterFromHeader,
+  type ChapterOption,
+} from "./chapters-shared";
 import { getDb } from "./db";
 
 export { CHAPTER_COOKIE, GLOBAL_CHAPTER, type ChapterOption };
@@ -18,13 +23,14 @@ async function loadChapterOptions(): Promise<ChapterOption[]> {
   // Throws on failure so a failure is never cached (see getChapterOptions).
   const chapters = await getDb().chapter.findMany({
     where: { status: { in: ["live", "launching"] } },
-    select: { slug: true, name: true, status: true },
+    select: { slug: true, name: true, status: true, timezone: true },
     orderBy: [{ status: "asc" }, { name: "asc" }],
   });
   return chapters.map((chapter) => ({
     slug: chapter.slug,
     name: chapter.name,
     status: chapter.status === "live" ? "live" : "launching",
+    timeZone: chapter.timezone,
   }));
 }
 
@@ -42,8 +48,20 @@ export async function getChapterOptions(): Promise<ChapterOption[]> {
   }
 }
 
-/** The visitor's chosen chapter slug from the preference cookie, or "global". */
+/**
+ * The visitor's chosen chapter slug from the preference cookie, or "global". Read from the
+ * request's Cookie header: `cookies()` hits a Next.js 16.4 invariant when a server action form is
+ * posted before hydration (no-JS submit) and the page re-renders in the action response.
+ */
 export async function getPreferredChapterSlug(): Promise<string> {
-  const value = (await cookies()).get(CHAPTER_COOKIE)?.value;
-  return value && /^[a-z0-9-]{1,64}$/.test(value) ? value : GLOBAL_CHAPTER;
+  return preferredChapterFromHeader((await headers()).get("cookie"));
+}
+
+/**
+ * Default zone for dates formatted without an explicit chapter (relative times, generic dates):
+ * the first live chapter's zone, from the database (never hard-coded), UTC when there is none.
+ */
+export async function defaultTimeZone(): Promise<string> {
+  const options = await getChapterOptions();
+  return options.find((o) => o.status === "live")?.timeZone ?? "UTC";
 }

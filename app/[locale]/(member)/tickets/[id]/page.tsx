@@ -14,7 +14,11 @@ import { colorTokens } from "@/lib/design/tokens";
 import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
 import { formatInZone } from "@/lib/time";
-import { cancelTicket, payTicket } from "@/server/actions/rsvp";
+import { payTicket } from "@/server/actions/rsvp";
+import { UnrsvpButton } from "@/components/events/unrsvp-button";
+
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
 
 type Props = PageProps<"/[locale]/tickets/[id]">;
 
@@ -72,6 +76,11 @@ async function TicketView({ params, searchParams }: Props) {
       <header className="flex flex-col items-start gap-2">
         <Badge variant={STATUS_VARIANT[ticket.status]}>{t(`status.${ticket.status}`)}</Badge>
         <h1 className="text-h1">{ticket.event.title}</h1>
+        {ticket.quantity > 1 ? (
+          <p className="font-heading text-h3 font-bold text-brand-950" data-testid="ticket-party">
+            {t("admits", { count: ticket.quantity })}
+          </p>
+        ) : null}
         <p className="text-muted-foreground">
           {formatInZone(ticket.event.startsAt, zone, locale, {
             dateStyle: "full",
@@ -168,17 +177,11 @@ async function TicketView({ params, searchParams }: Props) {
           {t("event")}
         </Link>
         {ticket.status !== "cancelled" && upcoming && !ticket.checkIn ? (
-          <ActionForm
-            action={cancelTicket}
-            submitLabel={ticket.status === "waitlisted" ? t("cancelWaitlist") : t("cancel")}
-            pendingLabel={e("processing")}
-            successText={t("cancelled")}
-            errorTexts={{ default: e("errors.default") }}
-            submitVariant="ghost"
-            testId="cancel-ticket"
-          >
-            <input type="hidden" name="ticketId" value={ticket.id} />
-          </ActionForm>
+          <UnrsvpButton
+            ticketId={ticket.id}
+            status={ticket.status}
+            quantity={ticket.quantity}
+          />
         ) : null}
       </div>
     </article>

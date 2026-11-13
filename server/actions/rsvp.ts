@@ -2,7 +2,7 @@
 
 import { randomBytes } from "node:crypto";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -16,7 +16,11 @@ import { getStripe, paymentMethodsFor } from "@/lib/stripe";
 
 import type { ActionState } from "./account";
 
-const rsvpSchema = z.object({ eventId: z.string().min(1), ticketTypeId: z.string().min(1) });
+const rsvpSchema = z.object({
+  eventId: z.string().min(1).max(40),
+  ticketTypeId: z.string().min(1).max(40),
+  quantity: z.coerce.number().int().min(1).max(20).default(1),
+});
 
 /** Closes a checkout session that must no longer be paid (cancelled ticket, replaced session). */
 async function expireSession(sessionId: string | null) {
@@ -69,7 +73,8 @@ async function startCheckout(ticketId: string): Promise<string> {
       allowed_payment_method_types: paymentMethodsFor(ticket.ticketType.currency),
       line_items: [
         {
-          quantity: 1,
+          // Party size from the database row; the unit price comes from the tier, never the browser.
+          quantity: ticket.quantity,
           price_data: {
             currency: ticket.ticketType.currency.toLowerCase(),
             unit_amount: ticket.ticketType.priceMinor,
@@ -102,12 +107,17 @@ export async function rsvp(_prev: ActionState, form: FormData): Promise<ActionSt
       status: true,
       startsAt: true,
       capacity: true,
+      maxPerOrder: true,
       ticketTypes: { where: { id: parsed.data.ticketTypeId } },
     },
   });
   const ticketType = event?.ticketTypes[0];
   if (!event || !ticketType || event.status !== "published" || event.startsAt < new Date())
     return { ok: false, message: "closed" };
+  if (ticketType.salesEndAt && ticketType.salesEndAt < new Date()) {
+    return { ok: false, message: "tierClosed" };
+  }
+  if (parsed.data.quantity > event.maxPerOrder) return { ok: false, message: "invalid" };
   const user = await requireUser(`/events/${event.slug}`);
   if (!(await rateLimit(`rsvp:${user.id}`, 20, 3600)).ok)
     return { ok: false, message: "rateLimited" };
@@ -118,9 +128,13 @@ export async function rsvp(_prev: ActionState, form: FormData): Promise<ActionSt
     userId: user.id,
     paid: ticketType.priceMinor > 0,
     capacity: event.capacity,
+    quantity: parsed.data.quantity,
+    tierCapacity: ticketType.capacity,
   });
   await expireSession(staleSessionId);
   revalidateTag("events", "max");
+  // Festivals: the buyer's next view of the page shows the new availability.
+  updateTag(`festival:${event.slug}`);
   revalidatePath(`/events/${event.slug}`);
   if (ticket.status === "waitlisted") {
     await sendTicketEmail(ticket.id, "waitlisted");
@@ -148,23 +162,49 @@ export async function payTicket(_prev: ActionState, form: FormData): Promise<Act
   redirect(await startCheckout(ticket.id));
 }
 
-/** Cancel a place or waitlist spot; the next person in line moves up straight away. */
+const cancelSchema = z.object({ ticketId: z.string().min(1).max(40) });
+
+/**
+ * Un-RSVP: cancel a place or a waitlist spot; the next person in line moves up straight away.
+ * Only the owner, only before the event starts, never after check-in, rate-limited.
+ */
 export async function cancelTicket(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser();
-  const ticket = await getDb().ticket.findFirst({
-    where: { id: String(form.get("ticketId")), userId: user.id, status: { not: "cancelled" } },
-    include: { event: { select: { slug: true, startsAt: true } } },
+  const parsed = cancelSchema.safeParse(Object.fromEntries(form));
+  if (!parsed.success) return { ok: false, message: "default" };
+  if (!(await rateLimit(`rsvp:${user.id}`, 20, 3600)).ok)
+    return { ok: false, message: "rateLimited" };
+  const db = getDb();
+  const ticket = await db.ticket.findFirst({
+    where: { id: parsed.data.ticketId, userId: user.id, status: { not: "cancelled" } },
+    select: {
+      id: true,
+      eventId: true,
+      status: true,
+      paidAt: true,
+      stripeSessionId: true,
+      checkIn: { select: { id: true } },
+      event: { select: { slug: true, kind: true, startsAt: true } },
+    },
   });
-  if (!ticket || ticket.event.startsAt < new Date()) return { ok: false, message: "invalid" };
-  await getDb().ticket.update({
-    where: { id: ticket.id },
+  if (!ticket) return { ok: false, message: "default" };
+  if (ticket.checkIn || ticket.event.startsAt < new Date()) return { ok: false, message: "closed" };
+  // Conditional update: a double click or a parallel request cancels (and promotes) only once.
+  const { count } = await db.ticket.updateMany({
+    where: { id: ticket.id, status: { not: "cancelled" } },
     data: { status: "cancelled", stripeSessionId: null },
   });
+  if (!count) return { ok: false, message: "default" };
   // An unpaid open session must not be payable any more.
   if (!ticket.paidAt) await expireSession(ticket.stripeSessionId);
   await promoteWaitlist(ticket.eventId);
   revalidateTag("events", "max");
   revalidatePath(`/events/${ticket.event.slug}`);
   revalidatePath(`/tickets/${ticket.id}`);
+  if (ticket.event.kind === "festival") {
+    updateTag(`festival:${ticket.event.slug}`);
+    revalidatePath(`/festivals/${ticket.event.slug}`);
+  }
+  if (ticket.status === "waitlisted") return { ok: true, message: "left" };
   return { ok: true, message: ticket.paidAt ? "cancelledPaid" : "cancelled" };
 }

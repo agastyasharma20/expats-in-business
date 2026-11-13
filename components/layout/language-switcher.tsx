@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { usePathname, useRouter } from "@/lib/i18n/navigation";
 import { locales, type Locale } from "@/lib/i18n/routing";
+import { rememberLocale } from "@/server/actions/preferences";
 import { cn } from "@/lib/utils";
 
 type LanguageSwitcherProps = {
@@ -56,6 +57,8 @@ export function LanguageSwitcher({ tone = "light", className }: LanguageSwitcher
             aria-current={option === locale ? "true" : undefined}
             onSelect={() => {
               if (option === locale) return;
+              // Signed-in members: emails follow this choice too (no-op for visitors).
+              void rememberLocale(option);
               startTransition(() => router.replace(pathname, { locale: option }));
             }}
           >

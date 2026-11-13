@@ -26,7 +26,12 @@ async function CheckInView({ params }: Props) {
       tickets: {
         where: { status: "confirmed" },
         orderBy: { user: { name: "asc" } },
-        select: { id: true, user: { select: { name: true } }, checkIn: { select: { id: true } } },
+        select: {
+          id: true,
+          quantity: true,
+          user: { select: { name: true } },
+          checkIn: { select: { id: true } },
+        },
       },
     },
   });
@@ -35,7 +40,7 @@ async function CheckInView({ params }: Props) {
   const t = await getTranslations("scanner");
   const attendees = event.tickets.map((tk) => ({
     ticketId: tk.id,
-    name: tk.user.name,
+    name: tk.quantity > 1 ? `${tk.user.name} (×${tk.quantity})` : tk.user.name,
     checkedIn: Boolean(tk.checkIn),
   }));
   return (

@@ -14,7 +14,8 @@ import lighthouse from "lighthouse";
 const TARGET = Number(process.env.LH_TARGET ?? 90);
 const base = process.env.LH_BASE_URL ?? "http://localhost:3000";
 // Brief targets: /, /c/krakow/events, /events/[id] and /pricing. Add them here as they ship.
-const DEFAULT_ROUTES = ["/", "/pricing"];
+// The 4 key routes (homepage, session list, an event detail page, pricing) plus a translated page.
+const DEFAULT_ROUTES = ["/", "/events", "/festivals/demo-festival-of-cultures", "/pricing", "/pl"];
 const routes = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_ROUTES;
 const categories = ["performance", "accessibility", "best-practices", "seo"];
 const outDir = path.join(process.cwd(), ".lighthouseci");

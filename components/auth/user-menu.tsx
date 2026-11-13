@@ -20,10 +20,19 @@ type UserMenuProps = {
   profileSlug: string | null;
   showAdmin: boolean;
   showProvider: boolean;
+  showRoulette: boolean;
+  showModeration: boolean;
 };
 
 /** Signed-in account menu: every item navigates or acts. */
-export function UserMenu({ name, profileSlug, showAdmin, showProvider }: UserMenuProps) {
+export function UserMenu({
+  name,
+  profileSlug,
+  showAdmin,
+  showProvider,
+  showRoulette,
+  showModeration,
+}: UserMenuProps) {
   const t = useTranslations("nav");
   const items = [
     { href: "/dashboard", label: t("dashboard") },
@@ -31,6 +40,9 @@ export function UserMenu({ name, profileSlug, showAdmin, showProvider }: UserMen
     { href: "/concierge", label: t("concierge") },
     ...(profileSlug ? [{ href: `/members/${profileSlug}`, label: t("myProfile") }] : []),
     { href: "/connections", label: t("connections") },
+    { href: "/community", label: t("community") },
+    ...(showRoulette ? [{ href: "/roulette", label: t("roulette") }] : []),
+    ...(showModeration ? [{ href: "/moderation", label: t("moderation") }] : []),
     ...(showProvider ? [{ href: "/provider/inbox", label: t("providerArea") }] : []),
     { href: "/settings/profile", label: t("settings") },
     ...(showAdmin ? [{ href: "/admin", label: t("admin") }] : []),
@@ -46,7 +58,7 @@ export function UserMenu({ name, profileSlug, showAdmin, showProvider }: UserMen
       <DropdownMenuTrigger asChild>
         <Button variant="outline" aria-label={t("account")} data-testid="user-menu">
           <UserIcon aria-hidden="true" />
-          <span className="hidden max-w-32 truncate sm:inline">{name}</span>
+          <span className="hidden max-w-32 truncate sm:inline lg:hidden xl:inline">{name}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

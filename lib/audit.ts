@@ -9,6 +9,8 @@ export async function audit(input: {
   entityType: string;
   entityId: string;
   chapterId?: string | null;
+  /** Non-personal details only (a flag name, a role, a count). */
+  meta?: Record<string, string | number | boolean>;
 }) {
   await getDb().auditLog.create({
     data: {
@@ -17,6 +19,7 @@ export async function audit(input: {
       entityType: input.entityType,
       entityId: input.entityId,
       chapterId: input.chapterId ?? null,
+      ...(input.meta ? { meta: input.meta } : {}),
     },
   });
 }

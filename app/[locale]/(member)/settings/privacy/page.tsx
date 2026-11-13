@@ -10,6 +10,9 @@ import { DELETION_GRACE_DAYS } from "@/lib/onboarding";
 import { addDays } from "@/lib/time";
 import { setDeletion } from "@/server/actions/account";
 
+// Session-bound page: blocking navigation is expected (no instant prerender).
+export const instant = false;
+
 export default async function PrivacySettingsPage() {
   const user = await requireUser("/settings/privacy");
   const [t, s, locale, row] = await Promise.all([

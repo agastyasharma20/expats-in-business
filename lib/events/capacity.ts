@@ -13,13 +13,23 @@ export function placesLeft(capacity: number, taken: number): number {
   return Math.max(capacity - taken, 0);
 }
 
-/** Free events confirm straight away; paid ones hold a place while the member pays. */
+/**
+ * Free events confirm straight away; paid ones hold a place while the member pays. A party of
+ * `quantity` needs that many places in the event and, if the tier has its own cap, in the tier.
+ */
 export function decideRsvp(input: {
   capacity: number;
   taken: number;
   paid: boolean;
+  quantity?: number;
+  tierCapacity?: number | null;
+  tierTaken?: number;
 }): RsvpDecision {
-  if (placesLeft(input.capacity, input.taken) === 0) return "waitlisted";
+  const quantity = input.quantity ?? 1;
+  if (placesLeft(input.capacity, input.taken) < quantity) return "waitlisted";
+  if (input.tierCapacity && placesLeft(input.tierCapacity, input.tierTaken ?? 0) < quantity) {
+    return "waitlisted";
+  }
   return input.paid ? "reserved" : "confirmed";
 }
 
@@ -29,14 +39,25 @@ export function reservationCutoff(now: Date): Date {
 }
 
 /**
- * Who moves up when places free: the oldest waitlisted tickets, as many as there are places.
- * Promotion of a paid ticket reserves the place and asks the member to pay.
+ * Who moves up when places free: oldest first, each party only if it fits whole (a family of four
+ * is never split); a smaller party behind it may take places it cannot use. Promotion of a paid
+ * ticket reserves the place and asks the member to pay.
  */
-export function pickPromotions<T extends { createdAt: Date }>(
+export function pickPromotions<T extends { createdAt: Date; quantity?: number }>(
   waitlist: T[],
   freePlaces: number,
 ): T[] {
-  return [...waitlist]
-    .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
-    .slice(0, Math.max(freePlaces, 0));
+  let left = Math.max(freePlaces, 0);
+  const chosen: T[] = [];
+  for (const ticket of [...waitlist].sort(
+    (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+  )) {
+    const size = ticket.quantity ?? 1;
+    if (size <= left) {
+      chosen.push(ticket);
+      left -= size;
+    }
+    if (!left) break;
+  }
+  return chosen;
 }

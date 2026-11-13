@@ -44,7 +44,12 @@ async function loadUpcomingEvents(limit: number): Promise<HomeEvent[]> {
   cacheLife("minutes");
   cacheTag("events");
   const events = await getDb().event.findMany({
-    where: { status: "published", startsAt: { gte: new Date() }, chapter: { status: "live" } },
+    where: {
+      status: "published",
+      kind: "session",
+      startsAt: { gte: new Date() },
+      chapter: { status: "live" },
+    },
     orderBy: { startsAt: "asc" },
     take: limit,
     include: {

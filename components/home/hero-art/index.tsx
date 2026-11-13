@@ -1,5 +1,6 @@
 import { getHeroCountry } from "@/lib/hero-country";
 
+import { IndiaArt } from "./india";
 import { PolandArt } from "./poland";
 import { WorldArt } from "./world";
 
@@ -9,6 +10,7 @@ import { WorldArt } from "./world";
  */
 const HERO_ART: Record<string, (props: { className?: string }) => React.ReactNode> = {
   PL: PolandArt,
+  IN: IndiaArt,
 };
 
 /** Reads the visitor's chapter (cookie), so it renders inside <Suspense> under the static hero. */

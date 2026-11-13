@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { hasEntitlement } from "@/lib/auth/permissions";
 import { getSessionUser } from "@/lib/auth/session";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/concierge">;
 
@@ -16,7 +17,7 @@ const SUGGESTIONS = ["pesel", "trustedProfile", "ksef", "bank", "freeHelp"] as c
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("concierge");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/concierge", { title: t("title"), description: t("lead") });
 }
 
 async function Concierge({ searchParams }: { searchParams: Props["searchParams"] }) {

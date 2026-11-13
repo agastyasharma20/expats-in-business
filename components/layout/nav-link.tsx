@@ -8,12 +8,14 @@ type NavLinkProps = {
   children: React.ReactNode;
   className?: string;
   onNavigate?: () => void;
+  /** Only the exact path is current (not its sub-pages). */
+  exact?: boolean;
 };
 
 /** Internal link that marks the current page with aria-current (and a visible underline). */
-export function NavLink({ href, children, className, onNavigate }: NavLinkProps) {
+export function NavLink({ href, children, className, onNavigate, exact }: NavLinkProps) {
   const pathname = usePathname();
-  const current = pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+  const current = pathname === href || (!exact && href !== "/" && pathname.startsWith(`${href}/`));
 
   return (
     <Link

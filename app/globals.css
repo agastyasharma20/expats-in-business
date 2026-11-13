@@ -294,3 +294,61 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Print: reports and tickets print without site chrome, colours kept for charts and badges. */
+@media print {
+  #site-header,
+  #site-footer,
+  nav,
+  [data-print-hide],
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+  body {
+    background: white;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .container-page {
+    max-width: none;
+    padding: 0;
+  }
+}
+
+/*
+ * Festival spotlight ring: a conic gradient (ember, teal, gold) on an oversized pseudo-element
+ * that rotates behind the pill; the inner surface masks all but a 2px ring. Only transform
+ * animates (CLAUDE.md animation rules); reduced motion freezes it via the global fallback.
+ */
+@layer components {
+  .festival-ring {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 2px;
+    border-radius: 9999px;
+  }
+  .festival-ring::before {
+    content: "";
+    position: absolute;
+    inset: -150%;
+    z-index: -1;
+    background: conic-gradient(
+      from 0deg,
+      var(--color-ember-500),
+      var(--color-highlight),
+      var(--color-brand-500),
+      var(--color-ember-500)
+    );
+    animation: festival-spin 4s linear infinite;
+  }
+  .festival-ring-lg {
+    border-radius: 1.5rem;
+    padding: 3px;
+  }
+  @keyframes festival-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}

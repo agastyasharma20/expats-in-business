@@ -10,6 +10,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { allGuides } from "@/lib/content/guide-index";
 import { Link } from "@/lib/i18n/navigation";
 import { routing } from "@/lib/i18n/routing";
+import { withAlternates } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/json-ld";
 
 type Props = PageProps<"/[locale]/guides/[slug]">;
 
@@ -37,9 +39,13 @@ async function findGuide(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const found = await findGuide((await params).slug);
+  const { slug } = await params;
+  const found = await findGuide(slug);
   return found
-    ? { title: found.guide.frontmatter.title, description: found.guide.frontmatter.description }
+    ? withAlternates(`/guides/${slug}`, {
+        title: found.guide.frontmatter.title,
+        description: found.guide.frontmatter.description,
+      })
     : {};
 }
 
@@ -58,6 +64,17 @@ export default async function GuidePage({ params }: Props) {
         <ArrowLeftIcon aria-hidden="true" />
         {t("back")}
       </Link>
+      <JsonLd
+        data={{
+          "@type": "Article",
+          headline: found.guide.frontmatter.title,
+          description: found.guide.frontmatter.description,
+          inLanguage: "en",
+          dateModified: found.guide.frontmatter.lastVerified.toISOString().slice(0, 10),
+          citation: found.guide.frontmatter.sources.map((source) => source.url),
+          publisher: { "@type": "Organization", name: "Expats in Business" },
+        }}
+      />
       <GuideDocument guide={found.guide} related={found.related} locale={locale} />
     </div>
   );

@@ -318,7 +318,17 @@
     "providerArea": "Provider area",
     "connections": "Connections",
     "concierge": "Concierge",
-    "roadmap": "Roadmap"
+    "roadmap": "Roadmap",
+    "community": "Community",
+    "bubbles": "Bubbles",
+    "roulette": "Coffee Roulette",
+    "moderation": "Moderation",
+    "festivals": "Festivals",
+    "involved": "Get involved",
+    "chapters": "Chapters",
+    "ambassadors": "Ambassadors",
+    "volunteer": "Volunteer",
+    "careers": "Careers"
   },
   "chapter": {
     "label": "Chapter",
@@ -345,7 +355,8 @@
     "email": "Email us",
     "messenger": "Message us on Messenger",
     "whatsapp": "Join the WhatsApp community",
-    "copyright": "© {name}"
+    "copyright": "© {name}",
+    "grow": "Grow with EiB"
   },
   "comingSoon": {
     "badge": "Coming soon",
@@ -486,7 +497,8 @@
     "stats": {
       "events": "Sessions joined",
       "connections": "Connections",
-      "businesses": "Businesses"
+      "businesses": "Businesses",
+      "bubbles": "Bubbles joined"
     },
     "suggested": "People you could meet",
     "noSuggested": "Complete your profile to get suggestions.",
@@ -507,6 +519,56 @@
     "myBusinesses": {
       "title": "Your businesses",
       "empty": "You have not listed a business yet. Business listings come with the Business plan."
+    },
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
+      "evening": "Good evening, {name}"
+    },
+    "quick": {
+      "label": "Quick actions",
+      "events": "Find a session",
+      "concierge": "Ask the concierge",
+      "community": "Open groups"
+    },
+    "pending": "{count, plural, one {# person wants to connect with you} other {# people want to connect with you}}",
+    "roadmapDone": "Every step is done. Well done.",
+    "browseMembers": "Browse members",
+    "strength": {
+      "title": "Profile strength",
+      "label": "Profile {percent}% complete",
+      "missing": "Add {items} so members and matching can find you.",
+      "complete": "Your profile is complete.",
+      "items": {
+        "headline": "a headline",
+        "bio": "a short bio",
+        "chapter": "your home chapter",
+        "origin": "your country of origin",
+        "languages": "your languages",
+        "skills": "your skills",
+        "goals": "your goals"
+      }
+    },
+    "activity": {
+      "title": "From your groups",
+      "all": "All groups",
+      "empty": "No new posts in your groups. Join a Bubble to see more.",
+      "cta": "Browse Bubbles"
+    },
+    "roulette": {
+      "title": "Coffee Roulette",
+      "confirmed": "Confirmed",
+      "waiting": "Waiting for answers",
+      "with": "With {names}",
+      "answer": "Answer your match",
+      "open": "See details",
+      "empty": "Meet one or two members for coffee each week.",
+      "join": "Join Coffee Roulette"
+    },
+    "inbox": {
+      "title": "Unread",
+      "all": "All notifications",
+      "empty": "You are all caught up."
     }
   },
   "profile": {
@@ -620,14 +682,6 @@
     "rateLimited": "You have sent several messages already. Try again later.",
     "error": "Please fill in all fields (message at least 10 characters)."
   },
-  "admin": {
-    "title": "Admin",
-    "lead": "Command centre: events, check-in and the live Pulse screen. More tools arrive with the admin milestone.",
-    "members": "Members",
-    "events": "Events",
-    "chapters": "Chapters",
-    "manageEvents": "Manage events"
-  },
   "events": {
     "title": "Sessions",
     "lead": "Meet people in person and online. Every session lists the date, time, venue and price.",
@@ -680,7 +734,8 @@
       "lead": "What to expect at each kind of EiB session.",
       "duration": "About {minutes} minutes",
       "see": "See {format} sessions"
-    }
+    },
+    "festivalsLink": "Big cultural festivals"
   },
   "ticket": {
     "title": "Your ticket",
@@ -705,7 +760,8 @@
     "cancelledPaid": "Cancelled. The team will refund your payment within 5 working days.",
     "event": "Session page",
     "online": "Joining link",
-    "whoIMet": "Who I met"
+    "whoIMet": "Who I met",
+    "admits": "{count, plural, one {Admits # person} other {Admits # people}}"
   },
   "adminEvents": {
     "title": "Events",
@@ -1098,7 +1154,22 @@
       "quoteAccepted": "{provider} accepted your quote request",
       "quoteDeclined": "{provider} declined your quote request",
       "verificationApproved": "Your provider profile is now verified",
-      "verificationRejected": "Your verification was not approved. Check the criteria and try again."
+      "verificationRejected": "Your verification was not approved. Check the criteria and try again.",
+      "postRemoved": "A moderator removed one of your posts after a report",
+      "rouletteMatch": "Your Coffee Roulette match for this week is ready",
+      "rouletteConfirmed": "Your Coffee Roulette match is confirmed: say hello",
+      "rouletteDeclined": "{name} cannot make it this week; your match is cancelled",
+      "announcement": "{text}",
+      "stallAccepted": "Your stall application was accepted. The team will contact you by email.",
+      "stallWaitlisted": "Your stall application is on the waiting list.",
+      "stallDeclined": "Your stall application was not accepted this time.",
+      "applicationAccepted": "Your application to get involved was accepted. The team will contact you by email.",
+      "applicationDeclined": "Your application to get involved was not accepted this time. Thank you for offering.",
+      "ambassadorAccepted": "Welcome, ambassador! Your application was accepted. The team will contact you by email.",
+      "ambassadorWaitlisted": "Your ambassador application is on the waiting list.",
+      "ambassadorDeclined": "Your ambassador application was not accepted this time. Thank you for offering.",
+      "roleAccepted": "Your application for a role was accepted. The team will contact you by email.",
+      "roleDeclined": "Your application for a role was not accepted this time. Thank you for applying."
     }
   },
   "guides": {
@@ -1116,7 +1187,10 @@
     "read": "Read the guide",
     "emptyTitle": "No guides yet",
     "emptyDescription": "Guides for this country are being written.",
-    "count": "{count, plural, one {# official source} other {# official sources}}"
+    "count": "{count, plural, one {# official source} other {# official sources}}",
+    "machine": "Machine-translated summary, not reviewed yet.",
+    "englishBody": "The full guide below is in English, with its official sources.",
+    "machineShort": "Summary machine-translated · guide in English"
   },
   "concierge": {
     "title": "Expat Concierge",
@@ -1200,5 +1274,1311 @@
     "finish": "Finish my profile",
     "label": "General information, not legal advice. Always check the official source.",
     "dashboardCta": "Open my roadmap"
+  },
+  "community": {
+    "eyebrow": "Community",
+    "title": "Groups",
+    "lead": "Chapter groups and Cultural Bubbles: ask questions, share tips and read announcements.",
+    "groups": "Your groups",
+    "discover": "Discover more groups",
+    "posts": "{count, plural, =0 {No posts yet} one {# post} other {# posts}}",
+    "active": "Active {when}",
+    "kind": {
+      "chapter": "Chapter",
+      "bubble": "Bubble"
+    },
+    "demo": "Demo group",
+    "emptyTitle": "No groups yet",
+    "emptyDescription": "Join a Cultural Bubble or set your home chapter to see your groups here.",
+    "bubbles": "Browse Bubbles",
+    "moderation": "Moderation queue"
+  },
+  "group": {
+    "back": "All groups",
+    "composer": "Write a post",
+    "bodyHint": "Be kind and concrete. Never share other people's personal data.",
+    "count": "{count} / {max}",
+    "kind": "Type of post",
+    "kinds": {
+      "post": "Post",
+      "question": "Question",
+      "announcement": "Announcement"
+    },
+    "publish": "Publish",
+    "publishing": "Publishing…",
+    "published": "Posted.",
+    "feed": "Posts",
+    "pinned": "Pinned",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "pinnedToast": "Post pinned.",
+    "unpinnedToast": "Post unpinned.",
+    "delete": "Delete",
+    "deleted": "Post deleted.",
+    "reactions": "Reactions",
+    "react": "React with {emoji}, {count} so far",
+    "report": "Report",
+    "reportTitle": "Report this post",
+    "reportLead": "Moderators of this group review every report. The post is hidden for you right away.",
+    "reportReason": "What is wrong with this post?",
+    "reportSend": "Send report",
+    "reported": "Thanks for the report. A moderator will review it.",
+    "underReview": "Hidden while a moderator reviews reports. Only you and moderators can see it.",
+    "openReports": "{count, plural, one {# open report} other {# open reports}}",
+    "demo": "Demo post",
+    "youModerate": "You moderate this group",
+    "bubblePage": "Bubble page",
+    "cannotPost": "Join this Bubble to post here.",
+    "cannotPostChapter": "Only members of this chapter can post here.",
+    "join": "Join the Bubble",
+    "setChapter": "Set your home chapter",
+    "emptyTitle": "No posts yet",
+    "empty": "Start the conversation: ask a question or share a tip.",
+    "older": "Show older posts",
+    "rulesTitle": "Group guidelines",
+    "rules": {
+      "kind": "Be kind and assume good intent.",
+      "privacy": "Never post someone else's contact details or documents.",
+      "selling": "No spam or repeated sales pitches; use the providers directory.",
+      "report": "Report anything that breaks these rules; moderators decide quickly."
+    },
+    "errors": {
+      "default": "Please write between 3 and 2000 characters.",
+      "links": "Please include at most 3 links.",
+      "duplicate": "You already posted this text today.",
+      "rateLimited": "You are posting a lot. Try again in a few minutes.",
+      "forbidden": "You cannot do that in this group.",
+      "reportDefault": "Please describe the problem (at least 5 characters)."
+    },
+    "demoGroup": "Demo group"
+  },
+  "moderation": {
+    "title": "Moderation queue",
+    "lead": "Reported posts in groups you moderate. Keep a post to restore it, or remove it. Every decision is logged.",
+    "reports": "{count, plural, one {# report} other {# reports}}",
+    "autoHidden": "Hidden automatically",
+    "reason": "Reason: {reason}",
+    "keep": "Keep post",
+    "kept": "Post restored.",
+    "remove": "Remove post",
+    "removedToast": "Post removed and the author notified.",
+    "emptyTitle": "All clear",
+    "empty": "Nothing to review. Thanks for keeping the community friendly.",
+    "toCommunity": "Back to groups"
+  },
+  "bubbles": {
+    "eyebrow": "Cultural Bubbles",
+    "title": "Find your Bubble",
+    "lead": "Members grouped by country of origin, across every chapter. Each Bubble has a lead who welcomes newcomers.",
+    "map": "World map of Cultural Bubbles. Each shaded country links to its Bubble.",
+    "list": "All Bubbles",
+    "country": "Country of origin",
+    "fewer": "Fewer than 5 members",
+    "count": "{count} members",
+    "joinedBadge": "Joined",
+    "demo": "Demo Bubble",
+    "legend": "Darker means more members. Counts under 5 are never shown, to protect privacy.",
+    "legendFew": "Fewer",
+    "legendMany": "More",
+    "hover": "{country}: {count} members",
+    "hoverHidden": "{country}: fewer than 5 members",
+    "back": "All Bubbles",
+    "join": "Join this Bubble",
+    "joined": "Welcome to the Bubble. You stay hidden from the member list until you choose to show yourself.",
+    "leave": "Leave",
+    "left": "You left the Bubble.",
+    "rateLimited": "Too many changes. Try again in a few minutes.",
+    "signInToJoin": "Sign in to join",
+    "showMe": "Show me on this page",
+    "hideMe": "Hide me from this page",
+    "shownToast": "You are now listed on the Bubble page.",
+    "hiddenToast": "You are hidden from the Bubble page.",
+    "lead1": "Bubble lead",
+    "leadNone": "Lead wanted: ask your chapter team if you would like to lead this Bubble.",
+    "group": "Open the Bubble group",
+    "events": "Bubble sessions",
+    "noEvents": "No Bubble sessions planned yet. Suggest one to your Bubble lead.",
+    "allEvents": "All sessions",
+    "visibleMembers": "Members who show themselves here",
+    "visibleEmpty": "No members chose to be listed yet."
+  },
+  "roulette": {
+    "eyebrow": "Meet someone new",
+    "title": "Coffee Roulette",
+    "lead": "Once a week we match you with one or two members: people with shared goals and skills you can learn from, never someone you met in the last 8 weeks.",
+    "priority": "Member Plus: priority matching",
+    "howTitle": "How it works",
+    "how": {
+      "join": {
+        "title": "Join a roulette",
+        "text": "In your chapter, your Bubbles, or both."
+      },
+      "match": {
+        "title": "Get matched on Monday",
+        "text": "A pair, or a trio when the numbers are odd."
+      },
+      "meet": {
+        "title": "Everyone accepts, then meet",
+        "text": "Contact details appear once everyone accepts."
+      }
+    },
+    "optInTitle": "Where to be matched",
+    "chapter": "Chapter {name}",
+    "bubble": "{name}",
+    "inScope": "You are in the next draw",
+    "notInScope": "Not taking part",
+    "optIn": "Join",
+    "optOut": "Leave",
+    "joined": "You are in. Matching runs every Monday.",
+    "left": "You left this roulette.",
+    "error": "That did not work. Try again in a minute.",
+    "noScopesTitle": "Nowhere to match you yet",
+    "noScopes": "Set your home chapter or join a Cultural Bubble to take part.",
+    "browseBubbles": "Browse Bubbles",
+    "matchesTitle": "Your matches",
+    "noMatches": "No match yet. Matching runs every Monday for everyone who joined.",
+    "week": "Week of {date}",
+    "cafe": "Suggested place: {cafe}",
+    "cafeNote": "Placeholder: no café partnership exists yet. Meet anywhere you like.",
+    "accept": "Accept",
+    "accepted": "You accepted. We will tell you when everyone has.",
+    "decline": "Decline",
+    "declinedToast": "Match declined.",
+    "status": {
+      "proposed": "Waiting for answers",
+      "confirmed": "Confirmed",
+      "declined": "Cancelled"
+    },
+    "you": {
+      "accepted": "You accepted. Waiting for the others."
+    }
+  },
+  "admin": {
+    "title": "Command centre",
+    "lead": "Members, sessions, check-ins and community health at a glance. Every change you make here is logged.",
+    "scopeGlobal": "All chapters",
+    "scopeChapters": "{count, plural, one {Your chapter} other {Your # chapters}}",
+    "newEvent": "New session",
+    "needsAction": "Action",
+    "kpi": {
+      "members": "Members",
+      "newMembers": "New in 30 days",
+      "upcoming": "Upcoming sessions",
+      "checkIns": "Check-ins in 30 days",
+      "reports": "Open reports",
+      "verifications": "Pending verifications",
+      "concierge": "Concierge questions in 30 days",
+      "suspended": "Suspended accounts"
+    },
+    "charts": {
+      "signups": "Sign-ups, last 30 days",
+      "signupsLabel": "Bar chart of daily sign-ups over the last 30 days",
+      "checkIns": "Check-ins, last 30 days",
+      "checkInsLabel": "Bar chart of daily check-ins over the last 30 days",
+      "table": "Show as table"
+    },
+    "funnel": {
+      "title": "Member journey",
+      "signedUp": "Signed up",
+      "onboarded": "Started onboarding",
+      "attended": "Attended a session",
+      "connected": "Made a connection",
+      "step": "{pct}% of previous step"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "all": "Audit log",
+      "system": "System",
+      "empty": "Nothing logged yet."
+    },
+    "actions": {
+      "post": {
+        "pin": "Post pinned",
+        "unpin": "Post unpinned",
+        "remove": "Post removed",
+        "keep": "Reported post kept"
+      },
+      "member": {
+        "suspend": "Member suspended",
+        "reinstate": "Member reinstated",
+        "export": "Members exported"
+      },
+      "role": {
+        "grant": "Role granted",
+        "revoke": "Role revoked"
+      },
+      "setting": {
+        "flag": "Feature flag changed",
+        "banner": "Site banner changed"
+      },
+      "broadcast": {
+        "send": "Announcement sent"
+      },
+      "roulette": {
+        "run": "Roulette drawn"
+      },
+      "festival": {
+        "create": "Festival created",
+        "update": "Festival updated",
+        "published": "Festival published",
+        "draft": "Festival unpublished",
+        "cancelled": "Festival cancelled",
+        "export": "Attendee list exported"
+      },
+      "application": {
+        "move": "Application moved"
+      },
+      "catalog": {
+        "format": {
+          "create": "Format created",
+          "update": "Format updated"
+        },
+        "category": {
+          "create": "Category created",
+          "update": "Category updated"
+        },
+        "plan": {
+          "update": "Plan price changed"
+        }
+      },
+      "ambassador": {
+        "review": "Ambassador application reviewed"
+      },
+      "opening": {
+        "create": "Role created",
+        "update": "Role updated",
+        "review": "Role application reviewed"
+      }
+    },
+    "health": {
+      "title": "Chapter health",
+      "chapter": "Chapter",
+      "status": "Status",
+      "members": "Members",
+      "sessions": "Sessions, next 30 days",
+      "checkIns": "Check-ins, last 30 days",
+      "leads": "Leads",
+      "noLead": "None",
+      "statuses": {
+        "live": "Live",
+        "launching": "Launching",
+        "requested": "Requested"
+      }
+    }
+  },
+  "adminShell": {
+    "label": "Admin sections",
+    "search": "Jump to…",
+    "paletteTitle": "Go to an admin page",
+    "paletteHint": "Type to filter, use the arrow keys to move and Enter to open.",
+    "placeholder": "Type a page or action",
+    "noResults": "Nothing matches.",
+    "sectionsGroup": "Sections",
+    "quickGroup": "Quick actions",
+    "quick": {
+      "newEvent": "Create a session",
+      "dashboard": "My dashboard",
+      "newFestival": "Create a festival"
+    },
+    "sections": {
+      "overview": "Overview",
+      "events": "Sessions",
+      "members": "Members",
+      "providers": "Providers",
+      "moderation": "Moderation",
+      "roulette": "Roulette",
+      "audit": "Audit log",
+      "settings": "Settings",
+      "system": "System",
+      "festivals": "Festivals",
+      "applications": "Applications",
+      "catalogs": "Catalogs",
+      "ambassadors": "Ambassadors",
+      "roles": "Roles"
+    }
+  },
+  "adminMembers": {
+    "title": "Members",
+    "lead": "Search accounts, manage chapter roles, suspend abuse. Admin accounts and your own are read-only.",
+    "search": "Name or email",
+    "searchPlaceholder": "e.g. Priya",
+    "status": "Status",
+    "roleFilter": "Role",
+    "apply": "Apply filters",
+    "results": "{count, plural, one {# member} other {# members}}",
+    "export": "Export CSV",
+    "demo": "Demo",
+    "joined": "joined {date}",
+    "checkIns": "{count, plural, one {# check-in} other {# check-ins}}",
+    "viewProfile": "View public profile",
+    "locked": "This account is read-only here (your own or another admin).",
+    "role": "Role",
+    "chapter": "Chapter",
+    "grant": "Grant role",
+    "granted": "Role granted.",
+    "revoked": "Role revoked.",
+    "revokeLabel": "Revoke {role} in {chapter}",
+    "suspend": "Suspend",
+    "suspended": "Member suspended and signed out everywhere.",
+    "reinstate": "Reinstate",
+    "reinstated": "Member reinstated.",
+    "reason": "Reason (internal, optional)",
+    "saving": "Saving…",
+    "pagination": "Pages",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {pages}",
+    "statuses": {
+      "all": "All",
+      "active": "Active",
+      "suspended": "Suspended",
+      "deletion": "Deletion requested"
+    },
+    "roles": {
+      "any": "Any role",
+      "member": "Member",
+      "admin": "Admin",
+      "chapter_lead": "Chapter lead",
+      "moderator": "Moderator",
+      "bubble_lead": "Bubble lead"
+    },
+    "errors": {
+      "default": "That did not work. Check the form and try again.",
+      "forbidden": "You cannot change this account.",
+      "rateLimited": "Too many changes in a short time. Wait a minute."
+    }
+  },
+  "adminAudit": {
+    "title": "Audit log",
+    "lead": "Every admin and moderator decision, newest first. Details never contain personal data.",
+    "action": "Action",
+    "allActions": "All actions",
+    "apply": "Filter",
+    "when": "When",
+    "who": "Who",
+    "entity": "Target",
+    "details": "Details",
+    "system": "System",
+    "empty": "No entries match.",
+    "pagination": "Pages",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {pages}"
+  },
+  "adminSettings": {
+    "title": "Settings",
+    "lead": "Change how the platform behaves without a deploy. Every change is logged.",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "flags": {
+      "title": "Feature flags",
+      "lead": "Turn features off if they cause trouble; navigation hides them at once.",
+      "on": "On",
+      "off": "Off",
+      "turnOn": "Turn on",
+      "turnOff": "Turn off",
+      "names": {
+        "coffeeRoulette": "Coffee Roulette",
+        "sessionPulse": "Session Pulse",
+        "bubblesMap": "Bubbles map",
+        "paidTickets": "Paid tickets"
+      },
+      "help": {
+        "coffeeRoulette": "Weekly member matching and its pages.",
+        "sessionPulse": "Live audience screen during sessions.",
+        "bubblesMap": "World map on /bubbles (the list always stays).",
+        "paidTickets": "Stripe checkout for paid sessions."
+      }
+    },
+    "banner": {
+      "title": "Site banner",
+      "lead": "A short notice at the top of every page, for example planned maintenance.",
+      "text": "Text (up to 200 characters)",
+      "tone": "Style",
+      "info": "Information",
+      "warning": "Warning",
+      "enabled": "Show the banner"
+    },
+    "broadcast": {
+      "title": "Announcement",
+      "lead": "Sends an in-app notification to every active member of a chapter. At most 5 a day.",
+      "audience": "Who receives it",
+      "everyone": "Every member",
+      "text": "Message (10 to 280 characters)",
+      "send": "Send announcement",
+      "sent": "Sent to {value} members."
+    },
+    "errors": {
+      "default": "That did not work. Try again.",
+      "rateLimited": "Limit reached. Try again later.",
+      "banner": "Write at least 3 characters to show the banner.",
+      "broadcast": "Write between 10 and 280 characters."
+    }
+  },
+  "adminRoulette": {
+    "title": "Coffee Roulette",
+    "lead": "Draws for the week of {week}. The weekly job runs on Mondays; you can draw a scope now.",
+    "kind": {
+      "chapter": "Chapter roulette",
+      "bubble": "Bubble roulette"
+    },
+    "drawn": "Drawn",
+    "notDrawn": "Not drawn yet",
+    "stats": {
+      "participants": "Joined",
+      "matches": "Matches",
+      "confirmed": "Confirmed"
+    },
+    "run": "Draw now",
+    "ran": "Matches created and members notified.",
+    "already": "This week is already drawn.",
+    "error": "Could not draw. Try again.",
+    "empty": "Nobody has joined a roulette yet."
+  },
+  "adminSystem": {
+    "title": "System",
+    "lead": "Health of the database, jobs, rate limits and configuration. Secrets are never shown.",
+    "ok": "OK",
+    "attention": "Needs attention",
+    "ms": "{ms} ms",
+    "testMode": "test mode",
+    "notConfigured": "not configured",
+    "never": "never",
+    "on": "on",
+    "off": "off",
+    "checks": {
+      "database": "Database",
+      "stripe": "Payments",
+      "ai": "AI provider",
+      "proxy": "Trusted proxy hops"
+    },
+    "limits": {
+      "title": "Rate limits, last hour",
+      "lead": "Requests counted per limit bucket. A sudden spike usually means automation.",
+      "bucket": "Bucket",
+      "keys": "Clients",
+      "hits": "Requests",
+      "empty": "No limited requests in the last hour."
+    },
+    "runtime": {
+      "title": "Runtime",
+      "mode": "Mode",
+      "node": "Node.js",
+      "migration": "Latest migration",
+      "roulette": "Last roulette draw",
+      "reminders": "Last roadmap reminder"
+    }
+  },
+  "banner": {
+    "label": "Site notice"
+  },
+  "festival": {
+    "eyebrow": "EiB festivals",
+    "listTitle": "Cultural festivals",
+    "listLead": "Our biggest days: music, food, talks and stalls from the communities in our chapters. Buy tickets for your whole group, volunteer, or bring a stall.",
+    "upcoming": "Coming up",
+    "past": "Past festivals",
+    "badge": "Festival",
+    "demo": "Demo festival",
+    "demoPartner": "Demo partner",
+    "ended": "Ended",
+    "cancelled": "Cancelled",
+    "emptyTitle": "No festival announced yet",
+    "emptyText": "Festivals are announced here first. Meanwhile, join a regular session.",
+    "seeSessions": "See sessions",
+    "fromPrice": "Tickets from {price}",
+    "freeEntry": "Free entry",
+    "getTickets": "Get tickets",
+    "when": "When",
+    "where": "Where",
+    "capacity": "Capacity",
+    "placesLeft": "{left} of {capacity} places left",
+    "about": "About the festival",
+    "countdownLabel": "Time until the festival opens",
+    "units": {
+      "days": "days",
+      "hours": "hours",
+      "minutes": "min"
+    },
+    "nav": {
+      "label": "Festival sections",
+      "tickets": "Tickets",
+      "programme": "Programme",
+      "partners": "Partners",
+      "volunteer": "Volunteer",
+      "stalls": "Stalls",
+      "faq": "FAQ"
+    },
+    "chooseTier": "Choose a ticket",
+    "free": "Free",
+    "people": "People",
+    "fewer": "One person fewer",
+    "more": "One more person",
+    "total": "Total",
+    "processing": "One moment…",
+    "soldOut": "Sold out",
+    "buy": "{count, plural, one {Buy 1 ticket} other {Buy # tickets}}",
+    "reserve": "{count, plural, one {Reserve 1 place} other {Reserve # places}}",
+    "paymentNote": "One QR code admits your whole group. Payment by card, BLIK or Przelewy24 in test mode.",
+    "waitlisted": "This tier is full right now, so you are on the waitlist. We email you as soon as places free up.",
+    "tierState": {
+      "onSale": "On sale",
+      "lowStock": "Only {left} left",
+      "soldOut": "Sold out",
+      "ended": "Sales ended"
+    },
+    "ticketStatus": {
+      "confirmed": "{count, plural, one {You have a ticket} other {You have tickets for # people}}",
+      "reserved": "Your places are held while you pay",
+      "waitlisted": "You are on the waitlist"
+    },
+    "viewTicket": "View my ticket",
+    "salesClosed": "Ticket sales are closed.",
+    "signInToBuy": "Sign in to get tickets",
+    "days": "Festival days",
+    "stages": "Stages: {list}",
+    "kinds": {
+      "performance": "Performance",
+      "talk": "Talk",
+      "workshop": "Workshop",
+      "food": "Food",
+      "family": "Family",
+      "exhibition": "Exhibition",
+      "other": "Programme"
+    },
+    "partnerTiers": {
+      "headline": "Headline partner",
+      "gold": "Gold partner",
+      "silver": "Silver partner",
+      "community": "Community partner",
+      "media": "Media partner"
+    },
+    "volunteerLead": "Festivals run on volunteers. Pick a shift that suits you: you get a crew briefing and meet people from every chapter.",
+    "shiftFill": "{taken} of {capacity} volunteers",
+    "joinShift": "Volunteer for this shift",
+    "leaveShift": "Leave this shift",
+    "shiftFull": "Shift full",
+    "shiftJoined": "Thank you! You are on the volunteer crew.",
+    "shiftLeft": "You left the shift.",
+    "signInToVolunteer": "Sign in to volunteer",
+    "stallLead": "Food, crafts, culture and community stalls are welcome. Tell us about yours and the team will reply by email.",
+    "stallFee": "Stall fee: {fee}, invoiced after acceptance.",
+    "stallSent": "Application sent. We will reply by email.",
+    "stallWithdrawn": "Application withdrawn.",
+    "withdraw": "Withdraw application",
+    "signInToApply": "Sign in to apply for a stall",
+    "stallStatus": {
+      "submitted": "Application for {name} received: under review",
+      "accepted": "{name} is accepted. Check your email for next steps.",
+      "waitlisted": "{name} is on the waiting list",
+      "declined": "{name} was not accepted this time. You can apply again.",
+      "withdrawn": "Withdrawn"
+    },
+    "stallCategories": {
+      "food": "Food and drink",
+      "crafts": "Crafts and design",
+      "culture": "Culture and heritage",
+      "services": "Services for internationals",
+      "nonprofit": "Non-profit or community",
+      "other": "Other"
+    },
+    "stall": {
+      "name": "Stall or business name",
+      "category": "Category",
+      "description": "What will you offer?",
+      "hint": "At least 30 characters: products, languages spoken, power or water needs.",
+      "website": "Website (optional)",
+      "submit": "Send application"
+    },
+    "errors": {
+      "default": "That did not work. Please try again.",
+      "closed": "This is no longer open.",
+      "tierClosed": "Sales for this ticket have ended. Please pick another one.",
+      "invalid": "Please check the number of people.",
+      "rateLimited": "Too many attempts. Try again in a few minutes.",
+      "full": "The places ran out while you were paying, so you are on the waitlist.",
+      "shift": "Could not change the shift. It may be full, overlapping another of your shifts, or closed.",
+      "stall": "Please complete all fields (description at least 30 characters, website starting with https://).",
+      "exists": "You already applied for this festival."
+    }
+  },
+  "adminFestivals": {
+    "title": "Festivals",
+    "lead": "Large cultural events: ticket tiers, group orders, programme, volunteers, stalls and partners in one console.",
+    "new": "New festival",
+    "newTitle": "Create a festival",
+    "newLead": "Start with the essentials. You add tiers, programme, volunteer shifts, stalls and partners in the console.",
+    "create": "Create draft",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "save": "Save changes",
+    "draftNote": "The festival starts as a draft that only organisers can see. Publish it from the console when the checklist is complete.",
+    "defaultTier": "General admission",
+    "emptyTitle": "No festivals yet",
+    "emptyText": "Create your first festival: it stays a private draft until you publish it.",
+    "sold": "{taken} of {capacity} places sold ({pct}%)",
+    "pendingStalls": "{count, plural, one {# stall to review} other {# stalls to review}}",
+    "demo": "Demo festival",
+    "free": "Free",
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "cancelled": "Cancelled"
+    },
+    "statusToast": {
+      "published": "Festival published. It is now live on /festivals.",
+      "draft": "Festival moved back to draft.",
+      "cancelled": "Festival cancelled."
+    },
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "cancel": "Cancel festival",
+    "restore": "Restore as draft",
+    "viewPublic": "Public page",
+    "checkIn": "Door check-in",
+    "attendees": "Attendee list (CSV)",
+    "tabsLabel": "Festival console sections",
+    "tabs": {
+      "overview": "Overview",
+      "tickets": "Tickets",
+      "programme": "Programme",
+      "volunteers": "Volunteers",
+      "stalls": "Stalls",
+      "partners": "Partners & FAQ",
+      "settings": "Settings"
+    },
+    "stats": {
+      "sold": "Places sold",
+      "revenue": "Ticket revenue",
+      "checkedIn": "Checked in",
+      "waitlist": "On waitlist",
+      "volunteers": "Volunteers",
+      "stalls": "Stalls to review"
+    },
+    "checklistTitle": "Launch checklist",
+    "checklistLabel": "Festival {percent}% ready",
+    "done": "done",
+    "todo": "to do",
+    "checklist": {
+      "details": "Tagline and a description of at least 80 characters",
+      "venue": "Venue chosen",
+      "tiers": "At least one ticket tier",
+      "programme": "At least 3 programme items",
+      "faq": "At least 3 FAQ answers",
+      "partners": "At least one partner",
+      "volunteers": "Volunteer shifts (if volunteering is open)",
+      "published": "Published"
+    },
+    "tierSold": "{sold} of {cap} sold",
+    "salesEnd": "early-bird deadline set",
+    "remove": "Remove {name}",
+    "addTier": "Add ticket tier",
+    "addItem": "Add to programme",
+    "addShift": "Add volunteer shift",
+    "addPartner": "Add partner",
+    "addFaq": "Add question",
+    "programmeEmpty": "No programme yet. Add performances, talks, workshops and food slots.",
+    "timezoneNote": "Times are in the chapter timezone ({tz}).",
+    "stagePlaceholder": "Main stage",
+    "rolePlaceholder": "Welcome desk",
+    "partners": "Partners",
+    "faq": "Frequently asked questions",
+    "reportLink": "sponsor report",
+    "permissionNote": "Only add partners who agreed in writing to appear on the page.",
+    "volunteersClosed": "Volunteering is closed on the public page. Open it in Settings.",
+    "stallsEmpty": "No stall applications yet.",
+    "stallsClosed": "Stall applications are closed. Open them in Settings.",
+    "decision": "Decision",
+    "note": "Note for the team (internal)",
+    "saveDecision": "Save decision",
+    "shiftFill": "{taken} of {capacity} volunteers",
+    "kinds": {
+      "performance": "Performance",
+      "talk": "Talk",
+      "workshop": "Workshop",
+      "food": "Food",
+      "family": "Family",
+      "exhibition": "Exhibition",
+      "other": "Other"
+    },
+    "partnerTiers": {
+      "headline": "Headline partner",
+      "gold": "Gold partner",
+      "silver": "Silver partner",
+      "community": "Community partner",
+      "media": "Media partner"
+    },
+    "stallCategories": {
+      "food": "Food and drink",
+      "crafts": "Crafts and design",
+      "culture": "Culture and heritage",
+      "services": "Services",
+      "nonprofit": "Non-profit",
+      "other": "Other"
+    },
+    "stallStatus": {
+      "submitted": "New",
+      "accepted": "Accepted",
+      "waitlisted": "Waiting list",
+      "declined": "Declined",
+      "withdrawn": "Withdrawn"
+    },
+    "fields": {
+      "chapter": "Chapter",
+      "title": "Festival name",
+      "tagline": "Tagline (one line)",
+      "summary": "Short summary (cards and search)",
+      "description": "Description",
+      "startDate": "First day",
+      "startTime": "Opens at",
+      "endDate": "Last day",
+      "endTime": "Closes at",
+      "venue": "Venue",
+      "capacity": "Total capacity",
+      "maxPerOrder": "Max people per order",
+      "tierName": "Ticket name",
+      "tierPrice": "Price",
+      "tierCapacity": "Places in this tier (empty = shared)",
+      "tierDescription": "What is included",
+      "sortOrder": "Order",
+      "salesEndDate": "Sales end (date, optional)",
+      "salesEndTime": "Sales end (time)",
+      "itemTitle": "Title",
+      "itemDescription": "Description",
+      "kind": "Type",
+      "stage": "Stage or area",
+      "performer": "Performer or speaker",
+      "date": "Date",
+      "start": "Start",
+      "end": "End",
+      "role": "Role",
+      "shiftCapacity": "Volunteers needed",
+      "shiftDescription": "What the shift involves",
+      "partnerName": "Partner name",
+      "website": "Website",
+      "partnerTier": "Partner level",
+      "question": "Question",
+      "answer": "Answer",
+      "stallFee": "Stall fee ({currency}, optional)",
+      "volunteersOpen": "Open volunteer sign-up on the public page",
+      "stallsOpen": "Open stall applications on the public page"
+    },
+    "errors": {
+      "default": "Please check the highlighted fields.",
+      "venue": "Pick a venue in the selected chapter.",
+      "past": "The festival must start in the future.",
+      "dates": "The end must be after the start (festivals last at most 14 days).",
+      "tierInUse": "This tier already has tickets, so it cannot be removed.",
+      "shiftInUse": "Volunteers signed up for this shift, so it cannot be removed.",
+      "capacity": "Capacity cannot be lower than the places already sold.",
+      "noTiers": "Add at least one ticket tier before publishing.",
+      "rateLimited": "Too many changes in a short time. Wait a minute."
+    },
+    "cancelConfirm": "Cancelling tells every visitor the festival will not happen. Ticket holders keep their tickets until you refund them in Stripe.",
+    "cancelYes": "Yes, cancel the festival"
+  },
+  "sponsorReport": {
+    "eyebrow": "Partner report for {sponsor}",
+    "tier": "Partnership level: {tier}",
+    "print": "Print or save as PDF",
+    "hidden": "Fewer than 5",
+    "numbers": {
+      "registered": "People registered",
+      "attended": "People checked in",
+      "countries": "Countries of origin (5+ people each)",
+      "programme": "Programme items"
+    },
+    "privacy": "Aggregates only. Any number under 5 is hidden so no attendee can be identified.",
+    "generated": "Generated on {date} by the Expats in Business platform."
+  },
+  "involved": {
+    "eyebrow": "Get involved",
+    "title": "Help shape the community",
+    "lead": "Speak at a session, share your expat business story, or contribute your skills. The chapter team reads every application.",
+    "ways": {
+      "speaker": {
+        "title": "Speak at a session",
+        "text": "Share what you know in a Guest Speaker session or a Business Development workshop."
+      },
+      "story": {
+        "title": "Share your story",
+        "text": "Tell how you built your career or business abroad, for the community and the podcast."
+      },
+      "contributor": {
+        "title": "Contribute",
+        "text": "Help with guides, translations, design, photography or organising events."
+      }
+    },
+    "signIn": "Sign in to apply",
+    "fields": {
+      "type": "How do you want to get involved?",
+      "topic": "Topic or idea (one line)",
+      "pitch": "Tell us more",
+      "pitchHint": "At least 40 characters: what, for whom, and what people will take away.",
+      "link": "Link to your work (optional)"
+    },
+    "privacy": "Your name and account email are shared with the chapter team only, to reply to you.",
+    "send": "Send application",
+    "sending": "Sending…",
+    "sent": "Thank you! The team will reply by email.",
+    "mine": "Your applications",
+    "none": "You have not applied yet.",
+    "status": {
+      "submitted": "Received",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "declined": "Not this time"
+    },
+    "errors": {
+      "default": "Please fill in a topic and at least 40 characters, and use an https:// link.",
+      "exists": "You already have an open application of this kind.",
+      "rateLimited": "Too many applications today. Try again tomorrow."
+    }
+  },
+  "adminApplications": {
+    "title": "Applications",
+    "lead": "Speakers, stories and contributors. Move each card along; applicants are notified when you accept or decline.",
+    "status": {
+      "submitted": "New",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    },
+    "types": {
+      "speaker": "Speaker",
+      "story": "Story",
+      "contributor": "Contributor"
+    },
+    "move": {
+      "submitted": "Back to new",
+      "in_review": "Review",
+      "accepted": "Accept",
+      "declined": "Decline"
+    },
+    "moved": {
+      "submitted": "Moved back.",
+      "in_review": "Moved to review.",
+      "accepted": "Accepted: the applicant is notified.",
+      "declined": "Declined: the applicant is notified."
+    },
+    "read": "Read the pitch",
+    "global": "No chapter",
+    "demo": "Demo",
+    "empty": "Nothing here.",
+    "error": "Could not move the application."
+  },
+  "adminCatalogs": {
+    "title": "Catalogs",
+    "lead": "Change formats, provider categories and plan prices without a deploy. Every change is in the audit log.",
+    "plans": "Plans and prices",
+    "plansNote": "New checkouts use the new price at once. Existing subscriptions keep the price they signed up with. Prices marked Proposal are shown as proposals on /pricing.",
+    "oneOff": "contact only",
+    "amount": "Price ({currency})",
+    "status": "Status",
+    "active": "On sale",
+    "priceStatus": {
+      "proposal": "Proposal",
+      "approved": "Approved"
+    },
+    "formats": "Event formats",
+    "newFormat": "New format",
+    "categories": "Provider categories",
+    "newCategory": "New category",
+    "name": "Name",
+    "minutes": "Minutes",
+    "order": "Order",
+    "description": "Description",
+    "save": "Save",
+    "add": "Add",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "errors": {
+      "default": "Please check the fields.",
+      "exists": "A category with this name already exists.",
+      "rateLimited": "Too many changes in a short time. Wait a minute."
+    }
+  },
+  "emails": {
+    "magicLink": {
+      "subject": "Your sign-in link",
+      "heading": "Sign in to Expats in Business",
+      "body": "Use this link to sign in. It works once and expires in 15 minutes. If you did not ask for it, ignore this email.",
+      "cta": "Sign in"
+    },
+    "verify": {
+      "subject": "Confirm your email address",
+      "heading": "Confirm your email address",
+      "body": "Confirm that {email} belongs to you. The link expires in {hours} hours.",
+      "cta": "Confirm email"
+    },
+    "ticket": {
+      "confirmed": {
+        "subject": "Your ticket: {event}",
+        "body": "You have a place. Show the QR code on your ticket page at the door.",
+        "cta": "Open my ticket"
+      },
+      "waitlisted": {
+        "subject": "Waitlist: {event}",
+        "body": "The session is full, so you are on the waitlist. We email you as soon as a place frees up.",
+        "cta": "View my waitlist spot"
+      },
+      "promotedReserved": {
+        "subject": "A place opened up: {event}",
+        "body": "A place is now held for you. Complete the payment within {minutes} minutes to keep it.",
+        "cta": "Pay and confirm"
+      },
+      "promotedConfirmed": {
+        "subject": "A place opened up: {event}",
+        "body": "Good news: you moved up from the waitlist and have a place.",
+        "cta": "Open my ticket"
+      }
+    },
+    "reminders": {
+      "subject": "Your roadmap: steps due next week",
+      "heading": "Coming up on your Landing Roadmap",
+      "intro": "These steps are due in about a week:",
+      "outro": "Each step links to a guide with official sources.",
+      "cta": "Open my roadmap"
+    },
+    "quote": {
+      "subject": "New quote request for {provider}",
+      "heading": "You have a new quote request",
+      "body": "A member sent you a quote request. Open your inbox to read it and reply.",
+      "cta": "Open inbox"
+    }
+  },
+  "spotlight": {
+    "eyebrow": "Festival",
+    "demo": "Demo",
+    "cta": "See the festival",
+    "inDays": "{count, plural, one {in # day} other {in # days}}",
+    "today": "today"
+  },
+  "chapters": {
+    "eyebrow": "One global community",
+    "title": "Chapters around the world",
+    "lead": "EiB grows city by city. Find your country hub and city chapter, or vote to bring EiB to your city.",
+    "ambassadorCta": "Become an ambassador",
+    "countriesTitle": "Countries",
+    "demoCountry": "Demo country",
+    "demo": "Demo",
+    "status": {
+      "live": "Live",
+      "launching": "Launching"
+    },
+    "noChapters": "No chapter yet. Vote below to start one.",
+    "requested": "Requested by members",
+    "votes": "{count, plural, one {# vote} other {# votes}}",
+    "openHub": "Open the {country} hub",
+    "countryTitle": "EiB in {country}",
+    "countryEyebrow": "Country hub",
+    "chaptersLabel": "Chapters",
+    "chapterCount": "{count, plural, =0 {No chapters yet} one {# chapter} other {# chapters}}",
+    "guidesLabel": "Guides",
+    "guideCount": "{count, plural, =0 {No guides yet} one {# guide} other {# guides}}",
+    "citiesTitle": "City chapters in {country}",
+    "fewMembers": "Fewer than 5 members",
+    "members": "{count, plural, one {# member} other {# members}}",
+    "requestsTitle": "Cities members asked for",
+    "ambassadorsTitle": "Ambassadors in {country}",
+    "becomeAmbassador": "Become an ambassador",
+    "noAmbassadors": "No ambassadors here yet. This could be you.",
+    "chapterTitle": "EiB {city}",
+    "join": "Join EiB {city}",
+    "helpLaunch": "Help launch {city}",
+    "allSessions": "All sessions",
+    "facts": {
+      "members": "Members",
+      "sessions": "Upcoming sessions",
+      "ambassadors": "Ambassadors",
+      "leads": "Chapter leads"
+    },
+    "underFive": "Under 5",
+    "upcoming": "Upcoming in {city}",
+    "noSessions": "No sessions are scheduled yet. Check back soon.",
+    "launchingNote": "{city} is launching. Join now and you will hear first when the first session is announced.",
+    "cityAmbassadors": "Ambassadors in {city}",
+    "noCityAmbassadors": "{city} has no ambassador yet. Apply to be the first.",
+    "vote": {
+      "title": "Want EiB in your city?",
+      "lead": "Vote for your city. When enough members ask, we look for a chapter lead and an ambassador.",
+      "cta": "Vote for a city",
+      "submit": "Vote",
+      "sending": "Sending…",
+      "thanks": "Thank you, your vote is in.",
+      "country": "Country",
+      "city": "City",
+      "placeholder": "For example, Gdańsk",
+      "signIn": "Sign in to vote",
+      "errors": {
+        "default": "We could not save your vote. Check the city name and try again.",
+        "rateLimited": "You have voted a lot in a short time. Try again later.",
+        "exists": "There is already a chapter in this city. Open it from the list above."
+      }
+    }
+  },
+  "ambassadors": {
+    "eyebrow": "Ambassador programme",
+    "title": "Represent EiB where you live",
+    "lead": "Ambassadors welcome newcomers, connect people and help EiB open new chapters. Choose global, country or city.",
+    "cta": "Apply to be an ambassador",
+    "tiersTitle": "Three ways to represent EiB",
+    "tiers": {
+      "global": {
+        "title": "Global ambassador",
+        "short": "Global",
+        "text": "Speak for EiB across borders: online, at partner events and wherever internationals meet.",
+        "do1": "Introduce EiB to communities and organisations abroad",
+        "do2": "Connect country hubs and share what works",
+        "do3": "Represent EiB at international events"
+      },
+      "country": {
+        "title": "Country ambassador",
+        "short": "Country",
+        "text": "Build EiB in one country: find chapter leads, gather guides and open the first cities.",
+        "do1": "Help start city chapters in your country",
+        "do2": "Suggest local guides and official sources",
+        "do3": "Welcome new members in your country"
+      },
+      "city": {
+        "title": "City ambassador",
+        "short": "City",
+        "text": "Be the friendly face of EiB in your city: greet people at sessions and invite newcomers.",
+        "do1": "Welcome newcomers at sessions",
+        "do2": "Suggest venues and local partners",
+        "do3": "Share sessions with your networks"
+      }
+    },
+    "benefitsTitle": "What you get",
+    "benefits": {
+      "network": {
+        "title": "A wider network",
+        "text": "Meet chapter leads, members and partners across the EiB community."
+      },
+      "skills": {
+        "title": "Leadership practice",
+        "text": "Plan, host and speak: real experience you can show."
+      },
+      "impact": {
+        "title": "Visible impact",
+        "text": "Help internationals feel at home faster in your city or country."
+      }
+    },
+    "whoTitle": "Our ambassadors",
+    "none": "No ambassadors are listed yet. Applications are open.",
+    "applyTitle": "Apply",
+    "applyLead": "Tell us where you want to represent EiB and why. A team member reviews every application and replies by notification.",
+    "signIn": "Sign in to apply",
+    "mine": "My applications",
+    "noneMine": "You have not applied yet.",
+    "global": "Worldwide",
+    "demo": "Demo",
+    "status": {
+      "submitted": "Submitted",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "waitlisted": "Waiting list",
+      "declined": "Not accepted",
+      "withdrawn": "Withdrawn"
+    },
+    "withdraw": "Withdraw",
+    "withdrawn": "Application withdrawn.",
+    "sent": "Thank you. Your application is in and the team will review it.",
+    "errors": {
+      "default": "We could not send your application. Check the fields and try again.",
+      "exists": "You already have an open application for this tier.",
+      "rateLimited": "You have sent several applications in a short time. Try again later."
+    },
+    "form": {
+      "tier": "Which tier?",
+      "country": "Country",
+      "city": "City",
+      "cityPlaceholder": "For example, Indore",
+      "motivation": "Why do you want to be an ambassador?",
+      "motivationHint": "{count} of at least 80 characters",
+      "experience": "Relevant experience",
+      "experienceHint": "Communities, events or volunteering you have done. At least 40 characters.",
+      "languages": "Languages you speak",
+      "hours": "Hours per month: {hours}",
+      "linkedin": "LinkedIn profile (optional)",
+      "privacy": "Only the EiB team sees your application. If you are accepted, your name and place appear on this page; you can hide it in your settings.",
+      "sending": "Sending…",
+      "submit": "Send application"
+    }
+  },
+  "careers": {
+    "eyebrow": "Careers",
+    "title": "Build EiB with us",
+    "lead": "Help a global community of internationals grow. Pick a role that fits your time and skills.",
+    "honest": "EiB is free and community-run. Most roles are volunteer roles; every role says clearly whether it is volunteer, an internship or paid.",
+    "whyTitle": "Why join",
+    "why": {
+      "mission": {
+        "title": "A real mission",
+        "text": "Help internationals find work, friends and their way around a new country."
+      },
+      "growth": {
+        "title": "Room to grow",
+        "text": "Own a piece of a young platform and see your work used by members."
+      },
+      "people": {
+        "title": "Great people",
+        "text": "Work with founders, chapter leads and volunteers from many countries."
+      }
+    },
+    "rolesTitle": "Open roles",
+    "volunteerLink": "Volunteer at a festival",
+    "filter": "Filter roles by type",
+    "all": "All",
+    "kinds": {
+      "volunteer": "Volunteer",
+      "internship": "Internship",
+      "part_time": "Part-time",
+      "full_time": "Full-time"
+    },
+    "demo": "Demo",
+    "view": "View role",
+    "emptyTitle": "No open roles right now",
+    "emptyText": "New roles appear here first. Meanwhile you can represent EiB as an ambassador.",
+    "becomeAmbassador": "Become an ambassador",
+    "back": "All roles",
+    "closed": "Closed",
+    "closedText": "This role is not taking applications right now.",
+    "responsibilities": "What you will do",
+    "requirements": "What we are looking for",
+    "applyTitle": "Apply for this role",
+    "message": "Why are you a good fit?",
+    "messageHint": "At least 40 characters. Mention your experience and how much time you have.",
+    "portfolio": "Portfolio or LinkedIn link (optional)",
+    "privacy": "Only the EiB team sees your application.",
+    "send": "Send application",
+    "sending": "Sending…",
+    "sent": "Thank you. Your application is in.",
+    "signIn": "Sign in to apply",
+    "withdraw": "Withdraw application",
+    "withdrawn": "Application withdrawn.",
+    "status": {
+      "submitted": "Submitted",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "waitlisted": "Waiting list",
+      "declined": "Not accepted",
+      "withdrawn": "Withdrawn"
+    },
+    "errors": {
+      "default": "We could not send your application. Check the fields and try again.",
+      "exists": "You have already applied for this role.",
+      "rateLimited": "You have sent several applications in a short time. Try again later."
+    }
+  },
+  "volunteer": {
+    "eyebrow": "Volunteer",
+    "title": "Give a few hours, make a big difference",
+    "lead": "Help at a festival, run a session or welcome newcomers. Every EiB event is made by volunteers.",
+    "ambassadorCta": "Become an ambassador",
+    "careersCta": "See all roles",
+    "howTitle": "How volunteering works",
+    "how": {
+      "pick": {
+        "title": "Pick a shift or role",
+        "text": "Choose a festival shift or an ongoing role below."
+      },
+      "meet": {
+        "title": "Meet the team",
+        "text": "A chapter lead confirms and tells you what to expect."
+      },
+      "grow": {
+        "title": "Grow with us",
+        "text": "Regular volunteers can become ambassadors or chapter leads."
+      }
+    },
+    "festivalsTitle": "Festivals that need hands",
+    "festival": "Festival",
+    "demo": "Demo",
+    "openShifts": "{count, plural, =0 {All shifts are full} one {# volunteer place open} other {# volunteer places open}}",
+    "noFestivals": "No festival needs volunteers right now.",
+    "rolesTitle": "Ongoing volunteer roles",
+    "noRoles": "No ongoing volunteer roles are open right now."
+  },
+  "adminGrowth": {
+    "ambassadorsTitle": "Ambassador applications",
+    "ambassadorsLead": "Review who wants to represent EiB. Accepting lists them on the public ambassadors page; every decision is logged and the applicant is told.",
+    "rolesTitle": "Roles and careers",
+    "rolesLead": "Write volunteer, internship and paid roles, open them on the careers page and review applications.",
+    "applicationsTitle": "Applications",
+    "rolesList": "All roles",
+    "roleNew": "New role",
+    "roleCreate": "Create role",
+    "roleSave": "Save role",
+    "roleSaved": "Role saved.",
+    "roleError": "The role could not be saved. Check the fields.",
+    "rateLimited": "Too many changes in a short time. Wait a moment.",
+    "saving": "Saving…",
+    "onePerLine": "One item per line, up to 12.",
+    "viewPublic": "Open the public page",
+    "applicants": "{count, plural, =0 {No applicants} one {# applicant} other {# applicants}}",
+    "hours": "{hours} h per month",
+    "demo": "Demo",
+    "read": "Read the application",
+    "empty": "Nothing here.",
+    "error": "This move is not possible any more. Reload the page.",
+    "fields": {
+      "title": "Title",
+      "team": "Team",
+      "kind": "Type",
+      "status": "Status",
+      "location": "Location",
+      "commitment": "Time commitment",
+      "summary": "Summary",
+      "responsibilities": "Responsibilities",
+      "requirements": "Requirements"
+    },
+    "roleStatus": {
+      "draft": "Draft",
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "status": {
+      "submitted": "New",
+      "in_review": "In review",
+      "waitlisted": "Waiting list",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    },
+    "move": {
+      "in_review": "Review",
+      "accepted": "Accept",
+      "waitlisted": "Waiting list",
+      "declined": "Decline"
+    },
+    "moved": {
+      "in_review": "Moved to review.",
+      "accepted": "Accepted. The applicant has been told.",
+      "waitlisted": "Moved to the waiting list. The applicant has been told.",
+      "declined": "Declined. The applicant has been told."
+    }
+  },
+  "unrsvp": {
+    "open": "Can't go? Un-RSVP",
+    "openWaitlist": "Leave the waitlist",
+    "title": "{count, plural, one {Give up your place?} other {Give up your # places?}}",
+    "titleWaitlist": "Leave the waitlist?",
+    "text": "Your place goes straight to the next person on the waitlist. You can RSVP again later while places last.",
+    "textWaitlist": "You lose your spot in line. You can join again later.",
+    "confirm": "Yes, un-RSVP",
+    "confirmWaitlist": "Yes, leave the waitlist",
+    "keep": "Keep my place",
+    "pending": "Cancelling…",
+    "done": {
+      "cancelled": "You're no longer going. Your place went to the next person in line.",
+      "cancelledPaid": "You're no longer going. The team will contact you about your payment.",
+      "left": "You left the waitlist."
+    },
+    "errors": {
+      "default": "We could not cancel. Reload the page and try again.",
+      "closed": "This event has started or you are checked in, so the place can't be cancelled any more.",
+      "rateLimited": "Too many changes in a short time. Try again in a while."
+    }
   }
 }

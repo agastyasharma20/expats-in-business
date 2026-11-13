@@ -5,7 +5,9 @@ import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { can } from "@/lib/auth/permissions";
 import { getSessionUser } from "@/lib/auth/session";
+import { moderatesAnything } from "@/lib/community/groups";
 import { getDb } from "@/lib/db";
+import { getFlags } from "@/lib/features";
 import { Link } from "@/lib/i18n/navigation";
 import { accountNav } from "@/lib/nav";
 import { unreadCount } from "@/lib/notifications";
@@ -25,10 +27,12 @@ export function SignInButton() {
 export async function AccountNav() {
   const user = await getSessionUser();
   if (!user) return <SignInButton />;
-  const [profile, unread, t] = await Promise.all([
+  const [profile, unread, t, flags, moderator] = await Promise.all([
     getDb().profile.findUnique({ where: { userId: user.id }, select: { slug: true } }),
     unreadCount(user.id),
     getTranslations("notifications"),
+    getFlags(),
+    moderatesAnything(user),
   ]);
   return (
     <>
@@ -53,6 +57,8 @@ export async function AccountNav() {
         profileSlug={profile?.slug ?? null}
         showAdmin={can(user, "admin.access")}
         showProvider={can(user, "provider.inbox")}
+        showRoulette={flags.coffeeRoulette}
+        showModeration={moderator}
       />
     </>
   );

@@ -13,12 +13,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { parseBusinessFilters } from "@/lib/directory/filters";
 import { listCategories, searchBusinesses } from "@/lib/directory/queries";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/businesses">;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("businesses");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/businesses", { title: t("title"), description: t("lead") });
 }
 
 async function Results({ searchParams }: { searchParams: Props["searchParams"] }) {

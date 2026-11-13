@@ -4,10 +4,11 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { PlanCard } from "@/components/pricing/plan-card";
 import { getPlans, type PricingPlan } from "@/lib/billing/plans";
 import { monthsSaved, plansForInterval } from "@/lib/billing/rules";
+import { withAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("pricing");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/pricing", { title: t("title"), description: t("lead") });
 }
 
 const FAQ = ["vat", "cancel", "methods"] as const;

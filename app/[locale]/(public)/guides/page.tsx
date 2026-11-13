@@ -1,25 +1,28 @@
 import type { Metadata } from "next";
 import { BadgeCheckIcon, BookOpenIcon, MessageCircleQuestionIcon } from "lucide-react";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 
 import { EmptyState } from "@/components/common/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { allGuides } from "@/lib/content/guide-index";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
+import { guideText } from "@/lib/content/guides";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("guides");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/guides", { title: t("title"), description: t("lead") });
 }
 
 /** Guide index: static (content is in the repo), grouped cards with last-verified dates. */
 export default async function GuidesPage() {
-  const [t, c, format, guides] = await Promise.all([
+  const [t, c, format, guides, locale] = await Promise.all([
     getTranslations("guides"),
     getTranslations("concierge"),
     getFormatter(),
     allGuides(),
+    getLocale(),
   ]);
   const sorted = [...guides].sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
 
@@ -49,10 +52,15 @@ export default async function GuidesPage() {
                     href={`/guides/${guide.slug}`}
                     className="outline-none after:absolute after:inset-0 after:content-['']"
                   >
-                    {guide.frontmatter.title}
+                    {guideText(guide.frontmatter, locale).title}
                   </Link>
                 </h2>
-                <p className="flex-1 text-small text-ink">{guide.frontmatter.description}</p>
+                <p className="flex-1 text-small text-ink">
+                  {guideText(guide.frontmatter, locale).description}
+                </p>
+                {guideText(guide.frontmatter, locale).machine ? (
+                  <p className="text-small text-muted-foreground">{t("machineShort")}</p>
+                ) : null}
                 <p className="text-small text-muted-foreground">
                   {t("count", { count: guide.frontmatter.sources.length })}
                 </p>

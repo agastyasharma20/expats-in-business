@@ -58,6 +58,8 @@ export async function listEvents(filters: EventFilters, take = 24): Promise<Home
   const rows = await getDb().event.findMany({
     where: {
       status: "published",
+      // Festivals have their own listing (/festivals) with tier-aware availability.
+      kind: "session",
       startsAt: filters.when === "upcoming" ? { gte: now } : { lt: now },
       chapter: {
         status: { in: ["live", "launching"] },
@@ -98,7 +100,9 @@ export async function getEventBySlug(slug: string) {
   });
   if (!event || event.status === "draft") return null;
   const [taken, waitlisted] = await Promise.all([
-    db.ticket.count({ where: { eventId: event.id, ...takenWhere() } }),
+    db.ticket
+      .aggregate({ _sum: { quantity: true }, where: { eventId: event.id, ...takenWhere() } })
+      .then((r) => r._sum.quantity ?? 0),
     db.ticket.count({ where: { eventId: event.id, status: "waitlisted" } }),
   ]);
   return { ...event, taken, waitlisted };

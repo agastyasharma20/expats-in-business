@@ -17,6 +17,7 @@ import { reviewEligibility } from "@/lib/directory/eligibility";
 import { bumpProviderStat } from "@/lib/directory/stats";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
+import { emailTranslator, localizedUrl } from "@/lib/i18n/email";
 import { firstName, notify } from "@/lib/notifications";
 import { rateLimit } from "@/lib/rate-limit";
 
@@ -77,7 +78,12 @@ export async function requestQuote(_prev: ActionState, form: FormData): Promise<
   const db = getDb();
   const provider = await db.provider.findUnique({
     where: { slug: parsed.data.slug },
-    select: { id: true, name: true, ownerId: true, owner: { select: { email: true } } },
+    select: {
+      id: true,
+      name: true,
+      ownerId: true,
+      owner: { select: { email: true, locale: true } },
+    },
   });
   if (!provider || provider.ownerId === user.id) return { ok: false, message: "invalid" };
   if (!(await rateLimit(`quote:${user.id}`, QUOTE_REQUESTS_PER_DAY, DAY)).ok)
@@ -91,15 +97,15 @@ export async function requestQuote(_prev: ActionState, form: FormData): Promise<
       name: firstName(user.name),
     });
     // The email carries a link only; the request itself stays in the inbox.
-    const url = new URL("/provider/inbox", getEnv().APP_URL).toString();
+    const { locale, t } = emailTranslator(provider.owner.locale);
     await sendEmail({
       to: provider.owner.email,
-      subject: `New quote request for ${provider.name}`,
+      subject: t("quote.subject", { provider: provider.name }),
       ...actionEmail({
-        heading: "You have a new quote request",
-        body: "A member sent you a quote request. Open your inbox to read it and reply.",
-        cta: "Open inbox",
-        url,
+        heading: t("quote.heading"),
+        body: t("quote.body"),
+        cta: t("quote.cta"),
+        url: localizedUrl("/provider/inbox", locale, getEnv().APP_URL),
       }),
     });
   }

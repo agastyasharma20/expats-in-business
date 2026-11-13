@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
@@ -5,6 +6,7 @@ import { getMessages, getTranslations } from "next-intl/server";
 import { locale as rootLocale } from "next/root-params";
 
 import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteBanner } from "@/components/layout/site-banner";
 import { SiteHeader } from "@/components/layout/site-header";
 import { MAIN_CONTENT_ID, SkipLink } from "@/components/layout/skip-link";
 import { Toaster } from "@/components/ui/sonner";
@@ -30,6 +32,12 @@ const CLIENT_NAMESPACES = [
   "settings",
   "profile",
   "help",
+  "group",
+  "adminShell",
+  "festival",
+  "spotlight",
+  "ambassadors",
+  "unrsvp",
 ] as const;
 
 function pickClientMessages(messages: Record<string, unknown>) {
@@ -63,6 +71,9 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[locale]"
         <NextIntlClientProvider messages={pickClientMessages(await getMessages())}>
           <TooltipProvider>
             <SkipLink />
+            <Suspense fallback={null}>
+              <SiteBanner />
+            </Suspense>
             <SiteHeader />
             <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex flex-1 flex-col outline-none">
               {children}

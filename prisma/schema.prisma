@@ -26,6 +26,7 @@ enum RoleName {
   moderator
   chapter_lead
   admin
+  ambassador
 }
 
 enum ResidenceSituation {
@@ -203,10 +204,10 @@ model User {
   consents            Consent[]
   subscriptions       Subscription[]
   tickets             Ticket[]
-  checkIns            CheckIn[]              @relation("CheckInAttendee")
-  scans               CheckIn[]              @relation("CheckInScanner")
-  connectionsSent     Connection[]           @relation("ConnectionRequester")
-  connectionsReceived Connection[]           @relation("ConnectionAddressee")
+  checkIns            CheckIn[]               @relation("CheckInAttendee")
+  scans               CheckIn[]               @relation("CheckInScanner")
+  connectionsSent     Connection[]            @relation("ConnectionRequester")
+  connectionsReceived Connection[]            @relation("ConnectionAddressee")
   notifications       Notification[]
   rouletteOptIns      RouletteOptIn[]
   rouletteMatches     RouletteMatchMember[]
@@ -226,6 +227,9 @@ model User {
   auditEntries        AuditLog[]
   eventsCreated       Event[]
   volunteerSignups    VolunteerSignup[]
+  ambassadorApps      AmbassadorApplication[]
+  ambassadorships     Ambassador[]
+  roleApplications    RoleApplication[]
   stallApplications   StallApplication[]
   verificationsDone   ProviderVerification[]
   userEmails          UserEmail[]
@@ -306,6 +310,10 @@ model Country {
   defaultTimezone  String
   /// UI locales offered in this country, first = default
   locales          String[]
+  /// Key of the line-art panorama for this country (components/landmarks).
+  landmark         String?
+  /// One line under the country name on its hub page.
+  tagline          String?
   isDemo           Boolean           @default(false)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
@@ -330,6 +338,9 @@ model Chapter {
   /// Founding-member badges are numbered up to this limit per chapter.
   foundingLimit Int           @default(500)
   launchedAt    DateTime?
+  /// Key of the city's landmark drawing (components/landmarks).
+  landmark      String?
+  tagline       String?
   isDemo        Boolean       @default(false)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
@@ -1251,4 +1262,118 @@ model EventFaq {
   sortOrder Int    @default(0)
 
   @@index([eventId])
+}
+
+// ─── Growth: ambassadors, careers and volunteering ─────────────────────────────────────────────
+
+enum AmbassadorScope {
+  global
+  country
+  city
+}
+
+enum ReviewStatus {
+  submitted
+  in_review
+  accepted
+  waitlisted
+  declined
+  withdrawn
+}
+
+/// Someone asking to represent EiB worldwide, in a country or in a city.
+model AmbassadorApplication {
+  id            String          @id @default(cuid(2))
+  userId        String
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scope         AmbassadorScope
+  /// ISO 3166-1 alpha-2 for country and city scope.
+  countryCode   String?         @db.VarChar(2)
+  city          String?
+  motivation    String
+  experience    String
+  /// ISO 639-1 codes.
+  languages     String[]
+  hoursPerMonth Int
+  linkedinUrl   String?
+  status        ReviewStatus    @default(submitted)
+  reviewNote    String?
+  reviewedById  String?
+  reviewedAt    DateTime?
+  isDemo        Boolean         @default(false)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([status, scope])
+  @@index([userId])
+}
+
+/// An approved ambassador, shown on the ambassadors, country and chapter pages when visible.
+model Ambassador {
+  id          String          @id @default(cuid(2))
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scope       AmbassadorScope
+  countryCode String?         @db.VarChar(2)
+  city        String?
+  isVisible   Boolean         @default(true)
+  since       DateTime        @default(now())
+  isDemo      Boolean         @default(false)
+
+  @@index([scope, countryCode])
+  @@index([userId])
+}
+
+enum RoleKind {
+  volunteer
+  internship
+  part_time
+  full_time
+}
+
+enum RoleStatus {
+  draft
+  open
+  closed
+}
+
+/// A way to work with EiB: volunteer roles (most of them) and, later, paid roles.
+model OpenRole {
+  id               String            @id @default(cuid(2))
+  slug             String            @unique
+  title            String
+  team             String
+  kind             RoleKind
+  /// "Remote", a city name, or "Hybrid · Kraków".
+  location         String
+  commitment       String
+  summary          String
+  responsibilities String[]
+  requirements     String[]
+  status           RoleStatus        @default(draft)
+  isDemo           Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  applications     RoleApplication[]
+
+  @@index([status, kind])
+}
+
+model RoleApplication {
+  id           String       @id @default(cuid(2))
+  roleId       String
+  role         OpenRole     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message      String
+  portfolioUrl String?
+  status       ReviewStatus @default(submitted)
+  reviewNote   String?
+  reviewedById String?
+  reviewedAt   DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@unique([roleId, userId])
+  @@index([status])
 }

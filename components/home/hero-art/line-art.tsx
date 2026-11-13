@@ -17,6 +17,9 @@ export type Stroke = {
 
 export type Accent = { x: number; y: number; r: number };
 
+/** Folk motif for the accents: Polish paper-cut rosette, or an Indian rangoli lotus. */
+export type Motif = "rosette" | "lotus";
+
 const DRAW_START_MS = 150;
 const DRAW_STEP_MS = 70;
 
@@ -59,14 +62,51 @@ function Rosette({ x, y, r, index }: Accent & { index: number }) {
   );
 }
 
+/** Rangoli lotus: 8 pointed petals around two rings of dots (India). */
+function Lotus({ x, y, r, index }: Accent & { index: number }) {
+  const petals = Array.from({ length: 8 }, (_, i) => i * 45);
+  const petal = `M0 ${-r * 0.2} Q ${r * 0.22} ${-r * 0.62} 0 ${-r} Q ${-r * 0.22} ${-r * 0.62} 0 ${-r * 0.2} Z`;
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <g
+        className="[transform-origin:center] animate-pop [transform-box:fill-box]"
+        style={{ animationDelay: `${900 + index * 120}ms` }}
+      >
+        {petals.map((angle) => (
+          <path key={angle} d={petal} transform={`rotate(${angle})`} />
+        ))}
+        {petals.map((angle) => (
+          <circle
+            key={`dot-${angle}`}
+            cx={0}
+            cy={-r * 1.12}
+            r={r * 0.06}
+            transform={`rotate(${angle + 22.5})`}
+          />
+        ))}
+        <circle r={r * 0.24} className="fill-surface" />
+        <circle r={r * 0.13} />
+      </g>
+    </g>
+  );
+}
+
 type LineArtProps = {
   strokes: Stroke[];
   accents?: Accent[];
+  motif?: Motif;
   className?: string;
   label: string;
 };
 
-export function LineArt({ strokes, accents = [], className, label }: LineArtProps) {
+export function LineArt({
+  strokes,
+  accents = [],
+  motif = "rosette",
+  className,
+  label,
+}: LineArtProps) {
+  const Accent = motif === "lotus" ? Lotus : Rosette;
   return (
     <svg
       viewBox="0 0 1200 260"
@@ -99,7 +139,7 @@ export function LineArt({ strokes, accents = [], className, label }: LineArtProp
       </g>
       <g className="fill-ember-500/80">
         {accents.map((accent, index) => (
-          <Rosette key={`${accent.x}-${accent.y}`} {...accent} index={index} />
+          <Accent key={`${accent.x}-${accent.y}`} {...accent} index={index} />
         ))}
       </g>
     </svg>

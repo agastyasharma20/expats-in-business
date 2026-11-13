@@ -10,6 +10,8 @@ export type CountrySeed = {
   defaultCurrency: string;
   defaultTimezone: string;
   locales: string[];
+  /** Line-art panorama key (components/landmarks). */
+  landmark?: string;
 };
 
 export type ChapterSeed = {
@@ -27,6 +29,7 @@ export const countries: CountrySeed[] = [
     defaultCurrency: "PLN",
     defaultTimezone: "Europe/Warsaw",
     locales: ["en", "pl", "uk"],
+    landmark: "poland",
   },
 ];
 

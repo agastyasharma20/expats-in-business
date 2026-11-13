@@ -3,7 +3,14 @@
  * visitor < member (+ Plus/Business/Provider entitlements); bubble_lead and moderator moderate
  * their groups; chapter_lead manages their own chapter; admin does everything everywhere.
  */
-export type RoleName = "member" | "bubble_lead" | "moderator" | "chapter_lead" | "admin";
+// ambassador: a community role (public listing), no admin powers.
+export type RoleName =
+  | "member"
+  | "bubble_lead"
+  | "moderator"
+  | "chapter_lead"
+  | "admin"
+  | "ambassador";
 export type PlanTier = "community" | "plus" | "business" | "provider" | "corporate";
 
 export type AuthUser = {

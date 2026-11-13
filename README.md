@@ -27,6 +27,11 @@ npm run setup     # first run: install, start Docker services, migrate, seed, em
 npm run dev       # http://localhost:3000 · emails: http://localhost:8025
 ```
 
+**Demos on a low-memory laptop:** `next dev` can use about 1.7 GB, and orphaned dev servers can survive a restart
+(low-memory kills have corrupted `.next`). For demos use `npm run build && npm start`. If the app misbehaves,
+stop leftover `node` processes (Task Manager, or `Get-Process node | Stop-Process` in PowerShell), delete the `.next`
+folder and start again.
+
 ## Demo accounts (demo mode only)
 
 | Role              | Email                         | Password  |

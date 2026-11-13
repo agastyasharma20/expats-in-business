@@ -21,6 +21,19 @@
 
 ## Log
 
+### 2026-11-13 · Final polish, part 2: audit follow-up
+
+**Built**
+
+- Clock reads moved behind `connection()` on admin members/applications, event page and festival tickets panel; chapter and country queries cached with the `chapters` tag and refreshed by ambassador actions (audit #4).
+- `scripts/lighthouse.mjs`: optional `LH_JSON=1` output and LCP error reporting.
+- README: low-memory demo advice (audit #9).
+- Audit #1, #2, #3, #5, #6, #7, #8 were already done in earlier commits (verified in code).
+
+**Verified**: `npm run check` green (308 unit tests).
+
+**Known gaps**: audit parts 3 to 7 (screenshot pass, axe and keyboard per route, Lighthouse, coverage) not run yet.
+
 ### 2026-11-13 · RSVP and un-RSVP on every event and festival
 
 - **Un-RSVP where you RSVP'd**: event page, festival tickets panel and ticket page share one component with an inline two-step confirmation (no browser dialog; focus moves to "Yes, un-RSVP"; Escape or "Keep my place" closes it). Waitlist spots get "Leave the waitlist".

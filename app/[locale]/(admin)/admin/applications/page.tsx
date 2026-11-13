@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { InboxIcon } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
@@ -28,6 +29,7 @@ const NEXT: Record<(typeof COLUMNS)[number], (typeof COLUMNS)[number][]> = {
 
 /** Applications board: speakers, stories and contributors move left to right; applicants are told. */
 export default async function ApplicationsPage() {
+  await connection();
   const user = await requirePermission("applications.review");
   const leadOf = user.roles
     .filter((r) => r.role === "chapter_lead" && r.chapterId)

@@ -64,8 +64,11 @@ export async function listCountries() {
     .sort((a, b) => b.chapters.length - a.chapters.length || a.name.localeCompare(b.name));
 }
 
-/** Country hub page data. */
+/** Country hub page data (cached, tag "chapters": votes and ambassador decisions refresh it). */
 export async function getCountry(code: string) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("chapters");
   const db = getDb();
   const country = await db.country.findUnique({
     where: { code: code.toUpperCase() },
@@ -126,6 +129,10 @@ export async function getChapterMeta(slug: string) {
 
 /** City chapter page data: status, upcoming sessions and festivals, ambassadors, member count. */
 export async function getChapterPage(slug: string) {
+  // Cached for minutes: the "upcoming" cut-off may lag by that much; session changes refresh "events".
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("chapters", "events");
   const db = getDb();
   const chapter = await db.chapter.findUnique({
     where: { slug },

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { forbidden } from "next/navigation";
 import { z } from "zod";
 
@@ -55,6 +55,7 @@ export async function applyAmbassador(_prev: ActionState, form: FormData): Promi
     throw error;
   }
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   revalidatePath("/admin/ambassadors");
   return { ok: true, message: "sent" };
 }
@@ -74,6 +75,7 @@ export async function withdrawAmbassador(_prev: ActionState, form: FormData): Pr
   });
   if (!count) return { ok: false };
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   return { ok: true, message: "withdrawn" };
 }
 
@@ -87,6 +89,7 @@ export async function setAmbassadorVisibility(
   const visible = form.get("visible") === "true";
   await getDb().ambassador.updateMany({ where: { userId: user.id }, data: { isVisible: visible } });
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   return { ok: true, message: visible ? "shown" : "hidden" };
 }
 
@@ -148,5 +151,6 @@ export async function reviewAmbassador(_prev: ActionState, form: FormData): Prom
   }
   revalidatePath("/admin/ambassadors");
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   return { ok: true, message: status };
 }

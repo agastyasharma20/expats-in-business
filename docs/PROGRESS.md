@@ -16,8 +16,34 @@
 | M12 Community + admin      | done; pending review          | feat/m12-community → v0.12.0 (proposed)    | community e2e, command centre       |
 | M13 Festivals              | done; pending review          | feat/m13-festivals → v0.13.0 (proposed)    | group tickets, console, stalls      |
 | M14 Admin tools + SEO base | done; pending review          | feat/m13-festivals → v0.14.0 (proposed)    | 132/132 e2e (CI=1), sitemap         |
+| M15 i18n, SEO and quality  | done; pending native review   | feat/m15-i18n-quality → v0.15.0 (proposed) | Lighthouse 100×4 on 7 routes        |
 
 ## Log
+
+### 2026-11-13 · M15 i18n, SEO and quality
+
+**Built**
+
+- **Polish and Ukrainian**: every user-facing string (about 1,700 per language) translated, with correct Slavic plurals (1 osoba / 2 osoby / 5 osób; 1 людина / 2 людини / 5 людей). Marked machine-translated, not reviewed. The language switcher now also remembers the choice for signed-in members.
+- **Emails in the member's language**: sign-in link, email verification, ticket confirmed/waitlisted/promoted, roadmap reminders and provider quote notices; links point to the member's language version.
+- **Guides**: Polish and Ukrainian titles and summaries for all 8 guides, labelled "machine-translated, not reviewed"; the guide body stays English with its official sources.
+- **Formats per chapter**: next-intl default timezone from the live chapter (database, not hard-coded); dates, numbers and currency follow the reader's language and the chapter's zone and currency.
+- **SEO**: canonical + hreflang (en, pl, uk, x-default) on every indexable public page; social cards for every session and festival; Article JSON-LD on guides; FAQPage on help and festival FAQs; Bubble pages indexable with real titles.
+- **Quality**: festival page restructured (cached public data, streamed viewer parts, skeleton with the hero's height), split into components; countdown gets `role="timer"`.
+- **Fixes**: messages deep-merged over English (no raw keys if a nested key is missing).
+
+**Verified**
+
+- `npm run check`: 296 unit tests, including catalogue checks (same keys, valid ICU, every placeholder kept, few/many plural forms), email language, hreflang and guide-summary units.
+- Lighthouse (mobile, production, installed Chrome): `/`, `/events`, `/festivals/demo-festival-of-cultures`, `/pricing`, `/pl`, `/uk/festivals/…`, `/uk/guides` all **100 / 100 / 100 / 100** (performance, accessibility, best practices, SEO), LCP 0.9 to 1.1 s, CLS 0 to 0.007.
+- New e2e: `tests/e2e/i18n.spec.ts` (html lang, translated headings, canonical and hreflang, axe clean in pl and uk, machine-translation label, festival OG image and FAQ JSON-LD, robots and sitemap) and `tests/e2e/quality.spec.ts` (reduced motion stops animations, skip link and visible focus in Ukrainian, no sideways scroll at 375 px on six localized pages).
+- A Polish sign-in email checked in Mailpit ("Twój link do logowania").
+
+**Known gaps**
+
+- Translations need a native-speaker review before launch (the status marker stays until then).
+- Concierge answers stay English (grounding compares against the English guides).
+- Legal documents are English only (labelled on the page).
 
 ### 2026-11-13 · M14 completed: applications board, catalogs, sponsor report; SEO basics
 

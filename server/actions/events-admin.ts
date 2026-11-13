@@ -11,6 +11,7 @@ import { can } from "@/lib/auth/permissions";
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { slugify } from "@/lib/slug";
+import { withinLimits } from "@/lib/security/limits";
 import { zonedTimeToUtc } from "@/lib/time";
 
 import type { ActionState } from "./account";
@@ -35,6 +36,7 @@ const schema = z.object({
 /** Event builder (chapter leads and admins): one form, sensible defaults, live in under two minutes. */
 export async function createEvent(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/admin/events/new");
+  if (!(await withinLimits(user.id, "admin"))) return { ok: false, message: "rateLimited" };
   const raw = Object.fromEntries([...form].filter(([, v]) => v !== ""));
   const parsed = schema.safeParse(raw);
   if (!parsed.success) return { ok: false, message: "default" };

@@ -5,7 +5,9 @@ import { z } from "zod";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { formId } from "@/lib/festivals/form";
 import { firstName, notify } from "@/lib/notifications";
+import { withinLimits } from "@/lib/security/limits";
 import { rateLimit } from "@/lib/rate-limit";
 
 import type { ActionState } from "./account";
@@ -13,6 +15,7 @@ import type { ActionState } from "./account";
 /** Who I met: opt in or out of being visible to people who checked in at the same sessions. */
 export async function setWhoIMet(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser();
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const granted = form.get("granted") === "true";
   await getDb().consent.upsert({
     where: { userId_type: { userId: user.id, type: "who_i_met" } },
@@ -65,15 +68,16 @@ export async function requestConnection(_prev: ActionState, form: FormData): Pro
 /** Accept or decline a request addressed to you (double opt-in: only accepted ones count). */
 export async function respondConnection(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/connections");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const accept = form.get("decision") === "accept";
   const { count } = await getDb().connection.updateMany({
-    where: { id: String(form.get("id")), addresseeId: user.id, status: "pending" },
+    where: { id: formId(form, "id"), addresseeId: user.id, status: "pending" },
     data: { status: accept ? "accepted" : "declined", respondedAt: new Date() },
   });
   if (!count) return { ok: false };
   if (accept) {
     const connection = await getDb().connection.findUnique({
-      where: { id: String(form.get("id")) },
+      where: { id: formId(form, "id") },
       select: { requesterId: true },
     });
     if (connection)

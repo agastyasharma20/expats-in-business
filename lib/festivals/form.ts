@@ -36,3 +36,12 @@ export function formEntries(form: FormData): Record<string, string> {
     ),
   );
 }
+
+/** A record id from a form field, checked with `idField`; "" (matches no row) when malformed. */
+export function formId(form: FormData, name: string): string {
+  const parsed = idField.safeParse(form.get(name));
+  return parsed.success ? parsed.data : "";
+}
+
+/** A console row to remove (programme item, tier, shift, FAQ, partner). */
+export const removeItemSchema = z.object({ itemId: idField });

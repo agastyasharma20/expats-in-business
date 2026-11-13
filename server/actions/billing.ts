@@ -8,6 +8,7 @@ import { requireUser } from "@/lib/auth/session";
 import { ENTITLED_STATUSES, periodEnd } from "@/lib/billing/rules";
 import { getDb } from "@/lib/db";
 import { getEnv } from "@/lib/env";
+import { withinLimits } from "@/lib/security/limits";
 import { getStripe, paymentMethodsFor } from "@/lib/stripe";
 
 import type { ActionState } from "./account";
@@ -34,6 +35,7 @@ export async function subscribe(_prev: ActionState, form: FormData): Promise<Act
   const code = z.string().min(1).max(40).safeParse(form.get("plan"));
   if (!code.success) return { ok: false, message: "default" };
   const user = await requireUser("/pricing");
+  if (!(await withinLimits(user.id, "billing"))) return { ok: false, message: "rateLimited" };
   const db = getDb();
   const plan = await db.plan.findUnique({ where: { code: code.data } });
   if (!plan || !plan.isActive || !plan.interval || plan.amountMinor <= 0)
@@ -107,6 +109,7 @@ export async function subscribe(_prev: ActionState, form: FormData): Promise<Act
 /** Stripe billing portal (cards, invoices, cancel), or the simulated controls in demo mode. */
 export async function openBillingPortal(): Promise<ActionState> {
   const user = await requireUser("/settings/billing");
+  if (!(await withinLimits(user.id, "billing"))) return { ok: false, message: "rateLimited" };
   const stripe = getStripe();
   if (!stripe) return { ok: false, message: "unavailable" };
   const portal = await stripe.billingPortal.sessions.create({
@@ -122,6 +125,7 @@ export async function setCancelAtPeriodEnd(
   form: FormData,
 ): Promise<ActionState> {
   const user = await requireUser("/settings/billing");
+  if (!(await withinLimits(user.id, "billing"))) return { ok: false, message: "rateLimited" };
   const cancel = form.get("cancel") === "true";
   const db = getDb();
   const sub = await db.subscription.findFirst({

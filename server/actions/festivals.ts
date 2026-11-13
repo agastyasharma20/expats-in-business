@@ -62,6 +62,7 @@ export async function joinShift(_prev: ActionState, form: FormData): Promise<Act
 
 export async function leaveShift(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/festivals");
+  if (!(await withinLimits(user.id, "festival"))) return { ok: false, message: "rateLimited" };
   const shiftId = id.safeParse(form.get("shiftId"));
   if (!shiftId.success) return { ok: false };
   const db = getDb();
@@ -137,6 +138,7 @@ export async function applyForStall(_prev: ActionState, form: FormData): Promise
 
 export async function withdrawStall(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/festivals");
+  if (!(await withinLimits(user.id, "festival"))) return { ok: false, message: "rateLimited" };
   const eventId = id.safeParse(form.get("eventId"));
   if (!eventId.success) return { ok: false };
   const db = getDb();

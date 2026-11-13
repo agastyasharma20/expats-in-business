@@ -7,10 +7,12 @@ import { z } from "zod";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { formId } from "@/lib/festivals/form";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
 import { emailTranslator } from "@/lib/i18n/email";
 import { rateLimit } from "@/lib/rate-limit";
+import { withinLimits } from "@/lib/security/limits";
 import { hashToken } from "@/lib/tokens";
 
 import type { ActionState } from "./account";
@@ -64,7 +66,7 @@ export async function addEmail(_prev: ActionState, form: FormData): Promise<Acti
 export async function resendEmail(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/settings/email");
   const row = await getDb().userEmail.findFirst({
-    where: { id: String(form.get("id")), userId: user.id, verifiedAt: null },
+    where: { id: formId(form, "id"), userId: user.id, verifiedAt: null },
   });
   if (!row) return { ok: false };
   if (!(await rateLimit(`email-resend:${user.id}`, 5, 3600)).ok)
@@ -75,7 +77,8 @@ export async function resendEmail(_prev: ActionState, form: FormData): Promise<A
 
 export async function removeEmail(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/settings/email");
-  await getDb().userEmail.deleteMany({ where: { id: String(form.get("id")), userId: user.id } });
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
+  await getDb().userEmail.deleteMany({ where: { id: formId(form, "id"), userId: user.id } });
   revalidatePath("/settings/email");
   return { ok: true };
 }

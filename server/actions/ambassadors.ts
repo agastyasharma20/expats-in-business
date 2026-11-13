@@ -61,6 +61,7 @@ export async function applyAmbassador(_prev: ActionState, form: FormData): Promi
 
 export async function withdrawAmbassador(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/ambassadors");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const id = idField.safeParse(form.get("id"));
   if (!id.success) return { ok: false };
   const { count } = await getDb().ambassadorApplication.updateMany({
@@ -82,6 +83,7 @@ export async function setAmbassadorVisibility(
   form: FormData,
 ): Promise<ActionState> {
   const user = await requireUser("/ambassadors");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const visible = form.get("visible") === "true";
   await getDb().ambassador.updateMany({ where: { userId: user.id }, data: { isVisible: visible } });
   revalidatePath("/ambassadors");

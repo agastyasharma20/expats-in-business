@@ -14,7 +14,8 @@ import { colorTokens } from "@/lib/design/tokens";
 import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
 import { formatInZone } from "@/lib/time";
-import { cancelTicket, payTicket } from "@/server/actions/rsvp";
+import { payTicket } from "@/server/actions/rsvp";
+import { UnrsvpButton } from "@/components/events/unrsvp-button";
 
 // Session-bound page: blocking navigation is expected (no instant prerender).
 export const instant = false;
@@ -176,17 +177,11 @@ async function TicketView({ params, searchParams }: Props) {
           {t("event")}
         </Link>
         {ticket.status !== "cancelled" && upcoming && !ticket.checkIn ? (
-          <ActionForm
-            action={cancelTicket}
-            submitLabel={ticket.status === "waitlisted" ? t("cancelWaitlist") : t("cancel")}
-            pendingLabel={e("processing")}
-            successText={t("cancelled")}
-            errorTexts={{ default: e("errors.default") }}
-            submitVariant="ghost"
-            testId="cancel-ticket"
-          >
-            <input type="hidden" name="ticketId" value={ticket.id} />
-          </ActionForm>
+          <UnrsvpButton
+            ticketId={ticket.id}
+            status={ticket.status}
+            quantity={ticket.quantity}
+          />
         ) : null}
       </div>
     </article>

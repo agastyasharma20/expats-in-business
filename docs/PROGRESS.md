@@ -21,6 +21,13 @@
 
 ## Log
 
+### 2026-11-13 · RSVP and un-RSVP on every event and festival
+
+- **Un-RSVP where you RSVP'd**: event page, festival tickets panel and ticket page share one component with an inline two-step confirmation (no browser dialog; focus moves to "Yes, un-RSVP"; Escape or "Keep my place" closes it). Waitlist spots get "Leave the waitlist".
+- **Server**: `cancelTicket` validates the id with Zod, is rate-limited with RSVPs (20 per hour), refuses after check-in or start, cancels with a conditional update (a double click promotes the waitlist once), and refreshes the festival page at once.
+- **Fixes**: the event and festival builders preselect a chapter that has venues (the demo Indore chapter sorted first and made "Create" fail).
+- **Verified**: `npm run check` green (308 unit tests); e2e events, check-in (waitlist promotion via un-RSVP) and festivals all green on desktop; the new test covers RSVP → un-RSVP → RSVP again, focus and Escape.
+
 ### 2026-11-13 · Growth: chapters, ambassadors, careers, volunteering, festival spotlight
 
 **Built**

@@ -2558,5 +2558,27 @@
       "waitlisted": "Moved to the waiting list. The applicant has been told.",
       "declined": "Declined. The applicant has been told."
     }
+  },
+  "unrsvp": {
+    "open": "Can't go? Un-RSVP",
+    "openWaitlist": "Leave the waitlist",
+    "title": "{count, plural, one {Give up your place?} other {Give up your # places?}}",
+    "titleWaitlist": "Leave the waitlist?",
+    "text": "Your place goes straight to the next person on the waitlist. You can RSVP again later while places last.",
+    "textWaitlist": "You lose your spot in line. You can join again later.",
+    "confirm": "Yes, un-RSVP",
+    "confirmWaitlist": "Yes, leave the waitlist",
+    "keep": "Keep my place",
+    "pending": "Cancelling…",
+    "done": {
+      "cancelled": "You're no longer going. Your place went to the next person in line.",
+      "cancelledPaid": "You're no longer going. The team will contact you about your payment.",
+      "left": "You left the waitlist."
+    },
+    "errors": {
+      "default": "We could not cancel. Reload the page and try again.",
+      "closed": "This event has started or you are checked in, so the place can't be cancelled any more.",
+      "rateLimited": "Too many changes in a short time. Try again in a while."
+    }
   }
 }

@@ -81,9 +81,41 @@ test("a member reserves a free place, gets a QR ticket and can cancel", async ({
   await expect(page.getByText("Confirmed")).toBeVisible();
   await expect(page.getByRole("img", { name: /QR code for checking in/ })).toBeVisible();
 
-  await page.getByTestId("cancel-ticket").getByRole("button").click();
+  await page.getByTestId("unrsvp-open").click();
+  await page.getByRole("button", { name: "Yes, un-RSVP" }).click();
   await expect(page.getByText("Cancelled", { exact: true })).toBeVisible();
   await page.goto(eventUrl);
+  await expect(page.getByRole("button", { name: "Reserve a free place" })).toBeVisible();
+});
+
+test("a member can RSVP and un-RSVP straight from the event page", async ({ browser }) => {
+  // Another persona than the test above, so parallel runs never share a ticket.
+  const page = await (await browser.newContext({ storageState: authFile("priya") })).newPage();
+  await openEvent(page, "free");
+  const eventUrl = page.url();
+  const reserve = page.getByRole("button", { name: "Reserve a free place" });
+  // The demo seed may already give this persona a place: un-RSVP first, then RSVP again.
+  await expect(reserve.or(page.getByTestId("rsvp-status"))).toBeVisible();
+  if (!(await reserve.isVisible())) {
+    await page.getByTestId("unrsvp-open").click();
+    await page.getByRole("button", { name: "Yes, un-RSVP" }).click();
+    await expect(reserve).toBeVisible();
+  }
+  await reserve.click();
+  await expect(page).toHaveURL(/\/tickets\//);
+  await page.goto(eventUrl);
+  await expect(page.getByTestId("rsvp-status")).toContainText("You have a place");
+
+  // Two steps: "Keep my place" closes without cancelling; Escape too.
+  await page.getByTestId("unrsvp-open").click();
+  await expect(page.getByRole("button", { name: "Yes, un-RSVP" })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(page.getByTestId("unrsvp-confirm")).toHaveCount(0);
+  await expect(page.getByTestId("rsvp-status")).toContainText("You have a place");
+
+  await page.getByTestId("unrsvp-open").click();
+  await page.getByRole("button", { name: "Yes, un-RSVP" }).click();
+  await expect(page.getByText(/no longer going/)).toBeVisible();
   await expect(page.getByRole("button", { name: "Reserve a free place" })).toBeVisible();
 });
 

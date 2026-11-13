@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import { getTranslations } from "next-intl/server";
 
 import { ActionButton } from "@/components/common/action-button";
+import { UnrsvpButton } from "@/components/events/unrsvp-button";
 import { buttonVariants } from "@/components/ui/button";
 import { getSessionUser } from "@/lib/auth/session";
 import { getFestivalViewer, type PublicFestival } from "@/lib/festivals/queries";
@@ -46,6 +47,9 @@ export async function TicketsPanel({ festival }: { festival: PublicFestival }) {
         >
           {t("viewTicket")}
         </Link>
+        {upcoming && ticket.status !== "reserved" ? (
+          <UnrsvpButton ticketId={ticket.id} status={ticket.status} quantity={ticket.quantity} />
+        ) : null}
       </div>
     );
   }

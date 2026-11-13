@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { ActionForm } from "@/components/common/action-form";
+import { UnrsvpButton } from "@/components/events/unrsvp-button";
 import { buttonVariants } from "@/components/ui/button";
 import { getSessionUser } from "@/lib/auth/session";
 import { getMyTicket } from "@/lib/events/queries";
@@ -51,6 +52,9 @@ export async function RsvpPanel({ event }: RsvpPanelProps) {
         <Link href={`/tickets/${ticket.id}`} className={buttonVariants({ size: "lg" })}>
           {ticket.status === "reserved" ? t("pay") : t("viewTicket")}
         </Link>
+        {ticket.status !== "reserved" ? (
+          <UnrsvpButton ticketId={ticket.id} status={ticket.status} />
+        ) : null}
       </div>
     );
   }

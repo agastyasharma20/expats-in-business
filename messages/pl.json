@@ -2559,5 +2559,27 @@
       "waitlisted": "Przeniesiono na listę oczekujących. Zgłaszający dostał powiadomienie.",
       "declined": "Odrzucono. Zgłaszający dostał powiadomienie."
     }
+  },
+  "unrsvp": {
+    "open": "Nie możesz przyjść? Wypisz się",
+    "openWaitlist": "Opuść listę oczekujących",
+    "title": "{count, plural, one {Zrezygnować z miejsca?} few {Zrezygnować z # miejsc?} many {Zrezygnować z # miejsc?} other {Zrezygnować z # miejsca?}}",
+    "titleWaitlist": "Opuścić listę oczekujących?",
+    "text": "Twoje miejsce od razu otrzyma następna osoba z listy oczekujących. Możesz zapisać się ponownie, dopóki są miejsca.",
+    "textWaitlist": "Stracisz swoje miejsce w kolejce. Możesz dołączyć ponownie później.",
+    "confirm": "Tak, wypisz mnie",
+    "confirmWaitlist": "Tak, opuść listę",
+    "keep": "Zachowaj miejsce",
+    "pending": "Anulowanie…",
+    "done": {
+      "cancelled": "Nie jesteś już zapisany(-a). Miejsce otrzymała następna osoba w kolejce.",
+      "cancelledPaid": "Nie jesteś już zapisany(-a). Zespół skontaktuje się z Tobą w sprawie płatności.",
+      "left": "Opuszczono listę oczekujących."
+    },
+    "errors": {
+      "default": "Nie udało się anulować. Odśwież stronę i spróbuj ponownie.",
+      "closed": "Wydarzenie już się zaczęło lub masz już check-in, więc nie można anulować miejsca.",
+      "rateLimited": "Zbyt wiele zmian w krótkim czasie. Spróbuj później."
+    }
   }
 }

@@ -162,23 +162,49 @@ export async function payTicket(_prev: ActionState, form: FormData): Promise<Act
   redirect(await startCheckout(ticket.id));
 }
 
-/** Cancel a place or waitlist spot; the next person in line moves up straight away. */
+const cancelSchema = z.object({ ticketId: z.string().min(1).max(40) });
+
+/**
+ * Un-RSVP: cancel a place or a waitlist spot; the next person in line moves up straight away.
+ * Only the owner, only before the event starts, never after check-in, rate-limited.
+ */
 export async function cancelTicket(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser();
-  const ticket = await getDb().ticket.findFirst({
-    where: { id: String(form.get("ticketId")), userId: user.id, status: { not: "cancelled" } },
-    include: { event: { select: { slug: true, startsAt: true } } },
+  const parsed = cancelSchema.safeParse(Object.fromEntries(form));
+  if (!parsed.success) return { ok: false, message: "default" };
+  if (!(await rateLimit(`rsvp:${user.id}`, 20, 3600)).ok)
+    return { ok: false, message: "rateLimited" };
+  const db = getDb();
+  const ticket = await db.ticket.findFirst({
+    where: { id: parsed.data.ticketId, userId: user.id, status: { not: "cancelled" } },
+    select: {
+      id: true,
+      eventId: true,
+      status: true,
+      paidAt: true,
+      stripeSessionId: true,
+      checkIn: { select: { id: true } },
+      event: { select: { slug: true, kind: true, startsAt: true } },
+    },
   });
-  if (!ticket || ticket.event.startsAt < new Date()) return { ok: false, message: "invalid" };
-  await getDb().ticket.update({
-    where: { id: ticket.id },
+  if (!ticket) return { ok: false, message: "default" };
+  if (ticket.checkIn || ticket.event.startsAt < new Date()) return { ok: false, message: "closed" };
+  // Conditional update: a double click or a parallel request cancels (and promotes) only once.
+  const { count } = await db.ticket.updateMany({
+    where: { id: ticket.id, status: { not: "cancelled" } },
     data: { status: "cancelled", stripeSessionId: null },
   });
+  if (!count) return { ok: false, message: "default" };
   // An unpaid open session must not be payable any more.
   if (!ticket.paidAt) await expireSession(ticket.stripeSessionId);
   await promoteWaitlist(ticket.eventId);
   revalidateTag("events", "max");
   revalidatePath(`/events/${ticket.event.slug}`);
   revalidatePath(`/tickets/${ticket.id}`);
+  if (ticket.event.kind === "festival") {
+    updateTag(`festival:${ticket.event.slug}`);
+    revalidatePath(`/festivals/${ticket.event.slug}`);
+  }
+  if (ticket.status === "waitlisted") return { ok: true, message: "left" };
   return { ok: true, message: ticket.paidAt ? "cancelledPaid" : "cancelled" };
 }

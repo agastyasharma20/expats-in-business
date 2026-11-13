@@ -1,24 +1,21 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { forbidden } from "next/navigation";
+
 import { z } from "zod";
 
-import {
-  CONNECTION_REQUESTS_PER_DAY,
-  QUOTE_REQUESTS_PER_DAY,
-  canApprove,
-} from "@/config/verification";
-import { audit } from "@/lib/audit";
-import { isAdmin } from "@/lib/auth/permissions";
+import { CONNECTION_REQUESTS_PER_DAY, QUOTE_REQUESTS_PER_DAY } from "@/config/verification";
+
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { formId } from "@/lib/festivals/form";
 import { reviewEligibility } from "@/lib/directory/eligibility";
 import { bumpProviderStat } from "@/lib/directory/stats";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
 import { emailTranslator, localizedUrl } from "@/lib/i18n/email";
 import { firstName, notify } from "@/lib/notifications";
+import { withinLimits } from "@/lib/security/limits";
 import { rateLimit } from "@/lib/rate-limit";
 
 import type { ActionState } from "./account";
@@ -116,10 +113,11 @@ export async function requestQuote(_prev: ActionState, form: FormData): Promise<
 /** Provider owner accepts or declines a quote request; contact details are shared only on accept. */
 export async function respondQuote(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/provider/inbox");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const accept = form.get("decision") === "accept";
   const db = getDb();
   const quote = await db.quoteRequest.findFirst({
-    where: { id: String(form.get("id")), status: "open", provider: { ownerId: user.id } },
+    where: { id: formId(form, "id"), status: "open", provider: { ownerId: user.id } },
     select: { id: true, requesterId: true, provider: { select: { slug: true, name: true } } },
   });
   if (!quote) return { ok: false, message: "invalid" };
@@ -148,6 +146,7 @@ export async function submitReview(_prev: ActionState, form: FormData): Promise<
     .safeParse(Object.fromEntries(form));
   if (!parsed.success) return { ok: false, message: "invalid" };
   const user = await requireUser(`/providers/${parsed.data.slug}`);
+  if (!(await withinLimits(user.id, "review"))) return { ok: false, message: "rateLimited" };
   const db = getDb();
   const provider = await db.provider.findUnique({
     where: { slug: parsed.data.slug },
@@ -192,86 +191,10 @@ export async function submitReview(_prev: ActionState, form: FormData): Promise<
   return { ok: true };
 }
 
-/** Provider owner asks for verification (none or rejected → pending). */
-export async function requestVerification(
-  _prev: ActionState,
-  form: FormData,
-): Promise<ActionState> {
-  const user = await requireUser("/provider/inbox");
-  const { count } = await getDb().provider.updateMany({
-    where: {
-      id: String(form.get("providerId")),
-      ownerId: user.id,
-      verificationStatus: { in: ["none", "rejected"] },
-    },
-    data: { verificationStatus: "pending" },
-  });
-  if (!count) return { ok: false, message: "invalid" };
-  revalidatePath("/provider/inbox");
-  return { ok: true };
-}
-
-const decisionSchema = z.object({
-  providerId: z.string().min(1),
-  decision: z.enum(["approve", "reject"]),
-  registryChecked: z.preprocess((v) => v === "on", z.boolean()),
-  referencesChecked: z.preprocess((v) => v === "on", z.boolean()),
-  insuranceChecked: z.preprocess((v) => v === "on", z.boolean()),
-  notes: z.string().trim().max(1000).optional(),
-});
-
-/** Admin verification decision: the badge exists only after an approval with every check ticked. */
-export async function decideVerification(_prev: ActionState, form: FormData): Promise<ActionState> {
-  const user = await requireUser("/admin/providers");
-  if (!isAdmin(user)) forbidden();
-  const parsed = decisionSchema.safeParse(Object.fromEntries(form));
-  if (!parsed.success) return { ok: false, message: "invalid" };
-  const { providerId, decision, notes, ...checks } = parsed.data;
-  if (decision === "approve" && !canApprove(checks)) return { ok: false, message: "incomplete" };
-  const db = getDb();
-  const provider = await db.provider.findUnique({
-    where: { id: providerId },
-    select: { slug: true, ownerId: true, chapterId: true },
-  });
-  if (!provider) return { ok: false, message: "invalid" };
-  await db.$transaction([
-    db.providerVerification.create({
-      data: {
-        providerId,
-        ...checks,
-        notes: notes || null,
-        verifiedById: user.id,
-        decidedAt: new Date(),
-      },
-    }),
-    db.provider.update({
-      where: { id: providerId },
-      data: { verificationStatus: decision === "approve" ? "verified" : "rejected" },
-    }),
-  ]);
-  await audit({
-    actorId: user.id,
-    action: `provider.verification.${decision}`,
-    entityType: "Provider",
-    entityId: providerId,
-    chapterId: provider.chapterId,
-  });
-  if (provider.ownerId) {
-    await notify(
-      provider.ownerId,
-      decision === "approve" ? "verificationApproved" : "verificationRejected",
-      `/providers/${provider.slug}`,
-    );
-  }
-  revalidatePath("/admin/providers");
-  revalidatePath(`/providers/${provider.slug}`);
-  revalidatePath("/providers");
-  return { ok: true, message: decision };
-}
-
 /** Marks all of the user's notifications read. */
 export async function markNotificationsRead(): Promise<ActionState> {
   const user = await requireUser("/notifications");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   await getDb().notification.updateMany({
     where: { userId: user.id, readAt: null },
     data: { readAt: new Date() },

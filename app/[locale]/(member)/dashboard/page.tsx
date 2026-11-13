@@ -8,7 +8,6 @@ import {
   GlobeIcon,
   MapIcon,
   SparklesIcon,
-  UserCheckIcon,
   UsersIcon,
 } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -19,6 +18,7 @@ import {
   RoulettePanel,
 } from "@/components/dashboard/community-panels";
 import { Panel } from "@/components/dashboard/panel";
+import { StrengthPanel, SuggestedPanel } from "@/components/dashboard/profile-panels";
 import { StatCounter } from "@/components/motion";
 import { ProgressRing } from "@/components/roadmap/progress-ring";
 import { Badge } from "@/components/ui/badge";
@@ -192,37 +192,7 @@ export default async function DashboardPage() {
           </div>
         </Panel>
 
-        <Panel id="strength" title={t("strength.title")} icon={UserCheckIcon} delay={3}>
-          <div className="flex items-center gap-4">
-            <ProgressRing
-              percent={extras.completeness.percent}
-              size={72}
-              label={t("strength.label", { percent: extras.completeness.percent })}
-            />
-            <p className="text-small text-ink">
-              {extras.completeness.missing.length
-                ? t("strength.missing", {
-                    items: extras.completeness.missing
-                      .slice(0, 3)
-                      .map((key) => t(`strength.items.${key}`))
-                      .join(", "),
-                  })
-                : t("strength.complete")}
-            </p>
-          </div>
-          {extras.completeness.missing.length ? (
-            <Link
-              href="/settings/profile"
-              className={buttonVariants({
-                variant: "outline",
-                size: "sm",
-                className: "self-start",
-              })}
-            >
-              {t("completeProfile")}
-            </Link>
-          ) : null}
-        </Panel>
+        <StrengthPanel completeness={extras.completeness} />
 
         <Panel id="next" title={t("nextEvent")} icon={CalendarDaysIcon} delay={4}>
           {next ? (
@@ -252,32 +222,7 @@ export default async function DashboardPage() {
         <NotificationsPanel items={extras.notifications} delay={6} />
         <ActivityPanel posts={extras.posts} delay={7} />
 
-        <Panel id="suggested" title={t("suggested")} icon={UsersIcon} delay={8}>
-          {data.suggested.length ? (
-            <ul className="flex flex-col gap-1">
-              {data.suggested.map((person) => (
-                <li key={person.slug}>
-                  <Link
-                    href={`/members/${person.slug}`}
-                    className="flex min-h-11 flex-col rounded-lg p-2 hover:bg-brand-50"
-                  >
-                    <span className="font-semibold text-brand-950">{person.user.name}</span>
-                    {person.headline ? (
-                      <span className="text-small text-muted-foreground">{person.headline}</span>
-                    ) : null}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="flex flex-col items-start gap-3">
-              <p className="text-muted-foreground">{t("noSuggested")}</p>
-              <Link href="/members" className={buttonVariants({ variant: "outline", size: "sm" })}>
-                {t("browseMembers")}
-              </Link>
-            </div>
-          )}
-        </Panel>
+        <SuggestedPanel people={data.suggested} />
       </div>
     </div>
   );

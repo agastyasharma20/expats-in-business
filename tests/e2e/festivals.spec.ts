@@ -105,9 +105,12 @@ test.describe("member", () => {
     await page.goto(publicUrl);
     const picker = page.getByTestId("ticket-picker");
     await expect(picker).toBeVisible();
-    await picker
-      .locator('input[name="quantity"]')
-      .evaluate((el: HTMLInputElement) => (el.value = "15"));
+    // Tamper only after hydration: React restores the controlled value while hydrating, which on a
+    // slow dev server can happen after load and would quietly turn the request back into 1 person.
+    await page.waitForLoadState("networkidle");
+    const quantity = picker.locator('input[name="quantity"]');
+    await quantity.evaluate((el: HTMLInputElement) => (el.value = "15"));
+    await expect(quantity).toHaveValue("15");
     await picker.getByRole("button", { name: /Buy|Reserve/ }).click();
     await expect(picker.getByRole("alert")).toContainText("number of people");
   });

@@ -17,8 +17,29 @@
 | M13 Festivals              | done; pending review          | feat/m13-festivals → v0.13.0 (proposed)    | group tickets, console, stalls      |
 | M14 Admin tools + SEO base | done; pending review          | feat/m13-festivals → v0.14.0 (proposed)    | 132/132 e2e (CI=1), sitemap         |
 | M15 i18n, SEO and quality  | done; pending native review   | feat/m15-i18n-quality → v0.15.0 (proposed) | Lighthouse 100×4 on 7 routes        |
+| M15b Growth                | done; pending review          | feat/m16-growth                            | chapters, ambassadors, careers      |
 
 ## Log
+
+### 2026-11-13 · Growth: chapters, ambassadors, careers, volunteering, festival spotlight
+
+**Built**
+
+- **Chapters world view** (`/chapters`): every country with its landmark panorama, live and launching chapters and the cities members ask for; members vote for their city (rate-limited, duplicates ignored, refused where a chapter already exists).
+- **Country hubs** (`/countries/[code]`) and **city chapter pages** (`/chapters/[slug]`): facts (members shown only from 5), upcoming sessions, ambassadors, join or help-launch actions.
+- **India and Indore (demo)**: original line drawings of India Gate (with Lotus Temple, Himalaya and Ganga) and Rajwada Palace (storeys, jharokhas, corner chhatris, river Khan); lotus accents.
+- **Ambassador programme** (`/ambassadors`): global, country and city tiers, detailed application (place, motivation, experience, languages, hours, LinkedIn), my applications with withdraw, public list of ambassadors.
+- **Careers** (`/careers`, `/careers/[slug]`) with a filter by type, and **Volunteer** (`/volunteer`): festival shifts with open places, ongoing volunteer roles, ambassador path.
+- **Admin**: `/admin/ambassadors` and `/admin/roles` (review boards with only server-allowed moves, role editor draft/open/closed), audited, applicants notified; new sections in the command centre.
+- **Festival spotlight**: header pill and homepage banner with an animated ring and a days-until countdown for the next festival; seeded "Cultoura (demo edition)".
+- Footer column "Grow with EiB"; en, pl and uk strings with few/many plurals.
+
+**Verified**
+
+- `npm run check` green: 308 unit tests (new tests/unit/growth.test.ts: review moves, place and details validation incl. LinkedIn host and scheme, city keys, labels, nav).
+- All new routes 200 in en, pl and uk on the dev server; India and Indore art checked at 1440 px and the chapters page at 375 px (no sideways scroll).
+- e2e on the dev server (2 workers): growth.spec.ts 21/21 (pages + axe on desktop and mobile, panoramas, spotlight, careers filter, ambassador apply → admin accept, role apply and withdraw), festivals.spec.ts 5/5, admin-tools.spec.ts green.
+- Fixed during the work: chapter metadata no longer reads the clock while prerendering (cached `getChapterMeta`); the ambassador form gets country and language names from the server (Node and Chrome differ, which broke hydration); review-board buttons toast when the action resolves (`toastOnResolve`; the card moving column used to swallow the confirmation); the festival builder preselects a chapter that has venues (the new demo Indore chapter sorted first); the tamper e2e waits for hydration before editing the party size.
 
 ### 2026-11-13 · M15 i18n, SEO and quality
 

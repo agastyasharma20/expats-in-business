@@ -23,12 +23,23 @@ import { getBubble } from "@/lib/community/bubbles";
 import { Link } from "@/lib/i18n/navigation";
 import { formatInZone } from "@/lib/time";
 import { joinBubble, leaveBubble, setBubbleVisibility } from "@/server/actions/bubbles";
+import { getDb } from "@/lib/db";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/bubbles/[slug]">;
 
 export const instant = false;
 
-export const metadata: Metadata = { robots: { index: false } };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const bubble = await getDb().bubble.findUnique({
+    where: { slug },
+    select: { name: true, description: true },
+  });
+  return bubble
+    ? withAlternates(`/bubbles/${slug}`, { title: bubble.name, description: bubble.description })
+    : {};
+}
 
 async function BubbleView({ params }: { params: Props["params"] }) {
   const { slug } = await params;

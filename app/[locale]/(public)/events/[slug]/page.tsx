@@ -24,6 +24,7 @@ import { getEventBySlug, getEventMeta } from "@/lib/events/queries";
 import { Link, redirect } from "@/lib/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 import { formatInZone } from "@/lib/time";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/events/[slug]">;
 
@@ -31,8 +32,11 @@ type Props = PageProps<"/[locale]/events/[slug]">;
 export const instant = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const event = await getEventMeta((await params).slug);
-  return event ? { title: event.title, description: event.summary } : {};
+  const { slug } = await params;
+  const event = await getEventMeta(slug);
+  return event
+    ? withAlternates(`/events/${slug}`, { title: event.title, description: event.summary })
+    : {};
 }
 
 async function EventView({ params, searchParams }: Props) {

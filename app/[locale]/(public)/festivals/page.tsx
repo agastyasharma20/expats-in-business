@@ -12,10 +12,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { listFestivals } from "@/lib/festivals/queries";
 import { Link } from "@/lib/i18n/navigation";
 import { formatMoney } from "@/lib/money";
+import { withAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("festival");
-  return { title: t("listTitle"), description: t("listLead") };
+  return withAlternates("/festivals", { title: t("listTitle"), description: t("listLead") });
 }
 
 async function FestivalList() {

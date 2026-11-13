@@ -13,12 +13,13 @@ import { LANGUAGE_CODES } from "@/lib/countries";
 import { parseProviderFilters } from "@/lib/directory/filters";
 import { listCategories, searchProviders } from "@/lib/directory/queries";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/providers">;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("providers");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/providers", { title: t("title"), description: t("lead") });
 }
 
 async function Results({ searchParams }: { searchParams: Props["searchParams"] }) {

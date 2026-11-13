@@ -14,6 +14,7 @@ import { getSessionUser } from "@/lib/auth/session";
 import { getProvider } from "@/lib/directory/queries";
 import { bumpProviderStat } from "@/lib/directory/stats";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/providers/[slug]">;
 
@@ -21,8 +22,14 @@ type Props = PageProps<"/[locale]/providers/[slug]">;
 export const instant = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const provider = await getProvider((await params).slug);
-  return provider ? { title: provider.name, description: provider.description } : {};
+  const { slug } = await params;
+  const provider = await getProvider(slug);
+  return provider
+    ? withAlternates(`/providers/${slug}`, {
+        title: provider.name,
+        description: provider.description,
+      })
+    : {};
 }
 
 async function ProviderView({ params }: { params: Props["params"] }) {

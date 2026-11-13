@@ -13,7 +13,7 @@ import { ExternalLinkBase } from "@/components/common/external-link";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { getFact } from "@/config/facts";
-import type { GuideFile } from "@/lib/content/guides";
+import { guideText, type GuideFile } from "@/lib/content/guides";
 import { Link } from "@/lib/i18n/navigation";
 import type { Locale } from "@/lib/i18n/routing";
 
@@ -53,6 +53,7 @@ export async function GuideDocument({
   });
   if (error) throw error;
   const fm = guide.frontmatter;
+  const text = guideText(fm, locale);
   const verified = format.dateTime(fm.lastVerified, { dateStyle: "long" });
   const ask = `/concierge?q=${encodeURIComponent(fm.title)}`;
 
@@ -64,8 +65,19 @@ export async function GuideDocument({
             <BadgeCheckIcon aria-hidden="true" className="size-3.5" />
             {t("lastVerified", { date: verified })}
           </Badge>
-          <h1 className="text-h1">{fm.title}</h1>
-          <p className="text-lg text-muted-foreground">{fm.description}</p>
+          <h1 className="text-h1" lang={text.machine ? locale : "en"}>
+            {text.title}
+          </h1>
+          <p className="text-lg text-muted-foreground">{text.description}</p>
+          {text.machine ? (
+            <p
+              role="note"
+              data-testid="machine-translated"
+              className="rounded-lg border border-line bg-brand-50 p-3 text-small text-ink"
+            >
+              <strong>{t("machine")}</strong> {t("englishBody")}
+            </p>
+          ) : null}
           {fm.verificationStatus === "draft" ? (
             <p
               role="note"

@@ -13,12 +13,13 @@ import { getSessionUser } from "@/lib/auth/session";
 import { parseMemberFilters } from "@/lib/directory/filters";
 import { memberFilterOptions, searchMembers } from "@/lib/directory/queries";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/members">;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("members");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/members", { title: t("title"), description: t("lead") });
 }
 
 async function Results({ searchParams }: { searchParams: Props["searchParams"] }) {

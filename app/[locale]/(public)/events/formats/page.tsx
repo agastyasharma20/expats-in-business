@@ -4,10 +4,11 @@ import { getTranslations } from "next-intl/server";
 import { buttonVariants } from "@/components/ui/button";
 import { listFormats } from "@/lib/events/queries";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("events.formats");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/events/formats", { title: t("title"), description: t("lead") });
 }
 
 /** Session types explained (old bug 9: the "Session Types" page was empty). */

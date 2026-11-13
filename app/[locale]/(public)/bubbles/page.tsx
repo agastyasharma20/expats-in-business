@@ -12,10 +12,11 @@ import { getSessionUser } from "@/lib/auth/session";
 import { listBubbles } from "@/lib/community/bubbles";
 import { getFlags } from "@/lib/features";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("bubbles");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/bubbles", { title: t("title"), description: t("lead") });
 }
 
 async function BubblesContent() {

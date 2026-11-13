@@ -6,6 +6,7 @@ import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendCorporateEnquiry } from "@/server/actions/corporate";
+import { withAlternates } from "@/lib/seo";
 
 const SIZES = ["s", "m", "l", "xl"] as const;
 const selectClass =
@@ -13,7 +14,7 @@ const selectClass =
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("corporate");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/pricing/corporate", { title: t("title"), description: t("lead") });
 }
 
 export default async function CorporatePage() {

@@ -15,10 +15,11 @@ import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { applyToContribute } from "@/server/actions/applications";
+import { withAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("involved");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/get-involved", { title: t("title"), description: t("lead") });
 }
 
 const WAYS = [

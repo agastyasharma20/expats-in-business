@@ -5,10 +5,14 @@ import { getTranslations } from "next-intl/server";
 import { buttonVariants } from "@/components/ui/button";
 import { VERIFICATION_CRITERIA } from "@/config/verification";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("criteria");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/providers/verification-criteria", {
+    title: t("title"),
+    description: t("lead"),
+  });
 }
 
 /** Published criteria: the same list the admin checklist uses (config/verification.ts). */

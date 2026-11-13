@@ -11,12 +11,13 @@ import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { listEvents, listFormats } from "@/lib/events/queries";
 import { Link } from "@/lib/i18n/navigation";
+import { withAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/events">;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("events");
-  return { title: t("title"), description: t("lead") };
+  return withAlternates("/events", { title: t("title"), description: t("lead") });
 }
 
 function one(value: string | string[] | undefined) {

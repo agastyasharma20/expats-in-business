@@ -8,6 +8,7 @@ import { magicLink } from "better-auth/plugins/magic-link";
 import { getDb } from "@/lib/db";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
+import { emailTranslator } from "@/lib/i18n/email";
 import { rateLimit } from "@/lib/rate-limit";
 
 const env = getEnv();
@@ -67,13 +68,18 @@ export const auth = betterAuth({
     magicLink({
       expiresIn: 60 * 15,
       sendMagicLink: async ({ email, url }) => {
+        const account = await getDb().user.findUnique({
+          where: { email },
+          select: { locale: true },
+        });
+        const { t } = emailTranslator(account?.locale);
         const message = actionEmail({
-          heading: "Sign in to Expats in Business",
-          body: "Use this link to sign in. It works once and expires in 15 minutes. If you did not ask for it, ignore this email.",
-          cta: "Sign in",
+          heading: t("magicLink.heading"),
+          body: t("magicLink.body"),
+          cta: t("magicLink.cta"),
           url,
         });
-        await sendEmail({ to: email, subject: "Your sign-in link", ...message });
+        await sendEmail({ to: email, subject: t("magicLink.subject"), ...message });
       },
     }),
     nextCookies(),

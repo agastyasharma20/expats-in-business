@@ -8,6 +8,7 @@ import type { TicketStatus } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
 import { actionEmail, sendEmail } from "@/lib/email";
 import { getEnv } from "@/lib/env";
+import { emailTranslator, localizedUrl } from "@/lib/i18n/email";
 
 import {
   PAYMENT_WINDOW_MINUTES,
@@ -257,30 +258,29 @@ export async function sendTicketEmail(
 ) {
   const ticket = await getDb().ticket.findUnique({
     where: { id: ticketId },
-    select: { status: true, user: { select: { email: true } }, event: { select: { title: true } } },
+    select: {
+      status: true,
+      user: { select: { email: true, locale: true } },
+      event: { select: { title: true } },
+    },
   });
   if (!ticket) return;
-  const url = new URL(`/tickets/${ticketId}`, getEnv().APP_URL).toString();
-  const reserved = ticket.status === "reserved";
-  const copy = {
-    confirmed: {
-      subject: `Your ticket: ${ticket.event.title}`,
-      body: "You have a place. Show the QR code on your ticket page at the door.",
-      cta: "Open my ticket",
-    },
-    waitlisted: {
-      subject: `Waitlist: ${ticket.event.title}`,
-      body: "The session is full, so you are on the waitlist. We email you as soon as a place frees up.",
-      cta: "View my waitlist spot",
-    },
-    promoted: {
-      subject: `A place opened up: ${ticket.event.title}`,
-      body: reserved
-        ? `A place is now held for you. Complete the payment within ${PAYMENT_WINDOW_MINUTES} minutes to keep it.`
-        : "Good news: you moved up from the waitlist and have a place.",
-      cta: reserved ? "Pay and confirm" : "Open my ticket",
-    },
-  }[reason];
-  const message = actionEmail({ heading: copy.subject, body: copy.body, cta: copy.cta, url });
-  await sendEmail({ to: ticket.user.email, subject: copy.subject, ...message });
+  // The member's own language (Settings, Account); English when none is saved.
+  const { locale, t } = emailTranslator(ticket.user.locale);
+  const url = localizedUrl(`/tickets/${ticketId}`, locale, getEnv().APP_URL);
+  const key =
+    reason === "promoted"
+      ? ticket.status === "reserved"
+        ? "promotedReserved"
+        : "promotedConfirmed"
+      : reason;
+  const event = ticket.event.title;
+  const subject = t(`ticket.${key}.subject`, { event });
+  const message = actionEmail({
+    heading: subject,
+    body: t(`ticket.${key}.body`, { minutes: PAYMENT_WINDOW_MINUTES }),
+    cta: t(`ticket.${key}.cta`),
+    url,
+  });
+  await sendEmail({ to: ticket.user.email, subject, ...message });
 }

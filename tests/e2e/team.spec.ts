@@ -16,6 +16,7 @@ const PNG = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
   "base64",
 );
+const EMAIL = "e2e.person@example.com";
 const NAME = `E2E Teammate ${Date.now().toString(36)}`;
 
 async function expectNoAxeViolations(page: Page) {
@@ -61,6 +62,8 @@ test.describe("admin", () => {
       mimeType: "image/png",
       buffer: PNG,
     });
+    await form.getByLabel("Email address (optional)").fill(EMAIL);
+    await form.getByLabel(/Show the email on the public page/).check();
     await form.getByLabel("Photo description (for screen readers)").fill("E2E portrait");
     await form.getByRole("button", { name: "Save" }).click();
     await expect(page.getByTestId("team-admin-row").filter({ hasText: NAME })).toBeVisible();
@@ -74,8 +77,13 @@ test.describe("admin", () => {
       "href",
       "https://www.linkedin.com/in/e2e",
     );
-    // The email was not given, so no mail link is shown.
-    await expect(card.getByRole("link", { name: /^Email / })).toHaveCount(0);
+    // The address is not in the page source; it loads when the button is pressed.
+    expect(await page.content()).not.toContain(EMAIL);
+    await card.getByRole("button", { name: /Show email address/ }).click();
+    await expect(card.getByRole("link", { name: EMAIL })).toHaveAttribute(
+      "href",
+      `mailto:${EMAIL}`,
+    );
 
     // Hide: the person disappears from the public page.
     await page.goto("/admin/team");

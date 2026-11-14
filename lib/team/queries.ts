@@ -17,8 +17,8 @@ export type PublicMember = {
   startedAt: Date | null;
   endedAt: Date | null;
   linkedinUrl: string | null;
-  /** Only set when the person opted in to show it. */
-  email: string | null;
+  /** True when the person opted in; the address itself is fetched on demand (POST /api/team/email/[id]). */
+  hasEmail: boolean;
 };
 
 export type PublicFounder = {
@@ -100,7 +100,7 @@ export async function getTeamPage(): Promise<{
       startedAt: m.startedAt,
       endedAt: m.endedAt,
       linkedinUrl: m.linkedinUrl,
-      email: m.showEmail ? m.email : null,
+      hasEmail: m.showEmail && m.email !== null,
     })),
   };
 }

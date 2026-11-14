@@ -2600,7 +2600,8 @@
     "since": "Od {date}",
     "range": "{from} – {to}",
     "linkedin": "{name} na LinkedIn",
-    "email": "Napisz do: {name}"
+    "showEmailButton": "Pokaż adres e-mail",
+    "emailError": "Nie udało się wczytać adresu e-mail. Spróbuj później."
   },
   "adminTeam": {
     "title": "Strona zespołu",

@@ -2600,7 +2600,8 @@
     "since": "З {date}",
     "range": "{from} – {to}",
     "linkedin": "{name} у LinkedIn",
-    "email": "Написати: {name}"
+    "showEmailButton": "Показати адресу e-mail",
+    "emailError": "Не вдалося завантажити адресу e-mail. Спробуйте пізніше."
   },
   "adminTeam": {
     "title": "Сторінка команди",

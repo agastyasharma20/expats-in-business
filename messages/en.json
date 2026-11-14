@@ -2599,7 +2599,8 @@
     "since": "Since {date}",
     "range": "{from} to {to}",
     "linkedin": "{name} on LinkedIn",
-    "email": "Email {name}"
+    "showEmailButton": "Show email address",
+    "emailError": "Could not load the email address. Try again later."
   },
   "adminTeam": {
     "title": "Team page",

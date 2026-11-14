@@ -1,8 +1,10 @@
 import Image from "next/image";
-import { LinkIcon, MailIcon } from "lucide-react";
+import { LinkIcon } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import type { PublicMember } from "@/lib/team/queries";
+
+import { RevealEmail } from "./reveal-email";
 
 function initials(name: string) {
   return name
@@ -70,7 +72,7 @@ export async function MemberCard({ member }: { member: PublicMember }) {
         </div>
       </div>
       {member.bio ? <p className="text-body text-ink">{member.bio}</p> : null}
-      {member.linkedinUrl || member.email ? (
+      {member.linkedinUrl || member.hasEmail ? (
         <ul className="mt-auto flex flex-wrap gap-2">
           {member.linkedinUrl ? (
             <li>
@@ -85,15 +87,14 @@ export async function MemberCard({ member }: { member: PublicMember }) {
               </a>
             </li>
           ) : null}
-          {member.email ? (
+          {member.hasEmail ? (
             <li>
-              <a
-                href={`mailto:${member.email}`}
-                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-small font-semibold text-brand-700 hover:bg-brand-50"
-              >
-                <MailIcon aria-hidden className="size-4" />
-                {t("email", { name: member.name })}
-              </a>
+              <RevealEmail
+                memberId={member.id}
+                name={member.name}
+                label={t("showEmailButton")}
+                error={t("emailError")}
+              />
             </li>
           ) : null}
         </ul>

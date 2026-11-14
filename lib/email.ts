@@ -12,7 +12,10 @@ export async function sendEmail({ to, subject, text, html }: Email): Promise<voi
   transport ??= nodemailer.createTransport({
     host: env.SMTP_HOST,
     port: env.SMTP_PORT,
-    secure: false,
+    secure: env.SMTP_SECURE,
+    ...(env.SMTP_USER && env.SMTP_PASSWORD
+      ? { auth: { user: env.SMTP_USER, pass: env.SMTP_PASSWORD }, requireTLS: !env.SMTP_SECURE }
+      : {}),
   });
   await transport.sendMail({
     from: env.EMAIL_FROM,

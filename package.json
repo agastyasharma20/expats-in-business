@@ -28,6 +28,7 @@
     "demo:reset": "tsx scripts/demo-reset.ts",
     "embed": "tsx scripts/embed-guides.ts",
     "jobs": "tsx scripts/jobs.ts",
+    "admin:grant": "tsx scripts/grant-admin.ts",
     "stripe:listen": "node scripts/stub.mjs stripe:listen 7",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

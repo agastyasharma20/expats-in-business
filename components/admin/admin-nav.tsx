@@ -20,6 +20,7 @@ export const ADMIN_SECTIONS = [
   { key: "roulette", href: "/admin/roulette", adminOnly: true },
   { key: "audit", href: "/admin/audit", adminOnly: false },
   { key: "catalogs", href: "/admin/catalogs", adminOnly: true },
+  { key: "team", href: "/admin/team", adminOnly: true },
   { key: "settings", href: "/admin/settings", adminOnly: true },
   { key: "system", href: "/admin/system", adminOnly: true },
 ] as const;

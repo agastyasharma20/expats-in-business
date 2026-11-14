@@ -328,7 +328,8 @@
     "chapters": "Chapters",
     "ambassadors": "Ambassadors",
     "volunteer": "Volunteer",
-    "careers": "Careers"
+    "careers": "Careers",
+    "team": "Team"
   },
   "chapter": {
     "label": "Chapter",
@@ -1594,7 +1595,8 @@
       "applications": "Applications",
       "catalogs": "Catalogs",
       "ambassadors": "Ambassadors",
-      "roles": "Roles"
+      "roles": "Roles",
+      "team": "Team"
     }
   },
   "adminMembers": {
@@ -2579,6 +2581,69 @@
       "default": "We could not cancel. Reload the page and try again.",
       "closed": "This event has started or you are checked in, so the place can't be cancelled any more.",
       "rateLimited": "Too many changes in a short time. Try again in a while."
+    }
+  },
+  "team": {
+    "eyebrow": "The people behind EiB",
+    "title": "Our team",
+    "lead": "Expats in Business is run by a community of founders, chapter leads and volunteers. Meet them here.",
+    "founderEyebrow": "A message from our founder",
+    "empty": "We are putting our team page together. Check back soon, or find out how you can help.",
+    "emptyAction": "See how to get involved",
+    "groups": {
+      "founders": "Founders",
+      "leads": "Chapter and community leads",
+      "team": "Team",
+      "volunteers": "Volunteers"
+    },
+    "since": "Since {date}",
+    "range": "{from} to {to}",
+    "linkedin": "{name} on LinkedIn",
+    "email": "Email {name}"
+  },
+  "adminTeam": {
+    "title": "Team page",
+    "lead": "Edit the founder's message and the people shown on the public Team page. Changes appear straight away.",
+    "view": "View the public page",
+    "founder": "Founder's message",
+    "founderNote": "Separate paragraphs with a blank line.",
+    "messageTitle": "Heading",
+    "messageBody": "Message",
+    "founderName": "Founder's name",
+    "designation": "Designation",
+    "photo": "Photo",
+    "photoHelp": "JPEG, PNG or WebP, up to 2 MB. It is cropped to a square and resized.",
+    "photoAlt": "Photo description (for screen readers)",
+    "removePhoto": "Remove the current photo",
+    "hasPhoto": "A photo is saved.",
+    "members": "People",
+    "addMember": "Add a person",
+    "noMembers": "No one has been added yet. Use the form above to add the first person.",
+    "name": "Full name",
+    "group": "Group",
+    "bio": "Short bio (optional)",
+    "started": "With EiB since (optional)",
+    "ended": "Until (leave empty if still active)",
+    "linkedin": "LinkedIn profile URL (optional)",
+    "email": "Email address (optional)",
+    "showEmail": "Show the email on the public page (only with the person's consent)",
+    "visible": "Show this person on the public page",
+    "order": "Order (lower numbers come first)",
+    "hidden": "Hidden",
+    "edit": "Edit",
+    "deleteTitle": "Delete this person",
+    "deleteNote": "This cannot be undone.",
+    "delete": "Delete person",
+    "deleting": "Deleting…",
+    "deleted": "Person deleted.",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "errors": {
+      "default": "Could not save. Check the fields and try again.",
+      "rateLimited": "Too many changes in a short time. Please wait a moment.",
+      "tooLarge": "That photo is larger than 2 MB.",
+      "notImage": "That file is not a supported image (use JPEG, PNG or WebP)."
     }
   }
 }

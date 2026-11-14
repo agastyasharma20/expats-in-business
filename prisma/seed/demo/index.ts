@@ -7,9 +7,11 @@ import { seedEvents } from "./events";
 import { seedFestival } from "./festival";
 import { seedGrowth } from "./growth";
 import { seedPeople } from "./people";
+import { clearTeamDemo, seedTeam } from "./team";
 
 /** Removes every demo record (isDemo = true); cascades take tickets, roles, votes and the rest. */
 export async function clearDemo(db: PrismaClient) {
+  await clearTeamDemo(db);
   await db.chapterRequest.deleteMany({ where: { isDemo: true } });
   // Also events that demo accounts created during a demo (event builder), and any left at demo venues.
   await db.event.deleteMany({
@@ -52,4 +54,5 @@ export async function seedDemo(db: PrismaClient, today: Date) {
   await seedEngagement(ctx, people, events);
   await seedFestival(ctx, people);
   await seedGrowth(ctx, people);
+  await seedTeam(db);
 }

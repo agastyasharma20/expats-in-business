@@ -21,6 +21,23 @@
 
 ## Log
 
+### 2026-11-14 · Team page, admin editor and proprietary license
+
+**Built**
+
+- Public `/team`: the founder's message and people grouped as founders, leads, team and volunteers, with photo or initials, designation, time with EiB, LinkedIn and an opt-in email. Designed empty state with a next action.
+- Admin editor `/admin/team` (admins only): edit the founder's message, add, edit, hide and delete people, upload photos. Every change is rate-limited, Zod-validated and audited, and refreshes the `team` cache tag.
+- Photos are decoded and re-encoded as 640 px WebP by `sharp` (so non-images are rejected and EXIF data is dropped), stored in Postgres and served by `/api/team/photo/[id]` with a versioned URL. Hidden people's photos are not served.
+- Models `FounderMessage` and `TeamMember` (3 migrations), labeled "Demo profile" seed rows flagged `isDemo` (cleared by `demo:reset`; saving in the editor clears the flag), strings in en, pl and uk, footer and admin links.
+- `LICENSE`: proprietary, all rights reserved, Expats in Business only (draft: have a lawyer review it). `package.json` license is `UNLICENSED`.
+- Tests: 7 schema unit tests, 4 e2e tests (visitor + axe, admin guard, add/hide/delete with a photo, non-image rejected). `npm run check` green (315 tests).
+
+**Known gaps**
+
+- Server Actions body limit raised to 3 MB for photo uploads (`next.config.ts`).
+- Public mailto links can still be scraped; emails are shown only when the person opted in.
+- Not yet run: full e2e suite and the link crawler with the new footer link.
+
 ### 2026-11-13 · Final polish, part 2: audit follow-up
 
 **Built**

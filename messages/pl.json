@@ -329,7 +329,8 @@
     "chapters": "Oddziały",
     "ambassadors": "Ambasadorzy",
     "volunteer": "Wolontariat",
-    "careers": "Kariera"
+    "careers": "Kariera",
+    "team": "Zespół"
   },
   "chapter": {
     "label": "Oddział",
@@ -1595,7 +1596,8 @@
       "applications": "Zgłoszenia",
       "catalogs": "Katalogi",
       "ambassadors": "Ambasadorzy",
-      "roles": "Role"
+      "roles": "Role",
+      "team": "Zespół"
     }
   },
   "adminMembers": {
@@ -2580,6 +2582,69 @@
       "default": "Nie udało się anulować. Odśwież stronę i spróbuj ponownie.",
       "closed": "Wydarzenie już się zaczęło lub masz już check-in, więc nie można anulować miejsca.",
       "rateLimited": "Zbyt wiele zmian w krótkim czasie. Spróbuj później."
+    }
+  },
+  "team": {
+    "eyebrow": "Ludzie stojący za EiB",
+    "title": "Nasz zespół",
+    "lead": "Expats in Business tworzy społeczność założycieli, liderów lokalnych oddziałów i wolontariuszy. Poznaj ich tutaj.",
+    "founderEyebrow": "Wiadomość od naszego założyciela",
+    "empty": "Przygotowujemy stronę zespołu. Zajrzyj wkrótce lub sprawdź, jak możesz pomóc.",
+    "emptyAction": "Zobacz, jak się zaangażować",
+    "groups": {
+      "founders": "Założyciele",
+      "leads": "Liderzy oddziałów i społeczności",
+      "team": "Zespół",
+      "volunteers": "Wolontariusze"
+    },
+    "since": "Od {date}",
+    "range": "{from} – {to}",
+    "linkedin": "{name} na LinkedIn",
+    "email": "Napisz do: {name}"
+  },
+  "adminTeam": {
+    "title": "Strona zespołu",
+    "lead": "Edytuj wiadomość założyciela i osoby widoczne na publicznej stronie zespołu. Zmiany są widoczne od razu.",
+    "view": "Zobacz stronę publiczną",
+    "founder": "Wiadomość założyciela",
+    "founderNote": "Akapity oddziel pustym wierszem.",
+    "messageTitle": "Nagłówek",
+    "messageBody": "Wiadomość",
+    "founderName": "Imię i nazwisko założyciela",
+    "designation": "Stanowisko",
+    "photo": "Zdjęcie",
+    "photoHelp": "JPEG, PNG lub WebP, do 2 MB. Zdjęcie jest kadrowane do kwadratu i zmniejszane.",
+    "photoAlt": "Opis zdjęcia (dla czytników ekranu)",
+    "removePhoto": "Usuń obecne zdjęcie",
+    "hasPhoto": "Zdjęcie jest zapisane.",
+    "members": "Osoby",
+    "addMember": "Dodaj osobę",
+    "noMembers": "Nikogo jeszcze nie dodano. Użyj formularza powyżej, aby dodać pierwszą osobę.",
+    "name": "Imię i nazwisko",
+    "group": "Grupa",
+    "bio": "Krótki opis (opcjonalnie)",
+    "started": "W EiB od (opcjonalnie)",
+    "ended": "Do (zostaw puste, jeśli nadal aktywna)",
+    "linkedin": "Adres profilu LinkedIn (opcjonalnie)",
+    "email": "Adres e-mail (opcjonalnie)",
+    "showEmail": "Pokaż e-mail na stronie publicznej (tylko za zgodą osoby)",
+    "visible": "Pokaż tę osobę na stronie publicznej",
+    "order": "Kolejność (mniejsze numery są pierwsze)",
+    "hidden": "Ukryta",
+    "edit": "Edytuj",
+    "deleteTitle": "Usuń tę osobę",
+    "deleteNote": "Tej operacji nie można cofnąć.",
+    "delete": "Usuń osobę",
+    "deleting": "Usuwanie…",
+    "deleted": "Osobę usunięto.",
+    "save": "Zapisz",
+    "saving": "Zapisywanie…",
+    "saved": "Zapisano.",
+    "errors": {
+      "default": "Nie udało się zapisać. Sprawdź pola i spróbuj ponownie.",
+      "rateLimited": "Zbyt wiele zmian w krótkim czasie. Poczekaj chwilę.",
+      "tooLarge": "To zdjęcie jest większe niż 2 MB.",
+      "notImage": "Ten plik nie jest obsługiwanym obrazem (użyj JPEG, PNG lub WebP)."
     }
   }
 }

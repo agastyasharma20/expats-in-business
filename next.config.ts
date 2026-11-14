@@ -54,7 +54,12 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   // 404 for URLs outside any locale (app/global-not-found.tsx); [locale] stays the root layout so
   // next/root-params can provide the locale.
-  experimental: { globalNotFound: true, authInterrupts: true },
+  experimental: {
+    globalNotFound: true,
+    authInterrupts: true,
+    // Team photos are uploaded through a Server Action (checked to 2 MB, then resized).
+    serverActions: { bodySizeLimit: "3mb" },
+  },
   partialPrefetching: true,
   poweredByHeader: false,
   turbopack: {

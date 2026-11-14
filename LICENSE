@@ -1,0 +1,64 @@
+PROPRIETARY SOFTWARE LICENSE: ALL RIGHTS RESERVED
+
+Copyright (c) 2024-2026 Expats in Business. All rights reserved.
+
+"Expats in Business" ("EiB") owns this software, including its source code, database schema,
+content, design, brand assets (names, logos and visual identity), documentation and any
+accompanying materials (together, the "Software").
+
+1. NO LICENSE GRANTED TO THE PUBLIC
+   The Software is private and confidential. It is not open source and it is not "source
+   available". Having access to this repository, a copy of it, or a running instance does not
+   give you any license or right in the Software.
+
+2. PERMITTED USE
+   Only Expats in Business, and persons or organisations that Expats in Business has authorised in
+   writing (for example staff, volunteers or contractors working for EiB), may use the Software, and
+   only for the internal purposes of Expats in Business and on its behalf.
+
+3. WHAT IS NOT ALLOWED
+   Without the prior written permission of Expats in Business, you may not:
+   a. copy, reproduce, fork, mirror or republish the Software or any part of it;
+   b. modify, adapt, translate or create derivative works from it;
+   c. distribute, sell, rent, lease, sublicense, lend or otherwise make it available to any third
+      party, including by posting it on a public or shared code host;
+   d. host, deploy or run it for any person or organisation other than Expats in Business;
+   e. use it, or any part of it, to build, train or improve another product or service, including
+      machine-learning models;
+   f. remove or alter any copyright, trademark or confidentiality notice;
+   g. use the names "Expats in Business" or "EiB", the logos or the brand assets in any way that
+      suggests affiliation with or endorsement by Expats in Business.
+
+4. CONFIDENTIALITY
+   Anyone who is given access to the Software must keep it confidential and use it only for the work
+   they were authorised to do for Expats in Business. This duty continues after that work ends.
+
+5. THIRD-PARTY COMPONENTS
+   The Software uses third-party open-source components. Each component stays under its own license,
+   and nothing in this license changes those terms. This license applies only to the parts of the
+   Software that Expats in Business owns.
+
+6. PERSONAL DATA
+   Demo and seed data in the Software is fictional. No real person's data may be added to the
+   repository. Production data belongs to Expats in Business and is processed under its privacy policy.
+
+7. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+   WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. TO THE
+   MAXIMUM EXTENT PERMITTED BY LAW, EXPATS IN BUSINESS IS NOT LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY ARISING FROM OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+8. TERMINATION
+   Any use outside this license ends all permission to use the Software immediately. Expats in
+   Business may withdraw an authorisation at any time. On request you must stop using the Software
+   and delete all copies in your possession.
+
+9. ENFORCEMENT
+   Expats in Business may seek every remedy available under applicable law, including injunctions,
+   for use that breaches this license.
+
+For permission requests, contact Expats in Business through the contact details published on its
+official website.
+
+(This text is a working draft. Expats in Business should have it reviewed by a qualified lawyer
+before relying on it.)

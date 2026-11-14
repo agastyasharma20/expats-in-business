@@ -1377,3 +1377,49 @@ model RoleApplication {
   @@unique([roleId, userId])
   @@index([status])
 }
+
+// ─── Team page ────────────────────────────────────────────────────────────────────────────────
+
+/// The founder's message on /team (a single row, key "founder"). Admin-edited, audited.
+model FounderMessage {
+  key         String   @id @default("founder")
+  title       String
+  body        String
+  founderName String
+  designation String
+  photo       Bytes?
+  photoType   String?
+  photoAlt    String?
+  /// True for the labeled demo placeholder; saving the message in the admin editor clears it.
+  isDemo      Boolean  @default(false)
+  updatedById String?
+  updatedAt   DateTime @updatedAt
+}
+
+/// A person on the /team page. Photos are small, resized images kept in the database so the app
+/// needs no file storage on free hosts. Email is public only when `showEmail` is set (opt-in).
+model TeamMember {
+  id           String    @id @default(cuid(2))
+  name         String
+  designation  String
+  /// "founders" | "leads" | "team" | "volunteers" (labels come from messages)
+  grp          String    @default("team")
+  bio          String?
+  photo        Bytes?
+  photoType    String?
+  photoAlt     String?
+  /// Bumped on each photo change so the cached image URL changes with it.
+  photoVersion Int       @default(0)
+  startedAt    DateTime?
+  endedAt      DateTime?
+  linkedinUrl  String?
+  email        String?
+  showEmail    Boolean   @default(false)
+  isVisible    Boolean   @default(true)
+  sortOrder    Int       @default(0)
+  isDemo       Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([isVisible, grp, sortOrder])
+}

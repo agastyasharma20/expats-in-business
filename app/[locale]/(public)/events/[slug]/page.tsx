@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
@@ -40,6 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function EventView({ params, searchParams }: Props) {
+  await connection();
   const event = await getEventBySlug((await params).slug);
   if (!event) notFound();
   // Festivals have a richer page (tiers, programme, volunteering).

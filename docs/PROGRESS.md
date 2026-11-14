@@ -21,6 +21,56 @@
 
 ## Log
 
+### 2026-11-14 · Release candidate: deep testing, fixes, README, PDF and deploy guide
+
+**Built and fixed**
+
+- **Defect found and fixed (High):** `/api/account/export` (GDPR data download) returned HTTP 500 for every member since M6; the relation is `userEmails`, not `emails`. Regression tests in `tests/e2e/privacy.spec.ts`.
+- Team emails are no longer in the page HTML: "Show email address" fetches them on demand from a POST-only, rate-limited route.
+- Real email providers: `SMTP_USER`, `SMTP_PASSWORD` and `SMTP_SECURE` added (before, only a login-less Mailpit worked).
+- `npm run admin:grant -- email` creates the first admin on a clean production database.
+- `docs/DEPLOY.md` (free path: Render, Neon, Brevo, GitHub Actions), a rewritten `README.md`, `docs/EiB-Platform-Overview.pdf` (25 designed pages, numbers filled from `docs/test-evidence/summary.json`) and `docs/TEST_REPORT.md`.
+- Scripts: `qa-access.mjs`, `qa-sweep.mjs`, `qa-analyze.mjs`, `capture-screenshots.mjs`, `build-pdf.mjs`, `check-pdf-overflow.mjs`, `grant-admin.ts`.
+
+**Verified**: `npm run check` green (315 unit tests); production build; 99 of 99 runnable desktop e2e tests pass in clean serial runs (first parallel run: 168 passed, 3 failed, 2 flaky on a slow laptop); link crawler 300 pages, 0 problems; access and security probes 39 of 39; `npm audit --omit=dev` 0 vulnerabilities; Lighthouse accessibility and best practices 100 on 6 pages.
+
+**Known gaps (details in docs/TEST_REPORT.md)**
+
+- F2 intermittent reservation delay under parallel load (unproven link to concurrent queries inside one transaction).
+- F3 slow LCP on `/team` and the festival page; F4 denied pages return HTTP 200 (no data exposed); F5 admin tab bar clipped by the search box.
+- The full route sweep (`scripts/qa-sweep.mjs`) was stopped after 18 routes; cross-browser, screen-reader, load and live-integration tests are not done.
+- The three team migrations were not squashed: Prisma refuses `migrate reset` from an agent. To squash, delete the three `20261114*` migration folders, run `npx prisma migrate reset --force` yourself, then `npx prisma migrate dev --name team_page`.
+
+### 2026-11-14 · Team page, admin editor and proprietary license
+
+**Built**
+
+- Public `/team`: the founder's message and people grouped as founders, leads, team and volunteers, with photo or initials, designation, time with EiB, LinkedIn and an opt-in email. Designed empty state with a next action.
+- Admin editor `/admin/team` (admins only): edit the founder's message, add, edit, hide and delete people, upload photos. Every change is rate-limited, Zod-validated and audited, and refreshes the `team` cache tag.
+- Photos are decoded and re-encoded as 640 px WebP by `sharp` (so non-images are rejected and EXIF data is dropped), stored in Postgres and served by `/api/team/photo/[id]` with a versioned URL. Hidden people's photos are not served.
+- Models `FounderMessage` and `TeamMember` (3 migrations), labeled "Demo profile" seed rows flagged `isDemo` (cleared by `demo:reset`; saving in the editor clears the flag), strings in en, pl and uk, footer and admin links.
+- `LICENSE`: proprietary, all rights reserved, Expats in Business only (draft: have a lawyer review it). `package.json` license is `UNLICENSED`.
+- Tests: 7 schema unit tests, 4 e2e tests (visitor + axe, admin guard, add/hide/delete with a photo, non-image rejected). `npm run check` green (315 tests).
+
+**Known gaps**
+
+- Server Actions body limit raised to 3 MB for photo uploads (`next.config.ts`).
+- Public mailto links can still be scraped; emails are shown only when the person opted in.
+- Not yet run: full e2e suite and the link crawler with the new footer link.
+
+### 2026-11-13 · Final polish, part 2: audit follow-up
+
+**Built**
+
+- Clock reads moved behind `connection()` on admin members/applications, event page and festival tickets panel; chapter and country queries cached with the `chapters` tag and refreshed by ambassador actions (audit #4).
+- `scripts/lighthouse.mjs`: optional `LH_JSON=1` output and LCP error reporting.
+- README: low-memory demo advice (audit #9).
+- Audit #1, #2, #3, #5, #6, #7, #8 were already done in earlier commits (verified in code).
+
+**Verified**: `npm run check` green (308 unit tests).
+
+**Known gaps**: audit parts 3 to 7 (screenshot pass, axe and keyboard per route, Lighthouse, coverage) not run yet.
+
 ### 2026-11-13 · RSVP and un-RSVP on every event and festival
 
 - **Un-RSVP where you RSVP'd**: event page, festival tickets panel and ticket page share one component with an inline two-step confirmation (no browser dialog; focus moves to "Yes, un-RSVP"; Escape or "Keep my place" closes it). Waitlist spots get "Leave the waitlist".

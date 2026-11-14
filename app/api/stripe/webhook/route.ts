@@ -4,8 +4,9 @@ import type Stripe from "stripe";
 import { syncSubscription } from "@/lib/billing/sync";
 import { getDb } from "@/lib/db";
 import { getEnv } from "@/lib/env";
-import { confirmPaidTicket, releaseSession } from "@/lib/events/tickets";
+import { confirmPaidTicket } from "@/lib/events/tickets";
 import { getStripe } from "@/lib/stripe";
+import { releaseSession } from "@/lib/events/ticket-followups";
 
 /** Refunds a payment that cannot become a ticket (stale session, wrong amount, session full). */
 async function refund(stripe: Stripe, session: Stripe.Checkout.Session, reason: string) {

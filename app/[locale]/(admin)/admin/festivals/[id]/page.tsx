@@ -1,21 +1,14 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  CheckCircle2Icon,
-  CircleIcon,
-  DownloadIcon,
-  ExternalLinkIcon,
-  QrCodeIcon,
-} from "lucide-react";
+import { DownloadIcon, ExternalLinkIcon, QrCodeIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 
-import { PartnersTab, ProgrammeTab, TiersTab } from "@/components/admin/festival/content-tabs";
-import { SettingsTab, StallsTab, VolunteersTab } from "@/components/admin/festival/people-tabs";
+import { TiersTab } from "@/components/admin/festival/content-tabs";
+import { StallsTab, VolunteersTab } from "@/components/admin/festival/people-tabs";
 import { ActionButton } from "@/components/common/action-button";
 import { PageHeader } from "@/components/layout/page-header";
-import { ProgressRing } from "@/components/roadmap/progress-ring";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,6 +20,10 @@ import { Link } from "@/lib/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import { setFestivalStatus } from "@/server/actions/festivals-admin";
+import { PartnersTab } from "@/components/admin/festival/partners-tab";
+import { LaunchChecklist } from "@/components/admin/festival/launch-checklist";
+import { ProgrammeTab } from "@/components/admin/festival/programme-tab";
+import { SettingsTab } from "@/components/admin/festival/settings-tab";
 
 type Props = PageProps<"/[locale]/admin/festivals/[id]">;
 
@@ -207,37 +204,7 @@ async function Console({ params, searchParams }: Pick<Props, "params" | "searchP
         ))}
       </nav>
 
-      {tab === "overview" ? (
-        <section
-          aria-labelledby="checklist-title"
-          className="flex flex-col gap-5 rounded-2xl border border-line bg-surface p-6 shadow-card sm:flex-row sm:items-start"
-        >
-          <ProgressRing
-            percent={checklist.percent}
-            label={t("checklistLabel", { percent: checklist.percent })}
-          />
-          <div className="flex flex-1 flex-col gap-3">
-            <h2 id="checklist-title" className="text-h3">
-              {t("checklistTitle")}
-            </h2>
-            <ul className="grid gap-2 sm:grid-cols-2">
-              {checklist.items.map((item) => (
-                <li key={item.key} className="flex items-center gap-2 text-ink">
-                  {item.done ? (
-                    <CheckCircle2Icon aria-hidden="true" className="size-5 text-success" />
-                  ) : (
-                    <CircleIcon aria-hidden="true" className="size-5 text-line-strong" />
-                  )}
-                  <span className={item.done ? "" : "font-semibold"}>
-                    {t(`checklist.${item.key}`)}
-                  </span>
-                  <span className="sr-only">{item.done ? t("done") : t("todo")}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ) : null}
+      {tab === "overview" ? <LaunchChecklist checklist={checklist} /> : null}
       {tab === "tickets" ? <TiersTab data={data} /> : null}
       {tab === "programme" ? <ProgrammeTab data={data} /> : null}
       {tab === "volunteers" ? <VolunteersTab data={data} /> : null}

@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { withinLimits } from "@/lib/security/limits";
 import { locales } from "@/lib/i18n/routing";
 
 export type ActionState = { ok: boolean; message?: string } | null;
@@ -27,6 +28,7 @@ const profileSchema = z.object({
 /** Settings → Profile: text fields and per-field visibility (old bug 14: public profile visible). */
 export async function updateProfile(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/settings/profile");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const parsed = profileSchema.safeParse(Object.fromEntries(form));
   if (!parsed.success) return { ok: false, message: "invalid" };
   const { skills, headline, bio, ...flags } = parsed.data;
@@ -54,6 +56,7 @@ const accountSchema = z.object({ name: z.string().trim().min(2).max(80), locale:
 /** Settings → Account: persists, survives a reload (old bug 6). */
 export async function updateAccount(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/settings/account");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const parsed = accountSchema.safeParse(Object.fromEntries(form));
   if (!parsed.success) return { ok: false, message: "invalid" };
   await getDb().user.update({ where: { id: user.id }, data: parsed.data });
@@ -64,6 +67,7 @@ export async function updateAccount(_prev: ActionState, form: FormData): Promise
 /** Settings → Privacy: schedule deletion (hard delete after 30 days by the jobs runner) or cancel it. */
 export async function setDeletion(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/settings/privacy");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const cancel = form.get("intent") === "cancel";
   if (!cancel && form.get("confirm") !== "DELETE") return { ok: false, message: "confirm" };
   await getDb().user.update({

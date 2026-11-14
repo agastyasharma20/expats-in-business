@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Expats in Business platform: the complete guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --deep: #093334; --logo: #074c4c; --green: #12635a; --tint: #c5e8eb; --wash: #f2faf9;
+    --ember: #ff3514; --ember-d: #c2260c; --ink: #12292a; --muted: #4c6362; --line: #d6e3e2; --paper: #ffffff;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; font-family: "Nunito Sans", "Segoe UI", system-ui, sans-serif; color: var(--ink); font-size: 10.2pt; line-height: 1.5; }
+  h1, h2, h3, h4 { font-family: "Cabin", "Segoe UI", sans-serif; color: var(--deep); margin: 0; line-height: 1.15; }
+  .page { width: 210mm; height: 297mm; padding: 20mm 18mm 20mm; position: relative; page-break-after: always; overflow: hidden; background: var(--paper); }
+  .page:last-child { page-break-after: auto; }
+  .page.dark { background: var(--deep); color: #e8f4f3; }
+  .page.dark h1, .page.dark h2, .page.dark h3 { color: #fff; }
+  .eyebrow { font-size: 8pt; letter-spacing: .16em; text-transform: uppercase; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .dark .eyebrow { color: var(--tint); }
+  h2 { font-size: 25pt; margin-bottom: 4mm; }
+  h3 { font-size: 13.5pt; margin: 5mm 0 2mm; }
+  h4 { font-size: 10.5pt; margin: 3mm 0 1mm; color: var(--green); }
+  p { margin: 0 0 2.6mm; }
+  .lead { font-size: 12pt; color: var(--muted); max-width: 150mm; }
+  .folio { position: absolute; left: 18mm; right: 18mm; bottom: 9mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: var(--muted); border-top: 1px solid var(--line); padding-top: 2mm; }
+  .dark .folio { color: #9fc4c2; border-color: #1c5456; }
+  .grid { display: grid; gap: 4mm; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: 1fr 1fr 1fr; } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { border: 1px solid var(--line); border-radius: 3mm; padding: 4mm; background: #fff; }
+  .card.tint { background: var(--wash); border-color: #cfe6e3; }
+  .card h4 { margin-top: 0; }
+  .card p:last-child { margin-bottom: 0; }
+  .stat { text-align: left; }
+  .stat b { display: block; font-family: "Cabin", sans-serif; font-size: 22pt; color: var(--green); line-height: 1; }
+  .stat span { font-size: 8.5pt; color: var(--muted); }
+  ul.tick { list-style: none; padding: 0; margin: 0 0 2mm; }
+  ul.tick li { padding-left: 5mm; position: relative; margin-bottom: 1.4mm; }
+  ul.tick li::before { content: ""; position: absolute; left: 0; top: .45em; width: 2.2mm; height: 2.2mm; border-radius: 50%; background: var(--green); }
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; margin: 2mm 0 3mm; }
+  th { text-align: left; background: var(--deep); color: #fff; padding: 2mm 2.4mm; font-weight: 700; }
+  td { padding: 1.9mm 2.4mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--wash); }
+  .shot { border: 1px solid var(--line); border-radius: 2.4mm; overflow: hidden; box-shadow: 0 2mm 5mm rgba(9,51,52,.12); background: #fff; }
+  .shot img { display: block; width: 100%; }
+  .shot figcaption { font-size: 7.8pt; color: var(--muted); padding: 1.6mm 2.6mm; border-top: 1px solid var(--line); background: var(--wash); }
+  figure { margin: 0; }
+  .phone { width: 52mm; border-radius: 6mm; border: 2mm solid var(--deep); overflow: hidden; background: #fff; box-shadow: 0 2mm 5mm rgba(9,51,52,.18); }
+  .phone img { display: block; width: 100%; }
+  .badge { display: inline-block; font-size: 7.4pt; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: .6mm 2mm; border-radius: 10mm; background: var(--tint); color: var(--deep); }
+  .badge.warn { background: #fde7e1; color: var(--ember-d); }
+  .badge.ok { background: #d9f0e7; color: #0d5a43; }
+  .grid > figure, .grid > .shot { align-self: start; }
+  .callout { border-left: 1.4mm solid var(--green); background: var(--wash); padding: 3mm 4mm; border-radius: 0 2.4mm 2.4mm 0; margin: 3mm 0; }
+  .callout.warn { border-color: var(--ember-d); background: #fff4f0; }
+  .swatch { height: 14mm; border-radius: 2.4mm; display: flex; align-items: flex-end; padding: 1.6mm 2.4mm; font-size: 7.6pt; color: #fff; font-weight: 700; }
+  .flow { display: flex; align-items: stretch; gap: 2mm; }
+  .flow > div { flex: 1; border-radius: 2.4mm; padding: 3mm; font-size: 8.6pt; }
+  .arrow { align-self: center; color: var(--green); font-weight: 800; flex: 0 0 auto !important; padding: 0 !important; }
+  .layer { border-radius: 2.6mm; padding: 3mm 4mm; margin-bottom: 2.4mm; font-size: 9pt; }
+  .num { font-family: "Cabin", sans-serif; font-weight: 700; color: var(--green); }
+  code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 8.4pt; background: #edf5f4; padding: .2mm 1.2mm; border-radius: 1mm; }
+  pre { background: var(--deep); color: #dff3f1; padding: 3.4mm 4mm; border-radius: 2.4mm; font-size: 8pt; line-height: 1.45; overflow: hidden; margin: 2mm 0 3mm; }
+  .toc a { color: inherit; text-decoration: none; }
+  .toc li { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--line); padding: 1.1mm 0; }
+  .toc ol { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 10mm; }
+  .toc .n { color: var(--green); font-weight: 800; margin-right: 2mm; }
+  .cover-logo { width: 78mm; }
+</style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="page dark" style="padding:0">
+  <div style="position:absolute;inset:0;background:radial-gradient(120mm 120mm at 85% 12%, rgba(197,232,235,.18), transparent 60%), radial-gradient(90mm 90mm at 10% 95%, rgba(255,53,20,.18), transparent 60%);"></div>
+  <div style="position:absolute;left:22mm;top:24mm;right:22mm">
+    <img class="cover-logo" src="../../public/brand/eib-logo-white.png" alt="Expats in Business" />
+  </div>
+  <div style="position:absolute;left:22mm;right:22mm;top:92mm">
+    <div class="eyebrow">Platform guide · Version 1.0.0 release candidate</div>
+    <h1 style="font-size:44pt;line-height:1.02;margin-bottom:8mm">Your global business community, built as one platform.</h1>
+    <p style="font-size:14pt;color:#cfe8e6;max-width:140mm">Everything about the Expats in Business (EiB) platform: what it is, every feature, how it is built, how it was tested and how it goes live. Read it first, then open the real product.</p>
+  </div>
+  <div style="position:absolute;left:22mm;right:22mm;bottom:26mm;display:flex;gap:10mm;align-items:flex-end;justify-content:space-between">
+    <div style="font-size:9pt;color:#9fc4c2;line-height:1.6">
+      <b style="color:#fff">For</b> Expats in Business · Ziyan Sinnen · the development team<br />
+      <b style="color:#fff">Edition</b> {{date}}<br />
+      <b style="color:#fff">Status</b> Private and proprietary. All rights reserved.
+    </div>
+    <div style="text-align:right;font-family:Cabin;font-size:11pt;color:#c5e8eb">Kraków · Warsaw · the world</div>
+  </div>
+</section>
+
+<!-- 2 CONTENTS -->
+<section class="page">
+  <div class="eyebrow">Start here</div>
+  <h2>Contents</h2>
+  <p class="lead">One document for three readers. Sections 1 to 13 are written in plain language. Sections 14 to 18 are more technical, for developers and reviewers.</p>
+  <div class="toc">
+    <ol>
+      <li><span><span class="n">01</span>Summary in one page</span></li>
+      <li><span><span class="n">02</span>The idea: one product, many chapters</span></li>
+      <li><span><span class="n">03</span>Who uses it, and what each role can do</span></li>
+      <li><span><span class="n">04</span>Sessions, tickets and check-in</span></li>
+      <li><span><span class="n">05</span>Festivals</span></li>
+      <li><span><span class="n">06</span>Community: profiles, groups, Bubbles</span></li>
+      <li><span><span class="n">07</span>Providers and businesses</span></li>
+      <li><span><span class="n">08</span>Guides and the AI concierge</span></li>
+      <li><span><span class="n">09</span>Dashboard and Landing Roadmap</span></li>
+      <li><span><span class="n">10</span>Growth: chapters, ambassadors, careers</span></li>
+      <li><span><span class="n">11</span>Membership and the business model</span></li>
+      <li><span><span class="n">12</span>The Team page and the admin centre</span></li>
+      <li><span><span class="n">13</span>Languages, SEO, privacy and brand</span></li>
+      <li><span><span class="n">14</span>Architecture and tech stack</span></li>
+      <li><span><span class="n">15</span>Data model and permissions</span></li>
+      <li><span><span class="n">16</span>Security</span></li>
+      <li><span><span class="n">17</span>Testing and quality results</span></li>
+      <li><span><span class="n">18</span>Deployment, roadmap, open decisions</span></li>
+    </ol>
+  </div>
+  <h3 style="margin-top:9mm">How to use this guide</h3>
+  <div class="grid g3">
+    <div class="card tint"><h4>EiB team</h4><p>Read sections 1 to 13 to see what members, providers and admins get. Every screenshot is the real product with fictional demo data.</p></div>
+    <div class="card tint"><h4>Ziyan and stakeholders</h4><p>Sections 1, 2, 11 and 18 give the vision, the business model and the decisions only EiB can make.</p></div>
+    <div class="card tint"><h4>Developers</h4><p>Sections 14 to 18 and the appendices explain the architecture, the rules every change follows, the tests and how to run it.</p></div>
+  </div>
+  <div class="callout warn" style="margin-top:6mm"><b>About the data you see.</b> People, companies, venues, prices and numbers in screenshots are demo data and are labelled as such in the product. Real company facts come only from <code>docs/FACTS.md</code>; everything else is a labelled placeholder until EiB confirms it.</div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>2</span></div>
+</section>
+
+<!-- 3 SUMMARY -->
+<section class="page">
+  <div class="eyebrow">01 · Summary</div>
+  <h2>The platform in one page</h2>
+  <p class="lead">Expats in Business (EiB) is a free, community-run business network for internationals, founded in Kraków in 2024. This platform replaces the old portal with one product that works for every city.</p>
+  <div class="grid g4" style="margin:3mm 0 2mm">
+    <div class="card stat"><b>{{pages}}</b><span>pages, in 3 languages</span></div>
+    <div class="card stat"><b>{{actions}}</b><span>audited server actions</span></div>
+    <div class="card stat"><b>{{models}}</b><span>data models</span></div>
+    <div class="card stat"><b>{{loc}}</b><span>lines of TypeScript</span></div>
+  </div>
+  <div class="grid g2">
+    <div>
+      <h3 style="margin-top:0;margin-bottom:1mm">What members get</h3>
+      <ul class="tick">
+        <li>Sessions: RSVP, waitlist, QR tickets, calendar files</li>
+        <li>Profiles, a directory, opt-in connections and Bubbles on a world map</li>
+        <li>Coffee Roulette: a weekly introduction to someone new</li>
+        <li>Guides with official sources and an AI concierge that answers only from them</li>
+        <li>A personal 30/60/90-day roadmap</li>
+      </ul>
+      <h3>What EiB gets</h3>
+      <ul class="tick">
+        <li>A command centre with KPIs, charts and an audit log</li>
+        <li>Session and festival builders, check-in, live numbers</li>
+        <li>Verification, moderation and application boards</li>
+        <li>A Team page, feature flags and catalogs edited without a developer or a deploy</li>
+      </ul>
+    </div>
+    <figure class="shot"><img src="../screenshots/home-desktop.png" alt="Home page" /><figcaption>The home page (1440 px wide).</figcaption></figure>
+  </div>
+  <h3 style="margin-top:3mm">Where it stands</h3>
+  <table>
+    <tr><th style="width:34%">Area</th><th>Status</th></tr>
+    <tr><td>Features</td><td><span class="badge ok">Complete for V1</span> all 16 planned milestones plus the Team page</td></tr>
+    <tr><td>Quality</td><td><span class="badge ok">Tested</span> {{unit}} unit tests, {{e2e_desktop}} browser tests, a {{crawl_pages}}-page link crawl, security probes (section 17)</td></tr>
+    <tr><td>Payments</td><td><span class="badge warn">Test mode only</span> no real money until prices, entity and refund policy are decided</td></tr>
+    <tr><td>Content</td><td><span class="badge warn">Placeholders</span> prices, partners, festival dates and legal text need EiB and a lawyer</td></tr>
+    <tr><td>Hosting</td><td><span class="badge">Ready to deploy</span> free path documented step by step (section 18)</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>3</span></div>
+</section>
+
+<!-- 4 IDEA -->
+<section class="page">
+  <div class="eyebrow">02 · The idea</div>
+  <h2>One product, many chapters</h2>
+  <p class="lead">EiB is built as one global product organised into chapters, instead of one website per city. A new city is configuration, not a new project.</p>
+  <div class="layer" style="background:var(--deep);color:#fff"><b>Global</b> · the whole network, brand, corporate partners, concierge, guides</div>
+  <div class="layer" style="background:var(--logo);color:#fff;margin-left:9mm"><b>Country hub</b> · Poland first: country guides, country ambassadors, local rules</div>
+  <div class="layer" style="background:var(--green);color:#fff;margin-left:18mm"><b>City chapter</b> · Kraków is chapter #1 (live); Warsaw is launching; each has its own sessions, venues, lead and time zone</div>
+  <div class="layer" style="background:var(--tint);color:var(--deep);margin-top:4mm"><b>Cultural Bubbles</b> · groups by country of origin, each with a Bubble Lead, that cut across every chapter</div>
+  <h3>Why this matters</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Nothing is hard-coded</h4><p>City names, currency, time zone and language come from the chapter's configuration. Opening Warsaw or Berlin needs data, not new code.</p></div>
+    <div class="card"><h4>Free to belong</h4><p>Joining, the directory, Bubbles, guides and free sessions stay free. Money comes from businesses, providers, employers and sponsors who gain commercial value (section 11).</p></div>
+    <div class="card"><h4>Real, not decoration</h4><p>Every button either works or is not shown as a button. No page ships empty: each has seed data or a designed empty state with a next action.</p></div>
+  </div>
+  <h3>The real EiB facts this build relies on</h3>
+  <table>
+    <tr><th>Fact</th><th>Source</th></tr>
+    <tr><td>Founded in Kraków in 2024; co-founded by Ziyan Sinnen ("Zee"); first anniversary 27 Mar 2025</td><td>City of Kraków announcement</td></tr>
+    <tr><td>Session formats: Connect &amp; Collaborate, Guest Speaker, Cultural Exchange, Virtual Connect, Business Development</td><td>EiB contributors FAQ</td></tr>
+    <tr><td>35+ sessions held (the 35th on 22 Jan 2026)</td><td>EiB YouTube community posts</td></tr>
+    <tr><td>Cultoura cultural-exchange series (Cultoura 2025, 24 May 2025)</td><td>expatsinbusiness.org</td></tr>
+    <tr><td>The community is free; a paid "EiB Business" module is planned</td><td>EiB contributors FAQ</td></tr>
+  </table>
+  <p style="font-size:8.6pt;color:var(--muted)">Still to confirm with Ziyan before public use: current member count, legal entity, regular meeting day and partner-logo permissions.</p>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>4</span></div>
+</section>
+
+<!-- 5 ROLES -->
+<section class="page">
+  <div class="eyebrow">03 · People and permissions</div>
+  <h2>Who uses it, and what each role can do</h2>
+  <p class="lead">Permissions are checked on the server for every action and re-checked against the database. Hidden buttons are never the only protection.</p>
+  <table>
+    <tr><th style="width:21%">Role</th><th>Can do</th><th style="width:22%">Scope</th></tr>
+    <tr><td><b>Visitor</b></td><td>Browse events, festivals, chapters, guides, providers, the Team page; see limited profile fields; ask the concierge; read legal pages</td><td>Public</td></tr>
+    <tr><td><b>Member</b></td><td>Everything above plus RSVP and tickets, profile, directory, connections, groups, Coffee Roulette, roadmap, notifications, data export and deletion</td><td>Own account</td></tr>
+    <tr><td><b>Bubble lead</b></td><td>Moderate and feature their Bubble's group</td><td>One Bubble</td></tr>
+    <tr><td><b>Moderator</b></td><td>Review reports, remove posts, decisions are audited</td><td>Assigned groups</td></tr>
+    <tr><td><b>Chapter lead</b></td><td>Build and publish sessions and festivals, scan check-in, run Pulse, review applications, see chapter analytics</td><td>Own chapter</td></tr>
+    <tr><td><b>Admin</b></td><td>Everything, everywhere: members, roles, providers, catalogs, settings, flags, Team page, audit log, system</td><td>Global</td></tr>
+    <tr><td><b>Ambassador</b></td><td>Public title and listing for global, country or city programme; no admin powers</td><td>Community</td></tr>
+    <tr><td><b>Provider</b></td><td>Inbox for quote requests, analytics, public verified listing (after verification)</td><td>Own listing</td></tr>
+    <tr><td><b>Sponsor</b></td><td>A private, signed report link with registered and checked-in numbers and countries of origin (any number under 5 is hidden)</td><td>Own partnership</td></tr>
+  </table>
+  <h3>Plans (entitlements are separate from roles)</h3>
+  <div class="grid g3">
+    <div class="card tint"><h4>Community <span class="badge ok">free</span></h4><p>Join, directory, Bubbles, groups, guides, free sessions, roadmap, 10 concierge questions a day.</p></div>
+    <div class="card tint"><h4>Member Plus</h4><p>Unlimited concierge, roulette priority, early event access, workshop discount, deadline reminders.</p></div>
+    <div class="card tint"><h4>Business, Provider, Corporate</h4><p>Listing and lead inbox; verification badge, quotes and analytics; seats for employers. Prices are proposals, not approved.</p></div>
+  </div>
+  <div class="callout"><b>Why this is safe.</b> Every Server Action follows one pipeline: require a role or entitlement, validate with Zod, check the permission against the database, write, record an audit entry for admin actions, then refresh the cache. A rate limit applies to every account-level write.</div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>5</span></div>
+</section>
+
+<!-- 6 EVENTS -->
+<section class="page">
+  <div class="eyebrow">04 · Sessions</div>
+  <h2>Sessions, tickets and check-in</h2>
+  <p class="lead">From "what is on?" to a QR code at the door, the old portal's main failure (buttons that did nothing) is designed out.</p>
+  <div class="grid g2" style="grid-template-columns:1.5fr 1fr">
+    <figure class="shot"><img src="../screenshots/events-desktop.png" alt="Events list" /><figcaption>The events list with filters by time and format.</figcaption></figure>
+    <div style="display:flex;justify-content:center"><figure class="phone"><img src="../screenshots/events-mobile.png" alt="Events on a phone" /></figure></div>
+  </div>
+  <div class="grid g2" style="margin-top:4mm">
+    <div>
+      <h4>For members</h4>
+      <ul class="tick">
+        <li>Filter by time and format; every event shows date, time, venue, price and places left</li>
+        <li>RSVP and un-RSVP in one click from the event page</li>
+        <li>Full session? Join the waitlist; when someone cancels the next person is promoted automatically and told</li>
+        <li>A QR ticket for the door, plus a calendar file (<code>.ics</code>)</li>
+        <li>Paid sessions: Stripe Checkout in test mode with card, BLIK and Przelewy24; a held place expires if unpaid</li>
+      </ul>
+    </div>
+    <div>
+      <h4>For chapter leads</h4>
+      <ul class="tick">
+        <li>Event builder: publish a session in under two minutes (checked by a test)</li>
+        <li>Door check-in: QR scanner or manual search; a ticket works once</li>
+        <li><b>Session Pulse</b>: a live screen of arrivals, streamed to the room</li>
+        <li><b>Who I met</b>: attendees opt in, request, and contact details appear only after the other person accepts</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">A capacity rule protects the last place: RSVPs for one event are serialised with a database row lock, so two people can never both get the final seat.</div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>6</span></div>
+</section>
+
+<!-- 7 FESTIVALS -->
+<section class="page">
+  <div class="eyebrow">05 · Festivals</div>
+  <h2>Festivals: big cultural events</h2>
+  <p class="lead">Cultoura-style events need more than a session: ticket tiers, a programme, volunteers, stalls and partners. They get their own console and page.</p>
+  <figure class="shot"><img src="../screenshots/festival-desktop.png" alt="Festival page" /><figcaption>A festival page (demo data): tiers, programme, volunteering and stalls.</figcaption></figure>
+  <div class="grid g3" style="margin-top:4mm">
+    <div class="card"><h4>Tickets</h4><p>Tiers (early bird, standard, family, supporter), group orders, a QR per group ("Admits 3 people"), capacity per tier.</p></div>
+    <div class="card"><h4>Volunteers and stalls</h4><p>Members sign up for shifts; vendors apply for stalls; organisers review them in a board and applicants are told.</p></div>
+    <div class="card"><h4>Partners and reports</h4><p>Partner logos only with permission; a signed sponsor report with registered and checked-in counts. Numbers under 5 are hidden.</p></div>
+  </div>
+  <h4>Organiser console</h4>
+  <p>Create a festival, add programme items, tiers, shifts and FAQ, then publish. A site-wide spotlight pill in the header ("Cultoura, in 13 days") points to the next festival. Everything an organiser changes refreshes the public page straight away.</p>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>7</span></div>
+</section>
+
+<!-- 8 COMMUNITY -->
+<section class="page">
+  <div class="eyebrow">06 · Community</div>
+  <h2>Community: profiles, groups and Bubbles</h2>
+  <div class="grid g2" style="grid-template-columns:1.35fr 1fr">
+    <figure class="shot"><img src="../screenshots/bubbles-desktop.png" alt="Bubbles world map" /><figcaption>The Bubbles map: each country is a link; a list is always offered as an alternative.</figcaption></figure>
+    <div style="display:flex;justify-content:center"><figure class="phone"><img src="../screenshots/bubbles-mobile.png" alt="Bubbles on a phone" /></figure></div>
+  </div>
+  <div class="grid g2" style="margin-top:5mm">
+    <div>
+      <h4>Profiles and directory</h4>
+      <ul class="tick">
+        <li>Members choose, field by field, what visitors and members see; the email is never shown publicly</li>
+        <li>A directory with filters that stay in the URL</li>
+        <li>Double opt-in connections: contact details only after acceptance</li>
+      </ul>
+      <h4>Groups and moderation</h4>
+      <ul class="tick">
+        <li>Chapter groups and Bubble groups for members only: posts, questions, announcements, reactions, pinned posts</li>
+        <li>Reports go to a moderation queue; every decision is applied and written to the audit log</li>
+        <li>Posting is rate-limited per account</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Cultural Bubbles</h4>
+      <p>Groups by country of origin, with a Bubble Lead. The map is drawn with d3-geo as plain SVG, so no map-tile service or tracking is involved. An admin can switch the map off with a feature flag and the page falls back to the list, no deploy needed.</p>
+      <h4>Coffee Roulette</h4>
+      <p>A weekly, opt-in match with another member. Plus members get priority. The weekly job is idempotent: running it twice never sends two matches.</p>
+      <div class="callout">All demo geography (such as India and Indore) is flagged <code>isDemo</code> and labelled on screen.</div>
+    </div>
+  </div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>8</span></div>
+</section>
+
+<!-- 9 PROVIDERS -->
+<section class="page">
+  <div class="eyebrow">07 · Providers and businesses</div>
+  <h2>Verified providers and member businesses</h2>
+  <figure class="shot"><img src="../screenshots/providers-desktop.png" alt="Provider directory" /><figcaption>The provider directory (demo providers).</figcaption></figure>
+  <div class="grid g2" style="margin-top:5mm">
+    <div>
+      <h4>Providers (tax, legal, relocation, housing, translation)</h4>
+      <ul class="tick">
+        <li>A public, filterable directory with categories and reviews</li>
+        <li>A <b>verified</b> badge only after an admin approves with every criterion ticked; the criteria are public</li>
+        <li>Quote requests go to a provider inbox; the provider replies, the member can then review (reviews are only open to people who really requested)</li>
+        <li>Analytics are aggregated; anything under 5 is hidden</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Businesses</h4>
+      <ul class="tick">
+        <li>Members list their business; listings can be featured in their Bubble (Business plan)</li>
+        <li>A lead inbox collects enquiries</li>
+        <li>Reviews and verification requests are rate-limited against spam</li>
+      </ul>
+      <div class="callout">The concierge hands off questions it cannot answer from the guides, and points to verified providers where relevant.</div>
+    </div>
+  </div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>9</span></div>
+</section>
+
+<!-- 10 GUIDES AND CONCIERGE -->
+<section class="page">
+  <div class="eyebrow">08 · Knowledge</div>
+  <h2>Guides and the AI concierge</h2>
+  <div class="grid g2">
+    <figure class="shot"><img src="../screenshots/guides-desktop.png" alt="Guides" /><figcaption>Guides, each with official sources and a "last verified" date.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/concierge-desktop.png" alt="Concierge" /><figcaption>The Expat Concierge: suggestions and a privacy notice.</figcaption></figure>
+  </div>
+  <h3>The rule: no source, no answer</h3>
+  <p>Every legal, tax or immigration statement in a guide must cite an official source and carry a <code>lastVerified</code> date. The concierge may only answer from those guides, and must cite them. If it cannot ground an answer, it hands the person to a human instead of guessing.</p>
+  <div class="flow">
+    <div style="background:var(--wash)"><b>1 Question</b><br />Rate-limited; personal details removed before processing</div><div class="arrow">→</div>
+    <div style="background:var(--wash)"><b>2 Retrieve</b><br />Top 5 guide passages by vector similarity, keyword fallback</div><div class="arrow">→</div>
+    <div style="background:var(--wash)"><b>3 Prompt</b><br />Only the question and the passages, never personal data</div><div class="arrow">→</div>
+    <div style="background:var(--wash)"><b>4 Gate</b><br />Every sentence must cite and be grounded, or it becomes a hand-off</div><div class="arrow">→</div>
+    <div style="background:var(--tint)"><b>5 Stream</b><br />Answer with sources</div>
+  </div>
+  <div class="grid g2" style="margin-top:4mm">
+    <div class="card"><h4>Works offline</h4><p>Without an API key, a built-in demo provider answers from the same guides, so a demo never depends on the internet. Real providers (Groq, Gemini, OpenRouter, Anthropic) plug in through one file.</p></div>
+    <div class="card"><h4>Budgets</h4><p>Free members get 10 questions a day; Plus is unlimited. A global daily budget caps cost; beyond it the offline adapter answers.</p></div>
+  </div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>10</span></div>
+</section>
+
+<!-- 11 DASHBOARD + ROADMAP -->
+<section class="page">
+  <div class="eyebrow">09 · Member home</div>
+  <h2>Dashboard and Landing Roadmap</h2>
+  <div class="grid g2">
+    <figure class="shot"><img src="../screenshots/dashboard-desktop.png" alt="Dashboard" /><figcaption>The member dashboard: every card is a link.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/roadmap-desktop.png" alt="Roadmap" /><figcaption>The Landing Roadmap 30/60/90.</figcaption></figure>
+  </div>
+  <div class="grid g2" style="margin-top:5mm">
+    <div>
+      <h4>Dashboard</h4>
+      <p>Upcoming sessions, tickets, connections, notifications and community panels. Each stat card navigates somewhere real (this was a bug in the old portal and is covered by a test).</p>
+      <h4>Onboarding</h4>
+      <p>Each step saves on its own, so a member can stop and return. Goals and languages shape what they see next.</p>
+    </div>
+    <div>
+      <h4>Landing Roadmap</h4>
+      <p>A personal settling-in plan for the first 30, 60 and 90 days, generated from the member's residence situation: tasks, deadlines, reminders by email, and a calendar export. Roadmap emails are sent by a daily job that never repeats a reminder.</p>
+      <h4>Notifications and settings</h4>
+      <p>Profile, account, extra verified emails, privacy, billing. Members can export their data and ask for deletion (effective after 30 days, cancellable).</p>
+    </div>
+  </div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>11</span></div>
+</section>
+
+<!-- 12 GROWTH -->
+<section class="page">
+  <div class="eyebrow">10 · Growth</div>
+  <h2>Chapters, ambassadors, careers, volunteering</h2>
+  <div class="grid g2">
+    <figure class="shot"><img src="../screenshots/chapters-desktop.png" alt="Chapters" /><figcaption>The chapters world view: live chapters and cities members can vote for.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/ambassadors-desktop.png" alt="Ambassadors" /><figcaption>The ambassador programme: global, country and city tiers.</figcaption></figure>
+  </div>
+  <div class="grid g3" style="margin-top:5mm">
+    <div class="card"><h4>Chapters and votes</h4><p>A world view of live and launching chapters. Members can vote for the next city; country hub and city pages show sessions, festivals, ambassadors and member counts.</p></div>
+    <div class="card"><h4>Ambassadors</h4><p>Three tiers. Members apply, admins review, accepted ambassadors appear publicly (they can hide or withdraw). Benefits are placeholders until EiB decides.</p></div>
+    <div class="card"><h4>Careers and volunteering</h4><p>Open roles and a volunteer page with an application per role, reviewed on the admin Applications board.</p></div>
+  </div>
+  <div class="callout">The country and city pages read from a tagged cache, and decisions on ambassadors or votes refresh it immediately, so pages are fast and still correct.</div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>12</span></div>
+</section>
+
+<!-- 13 MEMBERSHIP -->
+<section class="page">
+  <div class="eyebrow">11 · Membership and the business model</div>
+  <h2>Members never pay to belong</h2>
+  <figure class="shot" style="margin:0 auto 4mm;width:80%"><img src="../screenshots/pricing-desktop.png" alt="Pricing" /><figcaption>The pricing page. All prices are placeholders ("proposal") until EiB approves them in the admin catalogs.</figcaption></figure>
+  <p>The north-star metric is <b>confirmed connections per month</b>. Anything that taxes connecting works against it, so money comes from people who get commercial value out of a large, verified international community.</p>
+  <table>
+    <tr><th style="width:28%">Who pays</th><th>For what</th></tr>
+    <tr><td>Members who want more</td><td>Member Plus (concierge, priority, early access)</td></tr>
+    <tr><td>Founders and small businesses</td><td>Business listing, lead inbox, featured in their Bubble</td></tr>
+    <tr><td>Service providers</td><td>Verified badge, quote requests, analytics</td></tr>
+    <tr><td>Employers relocating staff</td><td>Corporate seats, branded onboarding, aggregate report</td></tr>
+    <tr><td>Attendees and festival visitors</td><td>Paid session and festival tickets; stalls for vendors</td></tr>
+    <tr><td>Sponsors and partners</td><td>Event and festival partnerships with a signed report</td></tr>
+  </table>
+  <h4>Sequencing proposed in the business model</h4>
+  <ol style="margin:0 0 2mm;padding-left:5mm"><li>Now: free core, festival tickets and stalls, sponsor reports (no pricing risk)</li><li>Next: Verified Provider and Business plans in Kraków</li><li>Then: Member Plus, and Corporate once two or three employers ask</li></ol>
+  <div class="callout warn"><b>Decisions only EiB can make:</b> approve or change every proposed price; sponsorship packages and logo permissions; stall fee and refund policy; the legal entity that sells tickets and issues invoices (needed before Stripe live mode).</div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>13</span></div>
+</section>
+
+<!-- 14 TEAM + ADMIN -->
+<section class="page">
+  <div class="eyebrow">12 · The Team page and the admin centre</div>
+  <h2>People behind EiB, edited by EiB</h2>
+  <div class="grid g2">
+    <figure class="shot"><img src="../screenshots/team-desktop.png" alt="Team page" /><figcaption>The public Team page (placeholders shown: "Demo profile").</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/admin-team-desktop.png" alt="Team editor" /><figcaption>The admin editor: message, photo, people.</figcaption></figure>
+  </div>
+  <div class="grid g2" style="margin-top:4mm">
+    <div>
+      <h4>What admins can edit</h4>
+      <ul class="tick">
+        <li>The founder's message: heading, text, name, designation, photo</li>
+        <li>Each person: name, designation, group, short bio, time with EiB, LinkedIn, email, photo and its description</li>
+        <li>Show or hide a person, set the order, delete</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Built with care</h4>
+      <ul class="tick">
+        <li>Photos are re-encoded as small WebP images (EXIF location data removed); non-images are rejected</li>
+        <li>An email appears only if the person consented, and only when a visitor presses "Show email address" (not in the page source)</li>
+        <li>LinkedIn links must be https and on linkedin.com; every change is audited</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="shot" style="margin-top:3mm"><img src="../screenshots/admin-desktop.png" alt="Admin command centre" /><figcaption>The admin command centre: KPIs, charts and chapter health.</figcaption></figure>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>14</span></div>
+</section>
+
+<!-- 15 ADMIN TOOLS -->
+<section class="page">
+  <div class="eyebrow">12 · The admin centre</div>
+  <h2>Everything an organiser needs, audited</h2>
+  <div class="grid g2">
+    <figure class="shot"><img src="../screenshots/admin-members-desktop.png" alt="Members" /><figcaption>Members: search, filters, CSV export.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/admin-settings-desktop.png" alt="Settings" /><figcaption>Settings: feature flags and the site banner.</figcaption></figure>
+  </div>
+  <table style="margin-top:4mm">
+    <tr><th style="width:24%">Section</th><th>What it does</th></tr>
+    <tr><td>Overview</td><td>8 KPIs, sign-up and check-in charts, chapter health</td></tr>
+    <tr><td>Sessions, Festivals</td><td>Builders and consoles, check-in, Pulse, attendee export</td></tr>
+    <tr><td>Members, Roles</td><td>Search, export, suspend; grant and revoke roles per chapter</td></tr>
+    <tr><td>Providers</td><td>Verification queue with a checklist</td></tr>
+    <tr><td>Moderation, Applications</td><td>Reports queue; speaker, story, contributor, volunteer and stall boards</td></tr>
+    <tr><td>Ambassadors, Roulette</td><td>Review applications; draw and inspect weekly rounds</td></tr>
+    <tr><td>Catalogs</td><td>Event formats, provider categories, plan prices, with no deploy</td></tr>
+    <tr><td>Team</td><td>The Team page editor</td></tr>
+    <tr><td>Settings, System</td><td>Feature flags, banner, health and job status</td></tr>
+    <tr><td>Audit log</td><td>Who did what, when, to which record (no personal data in details)</td></tr>
+  </table>
+  <p>A command palette (Ctrl K) jumps to any section. Chapter leads see only their own chapter; global sections are admin-only and guarded on the server.</p>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>15</span></div>
+</section>
+
+<!-- 16 PLATFORM, i18n, brand -->
+<section class="page">
+  <div class="eyebrow">13 · Languages, SEO, privacy and brand</div>
+  <h2>Built for people everywhere</h2>
+  <div class="grid g2" style="grid-template-columns:1.3fr 1fr">
+    <div>
+      <h4>Languages</h4>
+      <p>English, Polish and Ukrainian, with about {{keys}} translated strings per language. Dates, money and time zones follow the chapter. Polish and Ukrainian are machine-translated and need review by native speakers.</p>
+      <h4>Search and sharing</h4>
+      <p>hreflang alternates, JSON-LD structured data, social cards, a sitemap and a robots file that keeps private areas out of search.</p>
+      <h4>Privacy (GDPR)</h4>
+      <ul class="tick"><li>Consent before non-essential cookies</li><li>Data export and deletion from settings</li><li>Aggregates under 5 people are hidden</li><li>No personal data is ever sent to an AI model</li></ul>
+      <h4>Accessibility</h4>
+      <p>Semantic HTML, labels, visible focus, 44 px touch targets, no colour-only meaning, reduced-motion support. Every text and background pair is listed in a contrast table that a test enforces at 4.5:1 (3:1 for borders and focus).</p>
+    </div>
+    <figure class="shot"><img src="../screenshots/home-pl-desktop.png" alt="Home in Polish" /><figcaption>The home page in Polish (<code>/pl</code>).</figcaption></figure>
+  </div>
+  <h3>Brand</h3>
+  <div class="grid g4">
+    <div class="swatch" style="background:#093334">Deep Teal<br />#093334</div>
+    <div class="swatch" style="background:#074c4c">Logo teal<br />#074C4C</div>
+    <div class="swatch" style="background:#12635a">EiB Green<br />#12635A</div>
+    <div class="swatch" style="background:#c5e8eb;color:#093334">Tint<br />#C5E8EB</div>
+  </div>
+  <p style="margin-top:3mm">Headings use <b>Cabin</b> (sentence case); body text uses <b>Nunito Sans</b>. Ember (#FF3514 / #C2260C) is used sparingly for one highlight button. Tone: warm, inclusive, concrete; always date, time, venue and price. Motion is limited to transform and opacity, under 600 ms, with reduced-motion fallbacks.</p>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>16</span></div>
+</section>
+
+<!-- 17 ARCHITECTURE -->
+<section class="page">
+  <div class="eyebrow">14 · Architecture</div>
+  <h2>How it is built</h2>
+  <div class="layer" style="background:var(--wash);border:1px solid var(--line)"><b>Browser</b> · Server Components by default, small client islands (forms, map, QR scanner)</div>
+  <div class="layer" style="background:var(--green);color:#fff"><b>Next.js 16, App Router, Cache Components</b> · pages, layouts, streaming, tagged caching, locale routing and security headers</div>
+  <div class="grid g3" style="margin-bottom:2.4mm">
+    <div class="layer" style="background:var(--logo);color:#fff;margin:0"><b>server/actions</b><br />auth → Zod → permission → write → audit → revalidate ({{actions}} actions)</div>
+    <div class="layer" style="background:var(--logo);color:#fff;margin:0"><b>app/api</b><br />Stripe webhook, concierge stream, Pulse (SSE), calendar, check-in, team photo and email, health</div>
+    <div class="layer" style="background:var(--logo);color:#fff;margin:0"><b>lib/</b><br />auth, permissions, ai, db, env, i18n, money, time, security, features</div>
+  </div>
+  <div class="grid g3">
+    <div class="layer" style="background:var(--deep);color:#fff;margin:0"><b>PostgreSQL 17 + pgvector</b><br />Prisma 7; guide vectors; rate limits; audit log</div>
+    <div class="layer" style="background:var(--deep);color:#fff;margin:0"><b>Better Auth</b><br />email sign-in links, optional Google, sessions</div>
+    <div class="layer" style="background:var(--deep);color:#fff;margin:0"><b>Outside services</b><br />SMTP email, Stripe (test), AI provider (optional)</div>
+  </div>
+  <h3>Tech stack</h3>
+  <table>
+    <tr><th style="width:26%">Layer</th><th>Choice</th></tr>
+    <tr><td>Framework</td><td>Next.js 16, React, TypeScript (strict), Server Actions</td></tr>
+    <tr><td>UI</td><td>Tailwind CSS v4, shadcn/ui (Radix), Motion, lucide icons</td></tr>
+    <tr><td>Data</td><td>PostgreSQL 17 with pgvector, Prisma ORM 7 with the pg adapter</td></tr>
+    <tr><td>Auth and forms</td><td>Better Auth; Zod and React Hook Form</td></tr>
+    <tr><td>AI</td><td>Vercel AI SDK v6 behind one provider file; local embeddings (all-MiniLM-L6-v2, 384 dimensions)</td></tr>
+    <tr><td>Payments, email</td><td>Stripe (test mode: card, BLIK, Przelewy24); SMTP (Mailpit locally)</td></tr>
+    <tr><td>i18n, content, maps</td><td>next-intl (en, pl, uk); MDX guides; d3-geo SVG maps</td></tr>
+    <tr><td>Quality</td><td>Vitest, Testing Library, Playwright, axe-core, ESLint, Lighthouse</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>17</span></div>
+</section>
+
+<!-- 18 DATA MODEL + RULES -->
+<section class="page">
+  <div class="eyebrow">15 · Data model and engineering rules</div>
+  <h2>Data and the rules every change follows</h2>
+  <div class="grid g2">
+    <div>
+      <h3 style="margin-top:0">{{models}} models, main groups</h3>
+      <table>
+        <tr><th style="width:30%">Group</th><th>Examples</th></tr>
+        <tr><td>Identity</td><td>User, Session, Profile, Consent, ChapterRole, Notification</td></tr>
+        <tr><td>Geography</td><td>Country, Chapter, ChapterRequest and votes, Venue</td></tr>
+        <tr><td>Events</td><td>Event, TicketType, Ticket, CheckIn, programme, shifts, stalls, sponsors</td></tr>
+        <tr><td>Community</td><td>Connection, Bubble, Group, Post, reports, Roulette</td></tr>
+        <tr><td>Directory</td><td>Business, Provider, verification, QuoteRequest, Review</td></tr>
+        <tr><td>Knowledge</td><td>Guide, GuideChunk (vector), ConciergeQuery, roadmap tasks</td></tr>
+        <tr><td>Growth</td><td>Ambassadors, OpenRole, applications</td></tr>
+        <tr><td>Team</td><td>FounderMessage, TeamMember</td></tr>
+        <tr><td>Billing and ops</td><td>Plan, Subscription, StripeEvent, AuditLog, RateLimit, SiteSetting</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Engineering rules (from CLAUDE.md)</h3>
+      <ul class="tick">
+        <li>Plan before coding; small reviewable steps; Conventional Commits</li>
+        <li>Never invent company facts; legal statements cite official sources</li>
+        <li>Nothing hard-codes a city, currency, time zone or language</li>
+        <li>Money is integer minor units plus a currency; times stored in UTC, shown in the chapter's zone</li>
+        <li>Every clickable element works; no empty pages</li>
+        <li>Server Components by default; strings only through next-intl; files under 250 lines</li>
+        <li>No colour literals in components (a test scans); every colour pair passes contrast</li>
+        <li>Secrets never committed; environment validated with Zod at startup</li>
+        <li>Finish each task with <code>npm run check</code> and a progress-log entry</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Folder map</h3>
+<pre>app/[locale]/(public|member|provider|admin|tools)   pages by audience
+app/api                                               routes for outside callers only
+components/  lib/  server/actions/  config/           UI, logic, writes, swappable values
+prisma/ (schema, {{migrations}} migrations, seed base + demo)   content/ (guides, legal)   messages/ (en, pl, uk)
+tests/unit   tests/e2e   scripts/   docs/</pre>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>18</span></div>
+</section>
+
+<!-- 19 SECURITY -->
+<section class="page">
+  <div class="eyebrow">16 · Security</div>
+  <h2>Security and abuse protection</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Access control</h4><ul class="tick"><li>Roles checked on the server for every action and page</li><li>The database row is reloaded and permissions re-checked; hidden form fields are never trusted</li><li>Anonymous or wrong-role access gets a sign-in prompt or a styled 403, and no personal data is in the response ({{access_total}} checks, all passing)</li></ul></div>
+    <div class="card"><h4>Input and output</h4><ul class="tick"><li>Zod validation on every action; ids validated</li><li>Uploads decoded and re-encoded; size and type limited</li><li>Reflected-input probes found no unescaped output</li></ul></div>
+    <div class="card"><h4>Abuse limits</h4><ul class="tick"><li>Per-account, layered limits (burst plus daily) for posts, reactions, reports, applications, billing, reviews, admin and account writes</li><li>Limits live in Postgres, so they hold across servers and restarts</li><li>Sign-in is rate-limited per IP</li></ul></div>
+    <div class="card"><h4>Platform</h4><ul class="tick"><li>Content Security Policy, frame denial, no-sniff, strict referrer policy, COOP and CORP headers; HSTS on HTTPS</li><li>Stripe webhooks signature-verified; client amounts never trusted</li><li>Secrets validated at startup; test keys only</li></ul></div>
+  </div>
+  <h3>Privacy by design</h3>
+  <ul class="tick">
+    <li>No personal data reaches an AI model: prompts contain only the question and retrieved guide passages</li>
+    <li>Profile fields are opt-in per field; connection contact details appear only after acceptance; team emails only with consent</li>
+    <li>Aggregates below 5 people are hidden in reports and analytics</li>
+    <li>Data export and deletion are self-service; admin actions are audited without personal data in the details</li>
+  </ul>
+  <div class="callout warn"><b>Honest limits.</b> The Content Security Policy allows inline scripts, because streaming rendering cannot use per-request nonces; the protection against script injection therefore rests on output encoding, which the probes confirmed. Stripe is test-only. Legal texts need a lawyer. The licence needs legal review.</div>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>19</span></div>
+</section>
+
+<!-- 20 TESTING -->
+<section class="page">
+  <div class="eyebrow">17 · Testing and quality</div>
+  <h2>How it was tested, and what the results were</h2>
+  <div class="grid g4" style="margin-bottom:4mm">
+    <div class="card stat"><b>{{unit}}</b><span>unit tests passing</span></div>
+    <div class="card stat"><b>{{e2e_desktop}}</b><span>browser tests, each run at desktop and 375 px</span></div>
+    <div class="card stat"><b>{{crawl_pages}}</b><span>pages followed by the link crawler, 0 broken</span></div>
+    <div class="card stat"><b>{{access_pass}}/{{access_total}}</b><span>access-control and security probes passed</span></div>
+  </div>
+  <table>
+    <tr><th style="width:26%">Layer</th><th>What it checks</th></tr>
+    <tr><td>Static</td><td>ESLint, strict TypeScript, Prettier; a scan forbids colour literals and the bare <code>cn</code> package</td></tr>
+    <tr><td>Unit</td><td>Permissions, capacity and waitlist rules, money, time zones, env parsing, message-catalogue parity (en, pl, uk), contrast pairs, team schemas, concierge gate</td></tr>
+    <tr><td>End to end</td><td>Real browser flows: sign-in, RSVP and QR ticket, waitlist promotion, check-in, Pulse, festivals, community, moderation, admin, team editor, pricing, i18n, concierge</td></tr>
+    <tr><td>Accessibility</td><td>axe-core (WCAG 2 A and AA) inside the browser tests on key pages in every language, plus keyboard and reduced-motion checks</td></tr>
+    <tr><td>Link crawler</td><td>Follows every nav and footer link; every button must do something</td></tr>
+    <tr><td>Route sweep</td><td>A script visits every route as the right persona at both widths (<code>scripts/qa-sweep.mjs</code>). A first run was stopped early to save time on the development laptop; a complete run is the next step</td></tr>
+    <tr><td>Security probes</td><td>Headers, anonymous API access, methods, traversal, reflected input, rate limits</td></tr>
+    <tr><td>Performance</td><td>Lighthouse mobile on key pages</td></tr>
+  </table>
+  <div class="callout"><b>Result summary.</b> {{result_sentence}} The full, itemised report (every route, every finding, with severity) is <code>docs/TEST_REPORT.md</code>.</div>
+  <h3>Findings are reported, not hidden</h3>
+  <p>{{findings_sentence}}</p>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>20</span></div>
+</section>
+
+<!-- 21 PERFORMANCE -->
+<section class="page">
+  <div class="eyebrow">17 · Quality</div>
+  <h2>Performance and accessibility scores</h2>
+  <p class="lead">Lighthouse, mobile profile, production build. Targets are 90 or more in every category.</p>
+  {{lighthouse_table}}
+  <p style="font-size:8.6pt;color:var(--muted)">{{lighthouse_note}}</p>
+  <h3>Design choices that keep it fast</h3>
+  <ul class="tick">
+    <li>Server Components and streaming: pages show their frame immediately and fill data inside Suspense</li>
+    <li>Tagged caching: chapter, country, festival and team data are cached and refreshed by the exact action that changes them</li>
+    <li>CSS keyframes for entrance animation on public pages, so JavaScript stays small; Motion loads only on pages that use it</li>
+    <li>SVG maps, local embeddings, self-hosted fonts: no third-party trackers or tile services</li>
+    <li>Team photos are resized to 640 px WebP and cached for a year under a versioned URL</li>
+  </ul>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>21</span></div>
+</section>
+
+<!-- 22 DEPLOY + ROADMAP -->
+<section class="page">
+  <div class="eyebrow">18 · Going live</div>
+  <h2>Deployment, roadmap and open decisions</h2>
+  <h3 style="margin-top:2mm">Free deployment path (full guide: docs/DEPLOY.md)</h3>
+  <div class="flow">
+    <div style="background:var(--wash)"><b>1 Database</b><br />Neon free Postgres with pgvector</div><div class="arrow">→</div>
+    <div style="background:var(--wash)"><b>2 Prepare</b><br />migrate, base seed, embed guides</div><div class="arrow">→</div>
+    <div style="background:var(--wash)"><b>3 Email</b><br />Brevo SMTP (300 a day free)</div><div class="arrow">→</div>
+    <div style="background:var(--wash)"><b>4 App</b><br />Render web service</div><div class="arrow">→</div>
+    <div style="background:var(--tint)"><b>5 Admin and jobs</b><br />first admin, GitHub cron</div>
+  </div>
+  <p style="margin-top:3mm;font-size:9pt">Free plans sleep when idle (the first visit after a pause can take about a minute) and have storage limits; the guide lists them with sources. A paid instance removes the pause for launch events. A public site must run with demo mode off and only the base seed.</p>
+  <h3>Roadmap</h3>
+  <div class="grid g3">
+    <div class="card tint"><h4>MVP · this build</h4><p>All features above, demo data, local and free-tier ready.</p></div>
+    <div class="card tint"><h4>V1 · paid pilot in Kraków</h4><p>Real prices, entity, refund policy, legal review, verified providers and Business plans.</p></div>
+    <div class="card tint"><h4>V2 · Poland, then global</h4><p>Warsaw live, more chapters, Member Plus and Corporate, native-reviewed languages.</p></div>
+  </div>
+  <h3>Open items (known gaps)</h3>
+  <table>
+    <tr><th style="width:38%">Item</th><th>Owner</th></tr>
+    <tr><td>Approve prices and plans; sponsorship packages; stall fees</td><td>EiB</td></tr>
+    <tr><td>Refund policy; legal entity for tickets and invoices; Stripe live mode</td><td>EiB and a lawyer</td></tr>
+    <tr><td>Review privacy, terms and cookie texts; review the licence</td><td>Lawyer</td></tr>
+    <tr><td>Native review of Polish and Ukrainian</td><td>EiB volunteers</td></tr>
+    <tr><td>Real founder message, team, photos, partner logos (with permission)</td><td>EiB, entered in the admin area</td></tr>
+    <tr><td>Vector logo source; real EiB event photos</td><td>EiB</td></tr>
+    <tr><td>Hosting choice and domain; production monitoring</td><td>EiB and developers</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>22</span></div>
+</section>
+
+<!-- 23 DEVELOPER -->
+<section class="page">
+  <div class="eyebrow">Appendix A · For developers</div>
+  <h2>Run it, test it, change it</h2>
+<pre>git clone &lt;private repository&gt; &amp;&amp; cd eib-platform
+npm run setup      # install, Docker (Postgres + Mailpit), migrate, seed, embed guides
+npm run dev        # http://localhost:3000   emails: http://localhost:8025
+npm run check      # lint + typecheck + unit tests (before every commit)
+npm run build &amp;&amp; npm start      # production build (use this for demos)
+npm run e2e        # Playwright with axe and link crawler (needs the database)
+npm run lighthouse # performance audit of a running production server
+npm run demo:reset # restore the demo data</pre>
+  <div class="grid g2">
+    <div>
+      <h4>Demo accounts (demo mode only)</h4>
+      <table>
+        <tr><th>Role</th><th>Email</th></tr>
+        <tr><td>Admin</td><td>admin@demo.eib.local</td></tr>
+        <tr><td>Chapter lead</td><td>lead@demo.eib.local</td></tr>
+        <tr><td>Member</td><td>priya@ and karim@demo.eib.local</td></tr>
+        <tr><td>Provider</td><td>marta.provider@demo.eib.local</td></tr>
+        <tr><td>Sponsor</td><td>sponsor@demo.eib.local</td></tr>
+      </table>
+      <p style="font-size:8.6pt;color:var(--muted)">The shared demo password is in the README. Never deploy a public site in demo mode.</p>
+    </div>
+    <div>
+      <h4>Key environment variables</h4>
+      <table>
+        <tr><th>Variable</th><th>Purpose</th></tr>
+        <tr><td><code>DATABASE_URL</code></td><td>Postgres with pgvector</td></tr>
+        <tr><td><code>APP_URL</code>, <code>BETTER_AUTH_URL</code></td><td>Public address (must match)</td></tr>
+        <tr><td><code>BETTER_AUTH_SECRET</code></td><td>32+ random characters</td></tr>
+        <tr><td><code>SMTP_*</code>, <code>EMAIL_FROM</code></td><td>Email delivery</td></tr>
+        <tr><td><code>AI_PROVIDER</code></td><td>demo, groq, gemini, openrouter, anthropic</td></tr>
+        <tr><td><code>FEATURE_*</code></td><td>Feature flag defaults</td></tr>
+        <tr><td><code>TRUSTED_PROXY_HOPS</code></td><td>1 behind one proxy</td></tr>
+      </table>
+    </div>
+  </div>
+  <h4>Useful scripts</h4>
+  <p><code>npm run admin:grant -- email</code> first admin · <code>npm run jobs -- reminders|roulette</code> scheduled jobs · <code>npm run crawl</code> link crawler · <code>npm run db:seed -- --base-only</code> production seed · <code>node scripts/qa-sweep.mjs</code> route sweep · <code>node scripts/capture-screenshots.mjs</code> screenshots.</p>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>23</span></div>
+</section>
+
+<!-- 24 ROUTES -->
+<section class="page">
+  <div class="eyebrow">Appendix B · Route map</div>
+  <h2>Every page in the product</h2>
+  <div class="grid g3" style="font-size:8.6pt">
+    <div><h4>Public</h4><p>Home · Events · Event formats · Event page · Festivals · Festival page · Chapters · Chapter · Country hub · Bubbles · Bubble · Guides · Guide · Members · Member · Providers · Provider · Verification criteria · Businesses · Pricing · Corporate pricing · Ambassadors · Careers · Role · Volunteer · Get involved · <b>Team</b> · Help · Concierge · Privacy · Terms · Cookies · Sign in · Sponsor report</p></div>
+    <div><h4>Member</h4><p>Dashboard · Onboarding · Roadmap · Coffee Roulette · Community · Group · Connections · Who I met · Notifications · My events · My businesses · Ticket · Settings (profile, account, email, privacy, billing)</p><h4>Provider</h4><p>Inbox · Analytics</p></div>
+    <div><h4>Admin</h4><p>Command centre · Sessions · New session · Check-in · Pulse · Festivals · Festival console · Members · Providers · Provider review · Moderation · Applications · Ambassadors · Roles · Roulette · Audit log · Catalogs · <b>Team</b> · Settings · System</p><h4>Developer</h4><p>Styleguide (development and demo mode only)</p></div>
+  </div>
+  <h3>API routes (for outside callers only)</h3>
+  <p style="font-size:8.8pt">Authentication · Stripe webhook · Concierge stream · Session Pulse (SSE) · Check-in · Calendar files (sessions, roadmap) · Email verification · Account and admin exports · Festival attendees export · <b>Team photo</b> · <b>Team email reveal</b> · Health</p>
+  <h3>Glossary</h3>
+  <table style="font-size:8.4pt">
+    <tr><td><b>Chapter</b></td><td>A city community with its own sessions, lead, time zone and currency</td></tr>
+    <tr><td><b>Bubble</b></td><td>A group by country of origin, led by a Bubble Lead, across all chapters</td></tr>
+    <tr><td><b>Pulse</b></td><td>The live arrivals screen at a session</td></tr>
+    <tr><td><b>Concierge</b></td><td>The AI assistant that answers only from cited guides</td></tr>
+    <tr><td><b>Entitlement</b></td><td>A feature unlocked by a paid plan, separate from a role</td></tr>
+    <tr><td><b>Demo data</b></td><td>Fictional records flagged <code>isDemo</code>, removable in one command</td></tr>
+    <tr><td><b>Feature flag</b></td><td>A switch an admin flips without a deploy</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · platform guide</span><span>24</span></div>
+</section>
+
+<!-- 25 BACK -->
+<section class="page dark" style="padding:0">
+  <div style="position:absolute;inset:0;background:radial-gradient(110mm 110mm at 20% 20%, rgba(197,232,235,.16), transparent 60%);"></div>
+  <div style="position:absolute;left:22mm;right:22mm;top:70mm;text-align:left">
+    <img src="../../public/brand/eib-monogram.png" alt="" style="width:30mm;border-radius:50%;margin-bottom:8mm" />
+    <h2 style="font-size:30pt;margin-bottom:5mm">Now open the real product.</h2>
+    <p style="font-size:12pt;color:#cfe8e6;max-width:130mm">Start with the home page, then try the paths in <code style="background:#1c5456;color:#fff">docs/DEMO_SCRIPT.md</code>: reserve a place, ask the concierge, open the admin centre and edit the Team page.</p>
+    <p style="margin-top:12mm;font-size:10pt;color:#9fc4c2">Contact: info.expatsinbusiness@gmail.com · m.me/expatsinbusiness</p>
+    <p style="font-size:9pt;color:#9fc4c2;max-width:140mm;margin-top:12mm">© 2024–2026 Expats in Business. All rights reserved. This document and the software it describes are proprietary and confidential, for the exclusive use of Expats in Business and persons it has authorised in writing.</p>
+  </div>
+</section>
+
+</body>
+</html>

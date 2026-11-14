@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import type { Metadata } from "next";
 import { forbidden } from "next/navigation";
 import { DownloadIcon, SearchIcon, UsersIcon } from "lucide-react";
@@ -38,6 +39,7 @@ function pageHref(f: MemberFilters, page: number) {
 }
 
 async function MembersTable({ searchParams }: { searchParams: Props["searchParams"] }) {
+  await connection();
   const user = await requirePermission("admin.access");
   if (!isAdmin(user)) forbidden();
   const raw = await searchParams;

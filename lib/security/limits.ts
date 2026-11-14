@@ -48,6 +48,24 @@ export const LIMITS = {
     [3, 3600],
     [6, 86_400],
   ],
+  // Stripe Checkout and portal sessions (each call costs an API request).
+  billing: [
+    [10, 3600],
+    [30, 86_400],
+  ],
+  review: [
+    [5, 3600],
+    [20, 86_400],
+  ],
+  verify: [
+    [3, 3600],
+    [6, 86_400],
+  ],
+  // Cheap owner-scoped writes (profile, settings, responses): stops scripted hammering only.
+  account: [
+    [60, 600],
+    [400, 86_400],
+  ],
   broadcast: [
     [2, 3600],
     [5, 86_400],

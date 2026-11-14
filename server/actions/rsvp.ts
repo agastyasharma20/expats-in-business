@@ -8,13 +8,15 @@ import { z } from "zod";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { formId } from "@/lib/festivals/form";
 import { getEnv } from "@/lib/env";
 import { CHECKOUT_SESSION_MINUTES } from "@/lib/events/capacity";
-import { claimTicket, promoteWaitlist, renewHold, sendTicketEmail } from "@/lib/events/tickets";
+import { claimTicket, promoteWaitlist, renewHold } from "@/lib/events/tickets";
 import { rateLimit } from "@/lib/rate-limit";
 import { getStripe, paymentMethodsFor } from "@/lib/stripe";
 
 import type { ActionState } from "./account";
+import { sendTicketEmail } from "@/lib/events/ticket-followups";
 
 const rsvpSchema = z.object({
   eventId: z.string().min(1).max(40),
@@ -149,7 +151,7 @@ export async function rsvp(_prev: ActionState, form: FormData): Promise<ActionSt
 export async function payTicket(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser();
   const ticket = await getDb().ticket.findFirst({
-    where: { id: String(form.get("ticketId")), userId: user.id, status: "reserved" },
+    where: { id: formId(form, "ticketId"), userId: user.id, status: "reserved" },
     select: { id: true, event: { select: { slug: true } } },
   });
   if (!ticket) return { ok: false, message: "invalid" };

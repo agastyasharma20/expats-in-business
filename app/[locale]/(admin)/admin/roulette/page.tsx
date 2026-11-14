@@ -11,7 +11,7 @@ import { isAdmin } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
 import { weekStart } from "@/lib/community/roulette";
 import { getDb } from "@/lib/db";
-import { runRouletteNow } from "@/server/actions/admin";
+import { runRouletteNow } from "@/server/actions/admin-ops";
 
 // Session-bound page: blocking navigation is expected (no instant prerender).
 export const instant = false;

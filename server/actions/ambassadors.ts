@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { forbidden } from "next/navigation";
 import { z } from "zod";
 
@@ -55,12 +55,14 @@ export async function applyAmbassador(_prev: ActionState, form: FormData): Promi
     throw error;
   }
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   revalidatePath("/admin/ambassadors");
   return { ok: true, message: "sent" };
 }
 
 export async function withdrawAmbassador(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/ambassadors");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const id = idField.safeParse(form.get("id"));
   if (!id.success) return { ok: false };
   const { count } = await getDb().ambassadorApplication.updateMany({
@@ -73,6 +75,7 @@ export async function withdrawAmbassador(_prev: ActionState, form: FormData): Pr
   });
   if (!count) return { ok: false };
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   return { ok: true, message: "withdrawn" };
 }
 
@@ -82,9 +85,11 @@ export async function setAmbassadorVisibility(
   form: FormData,
 ): Promise<ActionState> {
   const user = await requireUser("/ambassadors");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const visible = form.get("visible") === "true";
   await getDb().ambassador.updateMany({ where: { userId: user.id }, data: { isVisible: visible } });
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   return { ok: true, message: visible ? "shown" : "hidden" };
 }
 
@@ -146,5 +151,6 @@ export async function reviewAmbassador(_prev: ActionState, form: FormData): Prom
   }
   revalidatePath("/admin/ambassadors");
   revalidatePath("/ambassadors");
+  updateTag("chapters");
   return { ok: true, message: status };
 }

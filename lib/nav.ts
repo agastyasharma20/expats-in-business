@@ -41,6 +41,7 @@ export const directoryNav = [
   { id: "bubbles", href: "/bubbles", labelKey: "nav.bubbles", status: "live" },
   { id: "festivals", href: "/festivals", labelKey: "nav.festivals", status: "live" },
   { id: "involved", href: "/get-involved", labelKey: "nav.involved", status: "live" },
+  { id: "team", href: "/team", labelKey: "nav.team", status: "live" },
 ] as const satisfies readonly NavItem[];
 
 /** Ways to grow EiB: chapters, the ambassador programme, volunteering and roles (footer column). */

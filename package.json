@@ -2,6 +2,7 @@
   "name": "eib-platform",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "type": "module",
   "engines": {
     "node": ">=24"
@@ -27,6 +28,7 @@
     "demo:reset": "tsx scripts/demo-reset.ts",
     "embed": "tsx scripts/embed-guides.ts",
     "jobs": "tsx scripts/jobs.ts",
+    "admin:grant": "tsx scripts/grant-admin.ts",
     "stripe:listen": "node scripts/stub.mjs stripe:listen 7",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -62,7 +64,6 @@
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "remark-gfm": "4.0.1",
-    "shadcn": "4.23.0",
     "sonner": "2.0.8",
     "stripe": "23.1.0",
     "topojson-client": "3.1.0",
@@ -102,6 +103,7 @@
     "prettier": "3.9.10",
     "prettier-plugin-tailwindcss": "0.8.1",
     "prisma": "7.10.1",
+    "shadcn": "4.23.0",
     "sharp": "0.35.5",
     "tailwindcss": "4.3.5",
     "tsx": "4.23.15",

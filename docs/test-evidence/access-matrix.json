@@ -1,0 +1,379 @@
+[
+  {
+    "kind": "page",
+    "path": "/dashboard",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/settings/account",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/roadmap",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/connections",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/notifications",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/team",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/members",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/provider/inbox",
+    "who": "visitor",
+    "expect": "signin",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/team",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/members",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/roles",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/system",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/settings",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/catalogs",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/audit",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/provider/analytics",
+    "who": "member",
+    "expect": "403",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/dashboard",
+    "who": "member",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/settings/profile",
+    "who": "member",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/team",
+    "who": "visitor",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin",
+    "who": "admin",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/team",
+    "who": "admin",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/members",
+    "who": "admin",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 5,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/roles",
+    "who": "admin",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "page",
+    "path": "/admin/audit",
+    "who": "admin",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "leaked": 0,
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/admin/export",
+    "who": "visitor",
+    "expect": "401/403",
+    "status": 403,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/admin/export",
+    "who": "member",
+    "expect": "401/403",
+    "status": 403,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/account/export",
+    "who": "visitor",
+    "expect": "401",
+    "status": 401,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/account/export",
+    "who": "member",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/roadmap/ics",
+    "who": "visitor",
+    "expect": "401",
+    "status": 401,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/admin/festivals/x/attendees",
+    "who": "member",
+    "expect": "401/403/404",
+    "status": 403,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "POST /api/team/email/doesnotexist",
+    "who": "visitor",
+    "expect": "404",
+    "status": 404,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/team/email/x",
+    "who": "visitor",
+    "expect": "405",
+    "status": 405,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/team/photo/doesnotexist",
+    "who": "visitor",
+    "expect": "404",
+    "status": 404,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "POST /api/stripe/webhook",
+    "who": "visitor",
+    "expect": "400/503",
+    "status": 503,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "api",
+    "path": "GET /api/health",
+    "who": "visitor",
+    "expect": "200",
+    "status": 200,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "csrf",
+    "path": "POST sign-in with foreign Origin",
+    "who": "visitor",
+    "expect": "4xx",
+    "status": 403,
+    "loc": "",
+    "pass": true
+  },
+  {
+    "kind": "ratelimit",
+    "path": "POST sign-in x9 (wrong password)",
+    "who": "visitor",
+    "expect": "429 appears",
+    "status": "401,401,429,429,429,429,429,429,429",
+    "loc": "",
+    "pass": true
+  }
+]

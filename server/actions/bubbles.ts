@@ -75,6 +75,7 @@ export async function setBubbleVisibility(
   form: FormData,
 ): Promise<ActionState> {
   const user = await requireUser("/bubbles");
+  if (!(await withinLimits(user.id, "bubble"))) return { ok: false, message: "rateLimited" };
   const bubble = await loadBubble(form);
   if (!bubble) return { ok: false };
   const visible = form.get("visible") === "true";

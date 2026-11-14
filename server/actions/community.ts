@@ -167,6 +167,7 @@ export async function togglePin(_prev: ActionState, form: FormData): Promise<Act
 /** Authors may delete their own post; it is kept as removed for the audit trail. */
 export async function deleteOwnPost(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/community");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const postId = id.safeParse(form.get("postId"));
   if (!postId.success) return { ok: false };
   const ctx = await postContext(postId.data, user);

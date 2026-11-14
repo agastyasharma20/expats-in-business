@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { slugify } from "@/lib/slug";
 import { ONBOARDING_STEPS, RESIDENCE_SITUATIONS as RESIDENCE } from "@/lib/onboarding";
+import { withinLimits } from "@/lib/security/limits";
 import { syncRoadmap } from "@/lib/roadmap/service";
 
 import type { ActionState } from "./account";
@@ -58,6 +59,7 @@ async function assignFoundingNumber(profileId: string, chapterId: string) {
 /** Saves one onboarding step (each step persists on its own), then moves to the next. */
 export async function saveOnboardingStep(_prev: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser("/onboarding");
+  if (!(await withinLimits(user.id, "account"))) return { ok: false, message: "rateLimited" };
   const step = String(form.get("step")) as (typeof ONBOARDING_STEPS)[number];
   const index = ONBOARDING_STEPS.indexOf(step);
   if (index < 0) return { ok: false, message: "invalid" };

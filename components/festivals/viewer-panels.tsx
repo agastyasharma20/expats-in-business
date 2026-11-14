@@ -26,6 +26,7 @@ const signInHref = (slug: string, anchor: string) =>
 
 /** The member's ticket, the ticket picker, or a sign-in link. */
 export async function TicketsPanel({ festival }: { festival: PublicFestival }) {
+  await connection();
   const [t, { user, data }] = await Promise.all([
     getTranslations("festival"),
     viewerFor(festival.id),

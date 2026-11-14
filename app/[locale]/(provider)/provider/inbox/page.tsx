@@ -9,7 +9,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
-import { requestVerification, respondQuote } from "@/server/actions/directory";
+import { respondQuote } from "@/server/actions/directory";
+import { requestVerification } from "@/server/actions/verification";
 
 // Session-bound page: blocking navigation is expected (no instant prerender).
 export const instant = false;

@@ -13,7 +13,7 @@ import { isAdmin } from "@/lib/auth/permissions";
 import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { Link } from "@/lib/i18n/navigation";
-import { decideVerification } from "@/server/actions/directory";
+import { decideVerification } from "@/server/actions/verification";
 
 type Props = PageProps<"/[locale]/admin/providers/[id]">;
 

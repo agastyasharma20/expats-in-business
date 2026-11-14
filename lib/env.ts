@@ -39,6 +39,11 @@ export const envSchema = z.object({
   // Email
   SMTP_HOST: z.string().default("localhost"),
   SMTP_PORT: z.coerce.number().int().positive().default(1025),
+  /** Login for a real SMTP provider (Brevo, Resend, ...); leave empty for Mailpit. */
+  SMTP_USER: optional(z.string()),
+  SMTP_PASSWORD: optional(z.string()),
+  /** true = TLS from the start (port 465); false = STARTTLS when offered (port 587). */
+  SMTP_SECURE: flag(false),
   ADMIN_INBOX_EMAIL: z.preprocess(
     (x) => (x === "" ? undefined : x),
     z.email().default("admin@demo.eib.local"),

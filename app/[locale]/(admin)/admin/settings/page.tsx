@@ -16,7 +16,8 @@ import { requirePermission } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { getFlags } from "@/lib/features";
 import { cn } from "@/lib/utils";
-import { broadcast, setBanner, setFeatureFlag } from "@/server/actions/admin";
+import { setBanner, setFeatureFlag } from "@/server/actions/admin";
+import { broadcast } from "@/server/actions/admin-ops";
 
 // Session-bound page: blocking navigation is expected (no instant prerender).
 export const instant = false;

@@ -349,7 +349,8 @@
     }
   },
   "footer": {
-    "platform": "Platform",
+    "explore": "Explore",
+    "community": "Community",
     "legal": "Legal",
     "connect": "Follow EiB",
     "contact": "Contact",

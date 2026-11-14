@@ -28,6 +28,7 @@ export const mainNav = [
   { id: "providers", href: "/providers", labelKey: "nav.providers", status: "live" },
   { id: "guides", href: "/guides", labelKey: "nav.guides", status: "live" },
   { id: "pricing", href: "/pricing", labelKey: "nav.pricing", status: "live" },
+  { id: "team", href: "/team", labelKey: "nav.team", status: "live" },
 ] as const satisfies readonly NavItem[];
 
 export const accountNav = {
@@ -41,7 +42,6 @@ export const directoryNav = [
   { id: "bubbles", href: "/bubbles", labelKey: "nav.bubbles", status: "live" },
   { id: "festivals", href: "/festivals", labelKey: "nav.festivals", status: "live" },
   { id: "involved", href: "/get-involved", labelKey: "nav.involved", status: "live" },
-  { id: "team", href: "/team", labelKey: "nav.team", status: "live" },
 ] as const satisfies readonly NavItem[];
 
 /** Ways to grow EiB: chapters, the ambassador programme, volunteering and roles (footer column). */
@@ -67,10 +67,11 @@ export const socialNav = [
 
 /** Footer columns, in display order. Headings are message keys under `footer.*`. */
 export const footerColumns = [
+  { id: "explore", headingKey: "footer.explore", items: mainNav },
   {
-    id: "platform",
-    headingKey: "footer.platform",
-    items: [...mainNav, ...directoryNav, accountNav.signIn, accountNav.help],
+    id: "community",
+    headingKey: "footer.community",
+    items: [...directoryNav, accountNav.signIn, accountNav.help],
   },
   { id: "grow", headingKey: "footer.grow", items: growNav },
   { id: "legal", headingKey: "footer.legal", items: legalNav },
@@ -78,5 +79,8 @@ export const footerColumns = [
 
 /** Every internal route the nav can reach; the link crawler starts from this list. */
 export function allInternalHrefs(): string[] {
-  return ["/", ...new Set([...mainNav, ...growNav, accountNav.signIn, ...legalNav].map((item) => item.href))];
+  return [
+    "/",
+    ...new Set([...mainNav, ...growNav, accountNav.signIn, ...legalNav].map((item) => item.href)),
+  ];
 }

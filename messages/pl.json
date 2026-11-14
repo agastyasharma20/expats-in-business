@@ -350,7 +350,8 @@
     }
   },
   "footer": {
-    "platform": "Platforma",
+    "explore": "Odkrywaj",
+    "community": "Społeczność",
     "legal": "Informacje prawne",
     "connect": "Obserwuj EiB",
     "contact": "Kontakt",

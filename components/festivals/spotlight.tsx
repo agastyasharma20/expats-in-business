@@ -19,7 +19,7 @@ export async function FestivalSpotlightPill() {
   return (
     <Link
       href={`/festivals/${festival.slug}`}
-      className="festival-ring hidden shrink-0 transition-transform duration-(--duration-micro) hover:-translate-y-0.5 xl:inline-flex"
+      className="festival-ring hidden shrink-0 transition-transform duration-(--duration-micro) hover:-translate-y-0.5 2xl:inline-flex"
       data-testid="festival-pill"
     >
       <span className="flex min-h-10 items-center gap-2 rounded-full bg-surface px-3.5 text-small font-bold text-brand-950">

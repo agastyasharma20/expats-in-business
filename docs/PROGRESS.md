@@ -21,6 +21,19 @@
 
 ## Log
 
+### 2026-11-14 · Navigation: Team in the header, footer split in two
+
+**Built**
+
+- `Team` is now the sixth item of the main menu (header and mobile menu), and is no longer repeated in the footer directory list.
+- The 12-link "Platform" footer column is split into two balanced columns, **Explore** (the main menu) and **Community** (businesses, Bubbles, festivals, get involved, sign in, help). Strings added in en, pl and uk; the footer grid is 8 columns on large screens.
+- The footer email breaks at the "@" instead of in the middle of a word.
+- The festival pill in the header now shows from 1536 px (was 1280 px): with six menu items it made the header overflow sideways between 1280 and about 1440 px. The home banner still links to the festival at every width.
+
+**Verified**: header has no sideways overflow at 1920, 1536, 1440, 1366, 1280, 1100, 1024, 768 and 375 px; `npm run check` green (315 tests); link crawler 300 pages, 0 problems (no duplicate header or footer links); browser tests for home, quality (phone width), growth, i18n and team: 54 passed, 0 failed. Screenshots and the PDF were refreshed.
+
+**Note**: after changing shared layout code, delete `.next` before building locally; a stale prerender kept the old footer on `/` until a clean build.
+
 ### 2026-11-14 · Release candidate: deep testing, fixes, README, PDF and deploy guide
 
 **Built and fixed**

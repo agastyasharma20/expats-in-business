@@ -350,7 +350,8 @@
     }
   },
   "footer": {
-    "platform": "Платформа",
+    "explore": "Розділи",
+    "community": "Спільнота",
     "legal": "Правова інформація",
     "connect": "Стежте за EiB",
     "contact": "Контакти",

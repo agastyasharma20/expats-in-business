@@ -1,0 +1,53 @@
+# Render Blueprint for the EiB platform (free plan). In Render: New > Blueprint > pick this repository.
+# Secrets are never stored here: variables marked `sync: false` are asked for in the Render dashboard.
+# Full step-by-step guide: docs/DEPLOY.md
+services:
+  - type: web
+    name: eib-platform
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    # --include=dev: Render sets NODE_ENV=production during the build, and the build needs dev dependencies.
+    buildCommand: npm ci --include=dev && npx prisma generate && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "false"
+      - key: DEFAULT_LOCALE
+        value: en
+      # The public address, e.g. https://eib-platform.onrender.com (no trailing slash). Read at build time.
+      - key: APP_URL
+        sync: false
+      - key: BETTER_AUTH_URL # must equal APP_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: DATABASE_URL # Neon connection string, ends with ?sslmode=require
+        sync: false
+      - key: TRUSTED_PROXY_HOPS
+        value: "1"
+      - key: SMTP_HOST
+        value: smtp-relay.brevo.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_SECURE
+        value: "false"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: EMAIL_FROM # e.g. Expats in Business <no-reply@yourdomain.org>, a sender verified in Brevo
+        sync: false
+      - key: ADMIN_INBOX_EMAIL
+        sync: false
+      - key: AI_PROVIDER
+        value: demo
+      - key: MODEL_CACHE_DIR
+        value: .cache/models

@@ -79,17 +79,22 @@ Notes:
 
 ## 4. Deploy the app (Render)
 
+> **Faster: use the Blueprint.** The repository contains `render.yaml`. In Render choose **New → Blueprint**, pick the
+> repository, and Render creates the service with every setting below pre-filled; you only type the secret values
+> (`APP_URL`, `BETTER_AUTH_URL`, `DATABASE_URL`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM`, `ADMIN_INBOX_EMAIL`).
+> `BETTER_AUTH_SECRET` is generated for you. The manual steps below give the same result.
+
 1. Sign up at [render.com](https://render.com) with GitHub. Click **New → Web Service** and choose the repo.
 2. Settings:
 
-   | Field             | Value                                            |
-   | ----------------- | ------------------------------------------------ |
-   | Runtime           | Node                                             |
-   | Branch            | `main` (after you merge)                         |
-   | Build command     | `npm ci && npx prisma generate && npm run build` |
-   | Start command     | `npm start`                                      |
-   | Instance type     | Free                                             |
-   | Health check path | `/api/health`                                    |
+   | Field             | Value                                                          |
+   | ----------------- | -------------------------------------------------------------- |
+   | Runtime           | Node                                                           |
+   | Branch            | `main` (after you merge)                                       |
+   | Build command     | `npm ci --include=dev && npx prisma generate && npm run build` |
+   | Start command     | `npm start`                                                    |
+   | Instance type     | Free                                                           |
+   | Health check path | `/api/health`                                                  |
 
    Set the Node version to 24 with an environment variable `NODE_VERSION` = `24` (the repo requires Node ≥ 24).
 

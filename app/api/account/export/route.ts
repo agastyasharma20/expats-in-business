@@ -13,7 +13,7 @@ export async function GET() {
       email: true,
       locale: true,
       createdAt: true,
-      emails: { select: { email: true, verifiedAt: true, createdAt: true } },
+      userEmails: { select: { email: true, verifiedAt: true, createdAt: true } },
       profile: { include: { goals: { select: { goal: { select: { slug: true } } } } } },
       roles: { select: { role: true, chapterId: true } },
       consents: { select: { type: true, granted: true, updatedAt: true } },
@@ -32,11 +32,18 @@ export async function GET() {
       },
     },
   });
-  return new Response(JSON.stringify({ exportedAt: new Date().toISOString(), data }, null, 2), {
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Content-Disposition": `attachment; filename="eib-data-${user.id}.json"`,
-      "Cache-Control": "no-store",
+  if (!data) return new Response("Not found", { status: 404 });
+  // The relation is called userEmails in the schema; the download keeps the clearer key "emails".
+  const { userEmails, ...rest } = data;
+  const exported = { ...rest, emails: userEmails };
+  return new Response(
+    JSON.stringify({ exportedAt: new Date().toISOString(), data: exported }, null, 2),
+    {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Disposition": `attachment; filename="eib-data-${user.id}.json"`,
+        "Cache-Control": "no-store",
+      },
     },
-  });
+  );
 }

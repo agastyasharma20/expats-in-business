@@ -21,6 +21,26 @@
 
 ## Log
 
+### 2026-11-14 · Release candidate: deep testing, fixes, README, PDF and deploy guide
+
+**Built and fixed**
+
+- **Defect found and fixed (High):** `/api/account/export` (GDPR data download) returned HTTP 500 for every member since M6; the relation is `userEmails`, not `emails`. Regression tests in `tests/e2e/privacy.spec.ts`.
+- Team emails are no longer in the page HTML: "Show email address" fetches them on demand from a POST-only, rate-limited route.
+- Real email providers: `SMTP_USER`, `SMTP_PASSWORD` and `SMTP_SECURE` added (before, only a login-less Mailpit worked).
+- `npm run admin:grant -- email` creates the first admin on a clean production database.
+- `docs/DEPLOY.md` (free path: Render, Neon, Brevo, GitHub Actions), a rewritten `README.md`, `docs/EiB-Platform-Overview.pdf` (25 designed pages, numbers filled from `docs/test-evidence/summary.json`) and `docs/TEST_REPORT.md`.
+- Scripts: `qa-access.mjs`, `qa-sweep.mjs`, `qa-analyze.mjs`, `capture-screenshots.mjs`, `build-pdf.mjs`, `check-pdf-overflow.mjs`, `grant-admin.ts`.
+
+**Verified**: `npm run check` green (315 unit tests); production build; 99 of 99 runnable desktop e2e tests pass in clean serial runs (first parallel run: 168 passed, 3 failed, 2 flaky on a slow laptop); link crawler 300 pages, 0 problems; access and security probes 39 of 39; `npm audit --omit=dev` 0 vulnerabilities; Lighthouse accessibility and best practices 100 on 6 pages.
+
+**Known gaps (details in docs/TEST_REPORT.md)**
+
+- F2 intermittent reservation delay under parallel load (unproven link to concurrent queries inside one transaction).
+- F3 slow LCP on `/team` and the festival page; F4 denied pages return HTTP 200 (no data exposed); F5 admin tab bar clipped by the search box.
+- The full route sweep (`scripts/qa-sweep.mjs`) was stopped after 18 routes; cross-browser, screen-reader, load and live-integration tests are not done.
+- The three team migrations were not squashed: Prisma refuses `migrate reset` from an agent. To squash, delete the three `20261114*` migration folders, run `npx prisma migrate reset --force` yourself, then `npx prisma migrate dev --name team_page`.
+
 ### 2026-11-14 · Team page, admin editor and proprietary license
 
 **Built**

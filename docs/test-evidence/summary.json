@@ -1,0 +1,17 @@
+{
+  "pages": 77,
+  "actions": 82,
+  "models": 70,
+  "loc": "39,800",
+  "migrations": 13,
+  "keys": "2,078",
+  "unit": 315,
+  "e2e_desktop": 136,
+  "crawl_pages": 300,
+  "access_total": 39,
+  "access_pass": 39,
+  "result_sentence": "All 315 unit tests pass. In the first full browser run (parallel, on a slow laptop) 168 runs passed, 3 failed and 2 were flaky; every one of those passed when rerun one at a time on a clean state (99 of 99 runnable desktop tests in 17 of the 18 spec files, and the 18th, the link-crawl spec, passed in the first run). The link crawler followed 300 pages with no problems, all 39 access-control and security probes passed, and the production dependency audit reports 0 vulnerabilities.",
+  "findings_sentence": "Testing found one real defect, now fixed with a regression test: the personal data export returned an error for every member. Four items remain open and are described with severity and evidence in the report: an intermittent reservation delay under parallel load, a slow first paint on two pages, an HTTP 200 status on denied pages (no data is exposed), and an admin tab bar clipped behind the search box.",
+  "lighthouse_table": "<table><tr><th>Page</th><th>Performance</th><th>Accessibility</th><th>Best practices</th><th>SEO</th><th>Notes</th></tr><tr><td>/events</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">92</td><td>LCP 1.1 s · TBT 80 ms</td></tr><tr><td>/guides</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">92</td><td>LCP 1.1 s · TBT 90 ms</td></tr><tr><td>/pl (Polish home)</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">92</td><td>LCP 1.1 s · TBT 80 ms</td></tr><tr><td>/pricing</td><td style=\"font-weight:800;color:#0d5a43\">97</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">92</td><td>LCP 1.1 s · TBT 180 ms</td></tr><tr><td>/team</td><td style=\"font-weight:800;color:#c2260c\">85</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">92</td><td>LCP 4.2 s (first paint of the page lead)</td></tr><tr><td>/festivals/demo-festival-of-cultures</td><td style=\"font-weight:800;color:#c2260c\">80</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">100</td><td style=\"font-weight:800;color:#0d5a43\">92</td><td>LCP 4.6 s · TBT 200 ms</td></tr></table>",
+  "lighthouse_note": "Measured on 14 Nov 2026 against a local production build on a quiet laptop with simulated slow mobile. SEO shows 92 only because the test server's canonical address pointed to a different local port; earlier runs with the correct address scored 100. The home page run failed with a Lighthouse tracing error (not a page error) and earlier recorded 99/100/100/100, so it is not listed."
+}

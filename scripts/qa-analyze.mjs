@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const data = JSON.parse(readFileSync("docs/test-evidence/qa-sweep.json", "utf8"));
-const { results, access } = data;
+const { results } = data;
 
 const isRedirected = (r) =>
   r.finalPath &&
@@ -32,8 +32,6 @@ const stats = {
   sweep_pages: results.length,
   sweep_routes: new Set(results.map((r) => r.path.replace(/^\/(pl|uk)/, ""))).size,
   axe_clean: measured.filter((r) => !r.axe?.length).length,
-  access_total: access.length,
-  access_pass: access.filter((a) => a.pass).length,
   problem_pages: problems.length,
   status_ok: measured.filter((r) => r.status < 400).length,
 };
@@ -42,17 +40,6 @@ const lines = [];
 lines.push(`Sweep of ${data.base} at ${data.when}.`, "");
 lines.push(`| Metric | Value |`, `| --- | --- |`);
 for (const [k, v] of Object.entries(stats)) lines.push(`| ${k} | ${v} |`);
-lines.push(
-  "",
-  "### Access-control matrix",
-  "",
-  "| Path | Who | Expected | Got | Result |",
-  "| --- | --- | --- | --- | --- |",
-);
-for (const a of access)
-  lines.push(
-    `| \`${a.path}\` | ${a.persona} | ${a.expect} | ${a.status}${a.location ? ` → ${a.location}` : ""} | ${a.pass ? "pass" : "**FAIL**"} |`,
-  );
 lines.push("", "### Pages with findings", "");
 if (!problems.length) lines.push("None.");
 else {

@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Expats in Business platform: complete project report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --deep: #093334; --logo: #074c4c; --green: #12635a; --tint: #c5e8eb; --wash: #f2faf9;
+    --ember: #ff3514; --ember-d: #c2260c; --ink: #12292a; --muted: #4c6362; --line: #d6e3e2; --paper: #ffffff;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; font-family: "Nunito Sans", "Segoe UI", system-ui, sans-serif; color: var(--ink); font-size: 10.2pt; line-height: 1.5; }
+  h1, h2, h3, h4 { font-family: "Cabin", "Segoe UI", sans-serif; color: var(--deep); margin: 0; line-height: 1.15; }
+  .page { width: 210mm; height: 297mm; padding: 20mm 18mm 20mm; position: relative; page-break-after: always; overflow: hidden; background: var(--paper); }
+  .page:last-child { page-break-after: auto; }
+  .page.dark { background: var(--deep); color: #e8f4f3; }
+  .page.dark h1, .page.dark h2, .page.dark h3 { color: #fff; }
+  .eyebrow { font-size: 8pt; letter-spacing: .16em; text-transform: uppercase; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .dark .eyebrow { color: var(--tint); }
+  h2 { font-size: 25pt; margin-bottom: 4mm; }
+  h3 { font-size: 13.5pt; margin: 5mm 0 2mm; }
+  h4 { font-size: 10.5pt; margin: 3mm 0 1mm; color: var(--green); }
+  p { margin: 0 0 2.6mm; }
+  .lead { font-size: 12pt; color: var(--muted); max-width: 150mm; }
+  .folio { position: absolute; left: 18mm; right: 18mm; bottom: 9mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: var(--muted); border-top: 1px solid var(--line); padding-top: 2mm; }
+  .dark .folio { color: #9fc4c2; border-color: #1c5456; }
+  .grid { display: grid; gap: 4mm; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: 1fr 1fr 1fr; } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { border: 1px solid var(--line); border-radius: 3mm; padding: 4mm; background: #fff; }
+  .card.tint { background: var(--wash); border-color: #cfe6e3; }
+  .card h4 { margin-top: 0; }
+  .card p:last-child { margin-bottom: 0; }
+  .stat { text-align: left; }
+  .stat b { display: block; font-family: "Cabin", sans-serif; font-size: 22pt; color: var(--green); line-height: 1; }
+  .stat span { font-size: 8.5pt; color: var(--muted); }
+  ul.tick { list-style: none; padding: 0; margin: 0 0 2mm; }
+  ul.tick li { padding-left: 5mm; position: relative; margin-bottom: 1.4mm; }
+  ul.tick li::before { content: ""; position: absolute; left: 0; top: .45em; width: 2.2mm; height: 2.2mm; border-radius: 50%; background: var(--green); }
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; margin: 2mm 0 3mm; }
+  th { text-align: left; background: var(--deep); color: #fff; padding: 2mm 2.4mm; font-weight: 700; }
+  td { padding: 1.9mm 2.4mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--wash); }
+  .shot { border: 1px solid var(--line); border-radius: 2.4mm; overflow: hidden; box-shadow: 0 2mm 5mm rgba(9,51,52,.12); background: #fff; }
+  .shot img { display: block; width: 100%; }
+  .shot figcaption { font-size: 7.8pt; color: var(--muted); padding: 1.6mm 2.6mm; border-top: 1px solid var(--line); background: var(--wash); }
+  figure { margin: 0; }
+  .phone { width: 52mm; border-radius: 6mm; border: 2mm solid var(--deep); overflow: hidden; background: #fff; box-shadow: 0 2mm 5mm rgba(9,51,52,.18); }
+  .phone img { display: block; width: 100%; }
+  .badge { display: inline-block; font-size: 7.4pt; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: .6mm 2mm; border-radius: 10mm; background: var(--tint); color: var(--deep); }
+  .badge.warn { background: #fde7e1; color: var(--ember-d); }
+  .badge.ok { background: #d9f0e7; color: #0d5a43; }
+  .grid > figure, .grid > .shot { align-self: start; }
+  .callout { border-left: 1.4mm solid var(--green); background: var(--wash); padding: 3mm 4mm; border-radius: 0 2.4mm 2.4mm 0; margin: 3mm 0; }
+  .callout.warn { border-color: var(--ember-d); background: #fff4f0; }
+  .swatch { height: 14mm; border-radius: 2.4mm; display: flex; align-items: flex-end; padding: 1.6mm 2.4mm; font-size: 7.6pt; color: #fff; font-weight: 700; }
+  .flow { display: flex; align-items: stretch; gap: 2mm; }
+  .flow > div { flex: 1; border-radius: 2.4mm; padding: 3mm; font-size: 8.6pt; }
+  .arrow { align-self: center; color: var(--green); font-weight: 800; flex: 0 0 auto !important; padding: 0 !important; }
+  .layer { border-radius: 2.6mm; padding: 3mm 4mm; margin-bottom: 2.4mm; font-size: 9pt; }
+  .num { font-family: "Cabin", sans-serif; font-weight: 700; color: var(--green); }
+  code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 8.4pt; background: #edf5f4; padding: .2mm 1.2mm; border-radius: 1mm; }
+  pre { background: var(--deep); color: #dff3f1; padding: 3.4mm 4mm; border-radius: 2.4mm; font-size: 8pt; line-height: 1.45; overflow: hidden; margin: 2mm 0 3mm; }
+  .toc a { color: inherit; text-decoration: none; }
+  .toc li { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--line); padding: 1.1mm 0; }
+  .toc ol { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 10mm; }
+  .toc .n { color: var(--green); font-weight: 800; margin-right: 2mm; }
+  .cover-logo { width: 78mm; }
+
+  .badge.part { background:#fff1cf; color:#7a5200; }
+  .badge.dev { background:#e7e9fb; color:#2d3a8c; }
+  table.req td, table.req th { font-size:8.2pt; padding:1.5mm 2mm; }
+  table.req td { line-height:1.35; }
+  .grid > table { margin:0; }
+</style>
+</head>
+<body>
+<!-- 1 COVER -->
+<section class="page dark" style="padding:0">
+  <div style="position:absolute;inset:0;background:radial-gradient(130mm 130mm at 88% 10%, rgba(197,232,235,.2), transparent 60%), radial-gradient(100mm 100mm at 8% 96%, rgba(255,53,20,.2), transparent 60%);"></div>
+  <div style="position:absolute;left:22mm;top:24mm;right:22mm"><img class="cover-logo" src="../../public/brand/eib-logo-white.png" alt="Expats in Business" /></div>
+  <div style="position:absolute;left:22mm;right:22mm;top:84mm">
+    <div class="eyebrow">Complete project report · Version 1.0.0</div>
+    <h1 style="font-size:42pt;line-height:1.03;margin-bottom:7mm">The EiB platform: what we built, how we tested it, and what happens next.</h1>
+    <p style="font-size:13.5pt;color:#cfe8e6;max-width:146mm">Requirements, features, admin tools, environments, test results, accessibility and security reports, open findings and the decisions that need EiB. Written to be read first, before opening the real product.</p>
+  </div>
+  <div style="position:absolute;left:22mm;right:22mm;bottom:26mm;display:flex;justify-content:space-between;align-items:flex-end;gap:10mm">
+    <div style="font-size:9pt;color:#9fc4c2;line-height:1.65">
+      <b style="color:#fff">Prepared for</b> Ziyan Sinnen and the Expats in Business team<br />
+      <b style="color:#fff">Edition</b> {{date}}<br />
+      <b style="color:#fff">Release</b> v1.0.0 (source on GitHub, private repository)<br />
+      <b style="color:#fff">Confidential.</b> All rights reserved by Expats in Business.
+    </div>
+    <div style="text-align:right;font-family:Cabin;font-size:11pt;color:#c5e8eb">Kraków · Warsaw · the world</div>
+  </div>
+</section>
+
+<!-- 2 CONTENTS -->
+<section class="page">
+  <div class="eyebrow">Start here</div>
+  <h2>Contents</h2>
+  <p class="lead">Part A is for everyone. Parts B and C go deeper for reviewers and developers. Every number in this report comes from a test run or a file in <code>docs/test-evidence/</code>.</p>
+  <div class="toc">
+    <ol>
+      <li><span><span class="n">01</span>Executive summary</span></li>
+      <li><span><span class="n">02</span>Decisions and actions for EiB</span></li>
+      <li><span><span class="n">03</span>How the project ran: timeline</span></li>
+      <li><span><span class="n">04</span>Requirements and traceability</span></li>
+      <li><span><span class="n">05</span>The 14 old-portal bugs</span></li>
+      <li><span><span class="n">06</span>Gaps and deviations from the brief</span></li>
+      <li><span><span class="n">07</span>Feature tour: members and events</span></li>
+      <li><span><span class="n">08</span>Feature tour: community and growth</span></li>
+      <li><span><span class="n">09</span>Admin features</span></li>
+      <li><span><span class="n">10</span>Architecture and technology</span></li>
+      <li><span><span class="n">11</span>Environments: what ran where</span></li>
+      <li><span><span class="n">12</span>Testing results</span></li>
+      <li><span><span class="n">13</span>Accessibility report</span></li>
+      <li><span><span class="n">14</span>Security report</span></li>
+      <li><span><span class="n">15</span>Performance report</span></li>
+      <li><span><span class="n">16</span>Findings register</span></li>
+      <li><span><span class="n">17</span>Go-live readiness and next steps</span></li>
+      <li><span><span class="n">A</span>Appendices: versions, evidence, glossary</span></li>
+    </ol>
+  </div>
+  <h3 style="margin-top:7mm">Reading guide</h3>
+  <div class="grid g3">
+    <div class="card tint"><h4>Ziyan and the EiB team</h4><p>Read 01, 02, 04 to 09 and 17. They say what exists, what is missing and what only EiB can decide.</p></div>
+    <div class="card tint"><h4>Reviewers and auditors</h4><p>Read 11 to 16. Each report states what was run, on which environment, what passed, what failed and what was not covered.</p></div>
+    <div class="card tint"><h4>Developers</h4><p>Read 10, 11 and the appendices, then the repository's <code>README.md</code> and <code>docs/DEPLOY.md</code>.</p></div>
+  </div>
+  <div class="callout warn" style="margin-top:6mm"><b>How honest this report is.</b> It lists what did not work as well as what did: one defect found and fixed during testing, several items the original brief asked for that are not built, a web-scanner run that could not finish, and a continuous-integration pipeline that has never run. Nothing is rounded up. All people, companies, venues and prices in screenshots are labelled demo data.</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>2</span></div>
+</section>
+
+<!-- 3 EXEC SUMMARY -->
+<section class="page">
+  <div class="eyebrow">01 · Executive summary</div>
+  <h2>Where the project stands</h2>
+  <p class="lead">Expats in Business (EiB) is a free, community-run business network for internationals, founded in Kraków in 2024. The new platform replaces the old portal with one product organised into chapters (Global, Country, City) with Cultural Bubbles across them. Version 1.0.0 is built, tested and ready for a stakeholder demo and a first deployment.</p>
+  <div class="grid g4" style="margin:3mm 0">
+    <div class="card stat"><b>{{pages}}</b><span>pages in 3 languages</span></div>
+    <div class="card stat"><b>{{actions}}</b><span>audited server actions</span></div>
+    <div class="card stat"><b>{{models}}</b><span>data models</span></div>
+    <div class="card stat"><b>{{loc}}</b><span>lines of TypeScript</span></div>
+  </div>
+  <h3 style="margin-top:2mm">The result in six lines</h3>
+  <table>
+    <tr><th style="width:24%">Area</th><th>Result</th></tr>
+    <tr><td>Scope</td><td><span class="badge ok">Built</span> All 16 planned milestones, plus festivals, growth tools, RSVP, a Team page and a deployment kit. <span class="badge warn">5 brief items not built</span> (section 6).</td></tr>
+    <tr><td>Functional tests</td><td><span class="badge ok">Pass</span> {{unit}} unit tests; every browser spec passes in clean serial runs; link crawler 300 pages with no problems.</td></tr>
+    <tr><td>Accessibility</td><td><span class="badge ok">Strong</span> {{sweep_checks}} axe checks across every route: 0 violations except one serious label issue on signed-in pages, now fixed in code. Lighthouse accessibility 100.</td></tr>
+    <tr><td>Security</td><td><span class="badge ok">No critical issue found</span> 0 secrets in git history, 0 production dependency vulnerabilities, {{access_pass}} of {{access_total}} access-control probes pass. <span class="badge warn">Web scanner did not finish</span>; no penetration test yet.</td></tr>
+    <tr><td>Performance</td><td><span class="badge ok">Good</span> 4 of 6 measured pages meet the 90 target on mobile (97 to 100); the Team and festival pages score 85 and 80 because of a slow first paint to fix.</td></tr>
+    <tr><td>Going live</td><td><span class="badge warn">Not deployed</span> Free deployment kit is ready; it needs EiB's accounts and several business decisions (section 2).</td></tr>
+  </table>
+  <h3>The one real defect testing found</h3>
+  <p>The "download my data" button (a GDPR right) failed for every member since an early milestone, because of a wrong database field name. Unit tests and type-checking missed it; the end-to-end sweep caught it. It is fixed and a regression test guards it.</p>
+  <div class="callout"><b>Bottom line.</b> The product is solid enough to show and to pilot. Before real members and real money, EiB must make the decisions in section 2 and a lawyer must review the legal texts and the licence.</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>3</span></div>
+</section>
+
+<!-- 4 DECISIONS -->
+<section class="page">
+  <div class="eyebrow">02 · Decisions and actions</div>
+  <h2>What only EiB can decide or do</h2>
+  <p class="lead">The software cannot make these calls. Each blocks something in the go-live path.</p>
+  <table>
+    <tr><th style="width:4%">#</th><th style="width:36%">Decision or action</th><th>Why it matters</th><th style="width:16%">Owner</th></tr>
+    <tr><td>1</td><td><b>Approve or change every price</b> (Member Plus, Business, Verified Provider, Corporate)</td><td>All prices in the product are labelled proposals. Nothing can be sold honestly until they are approved in <code>Admin → Catalogs</code>.</td><td>EiB</td></tr>
+    <tr><td>2</td><td><b>Legal entity</b> that sells tickets and issues invoices; VAT set-up</td><td>Needed before Stripe live mode. Stripe is in test mode only today.</td><td>EiB, accountant</td></tr>
+    <tr><td>3</td><td><b>Refund and cancellation policy</b></td><td>The product deliberately says only "the team will contact you about your payment". No refund promise was invented.</td><td>EiB</td></tr>
+    <tr><td>4</td><td><b>Lawyer review</b> of privacy policy, terms, cookie text and the proprietary licence</td><td>Legal pages are drafts marked "to be reviewed by a lawyer". Polish law applies to the privacy texts.</td><td>EiB, lawyer</td></tr>
+    <tr><td>5</td><td><b>Real content</b>: the founder's message, team members, photos, partner logos (with written permission), real festival dates</td><td>The Team page and festival pages hold labelled placeholders. EiB enters the real content in the admin area; no developer is needed.</td><td>EiB</td></tr>
+    <tr><td>6</td><td><b>Sponsorship packages</b> and stall fee policy</td><td>The sponsor report and stall applications work; their commercial terms are not defined.</td><td>EiB</td></tr>
+    <tr><td>7</td><td><b>Native review</b> of Polish and Ukrainian texts</td><td>They are machine-translated. Only key coverage is tested, not quality.</td><td>EiB volunteers</td></tr>
+    <tr><td>8</td><td><b>The 5 items the brief asked for that are not built</b> (section 6): About, Partners and Stories pages; cookie banner; admin form to launch a new chapter</td><td>Decide: build now, build after the pilot, or drop. The chapter form matters most if Warsaw must launch without a developer.</td><td>EiB and developers</td></tr>
+    <tr><td>9</td><td><b>Create the hosting accounts</b> (Neon database, Brevo email, Render app) and a custom domain</td><td>The free deployment kit is ready (<code>render.yaml</code>, <code>docs/DEPLOY.md</code>) but needs accounts only EiB can open.</td><td>EiB</td></tr>
+    <tr><td>10</td><td><b>Share the code</b>: keep the GitHub repository private; move it into an EiB organization and add Ziyan with the Read role</td><td>The licence forbids use outside EiB. An organization makes EiB the owner and allows read-only access.</td><td>EiB</td></tr>
+  </table>
+  <div class="callout warn"><b>Already done on the repository.</b> It was public; it is now <b>private</b>. A scan of the full git history found no secrets (section 14).</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>4</span></div>
+</section>
+
+<!-- 5 TIMELINE -->
+<section class="page">
+  <div class="eyebrow">03 · How the project ran</div>
+  <h2>Timeline: 16 milestones in about a week</h2>
+  <p class="lead">Built milestone by milestone, one feature branch each, with small commits, tests and a progress-log entry per step. Dates are from <code>docs/PROGRESS.md</code>.</p>
+  <table>
+    <tr><th style="width:13%">Date (2026)</th><th style="width:26%">Milestone</th><th>What it delivered</th></tr>
+    <tr><td>6 Nov</td><td>M1 Scaffolding</td><td>Next.js app, database, environment validation, setup script, first tests</td></tr>
+    <tr><td>7 Nov</td><td>M2 Brand and design system</td><td>Colours, fonts, components, motion rules, contrast-checked tokens, /styleguide</td></tr>
+    <tr><td>10 Nov</td><td>M3 Layout and navigation</td><td>Header, footer, legal pages, link crawler</td></tr>
+    <tr><td>10 Nov</td><td>M4 and M5 Data and homepage</td><td>All 70 models, demo seed (120 members, 30 providers, 24 past and 8 upcoming events), 8 official guides, homepage with line-drawn skyline</td></tr>
+    <tr><td>11 Nov</td><td>M6 to M8</td><td>Accounts, onboarding, profiles, settings; events, RSVP, waitlist, QR tickets, payments; check-in, Pulse, Who I met, event builder; plans and billing</td></tr>
+    <tr><td>12 Nov</td><td>M9 to M12</td><td>Directory, connections, verified providers; guides and AI concierge; Landing Roadmap; community, Bubbles map, Coffee Roulette, admin command centre, security hardening</td></tr>
+    <tr><td>13 Nov</td><td>M13 to M15 and growth</td><td>Festivals; applications board, catalogs, sponsor report; languages, SEO, quality pass; chapters, ambassadors, careers, volunteering; RSVP on every event</td></tr>
+    <tr><td>13 Nov</td><td>M16 and final polish</td><td>Audit of 79 actions, rate limits, code splits, caching fixes</td></tr>
+    <tr><td>14 Nov</td><td>Release candidate</td><td>Team page and admin editor; proprietary licence; deployment guide and Render blueprint; README; test report; v1.0.0 tag; repository made private; Team in the menu, footer split</td></tr>
+    <tr><td>16 to 17 Nov</td><td>Evidence pass</td><td>Full accessibility sweep of every route; secret and dependency scans; this report</td></tr>
+  </table>
+  <h3>How the work was controlled</h3>
+  <ul class="tick">
+    <li><b>Rules in the repository</b> (<code>CLAUDE.md</code>): plan before coding, never invent company facts, every action validated and audited, nothing hard-coded to Kraków or PLN, no clickable element without an action.</li>
+    <li><b>Definition of done per milestone:</b> acceptance criteria shown in the browser, <code>npm run check</code> green, new logic unit-tested, new pages with a browser test and an accessibility check, no dead links, 375 px and 1440 px layouts, reduced motion and keyboard checked, progress log updated.</li>
+    <li><b>Review:</b> an independent reviewer pass after milestones; findings fixed (for example brand colours and contrast pairs in M2).</li>
+  </ul>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>5</span></div>
+</section>
+<!-- 6 REQ 1 -->
+<section class="page">
+  <div class="eyebrow">04 · Requirements and traceability (1 of 3)</div>
+  <h2>Requirements: accounts, chapters, events</h2>
+  <p class="lead" style="font-size:10pt">Requirements from the original brief (sections 3A to 3L and 7), checked against code and tests. <span class="badge ok">Done</span> <span class="badge part">Partly</span> <span class="badge warn">Not built</span> <span class="badge dev">Differs</span></p>
+  <table class="req">
+    <tr><th style="width:5%">Ref</th><th style="width:41%">Requirement (brief)</th><th style="width:11%">Status</th><th>Evidence</th></tr>
+    <tr><td>A1</td><td>Sign-in by email link (Mailpit locally), optional Google, password for demo users; sign-in to dashboard under 2 s</td><td><span class="badge ok">Done</span></td><td>Browser test "magic link signs in under 2 s"; Google only when keys are set (not tested live)</td></tr>
+    <tr><td>A2</td><td>Onboarding in 6 steps, saved per step</td><td><span class="badge ok">Done</span></td><td>Roadmap tests re-run onboarding; step saves are independent</td></tr>
+    <tr><td>A3</td><td>Public profile with per-field visibility; copy-profile-link</td><td><span class="badge ok">Done</span></td><td>Tests for old bugs 4 and 14</td></tr>
+    <tr><td>A4</td><td>Settings: Profile, Account, Email, Billing, Privacy (data download, deletion with 30-day grace)</td><td><span class="badge ok">Done</span></td><td>Tests for bugs 5 and 6. The data download was broken and is fixed (finding F1)</td></tr>
+    <tr><td>A5</td><td>Help centre with FAQ and contact form to the admin inbox</td><td><span class="badge ok">Done</span></td><td>Test for bug 3</td></tr>
+    <tr><td>A6</td><td>Member dashboard: next event, roadmap ring, stat cards that link to lists</td><td><span class="badge ok">Done</span></td><td>Tests for bugs 1 and 13</td></tr>
+    <tr><td>A7</td><td>Numbered founding-member badge</td><td><span class="badge ok">Done</span></td><td>Assigned at onboarding (progress log); no dedicated browser test</td></tr>
+    <tr><td>B1</td><td>Chapter switcher (Global, Kraków, Warsaw); chapter pages; chapters world map; request a chapter (one vote per user)</td><td><span class="badge ok">Done</span></td><td>Growth tests; pages at <code>/chapters</code> (brief: <code>/c/[chapter]</code>)</td></tr>
+    <tr><td>B2</td><td>Chapter-in-a-box: an admin launches a new city from the admin panel in under 60 seconds</td><td><span class="badge warn">Not built</span></td><td>No admin form creates a chapter; chapters come from the seed or the database. See section 6</td></tr>
+    <tr><td>C1</td><td>Events list with filters; event page with date and time in the chapter time zone, venue, capacity, <code>.ics</code></td><td><span class="badge ok">Done</span></td><td>Tests for the list, filters, event facts and calendar file</td></tr>
+    <tr><td>C2</td><td>RSVP with capacity and waitlist, automatic promotion and email</td><td><span class="badge ok">Done</span></td><td>Tests: waitlist promotion on cancellation; RSVP and un-RSVP</td></tr>
+    <tr><td>C3</td><td>Paid tickets with Stripe test mode (card, BLIK, Przelewy24); signed webhook; simulated success without keys</td><td><span class="badge ok">Done</span></td><td>Test: simulated payment; unsigned webhook refused. Live Stripe not exercised</td></tr>
+    <tr><td>C4</td><td>QR ticket; door scanner with success, duplicate and invalid states; manual search</td><td><span class="badge ok">Done</span></td><td>Test: single-use check-in, members cannot scan. Page is <code>/admin/events/[id]/check-in</code></td></tr>
+    <tr><td>C5</td><td>Session Pulse live screen (server-sent events)</td><td><span class="badge ok">Done</span></td><td>Test "Pulse streams live numbers"</td></tr>
+    <tr><td>C6</td><td>"Who I met" with opt-in and one-tap request</td><td><span class="badge ok">Done</span></td><td>Test: both opt in, one requests, the other accepts</td></tr>
+    <tr><td>C7</td><td>Event builder for chapter leads in under 2 minutes</td><td><span class="badge ok">Done</span></td><td>Timed test passes</td></tr>
+    <tr><td>C8</td><td>List/calendar toggle, past events with photos, attendee avatars</td><td><span class="badge part">Not checked</span></td><td>Not individually verified in this review</td></tr>
+    <tr><td>D1</td><td>Plans with proposed prices read from the database; "test mode" labelling</td><td><span class="badge ok">Done</span></td><td>Pricing test: plans from the database, labelled as proposals</td></tr>
+    <tr><td>D2</td><td>Subscriptions in test mode, customer portal link, entitlements per feature</td><td><span class="badge ok">Done</span></td><td>Test: subscribe (simulated) and cancel at period end; entitlement unit tests</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>6</span></div>
+</section>
+
+<!-- 7 REQ 2 -->
+<section class="page">
+  <div class="eyebrow">04 · Requirements and traceability (2 of 3)</div>
+  <h2>Requirements: directories, guides, community</h2>
+  <table class="req">
+    <tr><th style="width:5%">Ref</th><th style="width:41%">Requirement (brief)</th><th style="width:11%">Status</th><th>Evidence</th></tr>
+    <tr><td>E1</td><td>Member directory with filters; visitors see limited fields</td><td><span class="badge ok">Done</span></td><td>Tests: filters stay in the URL; visitors see limited fields</td></tr>
+    <tr><td>E2</td><td>Connections with double opt-in; contact details only after acceptance</td><td><span class="badge ok">Done</span></td><td>Test: connections are double opt-in</td></tr>
+    <tr><td>E3</td><td>Business and provider directories; reviews only from members with a shared quote or event</td><td><span class="badge ok">Done</span></td><td>Test: an ineligible member cannot review; a quote request makes them eligible</td></tr>
+    <tr><td>E4</td><td>Provider verification by admin checklist; public criteria page; quote requests, provider inbox, analytics</td><td><span class="badge ok">Done</span></td><td>Tests: badge appears only after approval with every check ticked; inbox and analytics</td></tr>
+    <tr><td>F1</td><td>MDX guides with official sources and a last-verified date</td><td><span class="badge ok">Done</span></td><td>8 guides; only official https sources allowed (unit-tested). Some TODOs remain where no official source was found</td></tr>
+    <tr><td>F2</td><td>Concierge answers only from cited guide passages; otherwise a hand-off card; "not legal advice" label</td><td><span class="badge ok">Done</span></td><td>Tests: cited answer opens the source; off-topic gets the hand-off; prompt injection refused</td></tr>
+    <tr><td>F3</td><td>10 questions a day for free members; rate limit; log question, cited chunks and provider only</td><td><span class="badge ok">Done</span></td><td>Quota and limits in code; prompts contain no personal data</td></tr>
+    <tr><td>F4</td><td>Concierge logs kept 90 days, audit log 1 year (retention)</td><td><span class="badge warn">Not built</span></td><td>No automatic purge job found in the code (finding F12)</td></tr>
+    <tr><td>G1</td><td>Landing Roadmap 30/60/90 from deterministic rules; done toggles, progress ring, <code>.ics</code>, reminder emails</td><td><span class="badge ok">Done</span></td><td>Roadmap tests; daily reminders job is idempotent</td></tr>
+    <tr><td>H1</td><td>Chapter and Bubble groups: posts, questions, announcements, reactions, reports, moderation queue</td><td><span class="badge ok">Done</span></td><td>Tests: posting and reacting; members-only; moderation decision audited</td></tr>
+    <tr><td>H2</td><td>Bubbles SVG world map with member shading, hide under 5, keyboard list alternative</td><td><span class="badge ok">Done</span></td><td>Test: map with linked countries and list alternative; feature flag falls back to the list</td></tr>
+    <tr><td>H3</td><td>Coffee Roulette: weekly opt-in matching, no repeats within 8 weeks, trios for odd numbers</td><td><span class="badge ok">Done</span></td><td>Unit and browser tests</td></tr>
+  </table>
+
+  <div class="eyebrow" style="margin-top:6mm">04 · Requirements and traceability (3 of 3)</div>
+  <h2 style="font-size:19pt">Requirements: admin, public pages, trust, demo</h2>
+  <table class="req">
+    <tr><th style="width:5%">Ref</th><th style="width:41%">Requirement (brief)</th><th style="width:11%">Status</th><th>Evidence</th></tr>
+    <tr><td>I1</td><td>Command centre: KPI cards, chapter health, tables with search and CSV export</td><td><span class="badge ok">Done</span></td><td>Test: 8 KPIs, charts, chapter health; members export</td></tr>
+    <tr><td>I2</td><td>Applications board (speaker, story, contributor) with applicant-visible status</td><td><span class="badge ok">Done</span></td><td>Tests: applies, moves to review, accepts</td></tr>
+    <tr><td>I3</td><td>Audit log viewer for every admin write</td><td><span class="badge ok">Done</span></td><td>Audit entries asserted in moderation tests</td></tr>
+    <tr><td>I4</td><td>Sponsor report by signed link, with numbers under 5 hidden</td><td><span class="badge ok">Done</span></td><td>Route <code>/sponsor-report/[token]</code> opens for visitors by token</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>7</span></div>
+</section>
+
+<!-- 8 REQ 3 -->
+<section class="page">
+  <div class="eyebrow">04 · Requirements and traceability (3 of 3, continued)</div>
+  <h2>Requirements: public pages, trust, demo, quality</h2>
+  <table class="req">
+    <tr><th style="width:5%">Ref</th><th style="width:41%">Requirement (brief)</th><th style="width:11%">Status</th><th>Evidence</th></tr>
+    <tr><td>J1</td><td>Homepage with hero, line-drawn skyline, stats, next events, how it works, partner placeholders</td><td><span class="badge ok">Done</span></td><td>Homepage tests; Lighthouse; placeholders labelled</td></tr>
+    <tr><td>J2</td><td><code>/about</code>, <code>/partners</code>, <code>/stories</code> pages</td><td><span class="badge warn">Not built</span></td><td>No pages exist. The Team page and the festival pages cover part of the intent</td></tr>
+    <tr><td>J3</td><td>Legal pages as MDX drafts labelled for lawyer review; styled 404 and error pages</td><td><span class="badge ok">Done</span></td><td>Tests: no raw markdown (bug 8); styled 404</td></tr>
+    <tr><td>K1</td><td>Cookie banner with "Reject all" as prominent as "Accept all"</td><td><span class="badge warn">Not built</span></td><td>No banner. No analytics or third-party scripts exist; cookies are the sign-in session, language and chapter choice. See section 6</td></tr>
+    <tr><td>K2</td><td>Security headers with a nonce-based CSP</td><td><span class="badge dev">Differs</span></td><td>Headers present; the CSP is static and allows inline scripts (documented decision)</td></tr>
+    <tr><td>K3</td><td>Rate limits on sign-in, concierge, quotes, check-in</td><td><span class="badge ok">Done</span></td><td>Postgres-backed limits on sign-in, the concierge, billing, reviews, posts and other writes; sign-in limit proven (429 after a few wrong attempts in a burst)</td></tr>
+    <tr><td>K4</td><td>SEO: metadata, social images, sitemap with hreflang, robots, JSON-LD</td><td><span class="badge ok">Done</span></td><td>Tests for JSON-LD, social cards, sitemap and robots</td></tr>
+    <tr><td>K5</td><td>English, Polish, Ukrainian; guides with machine-translated summaries marked as such</td><td><span class="badge ok">Done</span></td><td>{{keys}} strings per language; key parity tested; quality of pl and uk not reviewed</td></tr>
+    <tr><td>L1</td><td>Deterministic demo seed with the stated counts and demo accounts; <code>demo:reset</code> under 30 s</td><td><span class="badge ok">Done</span></td><td>120 members, 30 providers, 8 Bubbles, 24 past and 8 upcoming events (brief said 6); reset takes about 3 s</td></tr>
+    <tr><td>S1</td><td>Environment validated with Zod; Stripe test keys only; signed webhooks; idempotency</td><td><span class="badge ok">Done</span></td><td>Unit tests for env rules; live keys rejected</td></tr>
+    <tr><td>S2</td><td>Uploads: re-encoded images with a size limit, stored outside the code</td><td><span class="badge ok">Done</span></td><td>Team photos: 2 MB limit (stricter than the brief's 5 MB), decoded and re-encoded to WebP, stored in the database</td></tr>
+    <tr><td>S3</td><td>GDPR: data export, deletion, opt-ins, aggregates under 5</td><td><span class="badge ok">Done</span></td><td>Export fixed and tested; deletion has a 30-day grace period</td></tr>
+    <tr><td>S4</td><td>Lighthouse mobile 90 or more in all four categories on key pages; WCAG 2.1 AA with zero serious axe violations</td><td><span class="badge part">Mostly</span></td><td>Accessibility 100 and best practices 100 everywhere measured; performance below 90 on two pages; one serious axe finding, fixed (sections 13 and 15)</td></tr>
+    <tr><td>S5</td><td>Zero dead links and no-op buttons (crawler)</td><td><span class="badge ok">Done</span></td><td>300 pages crawled, 0 problems</td></tr>
+    <tr><td>S6</td><td>Works with the offline AI provider and no internet; fresh clone runs in under 10 minutes</td><td><span class="badge part">Partly</span></td><td>Offline provider works; clone-to-running time was not measured</td></tr>
+  </table>
+  <h3>Beyond the brief (added during the project)</h3>
+  <ul class="tick">
+    <li><b>Festivals</b> with a console, ticket tiers, volunteers, stalls, partners and sponsor reports; <b>growth tools</b>: chapters world view, ambassador programme, careers, volunteering; <b>RSVP</b> on every event.</li>
+    <li><b>Team page</b> with an admin editor, photo upload and consent-based email; <b>proprietary licence</b>; <b>deployment kit</b>; <b>QA scripts</b> for access control, accessibility sweep and screenshots.</li>
+  </ul>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>8</span></div>
+</section>
+<!-- 9 BUGS -->
+<section class="page">
+  <div class="eyebrow">05 · The old portal's bugs</div>
+  <h2>14 known bugs of the old portal, made impossible</h2>
+  <p class="lead">The brief listed 14 bugs in <code>portal.expatsinbusiness.org</code> that the new platform must not repeat. Each has a design rule and a test.</p>
+  <table>
+    <tr><th style="width:4%">#</th><th style="width:30%">Old bug</th><th>How the new platform prevents it</th><th style="width:15%">Check</th></tr>
+    <tr><td>1</td><td>Dashboard stat links dead</td><td>Every stat card navigates to a real list with a designed empty state</td><td>Browser test</td></tr>
+    <tr><td>2</td><td>Facebook link on event page unstyled</td><td>One <code>ExternalLink</code> component for all outside links (new tab, safe rel)</td><td>Crawler</td></tr>
+    <tr><td>3</td><td>"Need Help" dead</td><td>Help centre with FAQ and a contact form that emails the team</td><td>Browser test</td></tr>
+    <tr><td>4</td><td>"Copy profile link" dead</td><td>Clipboard API with fallback and a confirmation toast</td><td>Browser test</td></tr>
+    <tr><td>5</td><td>"Add email" dead</td><td>Secondary email added, verified by a single-use link</td><td>Browser test with the mail inbox</td></tr>
+    <tr><td>6</td><td>Account "Save changes" does not persist</td><td>Saved by a server action, confirmed with a toast, survives reload</td><td>Browser test</td></tr>
+    <tr><td>7</td><td>Slow sign-in redirect</td><td>Email-link sign-in straight to the dashboard within a 2 s budget</td><td>Timed test</td></tr>
+    <tr><td>8</td><td>Privacy policy shows raw markdown</td><td>Legal pages rendered from MDX with shared prose components</td><td>Browser test</td></tr>
+    <tr><td>9</td><td>Session Types page empty</td><td>Event formats page filled from the catalog, editable in admin</td><td>Page exists; sweep</td></tr>
+    <tr><td>10</td><td>Article cards without images, dead links</td><td>Guides with sources and dates; every card links to a real guide</td><td>Crawler</td></tr>
+    <tr><td>11</td><td>"Home" twice in the footer</td><td>One navigation config; a unit test rejects duplicate links</td><td>Unit test</td></tr>
+    <tr><td>12</td><td>Event cards misaligned</td><td>Equal-height card layout</td><td>Visual review</td></tr>
+    <tr><td>13</td><td>Profile stat icons dead</td><td>Stat cards link to filtered lists</td><td>Browser test</td></tr>
+    <tr><td>14</td><td>Public profile not visible</td><td>Public profile page with per-field visibility</td><td>Browser test</td></tr>
+  </table>
+  <div class="callout">The general rule behind all of them: <b>every clickable element works or is not drawn as clickable</b>. The link crawler follows 300 pages in 3 languages on every release check and fails on any dead link or duplicate menu entry.</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>9</span></div>
+</section>
+
+<!-- 10 GAPS -->
+<section class="page">
+  <div class="eyebrow">06 · Gaps and deviations</div>
+  <h2>What the brief asked for that is not as specified</h2>
+  <p class="lead">These were found by comparing the brief with the code in this review. None breaks the product; each needs a decision (section 2, item 8).</p>
+  <table>
+    <tr><th style="width:21%">Item</th><th style="width:11%">Status</th><th>What exists, and the impact</th><th style="width:21%">Proposed handling</th></tr>
+    <tr><td><b>Chapter-in-a-box</b> admin form (launch a city in under 60 s)</td><td><span class="badge warn">Not built</span></td><td>New chapters must be added through the seed or the database. The brief called it a "never cut" item. Members can already vote for cities and see launching chapters, but an admin cannot create one in the UI.</td><td>Build before Warsaw launches, if Warsaw must go live without a developer</td></tr>
+    <tr><td><b>/about, /partners, /stories</b> pages</td><td><span class="badge warn">Not built</span></td><td>The homepage has partner placeholders; the Team page and festival pages tell part of the story. There is no About page and no podcast page.</td><td>Build after real content (history, partner permissions, episodes) exists</td></tr>
+    <tr><td><b>Cookie banner</b></td><td><span class="badge warn">Not built</span></td><td>The site sets no analytics or advertising cookies and loads no third-party scripts, so no consent is needed today. The banner becomes necessary the moment analytics is added.</td><td>Build together with analytics, if ever</td></tr>
+    <tr><td><b>Data retention</b> jobs (concierge logs 90 days, audit log 1 year)</td><td><span class="badge warn">Not built</span></td><td>Nothing deletes old logs automatically. Logs hold no personal data by design, but the stated retention period is not enforced.</td><td>Add a scheduled purge job before launch</td></tr>
+    <tr><td><b>Nonce-based CSP</b></td><td><span class="badge dev">Differs</span></td><td>A static CSP is used because per-request nonces would make every page dynamic and defeat caching. Inline scripts are allowed; protection relies on output encoding, which probes confirmed.</td><td>Revisit when nonce support for streamed pages matures</td></tr>
+    <tr><td><b>Route names</b></td><td><span class="badge dev">Differs</span></td><td><code>/chapters/[slug]</code> instead of <code>/c/[chapter]</code>; check-in and Pulse under <code>/admin/events/[id]/</code>; sponsor report at <code>/sponsor-report/[token]</code>. Cosmetic.</td><td>None</td></tr>
+    <tr><td><b>Demo seed</b> counts</td><td><span class="badge dev">Differs</span></td><td>8 upcoming events instead of 6; 190 chapter votes in the current database instead of 140 (test runs add votes).</td><td>None</td></tr>
+    <tr><td><b>Continuous integration</b></td><td><span class="badge warn">Never ran</span></td><td>A GitHub Actions workflow and a Bitbucket pipeline are defined. GitHub shows <b>0 recorded runs</b>, so automatic checks on each change have not happened. All checks ran locally instead.</td><td>Check Settings → Actions; make one pipeline the standard</td></tr>
+  </table>
+  <h3>Verified placeholders (by design, never presented as fact)</h3>
+  <p>Prices and plans, sponsors and partner logos, festival dates, the refund policy, ambassador benefits and testimonials are labelled placeholders ("proposal", "Demo profile", "permission pending"). Only the facts in <code>docs/FACTS.md</code> appear as company facts, each with a source.</p>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>10</span></div>
+</section>
+
+<!-- 11 TOUR 1 -->
+<section class="page">
+  <div class="eyebrow">07 · Feature tour</div>
+  <h2>Members and events</h2>
+  <div class="grid g2">
+    <figure class="shot"><img src="../screenshots/dashboard-desktop.png" alt="Dashboard" /><figcaption>Member dashboard: every card is a link.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/events-desktop.png" alt="Events" /><figcaption>Events with filters by time and format.</figcaption></figure>
+  </div>
+  <div class="grid g2" style="margin-top:4mm">
+    <div>
+      <h4>For members</h4>
+      <ul class="tick">
+        <li><b>Join and settle in:</b> email-link sign-in, six-step onboarding, a profile with per-field visibility, a personal 30/60/90-day roadmap with reminders and calendar export.</li>
+        <li><b>Meet people:</b> member directory, double opt-in connections, groups, Bubbles, a weekly Coffee Roulette match, "Who I met" after a session.</li>
+        <li><b>Come to sessions:</b> RSVP in one click, waitlist with automatic promotion, QR ticket, calendar file; paid sessions through Stripe Checkout in test mode (card, BLIK, Przelewy24).</li>
+        <li><b>Get answers:</b> guides with official sources and dates; a concierge that answers only from them and hands over to a human when it cannot.</li>
+        <li><b>Stay in control:</b> data download, deletion with a 30-day grace period, visibility settings.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>For chapter leads</h4>
+      <ul class="tick">
+        <li>Publish a session in under two minutes with the event builder.</li>
+        <li>Door check-in by phone camera or manual search; each ticket works once.</li>
+        <li>Live <b>Session Pulse</b> screen for the room.</li>
+        <li>Festival console: tiers, programme, volunteer shifts, stalls, partners, sales, sponsor report.</li>
+      </ul>
+      <figure class="shot" style="margin-top:3mm"><img src="../screenshots/festival-desktop.png" alt="Festival" /><figcaption>A festival page (demo data).</figcaption></figure>
+    </div>
+  </div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>11</span></div>
+</section>
+
+<!-- 12 TOUR 2 -->
+<section class="page">
+  <div class="eyebrow">08 · Feature tour</div>
+  <h2>Community, providers and growth</h2>
+  <div class="grid g3">
+    <figure class="shot"><img src="../screenshots/bubbles-desktop.png" alt="Bubbles" /><figcaption>Bubbles world map with a list alternative.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/providers-desktop.png" alt="Providers" /><figcaption>Verified provider directory.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/concierge-desktop.png" alt="Concierge" /><figcaption>Expat Concierge: cited answers only.</figcaption></figure>
+  </div>
+  <div class="grid g2" style="margin-top:4mm">
+    <div>
+      <h4>Community and directories</h4>
+      <ul class="tick">
+        <li><b>Bubbles:</b> groups by country of origin on an SVG world map (no tile service, no tracking), shaded by member count, with numbers under 5 hidden.</li>
+        <li><b>Groups and moderation:</b> posts, questions, announcements, reactions, reports and a moderation queue; every decision is audited.</li>
+        <li><b>Providers:</b> categories, verification badge only after an admin ticks every criterion, quote requests, a provider inbox, aggregated analytics, reviews only from people who really asked for a quote.</li>
+        <li><b>Businesses:</b> member listings and a lead inbox.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Growth tools</h4>
+      <ul class="tick">
+        <li><b>Chapters:</b> world view, city votes, country and city pages.</li>
+        <li><b>Ambassadors:</b> three tiers (global, country, city); apply, review, public listing.</li>
+        <li><b>Careers and volunteering:</b> open roles, applications and withdrawals.</li>
+        <li><b>Membership:</b> plans, subscriptions and a corporate enquiry form, with all prices labelled as proposals.</li>
+        <li><b>Languages and search:</b> English, Polish, Ukrainian; hreflang, structured data, social cards.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:3mm">
+    <figure class="shot"><img src="../screenshots/chapters-desktop.png" alt="Chapters" /><figcaption>Chapters: live, launching and requested cities.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/pricing-desktop.png" alt="Pricing" /><figcaption>Pricing: placeholders labelled as proposals.</figcaption></figure>
+  </div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>12</span></div>
+</section>
+
+<!-- 13 ADMIN -->
+<section class="page">
+  <div class="eyebrow">09 · Admin features</div>
+  <h2>The admin centre</h2>
+  <p class="lead" style="font-size:10.5pt">Admins see everything; chapter leads see only their own chapter. Every admin action is validated, rate-limited and audited. Ctrl K opens a command palette.</p>
+  <figure class="shot" style="width:56%;margin:0 auto"><img src="../screenshots/admin-desktop.png" alt="Admin command centre" /><figcaption>Command centre: 8 KPIs, sign-up and check-in charts, chapter health (demo data).</figcaption></figure>
+  <table style="margin-top:3mm">
+    <tr><th style="width:19%">Section</th><th>What an admin can do</th><th style="width:15%">Who</th></tr>
+    <tr><td>Overview</td><td>KPIs (members, new, sessions, check-ins, open reports, pending verifications, concierge use, suspended accounts), charts, chapter health</td><td>Admin, lead</td></tr>
+    <tr><td>Sessions</td><td>Event builder, edit and publish, door check-in, live Pulse, attendee export</td><td>Admin, lead</td></tr>
+    <tr><td>Festivals</td><td>Create and edit festivals: programme, tiers, shifts, FAQ, stalls, partners, sales, sponsor report</td><td>Admin, lead</td></tr>
+    <tr><td>Members</td><td>Search, filter, CSV export, suspend</td><td>Admin</td></tr>
+    <tr><td>Providers</td><td>Verification queue with a criteria checklist; approve or decline</td><td>Admin</td></tr>
+    <tr><td>Moderation</td><td>Reports queue; remove or clear posts; decisions audited</td><td>Admin, moderators</td></tr>
+    <tr><td>Applications</td><td>Boards for speakers, stories, contributors, volunteers, stalls; applicants are told the result</td><td>Admin, lead</td></tr>
+    <tr><td>Ambassadors, Roles</td><td>Review ambassador applications; grant and revoke roles per chapter</td><td>Admin</td></tr>
+    <tr><td>Roulette</td><td>Inspect and run the weekly Coffee Roulette</td><td>Admin</td></tr>
+    <tr><td>Catalogs</td><td>Event formats, provider categories, plan prices: no deploy needed</td><td>Admin</td></tr>
+    <tr><td>Team</td><td>Founder's message and team members with photos (next page)</td><td>Admin</td></tr>
+    <tr><td>Settings, System</td><td>Feature flags (for example the Bubbles map), site banner, system information</td><td>Admin</td></tr>
+    <tr><td>Audit log</td><td>Who did what, when, to which record (no personal data in details)</td><td>Admin, lead</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>13</span></div>
+</section>
+
+<!-- 14 ADMIN 2 -->
+<section class="page">
+  <div class="eyebrow">09 · Admin features</div>
+  <h2>Team page editor, settings and members</h2>
+  <div class="grid g2">
+    <figure class="shot"><img src="../screenshots/team-desktop.png" alt="Team page" /><figcaption>Public Team page (placeholders: "Demo profile").</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/admin-team-desktop.png" alt="Team editor" /><figcaption>Admin editor for the Team page.</figcaption></figure>
+  </div>
+  <div class="grid g2" style="margin-top:4mm">
+    <div>
+      <h4>Team page: what EiB can enter itself</h4>
+      <ul class="tick">
+        <li>Founder's message (heading, text, name, designation, photo).</li>
+        <li>Each person: name, designation, group (founders, leads, team, volunteers), bio, time with EiB, LinkedIn, email, photo and its description, order, visibility.</li>
+        <li>Photos are checked, re-encoded as small images and stripped of location data; a 2 MB limit applies.</li>
+        <li>An email is shown only with the person's consent, and only when a visitor presses "Show email address" (it is not in the page source).</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Settings and members</h4>
+      <ul class="tick">
+        <li><b>Feature flags</b> switch features on or off without a deploy (the Bubbles map, Coffee Roulette, Pulse, paid tickets).</li>
+        <li><b>Site banner</b> for announcements.</li>
+        <li><b>Members table</b> with search, filters and CSV export; admins only.</li>
+        <li>Admin-only pages are protected on the server: members get a styled 403 page and no data in the response (section 14).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:3mm">
+    <figure class="shot"><img src="../screenshots/admin-settings-desktop.png" alt="Settings" /><figcaption>Settings: flags and banner.</figcaption></figure>
+    <figure class="shot"><img src="../screenshots/admin-members-desktop.png" alt="Members" /><figcaption>Members: search, filters, export.</figcaption></figure>
+  </div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>14</span></div>
+</section>
+<!-- 15 ARCH -->
+<section class="page">
+  <div class="eyebrow">10 · Architecture and technology</div>
+  <h2>How it is built</h2>
+  <div class="layer" style="background:var(--wash);border:1px solid var(--line)"><b>Browser</b> · server-rendered pages with small interactive islands (forms, map, QR scanner)</div>
+  <div class="layer" style="background:var(--green);color:#fff"><b>Next.js 16 (App Router, Server Components, Cache Components)</b> · pages, streaming, tagged caching, language routing, security headers</div>
+  <div class="grid g3" style="margin-bottom:2.4mm">
+    <div class="layer" style="background:var(--logo);color:#fff;margin:0"><b>Server actions ({{actions}})</b><br />sign-in check → validation → permission → write → audit → refresh</div>
+    <div class="layer" style="background:var(--logo);color:#fff;margin:0"><b>API routes ({{api_routes}})</b><br />Stripe webhook, concierge stream, Pulse, calendar, check-in, exports, team photo and email, health</div>
+    <div class="layer" style="background:var(--logo);color:#fff;margin:0"><b>Libraries</b><br />auth, permissions, AI, security limits, money, time, features, team</div>
+  </div>
+  <div class="grid g3">
+    <div class="layer" style="background:var(--deep);color:#fff;margin:0"><b>PostgreSQL + pgvector</b><br />{{models}} models, {{migrations}} migrations; guide vectors; rate limits; audit log</div>
+    <div class="layer" style="background:var(--deep);color:#fff;margin:0"><b>Better Auth</b><br />email links, optional Google, sessions</div>
+    <div class="layer" style="background:var(--deep);color:#fff;margin:0"><b>Outside services</b><br />SMTP email, Stripe (test), optional AI provider</div>
+  </div>
+  <h3>Technology</h3>
+  <table>
+    <tr><th style="width:24%">Layer</th><th>Choice (installed version)</th></tr>
+    <tr><td>Framework</td><td>Next.js 16.4.6, React 19.3, TypeScript 6.0 in strict mode</td></tr>
+    <tr><td>UI</td><td>Tailwind CSS 4.3, shadcn/ui, Motion, lucide icons; Cabin and Nunito Sans fonts</td></tr>
+    <tr><td>Data</td><td>PostgreSQL 17.11 with pgvector 0.8.7 and pg_trgm, Prisma ORM 7.10</td></tr>
+    <tr><td>Auth, validation</td><td>Better Auth 1.7, Zod 4.6, React Hook Form</td></tr>
+    <tr><td>AI</td><td>Vercel AI SDK behind one provider file (Groq, Gemini, OpenRouter, Anthropic or an offline demo provider); local embeddings (all-MiniLM-L6-v2, 384 dimensions)</td></tr>
+    <tr><td>Payments, email</td><td>Stripe 23 in test mode; nodemailer over SMTP (Mailpit locally)</td></tr>
+    <tr><td>Languages, content</td><td>next-intl 4.14 (en, pl, uk), MDX guides, d3-geo SVG maps</td></tr>
+    <tr><td>Quality tools</td><td>Vitest 5.1, Playwright 1.65, axe-core 4.14, Lighthouse 13.6, ESLint</td></tr>
+  </table>
+  <h3>Rules every change follows</h3>
+  <p style="font-size:9pt">Server Components by default · data access only in server code · money as integer minor units · times stored in UTC and shown in the chapter's time zone · nothing hard-codes a city, currency or language · every string through the translation files · files under 250 lines · no colour literals in components (a test scans) · secrets never committed and validated at start-up.</p>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>15</span></div>
+</section>
+
+<!-- 16 ENV 1 -->
+<section class="page">
+  <div class="eyebrow">11 · Environments</div>
+  <h2>Where things ran</h2>
+  <p class="lead">There is one developer laptop and no shared test or production server yet. These are the environments that existed, what each was used for, and what was <b>not</b> done in each.</p>
+  <table>
+    <tr><th style="width:5%">ID</th><th style="width:21%">Environment</th><th style="width:36%">Setup</th><th>Used for</th></tr>
+    <tr><td>E1</td><td><b>Developer laptop, development mode</b></td><td>Windows 11 Home (build 26300), Node 24.14, npm 11.9; <code>next dev</code> on port 3000; about 1.7 GB of free memory at the time of testing</td><td>Building all 16 milestones. Known issue: the dev server uses about 1.7 GB, orphaned servers survive restarts, and two runs ended with low-memory kills and a corrupted <code>.next</code> folder.</td></tr>
+    <tr><td>E2</td><td><b>Local production build</b></td><td><code>next build</code> then <code>next start</code> on ports 3000, 3100, 3200 and 3300 (several servers over time); demo data; AI provider "demo"; Stripe keys empty</td><td>Browser tests, link crawler, Lighthouse, accessibility sweep, screenshots, security probes. This is the closest thing to production that was tested.</td></tr>
+    <tr><td>E3</td><td><b>Docker services</b></td><td>Docker 29.9: PostgreSQL 17.11 + pgvector 0.8.7 + pg_trgm 1.6 on host port 5433; Mailpit on 1025 and 8025</td><td>The database for every run above; Mailpit caught sign-in and verification emails.</td></tr>
+    <tr><td>E4</td><td><b>Scanner containers</b></td><td>Gitleaks (secrets), Trivy (dependencies), OWASP ZAP attempted</td><td>Security scans (section 14). ZAP did not finish.</td></tr>
+    <tr><td>E5</td><td><b>Continuous integration</b></td><td>GitHub Actions workflow <code>ci.yml</code> (Postgres service, full tests); Bitbucket pipeline (fast checks, optional mirror)</td><td><b>Never ran.</b> GitHub reports zero runs; the Bitbucket pipeline is not connected. All checks were run locally.</td></tr>
+    <tr><td>E6</td><td><b>Staging</b></td><td>None</td><td>Not created.</td></tr>
+    <tr><td>E7</td><td><b>Production</b></td><td>None. Planned: Render (app), Neon (database), Brevo (email); kit in <code>render.yaml</code> and <code>docs/DEPLOY.md</code></td><td>Not deployed. Nothing about live performance, email delivery or real payments is tested.</td></tr>
+  </table>
+  <div class="callout warn"><b>Why this matters.</b> Everything reported here was measured on one slow, memory-limited laptop against demo data. Timing numbers (especially performance and the parallel test runs) will differ on real hosting, and email, payments and the AI provider have not been exercised against real services.</div>
+  <h3>Source control</h3>
+  <p>GitHub repository (private) <code>agastyasharma20/expats-in-business</code>; branch <code>main</code>; release <b>v1.0.0</b> with this guide attached. The brief named Bitbucket as the main remote; the project moved to GitHub early on (decision logged), and Bitbucket remains an optional mirror.</p>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>16</span></div>
+</section>
+
+<!-- 17 ENV 2 -->
+<section class="page">
+  <div class="eyebrow">11 · Environments</div>
+  <h2>What was done in which environment</h2>
+  <table>
+    <tr><th style="width:30%">Activity</th><th style="width:7%">E1 dev</th><th style="width:7%">E2 local prod</th><th style="width:7%">E3 Docker</th><th style="width:7%">E5 CI</th><th style="width:7%">E7 live</th><th>Notes</th></tr>
+    <tr><td>Feature development</td><td>●</td><td></td><td>●</td><td></td><td></td><td>Milestones M1 to M16</td></tr>
+    <tr><td>Lint, type-check, unit tests</td><td>●</td><td></td><td></td><td>○</td><td></td><td>○ = defined, never ran. {{unit}} unit tests</td></tr>
+    <tr><td>Production build</td><td></td><td>●</td><td>●</td><td>○</td><td></td><td>Needs the database at build time</td></tr>
+    <tr><td>Browser tests (Playwright)</td><td></td><td>●</td><td>●</td><td>○</td><td></td><td>Desktop 1440 px and phone 375 px</td></tr>
+    <tr><td>Link crawler</td><td></td><td>●</td><td>●</td><td></td><td></td><td>300 pages</td></tr>
+    <tr><td>Accessibility sweep (axe)</td><td></td><td>●</td><td>●</td><td></td><td></td><td>{{sweep_checks}} checks</td></tr>
+    <tr><td>Lighthouse</td><td></td><td>●</td><td>●</td><td></td><td></td><td>Simulated slow mobile</td></tr>
+    <tr><td>Access-control and security probes</td><td></td><td>●</td><td>●</td><td></td><td></td><td>{{access_total}} checks</td></tr>
+    <tr><td>Secret scan (git history)</td><td>●</td><td></td><td></td><td></td><td></td><td>Gitleaks in Docker, 90 commits</td></tr>
+    <tr><td>Dependency scan</td><td>●</td><td></td><td></td><td></td><td></td><td>npm audit; Trivy on the lockfile</td></tr>
+    <tr><td>Web vulnerability scan (ZAP)</td><td></td><td>○</td><td></td><td></td><td></td><td>Stopped by low memory; to rerun</td></tr>
+    <tr><td>Real email, payments, AI provider</td><td></td><td></td><td></td><td></td><td>○</td><td>Not exercised (Mailpit and simulated Stripe only)</td></tr>
+    <tr><td>Load and stress testing</td><td></td><td></td><td></td><td></td><td></td><td>Not done</td></tr>
+  </table>
+  <p style="font-size:8.6pt;color:var(--muted)">● done · ○ planned or attempted, not completed</p>
+  <h3>What happened during testing, in order</h3>
+  <ul class="tick">
+    <li><b>First full browser run</b> (parallel, two workers, E2): 168 runs passed, 3 failed, 2 flaky. The failures were timeouts on the loaded laptop; one was a reservation that did not finish in 30 s (finding F2).</li>
+    <li><b>Reruns one at a time on a clean database:</b> every spec file passed (99 of 99 runnable desktop tests in 17 of 18 files; the 18th, the link-crawl spec, passed in the first run).</li>
+    <li><b>Stale state</b> from interrupted runs caused extra failures (a feature flag left off, a leftover ticket). This is test hygiene, not an app fault; the reset steps are documented.</li>
+    <li><b>Accessibility sweep and security scans</b> on 16 to 17 Nov. The ZAP image download and scan were stopped by the system under memory pressure.</li>
+  </ul>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>17</span></div>
+</section>
+
+<!-- 18 TESTING -->
+<section class="page">
+  <div class="eyebrow">12 · Testing results</div>
+  <h2>Testing: what ran and what passed</h2>
+  <div class="grid g4" style="margin-bottom:3mm">
+    <div class="card stat"><b>{{unit}}</b><span>unit tests, all passing ({{unit_files}} files)</span></div>
+    <div class="card stat"><b>{{e2e_per_project}}</b><span>browser tests in {{e2e_files}} files, run at 2 widths</span></div>
+    <div class="card stat"><b>{{crawl_pages}}</b><span>pages crawled, 0 problems</span></div>
+    <div class="card stat"><b>{{access_pass}}/{{access_total}}</b><span>access and security probes</span></div>
+  </div>
+  <table>
+    <tr><th style="width:21%">Layer</th><th>What it checks</th><th style="width:20%">Result</th></tr>
+    <tr><td>Static checks</td><td>ESLint, strict TypeScript, Prettier; scans that forbid colour literals and the bare <code>cn</code> package</td><td><span class="badge ok">Pass</span></td></tr>
+    <tr><td>Unit tests</td><td>Permissions, capacity and waitlist, money and time zones, environment rules, language parity, contrast pairs, team schemas, concierge answer gate, account-menu accessible name</td><td><span class="badge ok">{{unit}} pass</span></td></tr>
+    <tr><td>Browser tests</td><td>Real flows with seeded personas: sign-in, RSVP and QR ticket, waitlist, check-in, Pulse, festivals, community, moderation, admin, team editor, pricing, languages, concierge, privacy export</td><td><span class="badge ok">All pass serially</span></td></tr>
+    <tr><td>Link crawler</td><td>Follows every menu and footer link in 3 languages; fails on dead links, duplicates, unsafe outside links</td><td><span class="badge ok">300 pages, 0 problems</span></td></tr>
+    <tr><td>Production build</td><td>77 pages and 14 API routes compile and prerender</td><td><span class="badge ok">Pass</span></td></tr>
+  </table>
+  <h3>Browser test runs in detail</h3>
+  <table>
+    <tr><th style="width:24%">Run</th><th style="width:24%">Setup</th><th>Outcome</th></tr>
+    <tr><td>A: full suite</td><td>Desktop and phone, 2 parallel workers, 1 retry, 12.7 min</td><td>168 passed · 3 failed · 2 flaky · 78 skipped by design · 17 not run (they follow a failed test)</td></tr>
+    <tr><td>B: stateful files</td><td>Serial, clean data: auth, events, check-in, community</td><td><b>31 of 31 passed</b></td></tr>
+    <tr><td>C: all other files</td><td>Serial, clean data, desktop</td><td><b>68 passed</b>, 0 failed, 6 phone-only checks skipped (they run in the phone project)</td></tr>
+  </table>
+  <h3>What the failures in run A were</h3>
+  <ul class="tick" style="font-size:9pt">
+    <li>Sign-in under 2 s measured 4.2 s on the loaded laptop (passes at 2.9 s when run alone).</li>
+    <li>A group post, a door check-in and a festival-builder step timed out in parallel; each passed alone.</li>
+    <li><b>Reserve a free place</b> stayed on "One moment…" for 30 s in one run. It passed alone (4.9 s). The server log shows a database warning about overlapping queries in one transaction; a link is plausible but unproven (finding F2).</li>
+  </ul>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>18</span></div>
+</section>
+
+<!-- 19 TESTING 2: feature coverage -->
+<section class="page">
+  <div class="eyebrow">12 · Testing results</div>
+  <h2>Which feature is covered by which tests</h2>
+  <table>
+    <tr><th style="width:22%">Feature</th><th style="width:10%">Tests</th><th>What is checked</th></tr>
+    <tr><td>Sign-in and account</td><td>8</td><td>Redirect when signed out; email-link sign-in; stat cards navigate; edits persist; second email verified through the mail inbox; hidden profile fields stay hidden; styled 403; help form</td></tr>
+    <tr><td>Events and tickets</td><td>7</td><td>List filters; event facts and calendar file; reserve, QR ticket and cancel; RSVP and un-RSVP; simulated paid ticket; unsigned webhook refused</td></tr>
+    <tr><td>Builder, door, Pulse</td><td>5</td><td>Publish in under 2 minutes; waitlist promotion; single-use check-in and member refusal; live Pulse; Who I met</td></tr>
+    <tr><td>Festivals</td><td>5</td><td>Builder; tampered party size refused; family ticket, volunteering, stall; console access control; stall acceptance and sales</td></tr>
+    <tr><td>Community and admin</td><td>11</td><td>Bubbles map and list; members-only groups; posts and reactions; Coffee Roulette; dashboard; admin refusal; KPIs; command palette; feature flag; moderation audit</td></tr>
+    <tr><td>Directory and providers</td><td>6</td><td>Filters in the URL; limited visitor fields; review eligibility; verification rules; connection opt-in; provider inbox</td></tr>
+    <tr><td>Guides and concierge</td><td>5</td><td>Cited answer opens the official source; off-topic hand-off; prompt-injection attempt refused; guide disclaimers; Polish summary labelled</td></tr>
+    <tr><td>Roadmap, pricing, growth</td><td>15</td><td>Plan by situation; progress persists; plans from the database; subscribe and cancel; corporate enquiry; ambassadors; careers; spotlight</td></tr>
+    <tr><td>Admin tools, team</td><td>8</td><td>Applications board; catalogs; team editor with photo upload, email on demand, hide and delete; non-image refused</td></tr>
+    <tr><td>Privacy export</td><td>2</td><td>Visitors refused; a member gets her own data and nobody else's</td></tr>
+    <tr><td>Home, SEO, quality</td><td>25</td><td>Sections render without console errors; placeholders labelled; no serious axe violations; no sideways scroll; structured data; robots and sitemap; reduced motion; keyboard skip link; styled 404; styleguide</td></tr>
+  </table>
+  <div class="callout"><b>Reading this table.</b> Counts are test definitions per file; tests that loop over routes or languages expand to {{e2e_per_project}} runs per width. A test confirms a flow works in a real browser against demo data. It does not prove the absence of other problems. The sections that follow add independent checks of accessibility and security.</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>19</span></div>
+</section>
+
+<!-- 20 ACCESSIBILITY 1 -->
+<section class="page">
+  <div class="eyebrow">13 · Accessibility report</div>
+  <h2>Accessibility: results of the full route audit</h2>
+  <p class="lead">Standard: WCAG 2.1 levels A and AA, the target in the brief. Tool: axe-core 4.14 driving Chromium. Every route was loaded as the right user (visitor, member, provider or admin) at 1440 px and at 375 px, and public pages also in Polish and Ukrainian. Run on 16 Nov 2026 against a local production build (environment E2).</p>
+  <div class="grid g4" style="margin:3mm 0">
+    <div class="card stat"><b>{{sweep_routes}}</b><span>routes audited</span></div>
+    <div class="card stat"><b>{{sweep_checks}}</b><span>page checks (2 widths, 3 languages)</span></div>
+    <div class="card stat"><b>{{sweep_clean}}</b><span>checks with no violation</span></div>
+    <div class="card stat"><b>1</b><span>rule violated (serious), now fixed</span></div>
+  </div>
+  {{axe_area_table}}
+  <h3>The one finding</h3>
+  <div class="card" style="border-color:#f1c1b6;background:#fff7f4">
+    <h4 style="color:var(--ember-d)">A11Y-1 · Serious · WCAG 2.5.3 "Label in Name" (level A) · fixed in code</h4>
+    <p><b>Where:</b> the account button in the header on every signed-in page, at desktop width where the name is visible ({{sweep_with_finding}} of the checks, always the same single element; at 375 px the name is hidden, so there is no mismatch).<br />
+    <b>What:</b> the button showed the member's name but its accessible name was only "Account menu", so people using speech control ("click Karim") or screen readers heard something different from what is on screen.<br />
+    <b>Fix:</b> the accessible name is now "Karim Demo, Account menu" (visible name first). A unit test asserts that the accessible name contains the visible text.<br />
+    <b>Status:</b> fixed in the source and covered by a unit test; the browser re-check on a rebuilt app is pending (it could not be run on the memory-limited laptop). Rerun with <code>QA_PERSONAS=karim,admin,provider node scripts/qa-sweep.mjs</code>.</p>
+  </div>
+  <h3>Other measured results from the same audit</h3>
+  <p>All {{sweep_checks}} pages loaded with HTTP 200. Across them: <b>{{sweep_console_errors}}</b> console errors, <b>{{sweep_failed_requests}}</b> failed requests, <b>{{sweep_overflow}}</b> pages that scroll sideways, <b>{{sweep_h1_not_one}}</b> pages without exactly one main heading and <b>{{sweep_empty}}</b> nearly empty pages.</p>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>20</span></div>
+</section>
+
+<!-- 21 ACCESSIBILITY 2 -->
+<section class="page">
+  <div class="eyebrow">13 · Accessibility report</div>
+  <h2>Accessibility: other evidence, and its limits</h2>
+  <div class="grid g2">
+    <div>
+      <h4>Lighthouse accessibility score</h4>
+      <p>100 on all six pages measured (events, guides, Polish home, pricing, team, festival), mobile profile.</p>
+      <h4>Built-in design rules</h4>
+      <ul class="tick">
+        <li>Every text and background colour pair is listed in a contrast table and a unit test enforces 4.5:1 for text and 3:1 for borders and focus.</li>
+        <li>Semantic HTML, labelled form fields, visible focus rings, 44 px touch targets, no meaning by colour alone (results use icons and words).</li>
+        <li>The Bubbles map always has a keyboard-friendly list alternative.</li>
+        <li>Images have text alternatives; the team editor has a field for each photo's description.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Behaviour checks in the browser tests</h4>
+      <ul class="tick">
+        <li><b>Keyboard:</b> the skip link moves focus to the main content with a visible ring.</li>
+        <li><b>Reduced motion:</b> entrance animations finish instantly (measured: animation duration 0.01 ms when the setting is on).</li>
+        <li><b>Phone layout:</b> six key pages in three languages do not scroll sideways at 375 px.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>What this report does not cover</h3>
+  <div class="callout warn">
+    <ul class="tick" style="margin:0">
+      <li><b>Manual testing with a screen reader</b> (NVDA, VoiceOver, TalkBack) and with speech control was not done. Automated tools catch only part of the real problems; a manual pass on the main journeys (sign-in, reserve a place, concierge) is recommended before launch.</li>
+      <li><b>Full keyboard walkthrough</b> of every page was not done; only the skip link and menus were exercised in tests.</li>
+      <li><b>Zoom and text-size</b> behaviour (200%, 400%) and <b>high-contrast mode</b> were not tested.</li>
+      <li><b>Other browsers and real phones.</b> Chromium only.</li>
+      <li><b>Content quality:</b> plain-language review and Polish and Ukrainian text have not been reviewed by native speakers.</li>
+    </ul>
+  </div>
+  <h3>Verdict</h3>
+  <p>The platform meets its accessibility target for what automated tools can measure: no violations of WCAG 2.1 A or AA rules on any audited page, apart from one issue that is fixed in code. A manual assistive-technology review is the recommended next step, and no accessibility conformance claim should be published until it is done.</p>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>21</span></div>
+</section>
+<!-- 22 SECURITY 1 -->
+<section class="page">
+  <div class="eyebrow">14 · Security report</div>
+  <h2>Security: scans and what they found</h2>
+  <p class="lead">Scans ran on 16 to 17 Nov 2026 on the developer laptop (environments E2 to E4). The platform handles personal data, so the aim was to find leaks, vulnerable components and access-control gaps. <b>No critical or high issue was found.</b> The scope limits are stated in each row.</p>
+  <table>
+    <tr><th style="width:17%">Check</th><th style="width:21%">Tool</th><th>Scope and result</th><th style="width:15%">Outcome</th></tr>
+    <tr><td>Secrets in git history</td><td>Gitleaks (Docker)</td><td>The whole history, every branch: 90 commits with changes plus 11 merge commits (no changes of their own), about 3.6 MB scanned: <b>0 leaks</b>. A manual search for key formats found only a fake test value (<code>sk_live_123</code>) that proves live keys are rejected.</td><td><span class="badge ok">Clean</span></td></tr>
+    <tr><td>Vulnerable dependencies</td><td>npm audit; Trivy (Docker)</td><td>Production dependencies: <b>0 vulnerabilities</b> (npm audit and Trivy agree). All dependencies including build tools: 12 advisories (10 moderate, 2 low) in development-only tooling (the component CLI and the lint toolchain); none ship to users.</td><td><span class="badge ok">Clean for production</span></td></tr>
+    <tr><td>Configuration files</td><td>Trivy</td><td>Trivy recognised no misconfiguration targets in the compose, pipeline and blueprint files, so this check has little coverage.</td><td><span class="badge part">Limited</span></td></tr>
+    <tr><td>Web vulnerability scan</td><td>OWASP ZAP baseline</td><td><b>Did not complete.</b> The image download and scan were stopped by the system under low memory. No ZAP result exists.</td><td><span class="badge warn">Not done</span></td></tr>
+    <tr><td>Access control</td><td>Custom script, 39 checks</td><td>Visitor, member and admin against protected pages and APIs: <b>39 of 39 pass</b> (next page).</td><td><span class="badge ok">Pass</span></td></tr>
+    <tr><td>Input and output handling</td><td>Manual probes</td><td>Script and attribute break-out payloads in search parameters were not echoed unescaped; path traversal and oversized ids on the photo route returned 404; uploads of non-images are rejected.</td><td><span class="badge ok">Pass</span></td></tr>
+    <tr><td>Static analysis</td><td>ESLint, strict TypeScript</td><td>Zero errors. No dedicated security static-analysis tool (for example Semgrep or CodeQL) was run.</td><td><span class="badge part">Partly</span></td></tr>
+    <tr><td>Code review of writes</td><td>Scripted audit of all 79 server actions (earlier, 13 Nov)</td><td>Every action authenticates and scopes its write to the owner or a permitted role. Gaps found then (missing rate limits, loose ids) were fixed.</td><td><span class="badge ok">Done</span></td></tr>
+    <tr><td>Penetration test</td><td>None</td><td>No independent human penetration test has been done.</td><td><span class="badge warn">Not done</span></td></tr>
+  </table>
+  <div class="callout warn"><b>Recommended before real members and real money:</b> rerun the ZAP baseline on a machine with more memory (and a full active scan against a staging copy), run a code scanner such as CodeQL or Semgrep, and commission an independent penetration test.</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>22</span></div>
+</section>
+
+<!-- 23 SECURITY 2 -->
+<section class="page">
+  <div class="eyebrow">14 · Security report</div>
+  <h2>Security: access control, headers and abuse limits</h2>
+  <h3 style="margin-top:0">Access-control matrix: 39 of 39 checks pass</h3>
+  <table>
+    <tr><th style="width:30%">Who</th><th style="width:33%">Tried</th><th>Result</th></tr>
+    <tr><td>Visitor (signed out)</td><td>9 member, admin and provider pages</td><td>Sees a sign-in prompt; no personal or admin data in the response</td></tr>
+    <tr><td>Member</td><td>9 admin and provider pages</td><td>Sees the styled 403 page; no admin data in the response; own pages work</td></tr>
+    <tr><td>Admin</td><td>5 admin pages</td><td>All open</td></tr>
+    <tr><td>Visitor and member</td><td>Admin export, attendee export, roadmap calendar, account export</td><td>401 or 403; a member can export only her own data</td></tr>
+    <tr><td>Anyone</td><td>Team email route, photo route, unsigned Stripe webhook</td><td>Email route is POST-only and 404 for unknown ids; photo route 404; webhook not accepted</td></tr>
+    <tr><td>Attacker-style</td><td>Foreign <code>Origin</code> on sign-in; repeated wrong passwords</td><td>Foreign origin rejected (403); rate limit blocks from the third or fourth wrong attempt (429)</td></tr>
+  </table>
+  <p style="font-size:8.4pt;color:var(--muted);margin-bottom:1mm">Denied pages are streamed, so the HTTP status is 200 while the person sees the sign-in or 403 view (finding F4); the check asserts that no seeded personal data is in the response.</p>
+  <div class="grid g2">
+    <div>
+      <h4>Security headers on every page</h4>
+      <ul class="tick">
+        <li>Content-Security-Policy (default-src self; no framing; limited form targets)</li>
+        <li>X-Frame-Options DENY · X-Content-Type-Options nosniff</li>
+        <li>Referrer-Policy strict-origin-when-cross-origin</li>
+        <li>Permissions-Policy (camera for the scanner only)</li>
+        <li>Cross-Origin-Opener-Policy and Cross-Origin-Resource-Policy same-origin</li>
+        <li>HSTS on HTTPS (not testable locally); robots.txt keeps private areas out of search</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Abuse protection</h4>
+      <ul class="tick">
+        <li>Per-account limits (burst window plus daily cap) on posts, reactions, reports, applications, reviews, billing, admin and account writes</li>
+        <li>Sign-in and the concierge are limited per address</li>
+        <li>Limits live in the database, so they hold across servers and restarts</li>
+        <li>Stripe webhooks signature-verified; client amounts never trusted</li>
+        <li>Uploads decoded and re-encoded (location data removed), size and type limited</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Privacy by design</h3>
+  <ul class="tick">
+    <li>No personal data is ever sent to an AI model: prompts hold only the question and retrieved guide text, and obvious emails, phone numbers and ID numbers are stripped first.</li>
+    <li>Profile fields are opt-in per field; connection details appear only after acceptance; team emails only with consent and on request.</li>
+    <li>Reports and analytics hide any group under five people; admin audit entries carry no personal data.</li>
+  </ul>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>23</span></div>
+</section>
+
+<!-- 24 SECURITY 3 risk register -->
+<section class="page">
+  <div class="eyebrow">14 · Security report</div>
+  <h2>Security risk register</h2>
+  <table>
+    <tr><th style="width:5%">ID</th><th style="width:33%">Risk</th><th style="width:9%">Level</th><th>Status and recommendation</th></tr>
+    <tr><td>R1</td><td>The Content Security Policy allows inline scripts, so it would not stop an injected script if output encoding failed</td><td>Medium</td><td>Accepted and documented. Output encoding confirmed by probes. Revisit nonces when streamed pages support them.</td></tr>
+    <tr><td>R2</td><td>No independent penetration test and no completed web scan</td><td>Medium</td><td>Open. Rerun ZAP; commission a penetration test before real members or payments.</td></tr>
+    <tr><td>R3</td><td>Stated log retention (concierge 90 days, audit 1 year) is not enforced by a purge job</td><td>Low to medium</td><td>Open. Logs hold no personal data by design; add a scheduled purge.</td></tr>
+    <tr><td>R4</td><td>Rate limiting depends on a correct proxy setting; behind a proxy with the setting at 0, all visitors look like one address</td><td>Medium if misconfigured</td><td>Documented in the deploy guide: set <code>TRUSTED_PROXY_HOPS=1</code> on Render and test after launch.</td></tr>
+    <tr><td>R5</td><td>Real Stripe payments never tested; live keys are rejected by design</td><td>Medium at launch</td><td>Open. A payments review is needed before live mode (entity, VAT, refund policy).</td></tr>
+    <tr><td>R6</td><td>12 advisories in development-only tools</td><td>Low</td><td>No runtime exposure. Update the tools when fixes ship.</td></tr>
+    <tr><td>R7</td><td>Denied pages return HTTP 200 (no data exposed)</td><td>Low</td><td>Accepted for V1. Search engines are told to skip those areas.</td></tr>
+    <tr><td>R8</td><td>Secrets handled by people (hosting dashboards, email keys)</td><td>Process</td><td>Keep secrets only in Render, Neon, Brevo and GitHub secrets; rotate if shown to others; never in the repository (scan clean today).</td></tr>
+    <tr><td>R9</td><td>Team photos stored in the database count against the free database size</td><td>Low</td><td>2 MB upload limit and re-encoding to small images keep this small; monitor storage.</td></tr>
+    <tr><td>R10</td><td>Legal texts and the licence are drafts</td><td>Business</td><td>Open. Lawyer review (section 2).</td></tr>
+  </table>
+  <div class="callout"><b>Overall security position.</b> The design is defensive (server-side permission checks, validated input, rate limits, privacy by default) and the scans that completed found nothing critical. The remaining work is independent verification (web scan, code scanner, penetration test) and the operating process around secrets and the live environment.</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>24</span></div>
+</section>
+
+<!-- 25 PERFORMANCE -->
+<section class="page">
+  <div class="eyebrow">15 · Performance report</div>
+  <h2>Performance: Lighthouse results</h2>
+  <p class="lead">Lighthouse 13, mobile profile with simulated slow connection and a slowed processor, production build, local server (environment E2). Targets in the brief: 90 or more in every category, LCP under 2.5 s, CLS under 0.1.</p>
+  {{lighthouse_table}}
+  <p style="font-size:8.6pt;color:var(--muted)">{{lighthouse_note}}</p>
+  <h3>Reading the results</h3>
+  <ul class="tick">
+    <li><b>Accessibility and best practices are 100 on every page measured.</b> Four pages meet the performance target; <code>/pricing</code> is 97.</li>
+    <li><b>Two pages are slower</b> (the Team page and the festival page): the first big element appears after about 4.2 s and 4.6 s in the simulated slow-mobile test, even though the server answers in under 10 ms. It is a rendering-timing issue on pages that stream parts of their content. Finding F3; to retest on the live host.</li>
+    <li><b>The home page</b> could not be measured in this run because of a Lighthouse tracing error; the milestone-5 measurement was 99, 100, 100, 100.</li>
+    <li>On a loaded laptop earlier the same pages scored 68 to 72, which shows how sensitive the number is to the machine; real hosting will need a fresh measurement.</li>
+  </ul>
+  <h3>Why the platform is fast where it is fast</h3>
+  <ul class="tick">
+    <li>Server Components and streaming; tagged caches refreshed by the exact action that changes the data.</li>
+    <li>CSS keyframes for entrance animation, so JavaScript stays small; maps are SVG; fonts self-hosted; no trackers.</li>
+    <li>Team photos are resized to 640 px WebP and cached for a year under a versioned address.</li>
+  </ul>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>25</span></div>
+</section>
+
+<!-- 26 FINDINGS -->
+<section class="page">
+  <div class="eyebrow">16 · Findings register</div>
+  <h2>Every finding, in one table</h2>
+  <p class="lead">Severity: High = wrong or unsafe for real users · Medium = likely to hurt in production · Low = polish · Info = noted. Details and evidence are in <code>docs/TEST_REPORT.md</code>.</p>
+  <table style="font-size:8.2pt">
+    <tr><th style="width:5%">ID</th><th style="width:8%">Severity</th><th style="width:11%">Status</th><th>Finding</th></tr>
+    <tr><td>F1</td><td><b>High</b></td><td><span class="badge ok">Fixed</span></td><td>The personal-data export returned an error for every member (wrong database field name). Fixed; browser regression tests added.</td></tr>
+    <tr><td>F2</td><td>Medium</td><td><span class="badge warn">Open</span></td><td>Reserving a place sometimes did not finish within 30 s under parallel load; not reproducible one at a time. Suspected link to overlapping queries in one transaction. To investigate with a concurrency test.</td></tr>
+    <tr><td>F3</td><td>Low-Med</td><td><span class="badge warn">Open</span></td><td>Slow first paint on the Team page (4.2 s) and the festival page (4.6 s) in simulated slow mobile.</td></tr>
+    <tr><td>F4</td><td>Low</td><td><span class="badge part">By design</span></td><td>Denied pages return HTTP 200 with a sign-in or 403 view; no data exposed.</td></tr>
+    <tr><td>F5</td><td>Low</td><td><span class="badge warn">Open</span></td><td>The admin tab bar is clipped on the right by the search box ("Catalogs", "Team", "Settings", "System" scroll under it).</td></tr>
+    <tr><td>F6</td><td>Info</td><td><span class="badge">Noted</span></td><td>CSP allows inline scripts (nonce CSP not possible with streaming and caching).</td></tr>
+    <tr><td>F7</td><td>Info</td><td><span class="badge">Noted</span></td><td>The public address is baked into canonical links at build time; changing it needs a redeploy (in the deploy guide).</td></tr>
+    <tr><td>F8</td><td>Info</td><td><span class="badge">Noted</span></td><td>The payment webhook answers 503 when Stripe is not configured (400 when configured and unsigned).</td></tr>
+    <tr><td>F9</td><td>Info</td><td><span class="badge">Noted</span></td><td>Server log warning about many close listeners on streaming responses; check the Pulse stream cleanup.</td></tr>
+    <tr><td>A11Y-1</td><td>Serious (a11y)</td><td><span class="badge ok">Fixed in code</span></td><td>Account button name did not contain its visible text (WCAG 2.5.3). Unit test added; browser re-check pending a rebuild.</td></tr>
+    <tr><td>F11</td><td>Medium</td><td><span class="badge warn">Open</span></td><td>Continuous integration has never run (GitHub: 0 runs). Automatic checks on each change are not in place.</td></tr>
+    <tr><td>F12</td><td>Low-Med</td><td><span class="badge warn">Open</span></td><td>No purge job for the stated log retention (concierge 90 days, audit 1 year).</td></tr>
+    <tr><td>F13</td><td>Decision</td><td><span class="badge warn">Open</span></td><td>Brief items not built: chapter-launch admin form, About, Partners and Stories pages, cookie banner.</td></tr>
+    <tr><td>F14</td><td>Medium</td><td><span class="badge warn">Open</span></td><td>The web vulnerability scan (ZAP) did not complete; no penetration test.</td></tr>
+    <tr><td>F15</td><td>Low</td><td><span class="badge">Noted</span></td><td>12 advisories in development-only tools (10 moderate, 2 low); none in production dependencies.</td></tr>
+    <tr><td>F16</td><td>Info</td><td><span class="badge">Noted</span></td><td>Parallel browser runs on the laptop produce timeouts that do not occur serially; stale data from interrupted runs causes extra failures (reset steps documented).</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>26</span></div>
+</section>
+
+<!-- 27 GO LIVE -->
+<section class="page">
+  <div class="eyebrow">17 · Go-live readiness</div>
+  <h2>What is ready, and what happens next</h2>
+  <div class="grid g3">
+    <div class="card tint"><h4>Ready now</h4><ul class="tick" style="font-size:9pt"><li>Product complete for V1</li><li>Tests, accessibility audit, secret and dependency scans done</li><li>Free deployment kit (<code>render.yaml</code>, step-by-step guide)</li><li>Admin can enter real content without a developer</li><li>Repository private, licence in place</li></ul></div>
+    <div class="card tint"><h4>Needs EiB</h4><ul class="tick" style="font-size:9pt"><li>Hosting accounts and a domain</li><li>Prices, entity, refund policy</li><li>Real founder message, team, photos, partner permissions</li><li>Lawyer review of legal texts and licence</li><li>Decisions on the 5 unbuilt items</li></ul></div>
+    <div class="card tint"><h4>Needs the developers</h4><ul class="tick" style="font-size:9pt"><li>Rerun the web scan; add a code scanner</li><li>Fix F2, F3, F5; verify A11Y-1 in a browser</li><li>Make CI run; add the log purge job</li><li>Manual accessibility review</li><li>Load test the reservation flow</li></ul></div>
+  </div>
+  <h3>Suggested path</h3>
+  <table>
+    <tr><th style="width:15%">Step</th><th>What</th><th style="width:20%">Who</th></tr>
+    <tr><td>1 · This week</td><td>Review this report; answer the decisions in section 2; create the Neon, Brevo and Render accounts; move the repository into an EiB organization and add Ziyan (Read)</td><td>EiB</td></tr>
+    <tr><td>2 · Deploy</td><td>Follow <code>docs/DEPLOY.md</code>: database set-up, email, Render blueprint, first admin, scheduled jobs; check <code>/api/health</code>, sign-in email and the checklist</td><td>EiB and developers</td></tr>
+    <tr><td>3 · Fill</td><td>Enter the real Team page, festival details and content in the admin area; keep demo mode off</td><td>EiB</td></tr>
+    <tr><td>4 · Verify live</td><td>Lighthouse on the live address; rerun the access probes and accessibility sweep against it; test real email delivery; fix F2, F3, F5</td><td>Developers</td></tr>
+    <tr><td>5 · Secure</td><td>ZAP baseline and active scan on a staging copy; code scanner; penetration test; manual screen-reader review</td><td>Developers, external tester</td></tr>
+    <tr><td>6 · Pilot</td><td>Invite a small group in Kraków; real prices and legal texts only after approval; watch the audit log and support inbox</td><td>EiB</td></tr>
+  </table>
+  <div class="callout"><b>Recommendation.</b> Show the product to Ziyan and key partners now. Deploy to the free tier as a private pilot in parallel. Hold real payments and a public launch until steps 4 and 5 and the legal decisions are complete.</div>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>27</span></div>
+</section>
+
+<!-- 28 APPENDIX A -->
+<section class="page">
+  <div class="eyebrow">Appendix A · Versions and environment</div>
+  <h2>Exactly what was used</h2>
+  <div class="grid g2">
+    <table>
+      <tr><th colspan="2">Platform and tools</th></tr>
+      <tr><td>Operating system</td><td>Windows 11 Home, build 26300</td></tr>
+      <tr><td>Node.js / npm</td><td>24.14.0 / 11.9.0</td></tr>
+      <tr><td>Docker</td><td>29.9.2</td></tr>
+      <tr><td>PostgreSQL</td><td>17.11 (pgvector 0.8.7, pg_trgm 1.6)</td></tr>
+      <tr><td>Browser for tests</td><td>Chromium via Playwright 1.65</td></tr>
+      <tr><td>Hardware</td><td>Lenovo laptop; about 1.7 GB free memory in testing</td></tr>
+    </table>
+    <table>
+      <tr><th colspan="2">Application</th></tr>
+      <tr><td>Next.js / React</td><td>16.4.6 / 19.3.1</td></tr>
+      <tr><td>TypeScript</td><td>6.0.3</td></tr>
+      <tr><td>Prisma</td><td>7.10.1</td></tr>
+      <tr><td>Better Auth</td><td>1.7.19</td></tr>
+      <tr><td>Tailwind CSS</td><td>4.3.5</td></tr>
+      <tr><td>Vitest / Playwright</td><td>5.1.0 / 1.65.0</td></tr>
+      <tr><td>axe-core (Playwright) / Lighthouse</td><td>4.14.0 / 13.6.0</td></tr>
+      <tr><td>Stripe SDK / Zod / sharp</td><td>23.1.0 / 4.6.7 / 0.35.5</td></tr>
+    </table>
+  </div>
+  <h3>Project size</h3>
+  <table>
+    <tr><td style="width:34%">Pages / API routes</td><td>{{pages}} / {{api_routes}}</td><td style="width:26%">Server actions</td><td>{{actions}}</td></tr>
+    <tr><td>Data models / migrations</td><td>{{models}} / {{migrations}}</td><td>Translated strings per language</td><td>{{keys}}</td></tr>
+    <tr><td>Lines of TypeScript</td><td>{{loc}}</td><td>Official guides</td><td>8 (29 searchable passages)</td></tr>
+    <tr><td>Demo data</td><td colspan="3">120 members, 30 providers, 8 Bubbles, 24 past and 8 upcoming events, all fictional and flagged</td></tr>
+  </table>
+  <h3>Scripts that produced the evidence</h3>
+  <ul class="tick" style="font-size:9pt">
+    <li><code>npm run check</code> lint, type-check, unit tests · <code>npm run e2e</code> browser tests · <code>npm run crawl</code> link crawler · <code>npm run lighthouse</code> performance</li>
+    <li><code>scripts/qa-sweep.mjs</code> accessibility and route sweep · <code>scripts/qa-access.mjs</code> access-control matrix · <code>scripts/capture-screenshots.mjs</code> screenshots</li>
+    <li><code>scripts/build-pdf.mjs</code> builds this report from <code>docs/pdf/</code> and <code>docs/test-evidence/</code></li>
+  </ul>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>28</span></div>
+</section>
+
+<!-- 29 APPENDIX B -->
+<section class="page">
+  <div class="eyebrow">Appendix B · Evidence and how to reproduce</div>
+  <h2>Where the proof is</h2>
+  <table>
+    <tr><th style="width:36%">File</th><th>Contents</th></tr>
+    <tr><td><code>docs/TEST_REPORT.md</code></td><td>Detailed test report with commands to reproduce</td></tr>
+    <tr><td><code>docs/test-evidence/qa-sweep.json</code></td><td>Raw accessibility and route sweep (208 page checks)</td></tr>
+    <tr><td><code>docs/test-evidence/access-matrix.json</code></td><td>The 39 access-control and security checks</td></tr>
+    <tr><td><code>docs/test-evidence/gitleaks.json</code>, <code>trivy.json</code></td><td>Secret scan (empty = no leaks) and dependency scan output</td></tr>
+    <tr><td><code>docs/PROGRESS.md</code>, <code>docs/DECISIONS.md</code></td><td>Milestone log and design and security decisions</td></tr>
+    <tr><td><code>docs/PROJECT_BRIEF.md</code>, <code>BUILD_PLAN.md</code>, <code>FACTS.md</code></td><td>Original requirements, plan, and the only verified company facts</td></tr>
+    <tr><td><code>docs/DEPLOY.md</code>, <code>render.yaml</code></td><td>Free deployment guide and blueprint</td></tr>
+    <tr><td><code>LICENSE</code></td><td>Proprietary licence (draft for legal review)</td></tr>
+  </table>
+  <h3>Re-run the main checks</h3>
+<pre>npm run check
+npm run build ; npm start
+npm run demo:reset
+$env:E2E_BASE_URL="http://localhost:3000"; $env:E2E_EXPECT_DB="true"
+npx playwright test --project=desktop --workers=1
+$env:QA_BASE_URL="http://localhost:3000"; node scripts/qa-access.mjs docs/test-evidence/access-matrix.json
+node scripts/qa-sweep.mjs ; npm run crawl ; npm run lighthouse</pre>
+  <p style="font-size:8.8pt;color:var(--muted)">Between runs: <code>npm run demo:reset</code>, clear the <code>featureFlags</code> row in <code>SiteSetting</code> and the <code>RateLimit</code> table, and delete the <code>.next</code> folder after changing shared layout code.</p>
+  <h3>Glossary</h3>
+  <table style="font-size:8.4pt">
+    <tr><td style="width:22%"><b>Chapter</b></td><td>A city community with its own sessions, lead, time zone and currency</td></tr>
+    <tr><td><b>Bubble</b></td><td>A group by country of origin, led by a Bubble Lead, across all chapters</td></tr>
+    <tr><td><b>axe, WCAG</b></td><td>An automated accessibility checker; the Web Content Accessibility Guidelines (2.1, level AA is the target)</td></tr>
+    <tr><td><b>Lighthouse, LCP</b></td><td>Google's page-quality audit; Largest Contentful Paint, the time until the main content appears</td></tr>
+    <tr><td><b>CSP</b></td><td>Content Security Policy, a browser rule limiting which scripts and resources a page may load</td></tr>
+    <tr><td><b>ZAP, Gitleaks, Trivy</b></td><td>Security scanners: web application scan, secret finder in git history, dependency vulnerability scan</td></tr>
+  </table>
+  <div class="folio"><span>Expats in Business · complete project report</span><span>29</span></div>
+</section>
+
+<!-- 30 BACK -->
+<section class="page dark" style="padding:0">
+  <div style="position:absolute;inset:0;background:radial-gradient(110mm 110mm at 20% 20%, rgba(197,232,235,.16), transparent 60%);"></div>
+  <div style="position:absolute;left:22mm;right:22mm;top:68mm">
+    <img src="../../public/brand/eib-monogram.png" alt="" style="width:30mm;border-radius:50%;margin-bottom:8mm" />
+    <h2 style="font-size:30pt;margin-bottom:5mm">Now open the real product.</h2>
+    <p style="font-size:12pt;color:#cfe8e6;max-width:135mm">Run it locally with <code style="background:#1c5456;color:#fff">npm run setup</code> and <code style="background:#1c5456;color:#fff">npm run dev</code>, then try the demo path in <code style="background:#1c5456;color:#fff">docs/DEMO_SCRIPT.md</code>: reserve a place, ask the concierge, open the admin centre and edit the Team page.</p>
+    <p style="margin-top:10mm;font-size:10pt;color:#9fc4c2">Contact: info.expatsinbusiness@gmail.com · m.me/expatsinbusiness</p>
+    <p style="font-size:9pt;color:#9fc4c2;max-width:142mm;margin-top:10mm">© 2024–2026 Expats in Business. All rights reserved. This document and the software it describes are proprietary and confidential, for the exclusive use of Expats in Business and persons it has authorised in writing.</p>
+  </div>
+</section>
+
+</body>
+</html>

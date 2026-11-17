@@ -21,6 +21,17 @@
 
 ## Log
 
+### 2026-11-17 · Evidence pass and the complete project report
+
+**Built and fixed**
+
+- **Accessibility:** full axe sweep of every route (76 routes, 208 checks). One serious finding (account button name did not contain its visible text, WCAG 2.5.3), fixed in `components/auth/user-menu.tsx` with a unit test. Browser re-check pending a rebuild.
+- **Security scans:** Gitleaks over the whole history (0 leaks), Trivy and `npm audit` (0 production vulnerabilities). OWASP ZAP did not finish (stopped by low memory).
+- **Findings recorded:** GitHub Actions has 0 runs; the brief's chapter-launch form, About/Partners/Stories pages, cookie banner and retention purge job do not exist.
+- **Document:** `docs/EiB-Platform-Report.pdf` (30 pages for Ziyan: requirements traceability, features, admin features, environments, testing, accessibility and security reports, findings register, go-live plan). Source `docs/pdf/report.html`, data `docs/test-evidence/report-data.json`; build with `node scripts/build-pdf.mjs docs/pdf/report.html docs/EiB-Platform-Report.pdf docs/test-evidence/report-data.json`.
+
+**Known gaps**: ZAP and a penetration test; manual screen-reader review; the unbuilt brief items (decision needed); CI never ran.
+
 ### 2026-11-14 · Navigation: Team in the header, footer split in two
 
 **Built**

@@ -9,9 +9,12 @@ import { pathToFileURL } from "node:url";
 import { chromium } from "@playwright/test";
 
 const root = process.cwd();
-const htmlPath = path.join(root, "docs", "pdf", "overview.html");
+// Usage: node scripts/build-pdf.mjs [template.html] [output.pdf] [data.json]
+const [inArg, outArg, dataArg] = process.argv.slice(2);
+const htmlPath = path.join(root, inArg ?? "docs/pdf/overview.html");
+const outPath = path.join(root, outArg ?? "docs/EiB-Platform-Overview.pdf");
 const summary = JSON.parse(
-  readFileSync(path.join(root, "docs", "test-evidence", "summary.json"), "utf8"),
+  readFileSync(path.join(root, dataArg ?? "docs/test-evidence/summary.json"), "utf8"),
 );
 const values = {
   date: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
@@ -23,7 +26,7 @@ html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
   if (!(key in values)) throw new Error(`No value for {{${key}}}`);
   return String(values[key]);
 });
-const builtPath = path.join(root, "docs", "pdf", ".overview.built.html");
+const builtPath = path.join(path.dirname(htmlPath), ".built.html");
 writeFileSync(builtPath, html);
 
 const browser = await chromium.launch();
@@ -31,7 +34,7 @@ try {
   const page = await browser.newPage();
   await page.goto(pathToFileURL(builtPath).toString(), { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
-  const out = path.join(root, "docs", "EiB-Platform-Overview.pdf");
+  const out = outPath;
   await page.pdf({ path: out, format: "A4", printBackground: true, preferCSSPageSize: true });
   console.info("wrote", path.relative(root, out));
 } finally {

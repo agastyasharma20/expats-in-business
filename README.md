@@ -224,18 +224,19 @@ provide the environment variables from `.env.example`, build with `npm run build
 
 ## Documentation
 
-| Document                                                                          | Purpose                                                   |
-| --------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| [docs/PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md)                                    | The brief                                                 |
-| [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)                              | Features, data model, architecture, concierge flow        |
-| [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md) and [docs/PROGRESS.md](docs/PROGRESS.md) | Milestones and the progress log                           |
-| [docs/DECISIONS.md](docs/DECISIONS.md)                                            | Design and security decisions                             |
-| [docs/FACTS.md](docs/FACTS.md)                                                    | The only verified company facts, each with a source       |
-| [docs/AUDIT.md](docs/AUDIT.md)                                                    | Codebase audit                                            |
-| [docs/DEPLOY.md](docs/DEPLOY.md)                                                  | Free deployment guide                                     |
-| [docs/TEST_REPORT.md](docs/TEST_REPORT.md)                                        | Full platform test report                                 |
-| [docs/EiB-Platform-Overview.pdf](docs/EiB-Platform-Overview.pdf)                  | Illustrated overview for EiB, stakeholders and developers |
-| [CLAUDE.md](CLAUDE.md)                                                            | Working rules for the AI coding assistant                 |
+| Document                                                                          | Purpose                                                                                                                                                          |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [docs/PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md)                                    | The brief                                                                                                                                                        |
+| [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)                              | Features, data model, architecture, concierge flow                                                                                                               |
+| [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md) and [docs/PROGRESS.md](docs/PROGRESS.md) | Milestones and the progress log                                                                                                                                  |
+| [docs/DECISIONS.md](docs/DECISIONS.md)                                            | Design and security decisions                                                                                                                                    |
+| [docs/FACTS.md](docs/FACTS.md)                                                    | The only verified company facts, each with a source                                                                                                              |
+| [docs/AUDIT.md](docs/AUDIT.md)                                                    | Codebase audit                                                                                                                                                   |
+| [docs/DEPLOY.md](docs/DEPLOY.md)                                                  | Free deployment guide                                                                                                                                            |
+| [docs/TEST_REPORT.md](docs/TEST_REPORT.md)                                        | Full platform test report                                                                                                                                        |
+| [docs/EiB-Platform-Report.pdf](docs/EiB-Platform-Report.pdf)                      | **Complete project report** for EiB and Ziyan: requirements, features, admin tools, environments, test, accessibility and security reports, findings, next steps |
+| [docs/EiB-Platform-Overview.pdf](docs/EiB-Platform-Overview.pdf)                  | Illustrated overview for EiB, stakeholders and developers                                                                                                        |
+| [CLAUDE.md](CLAUDE.md)                                                            | Working rules for the AI coding assistant                                                                                                                        |
 
 ## Roadmap and known gaps
 

@@ -1,11 +1,12 @@
 // Lists pages of docs/pdf/.overview.built.html whose content is taller than the A4 page.
-//   node scripts/build-pdf.mjs && node scripts/check-pdf-overflow.mjs
+//   node scripts/build-pdf.mjs <template> <out.pdf> <data.json> && node scripts/check-pdf-overflow.mjs
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { chromium } from "@playwright/test";
 
-const file = path.join(process.cwd(), "docs", "pdf", ".overview.built.html");
+// Usage: node scripts/check-pdf-overflow.mjs [docs/pdf/.built.html]
+const file = path.join(process.cwd(), process.argv[2] ?? "docs/pdf/.built.html");
 const browser = await chromium.launch();
 try {
   const page = await browser.newPage();

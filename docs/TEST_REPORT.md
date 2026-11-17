@@ -179,3 +179,30 @@ $env:LH_BASE_URL="http://localhost:3000"; npm run lighthouse -- /events /guides 
 ```
 
 Clear leftovers between runs: `npm run demo:reset`, then delete the `featureFlags` row from `SiteSetting` and truncate `RateLimit`.
+
+## 11. Update 17 Nov 2026: accessibility audit and security scans
+
+Evidence: `docs/test-evidence/qa-sweep.json`, `gitleaks.json`, `trivy.json`. The presentation of these results is in `docs/EiB-Platform-Report.pdf` (sections 13 and 14).
+
+**Accessibility sweep (completes the sweep that was stopped on 14 Nov).** `scripts/qa-sweep.mjs`, axe-core 4.14 with WCAG 2.0 and 2.1 A and AA rules, production build on the developer laptop. 76 distinct routes as visitor, member, provider or admin; 208 page checks (1440 px and 375 px, plus public pages in Polish and Ukrainian). All 208 loaded with HTTP 200 and had no console error, no failed request, no sideways overflow, exactly one `h1` and no empty page. **167 checks had no violation; 41 had one finding:** `label-content-name-mismatch` (WCAG 2.5.3, serious), always the same element, the account button in the header of signed-in pages at desktop width. **Fixed (A11Y-1):** the button's accessible name is now "Name, Account menu"; a unit test (`tests/unit/user-menu.test.tsx`) asserts it. A browser re-check on a rebuilt app is pending because the laptop was out of memory: `QA_PERSONAS=karim,admin,provider node scripts/qa-sweep.mjs`.
+
+**Security scans.**
+
+| Scan                                                                                 | Result                                                                                                                               |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Gitleaks (Docker) over the whole git history, 90 commits with changes plus 11 merges | 0 leaks                                                                                                                              |
+| Trivy (Docker) on `package-lock.json`                                                | 0 vulnerabilities in production dependencies; it recognised no misconfiguration targets in the compose, pipeline and blueprint files |
+| `npm audit`                                                                          | Production: 0. All dependencies: 12 (10 moderate, 2 low), development tooling only                                                   |
+| OWASP ZAP baseline                                                                   | **Not completed**: the image download and scan were stopped by the system under low memory. Rerun on a machine with more memory      |
+| Static analysis                                                                      | ESLint and strict TypeScript clean; no dedicated security analyser (Semgrep, CodeQL) was run                                         |
+
+**Other facts recorded.** GitHub Actions has the `CI` workflow enabled but **zero recorded runs** (F11). The brief asked for items that do not exist in the code: the admin form to launch a chapter, `/about`, `/partners`, `/stories`, a cookie banner and a retention purge job (F12, F13). Environment versions are in appendix A of the PDF.
+
+| ID     | Severity                | Status        | Finding                                              |
+| ------ | ----------------------- | ------------- | ---------------------------------------------------- |
+| A11Y-1 | Serious (accessibility) | Fixed in code | Account button name did not contain its visible text |
+| F11    | Medium                  | Open          | CI never ran                                         |
+| F12    | Low to medium           | Open          | No purge job for the stated log retention            |
+| F13    | Decision                | Open          | Brief items not built (see above)                    |
+| F14    | Medium                  | Open          | Web scan (ZAP) incomplete; no penetration test       |
+| F15    | Low                     | Noted         | 12 advisories in dev-only tools                      |

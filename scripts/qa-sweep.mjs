@@ -2,7 +2,7 @@
 //   $env:QA_BASE_URL="http://localhost:3000"; node scripts/qa-sweep.mjs [out.json]
 // For every route, as the right persona and at 1440 px and 375 px, it records: HTTP status, final URL,
 // console errors, page errors, failed requests, axe (WCAG 2 A and AA) violations, a single h1,
-// horizontal overflow and nearly empty pages. It also runs an access-control matrix.
+// horizontal overflow and nearly empty pages. Access control is checked by scripts/qa-access.mjs.
 import { writeFileSync } from "node:fs";
 
 import AxeBuilder from "@axe-core/playwright";
@@ -108,22 +108,6 @@ const ROUTES = [
   ].map((p) => [p, "admin"]),
 ];
 
-/** Who must NOT get in, and what they should see (redirect to sign-in or 403). */
-const DENIED = [
-  ["/dashboard", "visitor", "signin"],
-  ["/settings/account", "visitor", "signin"],
-  ["/admin", "visitor", "signin"],
-  ["/admin/team", "visitor", "signin"],
-  ["/provider/inbox", "visitor", "signin"],
-  ["/admin", "member", "403"],
-  ["/admin/team", "member", "403"],
-  ["/admin/members", "member", "403"],
-  ["/admin/roles", "member", "403"],
-  ["/admin/system", "member", "403"],
-  ["/admin/settings", "member", "403"],
-  ["/provider/analytics", "member", "403"],
-];
-
 const browser = await chromium.launch();
 const contexts = new Map();
 
@@ -161,10 +145,11 @@ async function visit(path, persona, viewport, locale = "") {
   const result = { path: `${locale}${path}`, persona, viewport: viewport.width };
   try {
     const response = await page.goto(new URL(`${locale}${path}`, base).toString(), {
-      waitUntil: "networkidle",
+      waitUntil: "load",
       timeout: 60_000,
     });
     result.status = response?.status() ?? 0;
+    await page.waitForTimeout(700);
     result.finalPath = new URL(page.url()).pathname;
     result.h1 = await page.locator("h1").count();
     result.textLength = (
@@ -178,7 +163,9 @@ async function visit(path, persona, viewport, locale = "") {
       () => document.documentElement.scrollWidth - window.innerWidth,
     );
     result.lang = await page.evaluate(() => document.documentElement.lang);
-    const axe = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+    const axe = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
     result.axe = axe.violations.map((v) => `${v.id} (${v.impact}, ${v.nodes.length})`);
     result.consoleErrors = consoleErrors;
     result.failedRequests = failed.filter(
@@ -192,12 +179,14 @@ async function visit(path, persona, viewport, locale = "") {
   return result;
 }
 
+// QA_PERSONAS=karim,admin,provider re-checks only those personas' routes (no localised pass).
+const only = process.env.QA_PERSONAS?.split(",");
 const results = [];
 const desktop = { width: 1440, height: 900 };
 const phone = { width: 375, height: 812 };
 
 try {
-  for (const [path, persona] of ROUTES) {
+  for (const [path, persona] of ROUTES.filter(([, who]) => !only || only.includes(who))) {
     if (path.includes("undefined")) {
       results.push({ path, persona, error: "missing id for dynamic route (QA_IDS)" });
       continue;
@@ -207,28 +196,18 @@ try {
     console.info("swept", persona, path);
   }
   // Public pages in Polish and Ukrainian (desktop).
-  for (const [path, persona] of ROUTES.filter(([, who]) => who === "visitor").slice(0, 28)) {
-    if (path.includes("undefined") || path === "/styleguide") continue;
-    for (const locale of ["/pl", "/uk"])
-      results.push(await visit(path === "/" ? "" : path, persona, desktop, locale));
-    console.info("localised", path);
-  }
-  const access = [];
-  for (const [path, persona, expect] of DENIED) {
-    const context = await contextFor(persona);
-    const response = await context.request.get(new URL(path, base).toString(), { maxRedirects: 0 });
-    const location = response.headers().location ?? "";
-    const ok =
-      expect === "signin"
-        ? response.status() >= 300 && response.status() < 400 && location.includes("sign-in")
-        : response.status() === 403;
-    access.push({ path, persona, expect, status: response.status(), location, pass: ok });
-  }
+  if (!only)
+    for (const [path, persona] of ROUTES.filter(([, who]) => who === "visitor").slice(0, 28)) {
+      if (path.includes("undefined") || path === "/styleguide") continue;
+      for (const locale of ["/pl", "/uk"])
+        results.push(await visit(path === "/" ? "" : path, persona, desktop, locale));
+      console.info("localised", path);
+    }
   writeFileSync(
     outFile,
-    JSON.stringify({ base, when: new Date().toISOString(), results, access }, null, 2),
+    JSON.stringify({ base, when: new Date().toISOString(), results }, null, 2),
   );
-  console.info("wrote", outFile, results.length, "page checks,", access.length, "access checks");
+  console.info("wrote", outFile, results.length, "page checks");
 } finally {
   await browser.close();
 }

@@ -56,7 +56,7 @@ export function UserMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" aria-label={t("account")} data-testid="user-menu">
+        <Button variant="outline" aria-label={`${name}, ${t("account")}`} data-testid="user-menu">
           <UserIcon aria-hidden="true" />
           <span className="hidden max-w-32 truncate sm:inline lg:hidden xl:inline">{name}</span>
         </Button>

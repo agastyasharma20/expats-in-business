@@ -1,6 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
+import { authFile } from "./global-setup";
+
 /**
  * Installable app: manifest, icons, offline page and the service worker. The worker only registers
  * in production builds, so the offline test runs against `npm run build && npm start` (CI does).
@@ -120,5 +122,64 @@ test.describe("service worker", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Sessions" })).toBeVisible({
       timeout: 15_000,
     });
+  });
+});
+
+test.describe("saved tickets", () => {
+  test.skip(
+    !PRODUCTION || process.env.E2E_EXPECT_DB !== "true",
+    "needs a production build and the demo database",
+  );
+  test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop", "desktop only"));
+  test.use({ storageState: authFile("priya") });
+
+  test("a reserved ticket is saved, opens offline with its QR code, and clearing removes it", async ({
+    page,
+    context,
+  }) => {
+    await page.goto("/events");
+    const card = page
+      .getByTestId("event-list")
+      .locator(":scope > li")
+      .filter({ hasNotText: "Full" })
+      .filter({ hasNotText: /E2E / })
+      .filter({ hasText: "Free" })
+      .first();
+    await card.getByRole("link").click();
+    const reserve = page.getByRole("button", { name: "Reserve a free place" });
+    const mine = page.getByRole("link", { name: "View my ticket" });
+    await expect(reserve.or(mine)).toBeVisible();
+    const reserved = await reserve.isVisible();
+    await (reserved ? reserve : mine).click();
+    await expect(page).toHaveURL(/\/tickets\//);
+    await expect(page.getByTestId("offline-ticket-status")).toContainText("Saved on this device");
+    const path = new URL(page.url()).pathname;
+    await expect
+      .poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller)))
+      .toBe(true);
+
+    await context.setOffline(true);
+    await page.goto(path);
+    await expect(page.getByTestId("ticket")).toBeVisible();
+    await expect(page.getByRole("img", { name: /QR code for checking in/ })).toBeVisible();
+    await context.setOffline(false);
+
+    // What sign-out does: the saved copy and its list are removed from the device.
+    await page.evaluate(async () => {
+      await window.caches.delete("eib-private-v1");
+      window.localStorage.removeItem("eib:saved-tickets");
+    });
+    await context.setOffline(true);
+    await page.goto(path);
+    await expect(page.getByRole("heading", { level: 1, name: "You're offline" })).toBeVisible();
+    await context.setOffline(false);
+
+    // Leave the demo data as we found it.
+    if (reserved) {
+      await page.goto(path);
+      await page.getByTestId("unrsvp-open").click();
+      await page.getByRole("button", { name: "Yes, un-RSVP" }).click();
+      await expect(page.getByText("Cancelled", { exact: true })).toBeVisible();
+    }
   });
 });

@@ -58,3 +58,4 @@ npm-debug.log*
 docs/pdf/.overview.built.html
 docs/pdf/.built.html
 docs/test-evidence/.qa-ids.json
+public/sw.js

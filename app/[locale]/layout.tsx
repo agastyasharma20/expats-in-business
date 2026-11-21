@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
@@ -9,8 +9,11 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteBanner } from "@/components/layout/site-banner";
 import { SiteHeader } from "@/components/layout/site-header";
 import { MAIN_CONTENT_ID, SkipLink } from "@/components/layout/skip-link";
+import { PwaShell } from "@/components/pwa/pwa-shell";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { pwaConfig } from "@/config/pwa";
+import { colorTokens } from "@/lib/design/tokens";
 import { bodyFont, headingFont } from "@/lib/fonts";
 import { routing } from "@/lib/i18n/routing";
 
@@ -38,6 +41,7 @@ const CLIENT_NAMESPACES = [
   "spotlight",
   "ambassadors",
   "unrsvp",
+  "pwa",
 ] as const;
 
 function pickClientMessages(messages: Record<string, unknown>) {
@@ -48,12 +52,23 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+/** Browser chrome takes the Deep Teal of the top bar; content may extend under phone notches. */
+export const viewport: Viewport = {
+  themeColor: colorTokens["brand-950"],
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("meta");
   return {
     title: { default: t("title"), template: t("titleTemplate") },
     description: t("description"),
     metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3000"),
+    applicationName: pwaConfig.name,
+    appleWebApp: { capable: true, title: pwaConfig.shortName, statusBarStyle: "default" },
+    formatDetection: { telephone: false },
   };
 }
 
@@ -79,6 +94,7 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[locale]"
               {children}
             </main>
             <SiteFooter />
+            <PwaShell />
           </TooltipProvider>
           <Toaster />
         </NextIntlClientProvider>

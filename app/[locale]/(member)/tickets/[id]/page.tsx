@@ -16,6 +16,7 @@ import { Link } from "@/lib/i18n/navigation";
 import { formatInZone } from "@/lib/time";
 import { payTicket } from "@/server/actions/rsvp";
 import { UnrsvpButton } from "@/components/events/unrsvp-button";
+import { OfflineTicketBadge } from "@/components/pwa/offline-ticket-badge";
 
 // Session-bound page: blocking navigation is expected (no instant prerender).
 export const instant = false;
@@ -140,6 +141,18 @@ async function TicketView({ params, searchParams }: Props) {
         </p>
       )}
 
+      {qr && upcoming ? (
+        <OfflineTicketBadge
+          title={ticket.event.title}
+          startsAt={ticket.event.startsAt.toISOString()}
+          endsAt={ticket.event.endsAt.toISOString()}
+          when={formatInZone(ticket.event.startsAt, zone, locale, {
+            dateStyle: "medium",
+            timeStyle: "short",
+          })}
+        />
+      ) : null}
+
       {ticket.paidAt && ticket.status === "confirmed" ? (
         <p className="text-small text-muted-foreground">
           {t("paidOn", {
@@ -177,11 +190,7 @@ async function TicketView({ params, searchParams }: Props) {
           {t("event")}
         </Link>
         {ticket.status !== "cancelled" && upcoming && !ticket.checkIn ? (
-          <UnrsvpButton
-            ticketId={ticket.id}
-            status={ticket.status}
-            quantity={ticket.quantity}
-          />
+          <UnrsvpButton ticketId={ticket.id} status={ticket.status} quantity={ticket.quantity} />
         ) : null}
       </div>
     </article>

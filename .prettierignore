@@ -11,3 +11,4 @@ test-results/
 package-lock.json
 prisma/migrations/
 .cache/
+public/sw.js

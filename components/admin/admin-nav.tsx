@@ -36,8 +36,12 @@ export async function AdminNav({ user }: { user: SessionUser }) {
   ];
   return (
     <div className="border-b border-line bg-surface">
-      <div className="container-page flex items-center gap-3 py-2">
-        <nav aria-label={t("label")} className="-mx-1 flex flex-1 gap-1 overflow-x-auto px-1">
+      <div className="container-page flex items-start gap-3 py-2">
+        {/* Phones scroll the tabs sideways; from 1024 px they wrap, so none hides under the search box (F5). */}
+        <nav
+          aria-label={t("label")}
+          className="-mx-1 flex min-w-0 flex-1 gap-1 overflow-x-auto px-1 lg:flex-wrap lg:overflow-visible"
+        >
           {sections.map((section) => (
             <NavLink
               key={section.key}

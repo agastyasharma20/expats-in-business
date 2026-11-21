@@ -3,6 +3,8 @@
  * weekly for roulette). Each job is idempotent, so a repeated run sends nothing twice.
  *   reminders  roadmap steps due in about 7 days (M11)
  *   roulette   weekly Coffee Roulette matching (M12)
+ *   purge      daily: removes data past its retention period (concierge 90 days, audit 1 year,
+ *              accounts 30 days after a deletion request)
  */
 import { sendRoadmapReminders } from "../lib/jobs/reminders";
 import { createSeedClient } from "../prisma/seed/index";
@@ -14,6 +16,10 @@ type Job = (
 
 const JOBS: Record<string, Job> = {
   reminders: (db, appUrl) => sendRoadmapReminders(db, appUrl),
+  purge: async (db) => {
+    const { purgeExpiredData } = await import("../lib/jobs/purge");
+    return purgeExpiredData(db);
+  },
   roulette: async (db, appUrl) => {
     const { runRoulette } = await import("../lib/jobs/roulette");
     return runRoulette(db, appUrl);

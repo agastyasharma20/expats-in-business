@@ -8,7 +8,7 @@ import { requireUser } from "@/lib/auth/session";
 export const instant = false;
 
 /** Provider area: only members who own a provider profile (a capability, not a role). */
-export default async function ProviderLayout({ children }: LayoutProps<"/[locale]">) {
+export default async function ProviderLayout({ children }: LayoutProps<"/[locale]/provider">) {
   const user = await requireUser("/provider/inbox");
   if (!can(user, "provider.inbox")) forbidden();
   const t = await getTranslations("providerArea");

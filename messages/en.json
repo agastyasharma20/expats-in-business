@@ -329,7 +329,10 @@
     "ambassadors": "Ambassadors",
     "volunteer": "Volunteer",
     "careers": "Careers",
-    "team": "Team"
+    "team": "Team",
+    "about": "About",
+    "partners": "Partners",
+    "stories": "Stories"
   },
   "chapter": {
     "label": "Chapter",
@@ -1597,7 +1600,8 @@
       "catalogs": "Catalogs",
       "ambassadors": "Ambassadors",
       "roles": "Roles",
-      "team": "Team"
+      "team": "Team",
+      "chapters": "Chapters"
     }
   },
   "adminMembers": {
@@ -2696,5 +2700,117 @@
       "concierge": "Concierge",
       "account": "Account"
     }
+  },
+  "adminChapters": {
+    "title": "Chapters",
+    "lead": "Launch a new city in under a minute. It appears in the chapter switcher, on the world map and in the sitemap straight away, with no deploy.",
+    "launchTitle": "Launch a chapter",
+    "launch": "Launch chapter",
+    "launching": "Launching…",
+    "launched": "{value} is launched.",
+    "listTitle": "All chapters",
+    "wantedTitle": "Cities members asked for",
+    "wantedEmpty": "No city has votes yet. Members can request one on the chapters page.",
+    "votes": "{count, plural, one {# vote} other {# votes}}",
+    "demo": "Demo",
+    "nowLive": "The chapter is live.",
+    "nowLaunching": "The chapter is back on the waitlist.",
+    "status": {
+      "live": "Live",
+      "launching": "Launching (waitlist)"
+    },
+    "moveTo": {
+      "live": "Make live",
+      "launching": "Move to waitlist"
+    },
+    "fields": {
+      "city": "City",
+      "country": "Country",
+      "countryPlaceholder": "Choose a country",
+      "status": "Status",
+      "statusHint": "Launching shows a waitlist. Live opens events.",
+      "timezone": "Time zone (optional)",
+      "currency": "Currency (optional)",
+      "defaultHint": "Empty uses the country's default.",
+      "lead": "Chapter lead email (optional)",
+      "leadHint": "An existing member. They get the chapter lead role.",
+      "tagline": "Tagline (optional)"
+    },
+    "errors": {
+      "default": "Check the fields and try again. City, country and status are required.",
+      "rateLimited": "Too many changes in a short time. Try again in a few minutes.",
+      "country": "That country is not set up yet.",
+      "exists": "A chapter for this city already exists.",
+      "leadNotFound": "No member has that email address."
+    }
+  },
+  "about": {
+    "eyebrow": "About us",
+    "title": "A business community for people who made a new country home",
+    "metaDescription": "Who Expats in Business is, what the community does and the milestones so far.",
+    "lead": "{name} is a community-run network of expat entrepreneurs. {tagline}",
+    "join": "Join EiB",
+    "sessions": "See upcoming sessions",
+    "whatTitle": "What we do",
+    "whatLead": "Every session lists the date, time, venue and price. These are the formats the community runs:",
+    "milestonesTitle": "Milestones",
+    "source": "Source",
+    "milestones": {
+      "anniversary": "First anniversary",
+      "cultoura": "Cultoura, our cultural-exchange series",
+      "sessions": "Sessions held",
+      "meetup": "A joint meetup"
+    },
+    "foundersTitle": "Co-founded by {name}",
+    "foundersText": "EiB is community-run. Meet the people behind it.",
+    "teamLink": "Meet the team",
+    "bubblesTitle": "Cultural Bubbles",
+    "bubblesText": "Groups by country of origin, each with a Bubble Lead, so you meet people who share your background as well as your business interests.",
+    "bubblesLink": "Explore the Bubbles",
+    "freeTitle": "Free to join",
+    "freeText": "Joining the community is free. A paid “EiB Business” module is planned.",
+    "freeLink": "See plans"
+  },
+  "partners": {
+    "eyebrow": "Partners",
+    "title": "Working together",
+    "lead": "EiB grows through cooperation with organisations that support internationals and entrepreneurs. This page lists only what we can confirm today.",
+    "become": "Become a partner",
+    "source": "Source",
+    "collabTitle": "Collaborations we have run",
+    "logosTitle": "Partner logos",
+    "logosEmptyTitle": "Partner logos appear here, with permission",
+    "logosEmptyText": "We show a partner's logo only after the partner agrees in writing. None are listed yet.",
+    "waysTitle": "How you can work with us",
+    "ways": {
+      "host": {
+        "title": "Host a session",
+        "text": "Tell us about a venue that could welcome a session."
+      },
+      "support": {
+        "title": "Support the community",
+        "text": "Tell us how you would like to help a session or a festival happen."
+      },
+      "speak": {
+        "title": "Share expertise",
+        "text": "Speak at a session or give members a workshop."
+      }
+    },
+    "contact": "Contact the team",
+    "involved": "See ways to get involved"
+  },
+  "stories": {
+    "eyebrow": "Stories",
+    "title": "Stories from the community",
+    "lead": "Founders and professionals share how they built a life and a business in a new country. New stories are published on our YouTube channel.",
+    "watch": "Watch on YouTube",
+    "newTab": "(opens in a new tab)",
+    "share": "Share your story",
+    "episodesTitle": "Latest episodes",
+    "placeholder": "Placeholder episode",
+    "placeholderTitle": "Episode title to come",
+    "placeholderText": "Real episodes appear here once the team adds them.",
+    "channelNote": "All our videos are on",
+    "channelLink": "our YouTube channel"
   }
 }

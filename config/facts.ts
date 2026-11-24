@@ -71,6 +71,45 @@ export const facts = {
     source: CONNECT_PAGE,
     lastReviewed: "2026-11-09",
   },
+  "org.cofounder": {
+    value: "Ziyan Sinnen",
+    status: "verified",
+    source:
+      "https://krakow.pl/otwarty_na_swiat/aktualnosci/293141,62,komunikat,pierwszy_rok_expats_in_business.html",
+    lastReviewed: "2026-11-09",
+  },
+  "org.firstAnniversary": {
+    value: "27 Mar 2025",
+    status: "verified",
+    source:
+      "https://krakow.pl/otwarty_na_swiat/aktualnosci/293141,62,komunikat,pierwszy_rok_expats_in_business.html",
+    lastReviewed: "2026-11-09",
+  },
+  "org.formats": {
+    value:
+      "Connect & Collaborate, Guest Speaker, Cultural Exchange, Virtual Connect, Business Development events and workshops",
+    status: "verified",
+    source: "https://expatsinbusiness.org/eib-contributors-faqs/",
+    lastReviewed: "2026-11-09",
+  },
+  "org.jointMeetup": {
+    value: "Joint meetup with InterNations, 19 Feb 2026, BarBar Kraków",
+    status: "verified",
+    source: "https://www.youtube.com/@expatsinbusiness",
+    lastReviewed: "2026-11-10",
+  },
+  "org.cultoura": {
+    value: "Cultoura 2025, 24 May 2025",
+    status: "verified",
+    source: "https://expatsinbusiness.org/",
+    lastReviewed: "2026-11-09",
+  },
+  "org.freeCommunity": {
+    value: 'The community is free; a paid "EiB Business" module is planned',
+    status: "verified",
+    source: "https://expatsinbusiness.org/eib-contributors-faqs/",
+    lastReviewed: "2026-11-06",
+  },
   "community.whatsapp": {
     value: "https://chat.whatsapp.com/GDfMTD1KAjdByOuUbVXbai",
     status: "verified",

@@ -21,6 +21,17 @@
 
 ## Log
 
+### 2026-11-23 · Brief items: chapter launch, About, Partners, Stories (branch `feat/brief-pages`)
+
+**Built**
+
+- **Chapter-in-a-box (`/admin/chapters`, admins only):** launch a city with three fields (city, country, status). Time zone and currency default from the country; an optional chapter lead (an existing member, by email) gets the role in the same transaction. Duplicate cities are refused; the chapter is public immediately (switcher, `/chapters`, sitemap) with no deploy. Admins can also move a chapter between waitlist and live, and see the cities members voted for. Rate-limited, Zod-checked, audited (`chapter.launch`, `chapter.status`). In demo mode new cities are flagged demo and removed by `npm run demo:reset`.
+- **`/about`, `/partners`, `/stories`:** every statement comes from `config/facts.ts` (six new verified facts, each in `docs/FACTS.md` with its source: co-founder, first anniversary, formats, Cultoura, the joint meetup, free community). Partners lists only the confirmed collaboration and shows a designed empty state for logos (written permission pending). Stories links the verified YouTube channel; its three episode cards are labelled placeholders. Shared `PageBand` hero; footer links in the Explore, Community and Grow columns; sitemap entries; en, pl and uk strings (pl and uk machine-translated, pending native review).
+
+**Verified**: `npm run check` green (343 tests, 12 new); production build; browser tests 12 of 12 (three pages with axe at 1440 and 375 px, no sideways overflow, source links open safely, Polish page, chapter launch with defaults, promote and duplicate refusal, member blocked, unknown lead email creates nothing). Test cities are removed by `demo:reset`.
+
+**Not done**: member count, legal entity and meeting day stay out until EiB confirms them (docs/FACTS.md). The podcast's name is in the brief but not in FACTS.md, so Stories calls it "stories" on the YouTube channel. Chapter leads cannot launch chapters (admin only, by design).
+
 ### 2026-11-21 · Product-owner audit fixes (branch `fix/po-audit`)
 
 **Fixed**

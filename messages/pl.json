@@ -330,7 +330,10 @@
     "ambassadors": "Ambasadorzy",
     "volunteer": "Wolontariat",
     "careers": "Kariera",
-    "team": "Zespół"
+    "team": "Zespół",
+    "about": "O nas",
+    "partners": "Partnerzy",
+    "stories": "Historie"
   },
   "chapter": {
     "label": "Oddział",
@@ -1598,7 +1601,8 @@
       "catalogs": "Katalogi",
       "ambassadors": "Ambasadorzy",
       "roles": "Role",
-      "team": "Zespół"
+      "team": "Zespół",
+      "chapters": "Oddziały"
     }
   },
   "adminMembers": {
@@ -2697,5 +2701,117 @@
       "concierge": "Concierge",
       "account": "Konto"
     }
+  },
+  "adminChapters": {
+    "title": "Oddziały",
+    "lead": "Uruchom nowe miasto w mniej niż minutę. Pojawia się od razu w przełączniku oddziałów, na mapie świata i w mapie witryny, bez wdrożenia.",
+    "launchTitle": "Uruchom oddział",
+    "launch": "Uruchom oddział",
+    "launching": "Uruchamiam…",
+    "launched": "Oddział {value} został uruchomiony.",
+    "listTitle": "Wszystkie oddziały",
+    "wantedTitle": "Miasta, o które proszą członkowie",
+    "wantedEmpty": "Żadne miasto nie ma jeszcze głosów. Członkowie mogą je zgłosić na stronie oddziałów.",
+    "votes": "{count, plural, one {# głos} few {# głosy} many {# głosów} other {# głosu}}",
+    "demo": "Demo",
+    "nowLive": "Oddział jest aktywny.",
+    "nowLaunching": "Oddział wrócił na listę oczekujących.",
+    "status": {
+      "live": "Aktywny",
+      "launching": "W przygotowaniu (lista oczekujących)"
+    },
+    "moveTo": {
+      "live": "Uruchom",
+      "launching": "Przenieś na listę oczekujących"
+    },
+    "fields": {
+      "city": "Miasto",
+      "country": "Kraj",
+      "countryPlaceholder": "Wybierz kraj",
+      "status": "Status",
+      "statusHint": "W przygotowaniu pokazuje listę oczekujących. Aktywny otwiera wydarzenia.",
+      "timezone": "Strefa czasowa (opcjonalnie)",
+      "currency": "Waluta (opcjonalnie)",
+      "defaultHint": "Puste pole używa wartości domyślnej kraju.",
+      "lead": "E-mail lidera oddziału (opcjonalnie)",
+      "leadHint": "Istniejący członek. Otrzyma rolę lidera oddziału.",
+      "tagline": "Hasło (opcjonalnie)"
+    },
+    "errors": {
+      "default": "Sprawdź pola i spróbuj ponownie. Miasto, kraj i status są wymagane.",
+      "rateLimited": "Zbyt wiele zmian w krótkim czasie. Spróbuj za kilka minut.",
+      "country": "Ten kraj nie jest jeszcze skonfigurowany.",
+      "exists": "Oddział dla tego miasta już istnieje.",
+      "leadNotFound": "Żaden członek nie ma tego adresu e-mail."
+    }
+  },
+  "about": {
+    "eyebrow": "O nas",
+    "title": "Społeczność biznesowa dla ludzi, którzy zamieszkali w nowym kraju",
+    "metaDescription": "Kim jest Expats in Business, czym zajmuje się społeczność i jakie są dotychczasowe kamienie milowe.",
+    "lead": "{name} to prowadzona przez społeczność sieć przedsiębiorców-expatów. {tagline}",
+    "join": "Dołącz do EiB",
+    "sessions": "Zobacz nadchodzące spotkania",
+    "whatTitle": "Czym się zajmujemy",
+    "whatLead": "Każde spotkanie podaje datę, godzinę, miejsce i cenę. Oto formaty, które prowadzi społeczność:",
+    "milestonesTitle": "Kamienie milowe",
+    "source": "Źródło",
+    "milestones": {
+      "anniversary": "Pierwsza rocznica",
+      "cultoura": "Cultoura, nasza seria wymiany kulturowej",
+      "sessions": "Odbyte spotkania",
+      "meetup": "Wspólne spotkanie"
+    },
+    "foundersTitle": "Współzałożyciel: {name}",
+    "foundersText": "EiB tworzy społeczność. Poznaj ludzi, którzy za nią stoją.",
+    "teamLink": "Poznaj zespół",
+    "bubblesTitle": "Bąbelki kulturowe",
+    "bubblesText": "Grupy według kraju pochodzenia, każda z liderem, dzięki którym poznasz ludzi o podobnych korzeniach i zainteresowaniach biznesowych.",
+    "bubblesLink": "Poznaj bąbelki",
+    "freeTitle": "Dołączenie jest bezpłatne",
+    "freeText": "Dołączenie do społeczności jest bezpłatne. Planowany jest płatny moduł „EiB Business”.",
+    "freeLink": "Zobacz plany"
+  },
+  "partners": {
+    "eyebrow": "Partnerzy",
+    "title": "Współpracujemy",
+    "lead": "EiB rozwija się dzięki współpracy z organizacjami wspierającymi obcokrajowców i przedsiębiorców. Ta strona zawiera tylko to, co możemy dziś potwierdzić.",
+    "become": "Zostań partnerem",
+    "source": "Źródło",
+    "collabTitle": "Współprace, które zrealizowaliśmy",
+    "logosTitle": "Logo partnerów",
+    "logosEmptyTitle": "Logo partnerów pojawią się tutaj, za zgodą",
+    "logosEmptyText": "Logo partnera pokazujemy dopiero po jego pisemnej zgodzie. Na razie nie ma żadnych.",
+    "waysTitle": "Jak możesz z nami współpracować",
+    "ways": {
+      "host": {
+        "title": "Gościnne miejsce",
+        "text": "Powiedz nam o miejscu, które mogłoby przyjąć spotkanie."
+      },
+      "support": {
+        "title": "Wesprzyj społeczność",
+        "text": "Powiedz, jak chcesz pomóc w organizacji spotkania lub festiwalu."
+      },
+      "speak": {
+        "title": "Podziel się wiedzą",
+        "text": "Wystąp na spotkaniu lub poprowadź warsztat dla członków."
+      }
+    },
+    "contact": "Napisz do zespołu",
+    "involved": "Zobacz, jak się zaangażować"
+  },
+  "stories": {
+    "eyebrow": "Historie",
+    "title": "Historie ze społeczności",
+    "lead": "Założyciele i profesjonaliści opowiadają, jak zbudowali życie i biznes w nowym kraju. Nowe historie publikujemy na naszym kanale YouTube.",
+    "watch": "Oglądaj na YouTube",
+    "newTab": "(otwiera się w nowej karcie)",
+    "share": "Opowiedz swoją historię",
+    "episodesTitle": "Najnowsze odcinki",
+    "placeholder": "Odcinek zastępczy",
+    "placeholderTitle": "Tytuł odcinka wkrótce",
+    "placeholderText": "Prawdziwe odcinki pojawią się tutaj, gdy zespół je doda.",
+    "channelNote": "Wszystkie nasze filmy znajdziesz na",
+    "channelLink": "naszym kanale YouTube"
   }
 }

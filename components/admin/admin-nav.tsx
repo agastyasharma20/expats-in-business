@@ -11,6 +11,7 @@ export const ADMIN_SECTIONS = [
   { key: "overview", href: "/admin", adminOnly: false },
   { key: "events", href: "/admin/events", adminOnly: false },
   { key: "festivals", href: "/admin/festivals", adminOnly: false },
+  { key: "chapters", href: "/admin/chapters", adminOnly: true },
   { key: "members", href: "/admin/members", adminOnly: true },
   { key: "providers", href: "/admin/providers", adminOnly: true },
   { key: "moderation", href: "/moderation", adminOnly: false },

@@ -21,6 +21,12 @@
 
 ## Log
 
+### 2026-11-24 · Small fixes (branch `feat/brief-pages`)
+
+- Saved tickets are wiped from the device when an account deletion is scheduled (4fe1938).
+- Members opening /admin or /provider/inbox saw a 404 page; they now see the no-access page (3d1d8a6). The status stays 200 because Next sends 403 only before streaming starts (docs/DECISIONS.md). Guarded by `tests/e2e/access-status.spec.ts`.
+- Files over 250 lines: none left in app, components or lib (only one test file and seed data).
+
 ### 2026-11-23 · Brief items: chapter launch, About, Partners, Stories (branch `feat/brief-pages`)
 
 **Built**

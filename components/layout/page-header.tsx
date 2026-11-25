@@ -12,7 +12,11 @@ type PageHeaderProps = {
   className?: string;
 };
 
-/** Consistent page heading for member, community and admin pages (one h1, rises in on load). */
+/**
+ * Consistent page heading for member, community and admin pages (one h1, rises in on load).
+ * The lead paragraph is often the page's largest contentful paint, so the entrance moves the block
+ * but never fades it: the text paints at full opacity on the first frame (CLAUDE.md animation rules).
+ */
 export function PageHeader({
   title,
   lead,
@@ -24,7 +28,7 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        "flex animate-rise flex-col gap-4 md:flex-row md:items-end md:justify-between",
+        "flex animate-rise-move flex-col gap-4 md:flex-row md:items-end md:justify-between",
         className,
       )}
     >

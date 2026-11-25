@@ -199,7 +199,18 @@ async function FestivalView({ params }: { params: Props["params"] }) {
 
 export default function FestivalPage({ params }: Props) {
   return (
-    <Suspense fallback={<FestivalHeroSkeleton />}>
+    <Suspense
+      fallback={
+        <>
+          <FestivalHeroSkeleton />
+          {/* At least one screen tall, so the footer is below the fold and does not jump down
+              when the page body streams in (layout shift of 0.48 before this). */}
+          <div aria-hidden="true" className="container-page min-h-svh py-12">
+            <Skeleton className="h-80 w-full rounded-2xl" />
+          </div>
+        </>
+      }
+    >
       <FestivalView params={params} />
     </Suspense>
   );

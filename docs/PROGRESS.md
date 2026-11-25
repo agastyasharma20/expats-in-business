@@ -21,6 +21,24 @@
 
 ## Log
 
+### 2026-11-21 · Product-owner audit fixes (branch `fix/po-audit`)
+
+**Fixed**
+
+- **F2 reservation stall:** queries inside reservation transactions now run one at a time and transactions time out after 10 s. New concurrency test (12 people, 5 places): exactly 5 confirmed, 7 waitlisted, finished in under 15 s (`TEST_DATABASE_URL=postgresql://eib:eib_local_only@localhost:5433/eib npx vitest run tests/unit/ticket-concurrency`).
+- **F3 slow LCP:** `PageHeader` moves in without fading, so its lead paragraph paints on the first frame. performance 72 to 99, LCP 4.7 s to 1.1 s. The festival page jumped (layout shift 0.48) because its body streamed in behind a hero-only placeholder; the placeholder now fills a screen. Five valid runs: layout shift 0, LCP 1.0 to 1.1 s.
+- **F5 admin tabs:** from 1024 px the tab bar wraps, so no tab hides under the search box (phones still scroll sideways).
+- **F12 retention:** `npm run jobs -- purge` (concierge 90 days, audit 1 year, deletion requests after 30 days), with unit tests. Not scheduled anywhere yet: add a daily cron on the host.
+- **F11 CI:** the workflow only ran on pushes to main or develop and on pull requests, so feature branches never ran. It now runs on every push and pull request, split into a fast check job and a browser-test job (production build, seeded database, embedded guides).
+
+**Verified**: `npm run check` green (331 tests); production build; browser tests 19 of 19 (events, festivals, PWA including a live saved ticket opened offline). Lighthouse above. The first GitHub Actions run has not happened yet: it starts when this branch is pushed.
+
+**Not done, by decision or because it needs you**
+
+- No cookie banner (nothing to consent to, see DECISIONS). About, Partners, Stories and the chapter-launch form need your call.
+- pl and uk strings still need a native reviewer (F13 context). Files over 250 lines (audit #8) not split. ZAP and a penetration test (F14) need a machine with more memory.
+- Denied pages still return HTTP 200 (F4, by design for V1).
+
 ### 2026-11-21 · PWA: installable app, offline page and saved tickets (branch `feat/pwa`)
 
 **Built**
@@ -31,7 +49,7 @@
 - **UI:** designed `/offline` page (self-drawing Wi-Fi illustration, retry, auto-reload on reconnect, saved-ticket list, empty state), network pill that slides in when offline and confirms when back, update toast with "Reload", install card (Chrome/Edge dialog, or "Add to Home Screen" steps on iOS; 15 s delay, 30-day snooze, never inside the app), footer "Install the app" link that only exists when installing is possible, and an app-style bottom tab bar that appears only in the installed app on phones (with safe-area padding). CSS-only entrances, transform and opacity only, reduced motion respected.
 - Strings for the `pwa` namespace in en, pl and uk (pl/uk machine-translated, pending native review).
 
-**Verified**: `npm run check` green (329 unit tests, 14 new); production build green; `tests/e2e/pwa.spec.ts` 11 passed (manifest and icons, worker headers, offline page with axe at 1440 and 375 px, Polish page, saved-ticket list, real offline fallback and recovery). Not yet run in a browser: saving a real ticket (needs the signed-in ticket flow), install prompt on a device, iOS steps.
+**Verified**: `npm run check` green (329 unit tests, 14 new); production build green; `tests/e2e/pwa.spec.ts` 11 passed (manifest and icons, worker headers, offline page with axe at 1440 and 375 px, Polish page, saved-ticket list, real offline fallback and recovery). A signed-in demo member's reserved ticket was also verified in a real browser: saved, opened offline with its QR code, and gone offline after the saved data was cleared. Not yet run on a phone: the install prompt, the iOS steps and the installed-app tab bar.
 
 **Known gaps**
 

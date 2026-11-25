@@ -1,31 +1,21 @@
-# Optional: runs on the GitHub mirror, including the full Playwright suite.
+# Runs on every push and pull request. "check" is fast and must stay green; "e2e" runs the full
+# Playwright suite against a production build with a seeded database.
 name: CI
 on:
   push:
-    branches: [main, develop]
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  check-and-e2e:
+  check:
+    name: Lint, types and unit tests
     runs-on: ubuntu-latest
-    services:
-      db:
-        image: pgvector/pgvector:pg17
-        env:
-          POSTGRES_USER: eib
-          POSTGRES_PASSWORD: eib_local_only
-          POSTGRES_DB: eib
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U eib" --health-interval 5s --health-retries 10
     env:
-      DATABASE_URL: postgresql://eib:eib_local_only@localhost:5432/eib
-      DEMO_MODE: "true"
-      AI_PROVIDER: demo
-      BETTER_AUTH_SECRET: ci-only-not-a-secret-0123456789abcdef
-      BETTER_AUTH_URL: http://localhost:3000
-      APP_URL: http://localhost:3000
-      E2E_EXPECT_DB: "true"
+      SKIP_ENV_VALIDATION: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,7 +27,51 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test -- --run
+
+  e2e:
+    name: Browser tests (production build)
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    services:
+      db:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: eib
+          POSTGRES_PASSWORD: eib_local_only
+          POSTGRES_DB: eib
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U eib" --health-interval 5s --health-retries 10
+      # Catches the emails the app sends (magic link, tickets, enquiries); the tests read them from :8025.
+      mailpit:
+        image: axllent/mailpit:v1.21
+        ports: ["1025:1025", "8025:8025"]
+    env:
+      CI: "1"
+      DATABASE_URL: postgresql://eib:eib_local_only@localhost:5432/eib
+      DEMO_MODE: "true"
+      AI_PROVIDER: demo
+      BETTER_AUTH_SECRET: ci-only-not-a-secret-0123456789abcdef
+      BETTER_AUTH_URL: http://localhost:3000
+      APP_URL: http://localhost:3000
+      MODEL_CACHE_DIR: .cache/models
+      E2E_EXPECT_DB: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: .cache/models
+          key: embedding-model-all-minilm-l6-v2
+      - run: npm ci
+      - run: npx prisma generate
       - run: npx prisma migrate deploy && npm run db:seed
+      # Downloads the small embedding model once (cached), then indexes the guides for the concierge tests.
+      - run: npm run embed
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run e2e

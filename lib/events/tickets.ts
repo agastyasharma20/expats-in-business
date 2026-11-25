@@ -24,6 +24,11 @@ async function lockEvent(tx: Tx, eventId: string) {
   await tx.$queryRaw`SELECT id FROM "Event" WHERE id = ${eventId} FOR UPDATE`;
 }
 
+/** Transactions fail fast instead of hanging: a stuck lock becomes an error the member can retry. */
+function inTransaction<T>(run: (tx: Tx) => Promise<T>): Promise<T> {
+  return getDb().$transaction(run, { maxWait: 5_000, timeout: 10_000 });
+}
+
 /** Places held (sum of party sizes), optionally in one tier and excluding one ticket. */
 async function placesTaken(
   tx: Tx,
@@ -47,18 +52,21 @@ async function fits(
   tx: Tx,
   ticket: { id?: string; eventId: string; ticketTypeId: string; quantity: number },
 ) {
-  const [event, tier, taken, tierTaken] = await Promise.all([
-    tx.event.findUniqueOrThrow({ where: { id: ticket.eventId }, select: { capacity: true } }),
-    tx.ticketType.findUniqueOrThrow({
-      where: { id: ticket.ticketTypeId },
-      select: { capacity: true },
-    }),
-    placesTaken(tx, ticket.eventId, { exceptTicketId: ticket.id }),
-    placesTaken(tx, ticket.eventId, {
-      exceptTicketId: ticket.id,
-      ticketTypeId: ticket.ticketTypeId,
-    }),
-  ]);
+  // One query at a time: a transaction holds a single connection, and the pg driver must not be
+  // asked to run two queries on it at once (that stalled reservations under load, finding F2).
+  const event = await tx.event.findUniqueOrThrow({
+    where: { id: ticket.eventId },
+    select: { capacity: true },
+  });
+  const tier = await tx.ticketType.findUniqueOrThrow({
+    where: { id: ticket.ticketTypeId },
+    select: { capacity: true },
+  });
+  const taken = await placesTaken(tx, ticket.eventId, { exceptTicketId: ticket.id });
+  const tierTaken = await placesTaken(tx, ticket.eventId, {
+    exceptTicketId: ticket.id,
+    ticketTypeId: ticket.ticketTypeId,
+  });
   return (
     decideRsvp({
       capacity: event.capacity,
@@ -90,7 +98,7 @@ export async function claimTicket(input: {
   tierCapacity?: number | null;
 }) {
   const quantity = input.quantity ?? 1;
-  return getDb().$transaction(async (tx) => {
+  return inTransaction(async (tx) => {
     await lockEvent(tx, input.eventId);
     const existing = await tx.ticket.findUnique({
       where: { eventId_userId: { eventId: input.eventId, userId: input.userId } },
@@ -99,10 +107,11 @@ export async function claimTicket(input: {
       return { ticket: existing, staleSessionId: null };
     }
     const except = { exceptTicketId: existing?.id };
-    const [taken, tierTaken] = await Promise.all([
-      placesTaken(tx, input.eventId, except),
-      placesTaken(tx, input.eventId, { ...except, ticketTypeId: input.ticketTypeId }),
-    ]);
+    const taken = await placesTaken(tx, input.eventId, except);
+    const tierTaken = await placesTaken(tx, input.eventId, {
+      ...except,
+      ticketTypeId: input.ticketTypeId,
+    });
     const status: TicketStatus = decideRsvp({
       capacity: input.capacity,
       taken,
@@ -131,7 +140,7 @@ export async function claimTicket(input: {
  * otherwise the member goes back to the waitlist (no overbooking after a lapsed hold).
  */
 export async function renewHold(ticketId: string): Promise<boolean> {
-  return getDb().$transaction(async (tx) => {
+  return inTransaction(async (tx) => {
     const ticket = await tx.ticket.findUniqueOrThrow({
       where: { id: ticketId },
       select: { id: true, eventId: true, ticketTypeId: true, quantity: true },
@@ -157,7 +166,7 @@ export async function confirmPaidTicket(
   ticketId: string,
   session: PaidSession,
 ): Promise<"confirmed" | "duplicate" | "mismatch" | "full"> {
-  const result = await getDb().$transaction(async (tx) => {
+  const result = await inTransaction(async (tx) => {
     const ticket = await tx.ticket.findUnique({
       where: { id: ticketId },
       include: {
@@ -197,7 +206,7 @@ export async function confirmPaidTicket(
 
 /** Moves the oldest waitlisted members up into freed places and emails them. */
 export async function promoteWaitlist(eventId: string) {
-  const promoted = await getDb().$transaction(async (tx) => {
+  const promoted = await inTransaction(async (tx) => {
     await lockEvent(tx, eventId);
     const event = await tx.event.findUniqueOrThrow({
       where: { id: eventId },

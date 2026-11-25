@@ -43,6 +43,10 @@ jobs:
         ports: ["5432:5432"]
         options: >-
           --health-cmd "pg_isready -U eib" --health-interval 5s --health-retries 10
+      # Catches the emails the app sends (magic link, tickets, enquiries); the tests read them from :8025.
+      mailpit:
+        image: axllent/mailpit:v1.21
+        ports: ["1025:1025", "8025:8025"]
     env:
       CI: "1"
       DATABASE_URL: postgresql://eib:eib_local_only@localhost:5432/eib

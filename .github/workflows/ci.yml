@@ -29,6 +29,7 @@ jobs:
       BETTER_AUTH_SECRET: ci-only-not-a-secret-0123456789abcdef
       BETTER_AUTH_URL: http://localhost:3000
       APP_URL: http://localhost:3000
+      MODEL_CACHE_DIR: .cache/models
       E2E_EXPECT_DB: "true"
     steps:
       - uses: actions/checkout@v4
@@ -36,12 +37,18 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: .cache/models
+          key: embedding-model-all-minilm-l6-v2
       - run: npm ci
       - run: npx prisma generate
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test -- --run
       - run: npx prisma migrate deploy && npm run db:seed
+      # Downloads the small embedding model once (cached), then indexes the guides for the concierge tests.
+      - run: npm run embed
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run e2e

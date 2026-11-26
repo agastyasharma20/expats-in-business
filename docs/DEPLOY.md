@@ -20,6 +20,22 @@ below says where it came from; check the linked page before you rely on it.
 > which case the AI concierge uses its keyword fallback. Render has neither problem, which is why it is
 > the default here.
 
+## Sandbox deploy (no email, no AI key)
+
+For a public test site with fake data and nothing connected. Same steps as below, with these differences:
+
+| Step             | Sandbox value                                                                                                                                                 |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Seed (step 2)    | `npm run db:seed` (base **and** demo layer: fake members, events and tickets). Skip `--base-only`.                                                            |
+| `DEMO_MODE`      | `true`. It must be set **before the build**, because it is read when pages are prerendered. Sign-in page then lists the demo accounts (password `Demo!2026`). |
+| `EMAIL_DISABLED` | `true`. No SMTP, no Brevo: emails are skipped instead of failing. Do not set the `SMTP_*` variables.                                                          |
+| `AI_PROVIDER`    | `demo` (answers from the guides, no key). No `GROQ_*` or `GEMINI_*` variables.                                                                                |
+| Stripe           | Leave unset.                                                                                                                                                  |
+| Other variables  | `NODE_ENV=production`, `NODE_VERSION=24`, `APP_URL`, `BETTER_AUTH_URL` (same value), `BETTER_AUTH_SECRET`, `DATABASE_URL`, `TRUSTED_PROXY_HOPS=1`.            |
+
+Sandbox rules: share the link only with testers, enter no real personal data, and never reuse this database for the
+real launch (start a new Neon project with `--base-only`). Anyone with the link can sign in as a demo user.
+
 ## 0. Before you start (once)
 
 - [ ] The code is on GitHub (private repository is fine). Render deploys from GitHub.

@@ -9,6 +9,10 @@ let transport: Transporter | undefined;
 /** Sends through SMTP (Mailpit locally: http://localhost:8025). Never logs message bodies. */
 export async function sendEmail({ to, subject, text, html }: Email): Promise<void> {
   const env = getEnv();
+  if (env.EMAIL_DISABLED) {
+    console.info("[email] skipped: EMAIL_DISABLED is on (sandbox, no mail server)");
+    return;
+  }
   transport ??= nodemailer.createTransport({
     host: env.SMTP_HOST,
     port: env.SMTP_PORT,

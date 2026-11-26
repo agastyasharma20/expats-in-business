@@ -44,6 +44,8 @@ export const envSchema = z.object({
   SMTP_PASSWORD: optional(z.string()),
   /** true = TLS from the start (port 465); false = STARTTLS when offered (port 587). */
   SMTP_SECURE: flag(false),
+  /** Sandbox deployments with no mail server: emails are skipped (logged without addresses or bodies). */
+  EMAIL_DISABLED: flag(false),
   ADMIN_INBOX_EMAIL: z.preprocess(
     (x) => (x === "" ? undefined : x),
     z.email().default("admin@demo.eib.local"),

@@ -2647,5 +2647,54 @@
       "tooLarge": "That photo is larger than 2 MB.",
       "notImage": "That file is not a supported image (use JPEG, PNG or WebP)."
     }
+  },
+  "pwa": {
+    "install": {
+      "title": "Install the EiB app",
+      "iosTitle": "Add EiB to your home screen",
+      "lead": "Your tickets, events and community, one tap away.",
+      "benefitOffline": "Saved tickets open without a connection",
+      "benefitFast": "Opens full screen, instantly",
+      "iosStepShare": "Tap the Share button in your browser.",
+      "iosStepAdd": "Choose “Add to Home Screen”, then “Add”.",
+      "action": "Install app",
+      "later": "Not now",
+      "gotIt": "Got it",
+      "close": "Close",
+      "footerLink": "Install the app"
+    },
+    "update": {
+      "title": "A new version is ready",
+      "description": "Reload to get the latest EiB.",
+      "action": "Reload"
+    },
+    "network": {
+      "offline": "You're offline",
+      "savedTickets": "Saved tickets",
+      "online": "Back online"
+    },
+    "offline": {
+      "eyebrow": "No connection",
+      "title": "You're offline",
+      "lead": "EiB can't reach the internet right now. Tickets you've opened are saved on this device, and everything else returns when you're back online.",
+      "art": "A Wi-Fi symbol with a line through it",
+      "retry": "Try again",
+      "waiting": "Waiting for a connection…",
+      "reconnected": "You're back online. Reloading…",
+      "savedTitle": "Tickets saved on this device",
+      "savedEmptyTitle": "No saved tickets yet",
+      "savedEmptyText": "Open a ticket while you're online and it's saved here automatically, so it works at the door even without signal.",
+      "openTicket": "Open"
+    },
+    "ticketSaving": "Saving for offline…",
+    "ticketSaved": "Saved on this device. Opens without a connection.",
+    "tabs": {
+      "label": "App navigation",
+      "home": "Home",
+      "events": "Events",
+      "tickets": "My events",
+      "concierge": "Concierge",
+      "account": "Account"
+    }
   }
 }

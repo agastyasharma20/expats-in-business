@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth/client";
 import { Link, useRouter } from "@/lib/i18n/navigation";
+import { clearPrivateData } from "@/lib/pwa/private-cache";
 
 type UserMenuProps = {
   name: string;
@@ -49,6 +50,8 @@ export function UserMenu({
   ];
   const router = useRouter();
   async function signOut() {
+    // Saved tickets belong to the person signing out: remove them from this device first.
+    await clearPrivateData();
     await authClient.signOut();
     router.push("/");
     router.refresh();

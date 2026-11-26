@@ -197,6 +197,9 @@
   /* Decorative SVG accents (hero art): scale + fade from their own centre. */
   --animate-pop: pop var(--duration-entrance) var(--ease-brand) both;
   --animate-page-enter: page-enter 200ms var(--ease-brand) both;
+  /* Installable app: cards and banners slide in from the edge they belong to. */
+  --animate-sheet-up: sheet-up 420ms var(--ease-brand) both;
+  --animate-sheet-down: sheet-down 360ms var(--ease-brand) both;
 
   @keyframes page-enter {
     from {
@@ -209,6 +212,18 @@
     from {
       opacity: 0;
       transform: translateY(12px);
+    }
+  }
+  @keyframes sheet-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+  @keyframes sheet-down {
+    from {
+      opacity: 0;
+      transform: translateY(-16px);
     }
   }
   /* Transform only: for the LCP heading, which must paint at full opacity immediately. */
@@ -292,6 +307,37 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Installed app (display-mode: standalone). The bottom tab bar replaces the browser's own controls
+ * on phones; it never shows in a normal browser tab. Safe-area insets keep it clear of the home
+ * indicator and rounded corners.
+ */
+.app-tabbar {
+  display: none;
+}
+@media (display-mode: standalone) {
+  body {
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+@media (display-mode: standalone) and (max-width: 47.99rem) {
+  body {
+    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+  }
+  .app-tabbar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid var(--line);
+    background: var(--surface);
   }
 }
 

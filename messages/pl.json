@@ -2648,5 +2648,54 @@
       "tooLarge": "To zdjęcie jest większe niż 2 MB.",
       "notImage": "Ten plik nie jest obsługiwanym obrazem (użyj JPEG, PNG lub WebP)."
     }
+  },
+  "pwa": {
+    "install": {
+      "title": "Zainstaluj aplikację EiB",
+      "iosTitle": "Dodaj EiB do ekranu głównego",
+      "lead": "Twoje bilety, wydarzenia i społeczność w jednym dotknięciu.",
+      "benefitOffline": "Zapisane bilety otwierają się bez internetu",
+      "benefitFast": "Działa na pełnym ekranie, od razu",
+      "iosStepShare": "Stuknij przycisk Udostępnij w przeglądarce.",
+      "iosStepAdd": "Wybierz „Dodaj do ekranu głównego”, a potem „Dodaj”.",
+      "action": "Zainstaluj aplikację",
+      "later": "Nie teraz",
+      "gotIt": "Rozumiem",
+      "close": "Zamknij",
+      "footerLink": "Zainstaluj aplikację"
+    },
+    "update": {
+      "title": "Nowa wersja jest gotowa",
+      "description": "Odśwież, aby zobaczyć najnowszą wersję EiB.",
+      "action": "Odśwież"
+    },
+    "network": {
+      "offline": "Brak połączenia",
+      "savedTickets": "Zapisane bilety",
+      "online": "Połączenie wróciło"
+    },
+    "offline": {
+      "eyebrow": "Brak połączenia",
+      "title": "Jesteś offline",
+      "lead": "EiB nie ma teraz dostępu do internetu. Otwarte wcześniej bilety są zapisane na tym urządzeniu, a reszta wróci, gdy odzyskasz połączenie.",
+      "art": "Symbol Wi-Fi przekreślony linią",
+      "retry": "Spróbuj ponownie",
+      "waiting": "Czekam na połączenie…",
+      "reconnected": "Połączenie wróciło. Odświeżam…",
+      "savedTitle": "Bilety zapisane na tym urządzeniu",
+      "savedEmptyTitle": "Brak zapisanych biletów",
+      "savedEmptyText": "Otwórz bilet, gdy masz internet, a zapisze się tutaj automatycznie. Będzie działał przy wejściu nawet bez zasięgu.",
+      "openTicket": "Otwórz"
+    },
+    "ticketSaving": "Zapisuję do użytku offline…",
+    "ticketSaved": "Zapisano na tym urządzeniu. Otworzy się bez internetu.",
+    "tabs": {
+      "label": "Nawigacja aplikacji",
+      "home": "Start",
+      "events": "Wydarzenia",
+      "tickets": "Moje wydarzenia",
+      "concierge": "Concierge",
+      "account": "Konto"
+    }
   }
 }

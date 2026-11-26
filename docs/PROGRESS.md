@@ -21,6 +21,24 @@
 
 ## Log
 
+### 2026-11-21 · PWA: installable app, offline page and saved tickets (branch `feat/pwa`)
+
+**Built**
+
+- **Installable:** `app/manifest.ts` (standalone, Deep Teal theme colour, three icon files incl. a maskable one, shortcuts to tickets, events and the concierge), icons made by `scripts/brand-assets.mjs`, viewport with `viewport-fit=cover`, Apple web-app tags. App identity lives in `config/pwa.ts`.
+- **Service worker** written in TypeScript (`lib/pwa/sw.ts`, rules in `lib/pwa/rules.ts`) and bundled to the git-ignored `public/sw.js` by `scripts/build-sw.mjs` (runs before `dev` and `build`; esbuild is now an explicit dev dependency). Precaches one offline page per language; keeps hashed build files, logos and optimised images; **never** touches `/api`, Next data requests, writes or other origins. Registered in production only. Served with `Cache-Control: no-cache`.
+- **Saved tickets:** the ticket page saves the member's confirmed ticket (QR included) on the device and shows "Saved on this device". At the door the worker shows the saved copy when the network is gone or slower than 4 s. Copies expire a day after the event, are limited to 12, live in their own cache and are wiped on sign-out (`lib/pwa/private-cache.ts`).
+- **UI:** designed `/offline` page (self-drawing Wi-Fi illustration, retry, auto-reload on reconnect, saved-ticket list, empty state), network pill that slides in when offline and confirms when back, update toast with "Reload", install card (Chrome/Edge dialog, or "Add to Home Screen" steps on iOS; 15 s delay, 30-day snooze, never inside the app), footer "Install the app" link that only exists when installing is possible, and an app-style bottom tab bar that appears only in the installed app on phones (with safe-area padding). CSS-only entrances, transform and opacity only, reduced motion respected.
+- Strings for the `pwa` namespace in en, pl and uk (pl/uk machine-translated, pending native review).
+
+**Verified**: `npm run check` green (329 unit tests, 14 new); production build green; `tests/e2e/pwa.spec.ts` 11 passed (manifest and icons, worker headers, offline page with axe at 1440 and 375 px, Polish page, saved-ticket list, real offline fallback and recovery). Not yet run in a browser: saving a real ticket (needs the signed-in ticket flow), install prompt on a device, iOS steps.
+
+**Known gaps**
+
+- Push notifications and offline check-in for door staff are not part of this step.
+- Large app icons are upscaled from the 270 px monogram (a vector logo from EiB would make them sharper).
+- Saved tickets are removed on sign-out but not yet when an account is deleted from settings.
+
 ### 2026-11-17 · Evidence pass and the complete project report
 
 **Built and fixed**

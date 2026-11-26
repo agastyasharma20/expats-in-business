@@ -43,5 +43,26 @@ async function monograms() {
   await sharp(MONOGRAM).resize(180).png().toFile(out("app/apple-icon.png"));
 }
 
-await Promise.all([wordmarks(), monograms()]);
-console.info("Brand assets written to public/brand/ and app/icon.png, app/apple-icon.png");
+// Installable-app icons. The source monogram is a 270 px circle, so the large sizes are upscaled
+// (slightly soft until EiB sends a vector logo). The maskable icon fills the whole square with
+// Deep Teal and keeps the mark inside the 80% safe zone, so Android can crop it to any shape.
+async function appIcons() {
+  mkdirSync(out("public/icons"), { recursive: true });
+  const deepTeal = { r: 9, g: 51, b: 52, alpha: 1 };
+  for (const size of [192, 512]) {
+    await sharp(MONOGRAM)
+      .resize(size, size, { kernel: "lanczos3" })
+      .png({ compressionLevel: 9 })
+      .toFile(out(`public/icons/icon-${size}.png`));
+  }
+  const mark = await sharp(MONOGRAM).resize(360, 360, { kernel: "lanczos3" }).png().toBuffer();
+  await sharp({ create: { width: 512, height: 512, channels: 4, background: deepTeal } })
+    .composite([{ input: mark, gravity: "centre" }])
+    .png({ compressionLevel: 9 })
+    .toFile(out("public/icons/maskable-512.png"));
+}
+
+await Promise.all([wordmarks(), monograms(), appIcons()]);
+console.info(
+  "Brand assets written to public/brand/, public/icons/, app/icon.png and app/apple-icon.png",
+);

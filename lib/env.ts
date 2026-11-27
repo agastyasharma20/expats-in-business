@@ -44,6 +44,11 @@ export const envSchema = z.object({
   SMTP_PASSWORD: optional(z.string()),
   /** true = TLS from the start (port 465); false = STARTTLS when offered (port 587). */
   SMTP_SECURE: flag(false),
+  /**
+   * Brevo API key. When set, email is sent over HTTPS (port 443) instead of SMTP. Use it on hosts that
+   * block SMTP ports, such as Render's free plan (25, 465 and 587 are blocked there).
+   */
+  BREVO_API_KEY: optional(z.string().min(20)),
   /** Sandbox deployments with no mail server: emails are skipped (logged without addresses or bodies). */
   EMAIL_DISABLED: flag(false),
   ADMIN_INBOX_EMAIL: z.preprocess(

@@ -86,12 +86,24 @@ Notes:
 
 ## 3. Create the email sender (Brevo)
 
+> **Render's free plan blocks SMTP.** Free web services cannot send on ports 25, 465 or 587
+> ([Render docs](https://render.com/docs/free)). So on Render's free plan use Brevo's **HTTPS API** (below).
+> Plain SMTP works on a paid Render instance or on any host that does not block it.
+
 1. Sign up at [brevo.com](https://www.brevo.com) and verify your account.
-2. Go to **SMTP & API → SMTP**. Note the SMTP server (`smtp-relay.brevo.com`), the port (**587**), your
-   **login** and create an **SMTP key** (this is the password).
-3. Add a **sender** and verify the address or domain you will send from. Use a real address you control.
-   Sending from a domain you own (with SPF and DKIM records that Brevo shows) keeps messages out of spam.
-4. Keep these four values for step 4: `SMTP_HOST`, `SMTP_PORT=587`, `SMTP_USER`, `SMTP_PASSWORD`.
+2. Add a **sender** (**Senders, domains, IPs → Add sender**) and verify the address or domain you will send from.
+   Use a real address you control. Sending from a domain you own (with the SPF and DKIM records Brevo shows)
+   keeps messages out of spam; a free-mail address such as Gmail works for a sandbox but may land in spam.
+3. **Switch off IP blocking.** Under **Security → Authorised IPs**, deactivate blocking of unknown IP addresses.
+   Render's free plan has no fixed outgoing address, so Brevo would otherwise reject every message.
+4. **Option A, HTTPS API (use this on Render free):** go to **SMTP & API → API keys** and create a key. In Render set
+   `BREVO_API_KEY` to it and `EMAIL_DISABLED=false`. Leave the `SMTP_*` variables out.
+5. **Option B, SMTP (paid Render or another host):** under **SMTP & API → SMTP** note the server
+   (`smtp-relay.brevo.com`), port **587**, your **login**, and create an **SMTP key** (the password). Set
+   `SMTP_HOST`, `SMTP_PORT=587`, `SMTP_USER`, `SMTP_PASSWORD` and `EMAIL_DISABLED=false`.
+6. In both cases set `EMAIL_FROM` to `Your name <the verified sender address>` and `ADMIN_INBOX_EMAIL` to the
+   inbox that should receive contact-form messages.
+7. Test: ask for a sign-in link for an address you own and check that it arrives (check spam).
 
 ## 4. Deploy the app (Render)
 

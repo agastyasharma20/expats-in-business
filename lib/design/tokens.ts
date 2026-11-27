@@ -59,6 +59,7 @@ export const contrastPairs: ContrastPair[] = [
   { id: "mutedOnCanvas", foreground: "ink-muted", background: "canvas", level: "body" },
   { id: "mutedOnSurface", foreground: "ink-muted", background: "surface", level: "body" },
   { id: "mutedOnWash", foreground: "ink-muted", background: "brand-50", level: "body" },
+  { id: "bodyOnWash", foreground: "ink", background: "brand-50", level: "body" },
   { id: "headingOnCanvas", foreground: "brand-950", background: "canvas", level: "body" },
   { id: "headingOnSurface", foreground: "brand-950", background: "surface", level: "body" },
   { id: "linkOnSurface", foreground: "brand-700", background: "surface", level: "body" },

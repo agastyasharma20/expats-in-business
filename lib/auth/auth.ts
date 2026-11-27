@@ -39,7 +39,7 @@ export const auth = betterAuth({
     window: 60,
     max: 100,
     customRules: {
-      "/sign-in/email": { window: 60, max: 5 },
+      "/sign-in/email": { window: 60, max: env.DEMO_MODE ? 30 : 5 },
       "/sign-in/magic-link": { window: 60, max: 5 },
       "/magic-link/verify": { window: 60, max: 10 },
     },

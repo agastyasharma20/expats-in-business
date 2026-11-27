@@ -12,11 +12,10 @@ import { authClient } from "@/lib/auth/client";
 type SignInFormsProps = {
   next: string;
   google: boolean;
-  demo: { password: string; accounts: string[] } | null;
 };
 
-/** Magic link (primary), password (demo accounts), Google when configured. */
-export function SignInForms({ next, google, demo }: SignInFormsProps) {
+/** Magic link (primary), password, Google when configured. Demo one-click sign-in: demo-login.tsx. */
+export function SignInForms({ next, google }: SignInFormsProps) {
   const t = useTranslations("auth");
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -131,37 +130,6 @@ export function SignInForms({ next, google, demo }: SignInFormsProps) {
         <p role="alert" className="font-semibold text-danger">
           {error}
         </p>
-      ) : null}
-
-      {demo ? (
-        <section
-          aria-labelledby="demo-title"
-          className="rounded-xl border border-warning/40 bg-warning-50 p-6"
-        >
-          <h2 id="demo-title" className="text-h3 text-warning">
-            {t("demoTitle")}
-          </h2>
-          <p className="text-small text-warning">{t("demoLead", { password: demo.password })}</p>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {demo.accounts.map((account) => (
-              <li key={account}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  aria-label={t("demoUse", { email: account })}
-                  aria-pressed={email === account}
-                  onClick={() => {
-                    setEmail(account);
-                    setPassword(demo.password);
-                  }}
-                >
-                  {account.split("@")[0]}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </section>
       ) : null}
     </div>
   );

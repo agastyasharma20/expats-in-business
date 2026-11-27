@@ -435,10 +435,40 @@
     "google": "Continue with Google",
     "error": "That did not work. Check the details and try again.",
     "rateLimited": "Too many attempts. Wait a minute and try again.",
-    "demoTitle": "Demo accounts",
+    "demoTitle": "Try the sandbox in one click",
     "demoLead": "Demo mode only. Password for all: {password}",
     "demoUse": "Use {email}",
-    "invalidEmail": "Enter your email address (and password, if you use one)."
+    "invalidEmail": "Enter your email address (and password, if you use one).",
+    "demoQuick": "Pick a person to sign in as them. No password needed.",
+    "demoSigningIn": "Signing in as {name}…",
+    "demoOpening": "Signed in as {name}. Opening your page…",
+    "demoNote": "Demo data only. Every demo account shares the password {password} if you prefer to type it.",
+    "demoPersonas": {
+      "admin": {
+        "name": "Admin Demo",
+        "role": "Admin: sees every tool"
+      },
+      "lead": {
+        "name": "Alex Demo",
+        "role": "Chapter lead"
+      },
+      "priya": {
+        "name": "Priya Demo",
+        "role": "Member"
+      },
+      "karim": {
+        "name": "Karim Demo",
+        "role": "Member"
+      },
+      "marta": {
+        "name": "Marta Demo",
+        "role": "Service provider"
+      },
+      "sponsor": {
+        "name": "Anna Demo",
+        "role": "Sponsor"
+      }
+    }
   },
   "onboarding": {
     "title": "Set up your profile",

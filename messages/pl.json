@@ -436,10 +436,40 @@
     "google": "Kontynuuj z Google",
     "error": "Nie udało się. Sprawdź dane i spróbuj ponownie.",
     "rateLimited": "Zbyt wiele prób. Odczekaj minutę i spróbuj ponownie.",
-    "demoTitle": "Konta demonstracyjne",
+    "demoTitle": "Wypróbuj piaskownicę jednym kliknięciem",
     "demoLead": "Tylko w trybie demo. Hasło dla wszystkich: {password}",
     "demoUse": "Użyj {email}",
-    "invalidEmail": "Podaj adres e-mail (i hasło, jeśli z niego korzystasz)."
+    "invalidEmail": "Podaj adres e-mail (i hasło, jeśli z niego korzystasz).",
+    "demoQuick": "Wybierz osobę, aby się jako ona zalogować. Hasło nie jest potrzebne.",
+    "demoSigningIn": "Logowanie jako {name}…",
+    "demoOpening": "Zalogowano jako {name}. Otwieram Twoją stronę…",
+    "demoNote": "Tylko dane demonstracyjne. Wszystkie konta demo mają to samo hasło: {password}, jeśli wolisz je wpisać.",
+    "demoPersonas": {
+      "admin": {
+        "name": "Admin Demo",
+        "role": "Administrator: widzi wszystkie narzędzia"
+      },
+      "lead": {
+        "name": "Alex Demo",
+        "role": "Lider chaptera"
+      },
+      "priya": {
+        "name": "Priya Demo",
+        "role": "Członkini"
+      },
+      "karim": {
+        "name": "Karim Demo",
+        "role": "Członek"
+      },
+      "marta": {
+        "name": "Marta Demo",
+        "role": "Usługodawczyni"
+      },
+      "sponsor": {
+        "name": "Anna Demo",
+        "role": "Sponsorka"
+      }
+    }
   },
   "onboarding": {
     "title": "Uzupełnij profil",

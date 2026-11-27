@@ -2,10 +2,18 @@
 title: KSeF e-invoicing
 description: When the National e-Invoicing System (KSeF) became mandatory and who is covered.
 countryCode: PL
-lastVerified: 2026-11-10
+lastVerified: 2026-11-27
 sources:
-  - title: "Scope of mandatory KSeF (Ministry of Finance)"
+  - title: "Scope of mandatory KSeF (Ministry of Finance, modified 6 February 2026)"
     url: https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/zakres-obowiazkowego-ksef/
+  - title: "From when invoices must be issued in KSeF (Ministry of Finance, modified 30 April 2026)"
+    url: https://ksef.podatki.gov.pl/od-kiedy-trzeba-wystawiac-faktury-w-ksef/
+  - title: "Last stage of the KSeF rollout: changes from 1 January 2027 (Ministry of Finance, 16 November 2026)"
+    url: https://www.gov.pl/web/finanse/ostatni-etap-wdrozenia-ksef-zmiany-od-1-stycznia-2027-r
+  - title: "KSeF 2.0 handbook, part I: getting started (Ministry of Finance, 19 February 2026)"
+    url: https://ksef.podatki.gov.pl/media/iqfjmrws/podrecznik-ksef-20-czesc-i-rozpoczecie-korzystania-z-ksef-19022026.pdf
+  - title: "KSeF for sole traders and small businesses (Ministry of Finance)"
+    url: https://ksef.podatki.gov.pl/jdg-i-msp/
 translations:
   pl:
     title: "E-fakturowanie w KSeF"
@@ -21,15 +29,26 @@ KSeF (Krajowy System e-Faktur) is the government system for issuing and receivin
 
 - **1 February 2026** for taxpayers whose sales (including tax) exceeded **200 million zł** in 2024.
 - **1 April 2026** for all other taxpayers.
-- **Receiving** invoices through KSeF is mandatory from **1 February 2026**.
+- **Receiving** invoices through KSeF is mandatory from **1 February 2026**. Buyers such as consumers and foreign entities receive the invoice in the way agreed with them.
 
-## The 10,000 zł exception (until the end of 2026)
+## The 10,000 zł exception ends with 2026
 
-Until the **end of 2026**, a taxpayer does not have to issue invoices in KSeF if the total value of sales (including tax) documented by such invoices in a month does **not exceed 10,000 zł gross**. The exception ends with 2026.
+Until **31 December 2026**, a taxpayer does not have to issue invoices in KSeF if the total sales (including tax) documented by such invoices in a month do **not exceed 10,000 zł gross**.
+
+From **1 January 2027**, all invoices must be issued in KSeF **whatever their value**, and buyers who pay by split payment must quote the KSeF number. A bill before the Sejm would postpone the penalties to the end of 2027. It is not law yet and, according to the Ministry, it does not change the date.
 
 ## What is not covered
 
 - Invoices to **consumers** (individuals not running a business) are outside mandatory KSeF; they may be issued in KSeF voluntarily.
-- Taxpayers using the EU **SME exemption** (art. 113a(1) of the VAT Act) cannot issue those invoices in KSeF voluntarily.
+- Taxpayers using the **SME procedure** (art. 113a(1) of the VAT Act) cannot issue those invoices in KSeF voluntarily.
 
-> **TODO (verify):** how to get access to KSeF as a sole trader, step by step, from ksef.podatki.gov.pl.
+## Getting access as a sole trader
+
+- You need a **NIP** (tax identification number). You do **not** have to register or report anything to the tax office: as a sole trader you get the owner permissions for your own NIP automatically.
+- You log in with your NIP as the context, using one of: **trusted profile, mObywatel, online banking or e-ID card** (through the national node), a **qualified electronic signature**, a **KSeF certificate** issued after your first login, or a **token**, which is available only until **31 December 2026**.
+- A free tool for issuing and viewing invoices is the **Taxpayer's KSeF Application** (Aplikacja Podatnika KSeF) at ap.ksef.mf.gov.pl.
+- To give your **accountant** access, grant the permission electronically in the application or in your invoicing software. You can grant it to the whole accounting office, which then chooses its own staff.
+
+## If you do not have a PESEL
+
+A trusted profile needs a **PESEL** ([how to get one](/guides/pesel)). A **qualified electronic signature** can be used without a PESEL or NIP, including a foreign one, but you must first report its fingerprint to the tax office on form ZAW-FA (on paper, through the e-Urząd Skarbowy form or through e-Doręczenia). Whether a foreign passport alone, or a foreign eID, is enough to log in is not stated by the official sources we checked.

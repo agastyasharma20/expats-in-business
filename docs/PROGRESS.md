@@ -28,6 +28,7 @@
 - Strict accessibility audit (`tests/e2e/a11y-audit.spec.ts`): found and fixed the missing keyboard focus ring on all buttons, an admin landmark clash, a heading-order gap.
 - Motion: aurora hero, word-rise headline, scroll progress, card sheen. Home Lighthouse performance 95, accessibility 100.
 - Install experience: header and hero Install app button, /install page, animated device-aware dialog with QR code, auto card for everyone (tests/e2e/install.spec.ts). Network-field hero backdrop (home Lighthouse performance 95-96).
+- Guides verified against official pages on 2026-11-27 (docs/GUIDES_VERIFICATION.md): all 8 Poland guides re-checked and corrected (PESEL in-person rule, trusted-profile video call, KSeF 2027, ZUS 2026 amounts), 5 India and 4 Sri Lanka guides added. Index grouped by country; new unit gates (no open TODO, unique slugs, recent check).
 - Open: Groq key for the concierge (user pastes it into Render), Frankfurt region move, Lighthouse CLS is 0.1 in its own harness but 0.009 under real throttling.
 
 ### 2026-11-24 · Small fixes (branch `feat/brief-pages`)

@@ -83,6 +83,7 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[locale]"
       className={`${bodyFont.variable} ${headingFont.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <div aria-hidden="true" className="scroll-progress" />
         <NextIntlClientProvider messages={pickClientMessages(await getMessages())}>
           <TooltipProvider>
             <SkipLink />

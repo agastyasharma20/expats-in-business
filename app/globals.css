@@ -398,3 +398,148 @@
     }
   }
 }
+
+/*
+ * Crafted motion. Every effect animates transform and opacity only, is decorative (aria-hidden),
+ * and is frozen by the prefers-reduced-motion rule above. Ambient loops are an explicit exception
+ * to the 600 ms limit for entrances (docs/DECISIONS.md, 2026-11-27).
+ */
+@layer components {
+  /* Aurora: soft tinted light drifting behind the hero. Gradients, not blur filters (cheap to paint). */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+  }
+  .aurora-blob {
+    position: absolute;
+    border-radius: 9999px;
+    will-change: transform;
+    background: radial-gradient(closest-side, var(--aurora-color), transparent);
+  }
+  .aurora-blob-a {
+    --aurora-color: color-mix(in srgb, var(--brand-100) 85%, transparent);
+    top: -35%;
+    left: -10%;
+    width: min(60rem, 90vw);
+    height: min(60rem, 90vw);
+    animation: aurora-a 22s ease-in-out infinite;
+  }
+  .aurora-blob-b {
+    --aurora-color: color-mix(in srgb, var(--brand-200) 55%, transparent);
+    top: -20%;
+    right: -15%;
+    width: min(48rem, 80vw);
+    height: min(48rem, 80vw);
+    animation: aurora-b 28s ease-in-out infinite;
+  }
+  .aurora-blob-c {
+    --aurora-color: color-mix(in srgb, var(--ember-500) 9%, transparent);
+    bottom: -40%;
+    left: 30%;
+    width: min(40rem, 70vw);
+    height: min(40rem, 70vw);
+    animation: aurora-c 34s ease-in-out infinite;
+  }
+  .aurora-in {
+    animation: aurora-fade 1200ms var(--ease-brand) both;
+  }
+  @keyframes aurora-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes aurora-a {
+    50% {
+      transform: translate3d(8%, 6%, 0) scale(1.12);
+    }
+  }
+  @keyframes aurora-b {
+    50% {
+      transform: translate3d(-10%, 8%, 0) scale(0.92);
+    }
+  }
+  @keyframes aurora-c {
+    50% {
+      transform: translate3d(-6%, -10%, 0) scale(1.18);
+    }
+  }
+
+  /* One word at a time: set --i on each word. Transform only, so the LCP text paints at once. */
+  .word-rise {
+    display: inline-block;
+    animation: rise-move var(--duration-entrance) var(--ease-brand) both;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+
+  /* Reading progress: a thin bar scaled by how far the page is scrolled (no JavaScript). */
+  .scroll-progress {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 60;
+      height: 3px;
+      pointer-events: none;
+      background: var(--brand-700);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: scroll-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+  @keyframes scroll-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* A soft light sweeps across a card when it is hovered or focused. */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: -1;
+    width: 45%;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      color-mix(in srgb, var(--brand-100) 70%, transparent),
+      transparent
+    );
+    transform: translateX(-130%) skewX(-18deg);
+    transition: transform 600ms var(--ease-brand);
+  }
+  @media (hover: hover) {
+    .sheen:hover::after {
+      transform: translateX(320%) skewX(-18deg);
+    }
+  }
+  .sheen:focus-within::after {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+
+@media print {
+  .aurora,
+  .scroll-progress {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none !important;
+  }
+}

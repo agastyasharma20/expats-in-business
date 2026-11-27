@@ -21,6 +21,14 @@
 
 ## Log
 
+### 2026-11-27 · Sandbox, one-click login, accessibility, motion (branch `feat/brief-pages`)
+
+- Live sandbox on Render (free) + Neon: DEMO_MODE, EMAIL_DISABLED, AI_PROVIDER=demo. Keep-awake workflow `.github/workflows/keep-awake.yml` (runs once on `main`).
+- One-click demo sign-in cards on /sign-in; tests in `tests/e2e/demo-login.spec.ts`.
+- Strict accessibility audit (`tests/e2e/a11y-audit.spec.ts`): found and fixed the missing keyboard focus ring on all buttons, an admin landmark clash, a heading-order gap.
+- Motion: aurora hero, word-rise headline, scroll progress, card sheen. Home Lighthouse performance 95, accessibility 100.
+- Open: Groq key for the concierge (user pastes it into Render), Frankfurt region move, Lighthouse CLS is 0.1 in its own harness but 0.009 under real throttling.
+
 ### 2026-11-24 · Small fixes (branch `feat/brief-pages`)
 
 - Saved tickets are wiped from the device when an account deletion is scheduled (4fe1938).

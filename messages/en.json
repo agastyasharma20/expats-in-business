@@ -202,7 +202,8 @@
       "dashedBorderOnCanvas": "Empty state border on the page",
       "focusRingOnDark": "Focus ring on Deep Teal (footer)",
       "darkControlBorder": "Button border on Deep Teal (footer)",
-      "pulseProgressBar": "Pulse progress bar on Deep Teal"
+      "pulseProgressBar": "Pulse progress bar on Deep Teal",
+      "bodyOnWash": "Body text on the light wash"
     },
     "type": {
       "display": "Display: the business network for internationals",

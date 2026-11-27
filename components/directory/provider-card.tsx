@@ -49,7 +49,7 @@ export async function ProviderCard({ provider }: { provider: ProviderCardData })
   const languages = new Intl.DisplayNames([locale], { type: "language" });
   return (
     <article
-      className="relative flex h-full flex-col gap-3 rounded-xl border border-line bg-surface p-5 shadow-card transition-transform duration-(--duration-micro) focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring hover:-translate-y-0.5"
+      className="sheen relative flex h-full flex-col gap-3 rounded-xl border border-line bg-surface p-5 shadow-card transition-transform duration-(--duration-micro) focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring hover:-translate-y-0.5"
       data-testid="provider-card"
     >
       <div className="flex flex-wrap items-center gap-2">

@@ -21,6 +21,33 @@
 
 ## Log
 
+### 2026-11-27 · Sandbox, one-click login, accessibility, motion (branch `feat/brief-pages`)
+
+- Live sandbox on Render (free) + Neon: DEMO_MODE, EMAIL_DISABLED, AI_PROVIDER=demo. Keep-awake workflow `.github/workflows/keep-awake.yml` (runs once on `main`).
+- One-click demo sign-in cards on /sign-in; tests in `tests/e2e/demo-login.spec.ts`.
+- Strict accessibility audit (`tests/e2e/a11y-audit.spec.ts`): found and fixed the missing keyboard focus ring on all buttons, an admin landmark clash, a heading-order gap.
+- Motion: aurora hero, word-rise headline, scroll progress, card sheen. Home Lighthouse performance 95, accessibility 100.
+- Install experience: header and hero Install app button, /install page, animated device-aware dialog with QR code, auto card for everyone (tests/e2e/install.spec.ts). Network-field hero backdrop (home Lighthouse performance 95-96).
+- Guides verified against official pages on 2026-11-27 (docs/GUIDES_VERIFICATION.md): all 8 Poland guides re-checked and corrected (PESEL in-person rule, trusted-profile video call, KSeF 2027, ZUS 2026 amounts), 5 India and 4 Sri Lanka guides added. Index grouped by country; new unit gates (no open TODO, unique slugs, recent check).
+- Open: Groq key for the concierge (user pastes it into Render), Frankfurt region move, Lighthouse CLS is 0.1 in its own harness but 0.009 under real throttling.
+
+### 2026-11-24 · Small fixes (branch `feat/brief-pages`)
+
+- Saved tickets are wiped from the device when an account deletion is scheduled (4fe1938).
+- Members opening /admin or /provider/inbox saw a 404 page; they now see the no-access page (3d1d8a6). The status stays 200 because Next sends 403 only before streaming starts (docs/DECISIONS.md). Guarded by `tests/e2e/access-status.spec.ts`.
+- Files over 250 lines: none left in app, components or lib (only one test file and seed data).
+
+### 2026-11-23 · Brief items: chapter launch, About, Partners, Stories (branch `feat/brief-pages`)
+
+**Built**
+
+- **Chapter-in-a-box (`/admin/chapters`, admins only):** launch a city with three fields (city, country, status). Time zone and currency default from the country; an optional chapter lead (an existing member, by email) gets the role in the same transaction. Duplicate cities are refused; the chapter is public immediately (switcher, `/chapters`, sitemap) with no deploy. Admins can also move a chapter between waitlist and live, and see the cities members voted for. Rate-limited, Zod-checked, audited (`chapter.launch`, `chapter.status`). In demo mode new cities are flagged demo and removed by `npm run demo:reset`.
+- **`/about`, `/partners`, `/stories`:** every statement comes from `config/facts.ts` (six new verified facts, each in `docs/FACTS.md` with its source: co-founder, first anniversary, formats, Cultoura, the joint meetup, free community). Partners lists only the confirmed collaboration and shows a designed empty state for logos (written permission pending). Stories links the verified YouTube channel; its three episode cards are labelled placeholders. Shared `PageBand` hero; footer links in the Explore, Community and Grow columns; sitemap entries; en, pl and uk strings (pl and uk machine-translated, pending native review).
+
+**Verified**: `npm run check` green (343 tests, 12 new); production build; browser tests 12 of 12 (three pages with axe at 1440 and 375 px, no sideways overflow, source links open safely, Polish page, chapter launch with defaults, promote and duplicate refusal, member blocked, unknown lead email creates nothing). Test cities are removed by `demo:reset`.
+
+**Not done**: member count, legal entity and meeting day stay out until EiB confirms them (docs/FACTS.md). The podcast's name is in the brief but not in FACTS.md, so Stories calls it "stories" on the YouTube channel. Chapter leads cannot launch chapters (admin only, by design).
+
 ### 2026-11-21 · Product-owner audit fixes (branch `fix/po-audit`)
 
 **Fixed**

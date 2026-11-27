@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 
 import { AccountNav, SignInButton } from "@/components/auth/account-nav";
 import { FestivalSpotlightPill } from "@/components/festivals/spotlight";
+import { InstallButton } from "@/components/pwa/install-button";
 import { Link } from "@/lib/i18n/navigation";
 import { mainNav } from "@/lib/nav";
 
@@ -47,6 +48,7 @@ export function SiteHeader() {
           <Suspense fallback={null}>
             <FestivalSpotlightPill />
           </Suspense>
+          <InstallButton iconOnlyOnSmall />
           <div className="hidden items-center gap-1 lg:flex">
             <ChapterSwitcher />
             <LanguageSwitcher />

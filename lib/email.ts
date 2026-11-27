@@ -6,9 +6,39 @@ type Email = { to: string; subject: string; text: string; html?: string };
 
 let transport: Transporter | undefined;
 
-/** Sends through SMTP (Mailpit locally: http://localhost:8025). Never logs message bodies. */
+/** "Name <address>" or a bare address, as in EMAIL_FROM. */
+export function parseSender(from: string): { name?: string; email: string } {
+  const match = from.match(/^\s*(.*?)\s*<([^>]+)>\s*$/);
+  return match ? { name: match[1] || undefined, email: match[2]! } : { email: from.trim() };
+}
+
+/** Brevo's HTTPS API: works where SMTP ports are blocked. Never logs bodies or addresses. */
+async function sendViaBrevoApi(apiKey: string, from: string, message: Email): Promise<void> {
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: { "api-key": apiKey, "content-type": "application/json", accept: "application/json" },
+    body: JSON.stringify({
+      sender: parseSender(from),
+      to: [{ email: message.to }],
+      subject: message.subject,
+      textContent: message.text,
+      htmlContent: message.html ?? message.text.replace(/\n/g, "<br>"),
+    }),
+  });
+  if (!response.ok) throw new Error(`Brevo API refused the message (HTTP ${response.status})`);
+}
+
+/** Sends through Brevo's API when BREVO_API_KEY is set, otherwise through SMTP (Mailpit locally: http://localhost:8025). Never logs message bodies. */
 export async function sendEmail({ to, subject, text, html }: Email): Promise<void> {
   const env = getEnv();
+  if (env.EMAIL_DISABLED) {
+    console.info("[email] skipped: EMAIL_DISABLED is on (sandbox, no mail server)");
+    return;
+  }
+  if (env.BREVO_API_KEY) {
+    await sendViaBrevoApi(env.BREVO_API_KEY, env.EMAIL_FROM, { to, subject, text, html });
+    return;
+  }
   transport ??= nodemailer.createTransport({
     host: env.SMTP_HOST,
     port: env.SMTP_PORT,

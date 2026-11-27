@@ -1,4 +1,5 @@
 import { AppTabBar } from "./app-tab-bar";
+import { InstallDialog } from "./install-dialog";
 import { InstallPrompt } from "./install-prompt";
 import { NetworkBanner } from "./network-banner";
 import { PwaRegistrar } from "./pwa-registrar";
@@ -10,6 +11,7 @@ export function PwaShell() {
       <PwaRegistrar />
       <NetworkBanner />
       <InstallPrompt />
+      <InstallDialog />
       <AppTabBar />
     </>
   );

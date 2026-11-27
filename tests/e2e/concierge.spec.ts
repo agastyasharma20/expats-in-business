@@ -82,7 +82,7 @@ test("guides show last verified, official sources, disclaimer and lead to the co
 }) => {
   await page.goto("/guides");
   await page
-    .getByTestId("guide-list")
+    .getByTestId("guides-pl")
     .getByRole("link", { name: "Getting a PESEL number" })
     .click();
   await expect(page.getByTestId("last-verified")).toContainText("Last verified");

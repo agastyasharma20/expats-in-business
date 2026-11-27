@@ -52,6 +52,13 @@ export const growNav = [
   { id: "careers", href: "/careers", labelKey: "nav.careers", status: "live" },
 ] as const satisfies readonly NavItem[];
 
+export const aboutNav = {
+  about: { id: "about", href: "/about", labelKey: "nav.about", status: "live" },
+  stories: { id: "stories", href: "/stories", labelKey: "nav.stories", status: "live" },
+  partners: { id: "partners", href: "/partners", labelKey: "nav.partners", status: "live" },
+  install: { id: "install", href: "/install", labelKey: "nav.install", status: "live" },
+} as const satisfies Record<string, NavItem>;
+
 export const legalNav = [
   { id: "privacy", href: "/legal/privacy", labelKey: "nav.privacy", status: "live" },
   { id: "terms", href: "/legal/terms", labelKey: "nav.terms", status: "live" },
@@ -67,13 +74,19 @@ export const socialNav = [
 
 /** Footer columns, in display order. Headings are message keys under `footer.*`. */
 export const footerColumns = [
-  { id: "explore", headingKey: "footer.explore", items: mainNav },
+  { id: "explore", headingKey: "footer.explore", items: [...mainNav, aboutNav.about] },
   {
     id: "community",
     headingKey: "footer.community",
-    items: [...directoryNav, accountNav.signIn, accountNav.help],
+    items: [
+      ...directoryNav,
+      aboutNav.stories,
+      aboutNav.install,
+      accountNav.signIn,
+      accountNav.help,
+    ],
   },
-  { id: "grow", headingKey: "footer.grow", items: growNav },
+  { id: "grow", headingKey: "footer.grow", items: [...growNav, aboutNav.partners] },
   { id: "legal", headingKey: "footer.legal", items: legalNav },
 ] as const;
 
@@ -81,6 +94,10 @@ export const footerColumns = [
 export function allInternalHrefs(): string[] {
   return [
     "/",
-    ...new Set([...mainNav, ...growNav, accountNav.signIn, ...legalNav].map((item) => item.href)),
+    ...new Set(
+      [...mainNav, ...growNav, ...Object.values(aboutNav), accountNav.signIn, ...legalNav].map(
+        (item) => item.href,
+      ),
+    ),
   ];
 }

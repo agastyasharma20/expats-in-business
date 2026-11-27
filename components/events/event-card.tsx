@@ -33,7 +33,7 @@ export async function EventCard({ event, href }: { event: HomeEvent; href: strin
   return (
     <Card
       equalHeight
-      className="relative transition-transform duration-(--duration-micro) focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring hover:-translate-y-0.5"
+      className="sheen relative transition-transform duration-(--duration-micro) focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring hover:-translate-y-0.5"
     >
       <CardHeader>
         <div className="flex flex-wrap items-center gap-2">

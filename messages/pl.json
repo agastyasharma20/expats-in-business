@@ -203,7 +203,8 @@
       "dashedBorderOnCanvas": "Empty state border on the page",
       "focusRingOnDark": "Focus ring on Deep Teal (footer)",
       "darkControlBorder": "Button border on Deep Teal (footer)",
-      "pulseProgressBar": "Pulse progress bar on Deep Teal"
+      "pulseProgressBar": "Pulse progress bar on Deep Teal",
+      "bodyOnWash": "Tekst podstawowy na jasnym tle"
     },
     "type": {
       "display": "Display: the business network for internationals",
@@ -330,7 +331,11 @@
     "ambassadors": "Ambasadorzy",
     "volunteer": "Wolontariat",
     "careers": "Kariera",
-    "team": "Zespół"
+    "team": "Zespół",
+    "about": "O nas",
+    "partners": "Partnerzy",
+    "stories": "Historie",
+    "install": "Zainstaluj aplikację"
   },
   "chapter": {
     "label": "Oddział",
@@ -433,10 +438,40 @@
     "google": "Kontynuuj z Google",
     "error": "Nie udało się. Sprawdź dane i spróbuj ponownie.",
     "rateLimited": "Zbyt wiele prób. Odczekaj minutę i spróbuj ponownie.",
-    "demoTitle": "Konta demonstracyjne",
+    "demoTitle": "Wypróbuj piaskownicę jednym kliknięciem",
     "demoLead": "Tylko w trybie demo. Hasło dla wszystkich: {password}",
     "demoUse": "Użyj {email}",
-    "invalidEmail": "Podaj adres e-mail (i hasło, jeśli z niego korzystasz)."
+    "invalidEmail": "Podaj adres e-mail (i hasło, jeśli z niego korzystasz).",
+    "demoQuick": "Wybierz osobę, aby się jako ona zalogować. Hasło nie jest potrzebne.",
+    "demoSigningIn": "Logowanie jako {name}…",
+    "demoOpening": "Zalogowano jako {name}. Otwieram Twoją stronę…",
+    "demoNote": "Tylko dane demonstracyjne. Wszystkie konta demo mają to samo hasło: {password}, jeśli wolisz je wpisać.",
+    "demoPersonas": {
+      "admin": {
+        "name": "Admin Demo",
+        "role": "Administrator: widzi wszystkie narzędzia"
+      },
+      "lead": {
+        "name": "Alex Demo",
+        "role": "Lider chaptera"
+      },
+      "priya": {
+        "name": "Priya Demo",
+        "role": "Członkini"
+      },
+      "karim": {
+        "name": "Karim Demo",
+        "role": "Członek"
+      },
+      "marta": {
+        "name": "Marta Demo",
+        "role": "Usługodawczyni"
+      },
+      "sponsor": {
+        "name": "Anna Demo",
+        "role": "Sponsorka"
+      }
+    }
   },
   "onboarding": {
     "title": "Uzupełnij profil",
@@ -1598,7 +1633,8 @@
       "catalogs": "Katalogi",
       "ambassadors": "Ambasadorzy",
       "roles": "Role",
-      "team": "Zespół"
+      "team": "Zespół",
+      "chapters": "Oddziały"
     }
   },
   "adminMembers": {
@@ -2652,17 +2688,64 @@
   "pwa": {
     "install": {
       "title": "Zainstaluj aplikację EiB",
-      "iosTitle": "Dodaj EiB do ekranu głównego",
-      "lead": "Twoje bilety, wydarzenia i społeczność w jednym dotknięciu.",
+      "lead": "Twoje bilety, wydarzenia i społeczność, jedno dotknięcie stąd.",
       "benefitOffline": "Zapisane bilety otwierają się bez internetu",
       "benefitFast": "Działa na pełnym ekranie, od razu",
-      "iosStepShare": "Stuknij przycisk Udostępnij w przeglądarce.",
-      "iosStepAdd": "Wybierz „Dodaj do ekranu głównego”, a potem „Dodaj”.",
       "action": "Zainstaluj aplikację",
       "later": "Nie teraz",
-      "gotIt": "Rozumiem",
       "close": "Zamknij",
-      "footerLink": "Zainstaluj aplikację"
+      "installNow": "Zainstaluj teraz",
+      "nativeReady": "Twoja przeglądarka może zainstalować ją jednym dotknięciem.",
+      "benefitFree": "Bezpłatnie, bez sklepu z aplikacjami",
+      "alreadyInstalled": "Korzystasz już z zainstalowanej aplikacji.",
+      "yourDevice": "Kroki dla Twojego urządzenia",
+      "otherDevices": "Inne urządzenia",
+      "groups": {
+        "ios": "iPhone i iPad",
+        "android": "Android",
+        "desktop": "Komputer"
+      },
+      "platforms": {
+        "ios-safari": "iPhone lub iPad, Safari",
+        "ios-other": "iPhone lub iPad, inna przeglądarka",
+        "android-chromium": "Android, Chrome, Edge lub podobna",
+        "android-samsung": "Android, Samsung Internet",
+        "android-firefox": "Android, Firefox",
+        "desktop-chromium": "Komputer, Chrome lub Edge",
+        "desktop-safari": "Mac, Safari",
+        "desktop-firefox": "Komputer, Firefox",
+        "other": "Twoja przeglądarka"
+      },
+      "steps": {
+        "share": "Dotknij przycisku Udostępnij w przeglądarce.",
+        "addHome": "Przewiń w dół i wybierz „Dodaj do ekranu początkowego”.",
+        "confirmAdd": "Dotknij „Dodaj”. Ikona EiB pojawi się wśród Twoich aplikacji.",
+        "orSafari": "Nie widzisz tej opcji? Otwórz tę stronę w Safari i spróbuj ponownie.",
+        "menuDots": "Dotknij menu ⋮ u góry lub u dołu przeglądarki.",
+        "installApp": "Wybierz „Zainstaluj aplikację” (lub „Dodaj do ekranu głównego”).",
+        "confirmInstall": "Potwierdź. EiB otwiera się teraz jak każda inna aplikacja.",
+        "menuLines": "Dotknij przycisku menu (trzy kreski).",
+        "addToHome": "Wybierz „Dodaj stronę do”, a potem „Ekran główny”.",
+        "addressIcon": "Poszukaj ikony instalacji po prawej stronie paska adresu.",
+        "clickInstall": "Kliknij ją, a potem „Zainstaluj”.",
+        "fileMenu": "W pasku menu otwórz Plik.",
+        "addDock": "Wybierz „Dodaj do Docka”.",
+        "firefoxNo": "Firefox na komputerze nie instaluje aplikacji internetowych.",
+        "useChromeOrPhone": "Otwórz tę stronę w Chrome lub Edge albo zeskanuj kod QR telefonem.",
+        "browserMenu": "Otwórz menu przeglądarki.",
+        "installOrAdd": "Poszukaj „Zainstaluj aplikację” lub „Dodaj do ekranu głównego”."
+      },
+      "copyLink": "Skopiuj link do instalacji",
+      "linkCopied": "Skopiowano link",
+      "copyFailed": "Nie udało się skopiować linku. Skopiuj go z paska adresu.",
+      "share": "Udostępnij",
+      "shareText": "Zainstaluj Expats in Business na telefonie lub komputerze.",
+      "qrCaption": "Zeskanuj aparatem telefonu, aby otworzyć stronę instalacji.",
+      "qrAlt": "Kod QR otwierający {url}",
+      "pageEyebrow": "Pobierz aplikację",
+      "pageTitle": "Zainstaluj EiB na telefonie lub komputerze",
+      "pageLead": "EiB to aplikacja internetowa: nie ma sklepu z aplikacjami ani nic do pobrania. Dodaj ją do urządzenia, a otworzy się na pełnym ekranie, z zapisanymi biletami gotowymi przy wejściu.",
+      "howTitle": "Jak zainstalować"
     },
     "update": {
       "title": "Nowa wersja jest gotowa",
@@ -2697,5 +2780,117 @@
       "concierge": "Concierge",
       "account": "Konto"
     }
+  },
+  "adminChapters": {
+    "title": "Oddziały",
+    "lead": "Uruchom nowe miasto w mniej niż minutę. Pojawia się od razu w przełączniku oddziałów, na mapie świata i w mapie witryny, bez wdrożenia.",
+    "launchTitle": "Uruchom oddział",
+    "launch": "Uruchom oddział",
+    "launching": "Uruchamiam…",
+    "launched": "Oddział {value} został uruchomiony.",
+    "listTitle": "Wszystkie oddziały",
+    "wantedTitle": "Miasta, o które proszą członkowie",
+    "wantedEmpty": "Żadne miasto nie ma jeszcze głosów. Członkowie mogą je zgłosić na stronie oddziałów.",
+    "votes": "{count, plural, one {# głos} few {# głosy} many {# głosów} other {# głosu}}",
+    "demo": "Demo",
+    "nowLive": "Oddział jest aktywny.",
+    "nowLaunching": "Oddział wrócił na listę oczekujących.",
+    "status": {
+      "live": "Aktywny",
+      "launching": "W przygotowaniu (lista oczekujących)"
+    },
+    "moveTo": {
+      "live": "Uruchom",
+      "launching": "Przenieś na listę oczekujących"
+    },
+    "fields": {
+      "city": "Miasto",
+      "country": "Kraj",
+      "countryPlaceholder": "Wybierz kraj",
+      "status": "Status",
+      "statusHint": "W przygotowaniu pokazuje listę oczekujących. Aktywny otwiera wydarzenia.",
+      "timezone": "Strefa czasowa (opcjonalnie)",
+      "currency": "Waluta (opcjonalnie)",
+      "defaultHint": "Puste pole używa wartości domyślnej kraju.",
+      "lead": "E-mail lidera oddziału (opcjonalnie)",
+      "leadHint": "Istniejący członek. Otrzyma rolę lidera oddziału.",
+      "tagline": "Hasło (opcjonalnie)"
+    },
+    "errors": {
+      "default": "Sprawdź pola i spróbuj ponownie. Miasto, kraj i status są wymagane.",
+      "rateLimited": "Zbyt wiele zmian w krótkim czasie. Spróbuj za kilka minut.",
+      "country": "Ten kraj nie jest jeszcze skonfigurowany.",
+      "exists": "Oddział dla tego miasta już istnieje.",
+      "leadNotFound": "Żaden członek nie ma tego adresu e-mail."
+    }
+  },
+  "about": {
+    "eyebrow": "O nas",
+    "title": "Społeczność biznesowa dla ludzi, którzy zamieszkali w nowym kraju",
+    "metaDescription": "Kim jest Expats in Business, czym zajmuje się społeczność i jakie są dotychczasowe kamienie milowe.",
+    "lead": "{name} to prowadzona przez społeczność sieć przedsiębiorców-expatów. {tagline}",
+    "join": "Dołącz do EiB",
+    "sessions": "Zobacz nadchodzące spotkania",
+    "whatTitle": "Czym się zajmujemy",
+    "whatLead": "Każde spotkanie podaje datę, godzinę, miejsce i cenę. Oto formaty, które prowadzi społeczność:",
+    "milestonesTitle": "Kamienie milowe",
+    "source": "Źródło",
+    "milestones": {
+      "anniversary": "Pierwsza rocznica",
+      "cultoura": "Cultoura, nasza seria wymiany kulturowej",
+      "sessions": "Odbyte spotkania",
+      "meetup": "Wspólne spotkanie"
+    },
+    "foundersTitle": "Współzałożyciel: {name}",
+    "foundersText": "EiB tworzy społeczność. Poznaj ludzi, którzy za nią stoją.",
+    "teamLink": "Poznaj zespół",
+    "bubblesTitle": "Bąbelki kulturowe",
+    "bubblesText": "Grupy według kraju pochodzenia, każda z liderem, dzięki którym poznasz ludzi o podobnych korzeniach i zainteresowaniach biznesowych.",
+    "bubblesLink": "Poznaj bąbelki",
+    "freeTitle": "Dołączenie jest bezpłatne",
+    "freeText": "Dołączenie do społeczności jest bezpłatne. Planowany jest płatny moduł „EiB Business”.",
+    "freeLink": "Zobacz plany"
+  },
+  "partners": {
+    "eyebrow": "Partnerzy",
+    "title": "Współpracujemy",
+    "lead": "EiB rozwija się dzięki współpracy z organizacjami wspierającymi obcokrajowców i przedsiębiorców. Ta strona zawiera tylko to, co możemy dziś potwierdzić.",
+    "become": "Zostań partnerem",
+    "source": "Źródło",
+    "collabTitle": "Współprace, które zrealizowaliśmy",
+    "logosTitle": "Logo partnerów",
+    "logosEmptyTitle": "Logo partnerów pojawią się tutaj, za zgodą",
+    "logosEmptyText": "Logo partnera pokazujemy dopiero po jego pisemnej zgodzie. Na razie nie ma żadnych.",
+    "waysTitle": "Jak możesz z nami współpracować",
+    "ways": {
+      "host": {
+        "title": "Gościnne miejsce",
+        "text": "Powiedz nam o miejscu, które mogłoby przyjąć spotkanie."
+      },
+      "support": {
+        "title": "Wesprzyj społeczność",
+        "text": "Powiedz, jak chcesz pomóc w organizacji spotkania lub festiwalu."
+      },
+      "speak": {
+        "title": "Podziel się wiedzą",
+        "text": "Wystąp na spotkaniu lub poprowadź warsztat dla członków."
+      }
+    },
+    "contact": "Napisz do zespołu",
+    "involved": "Zobacz, jak się zaangażować"
+  },
+  "stories": {
+    "eyebrow": "Historie",
+    "title": "Historie ze społeczności",
+    "lead": "Założyciele i profesjonaliści opowiadają, jak zbudowali życie i biznes w nowym kraju. Nowe historie publikujemy na naszym kanale YouTube.",
+    "watch": "Oglądaj na YouTube",
+    "newTab": "(otwiera się w nowej karcie)",
+    "share": "Opowiedz swoją historię",
+    "episodesTitle": "Najnowsze odcinki",
+    "placeholder": "Odcinek zastępczy",
+    "placeholderTitle": "Tytuł odcinka wkrótce",
+    "placeholderText": "Prawdziwe odcinki pojawią się tutaj, gdy zespół je doda.",
+    "channelNote": "Wszystkie nasze filmy znajdziesz na",
+    "channelLink": "naszym kanale YouTube"
   }
 }

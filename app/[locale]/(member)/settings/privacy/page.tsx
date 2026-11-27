@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { ActionForm } from "@/components/common/action-form";
+import { ClearSavedOnDeletion } from "@/components/pwa/clear-saved-on-deletion";
 import { buttonVariants } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -41,6 +42,7 @@ export default async function PrivacySettingsPage() {
         <p className="text-muted-foreground">{t("deleteLead")}</p>
         {scheduled ? (
           <>
+            <ClearSavedOnDeletion />
             <p role="status" className="font-semibold text-danger">
               {t("scheduled", {
                 date: new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(

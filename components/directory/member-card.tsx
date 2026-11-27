@@ -41,7 +41,7 @@ export async function MemberCard({ member, signedIn }: { member: MemberRow; sign
   ].filter(Boolean);
 
   return (
-    <article className="relative flex h-full flex-col gap-3 rounded-xl border border-line bg-surface p-5 shadow-card transition-transform duration-(--duration-micro) focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring hover:-translate-y-0.5">
+    <article className="sheen relative flex h-full flex-col gap-3 rounded-xl border border-line bg-surface p-5 shadow-card transition-transform duration-(--duration-micro) focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring hover:-translate-y-0.5">
       <div className="flex flex-wrap gap-2">
         {member.isDemo ? <Badge variant="demo">{d("demo")}</Badge> : null}
         {member.openToCoffee ? <Badge variant="secondary">{t("coffee")}</Badge> : null}

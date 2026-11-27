@@ -12,6 +12,14 @@ describe("official source check", () => {
     expect(isOfficialSource("https://ksef.podatki.gov.pl/x")).toBe(true);
     expect(isOfficialSource("https://kkr.krakow.pl/aktualnosci/1")).toBe(true);
     expect(isOfficialSource("http://www.gov.pl/web/gov")).toBe(false);
+    expect(isOfficialSource("https://indianvisaonline.gov.in/evisa/")).toBe(true);
+    expect(isOfficialSource("https://www.incometax.gov.in/iec/foportal/")).toBe(true);
+    expect(isOfficialSource("https://www.immigration.gov.lk/")).toBe(true);
+    expect(isOfficialSource("https://www.boi.lk/")).toBe(true);
+    // Look-alike hosts and non-government sites stay out.
+    expect(isOfficialSource("https://gov.in.example.com/")).toBe(false);
+    expect(isOfficialSource("https://notgov.lk.evil.test/")).toBe(false);
+    expect(isOfficialSource("https://www.rbi.org.in.example.com/")).toBe(false);
     expect(isOfficialSource("https://gov.pl.example.com/")).toBe(false);
     expect(isOfficialSource("https://someblog.com/pesel")).toBe(false);
     expect(isOfficialSource("not a url")).toBe(false);
@@ -59,5 +67,54 @@ describe("Poland guides", async () => {
       [...g.body.matchAll(/\]\(\/guides\/([a-z0-9-]+)\)/g)].map((m) => m[1]!),
     );
     expect(links.filter((l) => !slugs.has(l))).toEqual([]);
+  });
+});
+
+describe("all countries", async () => {
+  const { readdirSync } = await import("node:fs");
+  const path = await import("node:path");
+  const countries = readdirSync(path.join(process.cwd(), "content", "guides"), {
+    withFileTypes: true,
+  })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name);
+  const all = (await Promise.all(countries.map((c) => listGuides(c)))).flat();
+
+  it("guide slugs are unique across countries (the URL has only the slug)", () => {
+    const slugs = all.map((g) => g.slug);
+    expect(slugs.filter((s, i) => slugs.indexOf(s) !== i)).toEqual([]);
+  });
+
+  it("each folder's guides carry that country's code", () => {
+    for (const guide of all) {
+      expect(guide.frontmatter.countryCode.toLowerCase(), guide.slug).toBe(guide.country);
+    }
+  });
+
+  it("a verified guide has no unresolved TODO (verify) left in it", () => {
+    const open = all
+      .filter((g) => g.frontmatter.verificationStatus === "verified")
+      .filter((g) => /TODO\s*\(verify\)/i.test(g.body))
+      .map((g) => g.slug);
+    expect(open).toEqual([]);
+  });
+
+  it("every guide was checked recently and cites at least one official source", () => {
+    for (const guide of all) {
+      const ageDays = (Date.now() - guide.frontmatter.lastVerified.getTime()) / 86_400_000;
+      expect(ageDays, `${guide.slug} needs re-verifying`).toBeLessThan(MAX_AGE_DAYS);
+      expect(guide.frontmatter.sources.length, guide.slug).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("official source hosts for India and Sri Lanka", () => {
+  it("accepts the Acts and the investment guide, not look-alikes", () => {
+    expect(isOfficialSource("https://www.parliament.lk/uploads/acts/gbills/english/3776.pdf")).toBe(
+      true,
+    );
+    expect(isOfficialSource("https://investsrilanka.com/home/newinvestirv1/")).toBe(true);
+    expect(isOfficialSource("https://investsrilanka.com.evil.test/")).toBe(false);
+    expect(isOfficialSource("https://parliament.lk.evil.test/")).toBe(false);
   });
 });

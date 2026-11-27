@@ -6,7 +6,7 @@ import { Slot } from "radix-ui";
 // EiB buttons: sentence case, Cabin semibold, 44px minimum touch target, visible focus outline.
 // Only transform is transitioned (press feedback); colour changes are instant (motion rules).
 const baseButtonVariants = cva(
-  "group/button relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-transparent font-heading font-semibold whitespace-nowrap transition-transform duration-(--duration-micro) ease-(--ease-brand) outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  "group/button relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-transparent font-heading font-semibold whitespace-nowrap transition-transform duration-(--duration-micro) ease-(--ease-brand) select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {

@@ -37,7 +37,7 @@ async function signIn(baseURL: string, email: string) {
       path: "/",
       expires: -1,
       httpOnly: true,
-      secure: false,
+      secure: baseURL.startsWith("https:"),
       sameSite: "Lax" as const,
     };
   });

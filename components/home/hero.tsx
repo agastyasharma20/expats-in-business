@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Aurora } from "@/components/motion/aurora";
+import { InstallButton } from "@/components/pwa/install-button";
 import { WordRise } from "@/components/motion/word-rise";
 import { Link } from "@/lib/i18n/navigation";
 
@@ -41,6 +42,7 @@ export async function Hero() {
           <Link href="/events" className={buttonVariants({ size: "lg", variant: "outline" })}>
             {t("sessions")}
           </Link>
+          <InstallButton variant="ghost" size="lg" />
         </div>
       </div>
       {/* Country panorama for the visitor's chapter; streams in and draws itself (no layout shift: absolutely positioned). */}

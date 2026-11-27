@@ -334,7 +334,8 @@
     "team": "Zespół",
     "about": "O nas",
     "partners": "Partnerzy",
-    "stories": "Historie"
+    "stories": "Historie",
+    "install": "Zainstaluj aplikację"
   },
   "chapter": {
     "label": "Oddział",
@@ -2687,17 +2688,64 @@
   "pwa": {
     "install": {
       "title": "Zainstaluj aplikację EiB",
-      "iosTitle": "Dodaj EiB do ekranu głównego",
-      "lead": "Twoje bilety, wydarzenia i społeczność w jednym dotknięciu.",
+      "lead": "Twoje bilety, wydarzenia i społeczność, jedno dotknięcie stąd.",
       "benefitOffline": "Zapisane bilety otwierają się bez internetu",
       "benefitFast": "Działa na pełnym ekranie, od razu",
-      "iosStepShare": "Stuknij przycisk Udostępnij w przeglądarce.",
-      "iosStepAdd": "Wybierz „Dodaj do ekranu głównego”, a potem „Dodaj”.",
       "action": "Zainstaluj aplikację",
       "later": "Nie teraz",
-      "gotIt": "Rozumiem",
       "close": "Zamknij",
-      "footerLink": "Zainstaluj aplikację"
+      "installNow": "Zainstaluj teraz",
+      "nativeReady": "Twoja przeglądarka może zainstalować ją jednym dotknięciem.",
+      "benefitFree": "Bezpłatnie, bez sklepu z aplikacjami",
+      "alreadyInstalled": "Korzystasz już z zainstalowanej aplikacji.",
+      "yourDevice": "Kroki dla Twojego urządzenia",
+      "otherDevices": "Inne urządzenia",
+      "groups": {
+        "ios": "iPhone i iPad",
+        "android": "Android",
+        "desktop": "Komputer"
+      },
+      "platforms": {
+        "ios-safari": "iPhone lub iPad, Safari",
+        "ios-other": "iPhone lub iPad, inna przeglądarka",
+        "android-chromium": "Android, Chrome, Edge lub podobna",
+        "android-samsung": "Android, Samsung Internet",
+        "android-firefox": "Android, Firefox",
+        "desktop-chromium": "Komputer, Chrome lub Edge",
+        "desktop-safari": "Mac, Safari",
+        "desktop-firefox": "Komputer, Firefox",
+        "other": "Twoja przeglądarka"
+      },
+      "steps": {
+        "share": "Dotknij przycisku Udostępnij w przeglądarce.",
+        "addHome": "Przewiń w dół i wybierz „Dodaj do ekranu początkowego”.",
+        "confirmAdd": "Dotknij „Dodaj”. Ikona EiB pojawi się wśród Twoich aplikacji.",
+        "orSafari": "Nie widzisz tej opcji? Otwórz tę stronę w Safari i spróbuj ponownie.",
+        "menuDots": "Dotknij menu ⋮ u góry lub u dołu przeglądarki.",
+        "installApp": "Wybierz „Zainstaluj aplikację” (lub „Dodaj do ekranu głównego”).",
+        "confirmInstall": "Potwierdź. EiB otwiera się teraz jak każda inna aplikacja.",
+        "menuLines": "Dotknij przycisku menu (trzy kreski).",
+        "addToHome": "Wybierz „Dodaj stronę do”, a potem „Ekran główny”.",
+        "addressIcon": "Poszukaj ikony instalacji po prawej stronie paska adresu.",
+        "clickInstall": "Kliknij ją, a potem „Zainstaluj”.",
+        "fileMenu": "W pasku menu otwórz Plik.",
+        "addDock": "Wybierz „Dodaj do Docka”.",
+        "firefoxNo": "Firefox na komputerze nie instaluje aplikacji internetowych.",
+        "useChromeOrPhone": "Otwórz tę stronę w Chrome lub Edge albo zeskanuj kod QR telefonem.",
+        "browserMenu": "Otwórz menu przeglądarki.",
+        "installOrAdd": "Poszukaj „Zainstaluj aplikację” lub „Dodaj do ekranu głównego”."
+      },
+      "copyLink": "Skopiuj link do instalacji",
+      "linkCopied": "Skopiowano link",
+      "copyFailed": "Nie udało się skopiować linku. Skopiuj go z paska adresu.",
+      "share": "Udostępnij",
+      "shareText": "Zainstaluj Expats in Business na telefonie lub komputerze.",
+      "qrCaption": "Zeskanuj aparatem telefonu, aby otworzyć stronę instalacji.",
+      "qrAlt": "Kod QR otwierający {url}",
+      "pageEyebrow": "Pobierz aplikację",
+      "pageTitle": "Zainstaluj EiB na telefonie lub komputerze",
+      "pageLead": "EiB to aplikacja internetowa: nie ma sklepu z aplikacjami ani nic do pobrania. Dodaj ją do urządzenia, a otworzy się na pełnym ekranie, z zapisanymi biletami gotowymi przy wejściu.",
+      "howTitle": "Jak zainstalować"
     },
     "update": {
       "title": "Nowa wersja jest gotowa",

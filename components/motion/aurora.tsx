@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 
+import { NetworkField } from "./network-field";
+
 /**
- * Decorative drifting light behind the hero. It mounts only after the page has loaded and the
+ * Decorative backdrop behind the hero: drifting light plus a quiet network of linked nodes. It mounts only after the page has loaded and the
  * browser is idle, so it can never delay the first paint or the largest contentful paint (measured:
  * rendering it up front cost 3.5 s of LCP on a throttled phone). Without JavaScript it is absent.
  */
@@ -26,6 +28,7 @@ export function Aurora() {
       <span className="aurora-blob aurora-blob-a" />
       <span className="aurora-blob aurora-blob-b" />
       <span className="aurora-blob aurora-blob-c" />
+      <NetworkField />
     </div>
   );
 }

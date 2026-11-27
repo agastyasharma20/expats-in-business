@@ -333,7 +333,8 @@
     "team": "Team",
     "about": "About",
     "partners": "Partners",
-    "stories": "Stories"
+    "stories": "Stories",
+    "install": "Install app"
   },
   "chapter": {
     "label": "Chapter",
@@ -2686,17 +2687,64 @@
   "pwa": {
     "install": {
       "title": "Install the EiB app",
-      "iosTitle": "Add EiB to your home screen",
       "lead": "Your tickets, events and community, one tap away.",
       "benefitOffline": "Saved tickets open without a connection",
       "benefitFast": "Opens full screen, instantly",
-      "iosStepShare": "Tap the Share button in your browser.",
-      "iosStepAdd": "Choose “Add to Home Screen”, then “Add”.",
       "action": "Install app",
       "later": "Not now",
-      "gotIt": "Got it",
       "close": "Close",
-      "footerLink": "Install the app"
+      "installNow": "Install now",
+      "nativeReady": "Your browser can install it in one tap.",
+      "benefitFree": "Free, no app store",
+      "alreadyInstalled": "You are using the installed app.",
+      "yourDevice": "Steps for your device",
+      "otherDevices": "Other devices",
+      "groups": {
+        "ios": "iPhone and iPad",
+        "android": "Android",
+        "desktop": "Computer"
+      },
+      "platforms": {
+        "ios-safari": "iPhone or iPad, Safari",
+        "ios-other": "iPhone or iPad, another browser",
+        "android-chromium": "Android, Chrome, Edge or similar",
+        "android-samsung": "Android, Samsung Internet",
+        "android-firefox": "Android, Firefox",
+        "desktop-chromium": "Computer, Chrome or Edge",
+        "desktop-safari": "Mac, Safari",
+        "desktop-firefox": "Computer, Firefox",
+        "other": "Your browser"
+      },
+      "steps": {
+        "share": "Tap the Share button in your browser.",
+        "addHome": "Scroll down and choose “Add to Home Screen”.",
+        "confirmAdd": "Tap “Add”. The EiB icon appears with your apps.",
+        "orSafari": "Not there? Open this page in Safari and try again.",
+        "menuDots": "Tap the ⋮ menu at the top or bottom of your browser.",
+        "installApp": "Choose “Install app” (or “Add to Home screen”).",
+        "confirmInstall": "Confirm. EiB now opens like any other app.",
+        "menuLines": "Tap the menu button (three lines).",
+        "addToHome": "Choose “Add page to” and then “Home screen”.",
+        "addressIcon": "Look for the install icon at the right end of the address bar.",
+        "clickInstall": "Click it, then click “Install”.",
+        "fileMenu": "In the menu bar, open File.",
+        "addDock": "Choose “Add to Dock”.",
+        "firefoxNo": "Firefox on a computer cannot install web apps.",
+        "useChromeOrPhone": "Open this page in Chrome or Edge, or scan the QR code with your phone.",
+        "browserMenu": "Open your browser menu.",
+        "installOrAdd": "Look for “Install app” or “Add to Home screen”."
+      },
+      "copyLink": "Copy install link",
+      "linkCopied": "Link copied",
+      "copyFailed": "Could not copy the link. Copy it from the address bar instead.",
+      "share": "Share",
+      "shareText": "Install Expats in Business on your phone or computer.",
+      "qrCaption": "Scan with your phone camera to open the install page.",
+      "qrAlt": "QR code that opens {url}",
+      "pageEyebrow": "Get the app",
+      "pageTitle": "Install EiB on your phone or computer",
+      "pageLead": "EiB is a web app: there is no app store and nothing to download. Add it to your device and it opens full screen, with your saved tickets ready at the door.",
+      "howTitle": "How to install"
     },
     "update": {
       "title": "A new version is ready",

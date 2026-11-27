@@ -56,6 +56,7 @@ export const aboutNav = {
   about: { id: "about", href: "/about", labelKey: "nav.about", status: "live" },
   stories: { id: "stories", href: "/stories", labelKey: "nav.stories", status: "live" },
   partners: { id: "partners", href: "/partners", labelKey: "nav.partners", status: "live" },
+  install: { id: "install", href: "/install", labelKey: "nav.install", status: "live" },
 } as const satisfies Record<string, NavItem>;
 
 export const legalNav = [
@@ -77,7 +78,13 @@ export const footerColumns = [
   {
     id: "community",
     headingKey: "footer.community",
-    items: [...directoryNav, aboutNav.stories, accountNav.signIn, accountNav.help],
+    items: [
+      ...directoryNav,
+      aboutNav.stories,
+      aboutNav.install,
+      accountNav.signIn,
+      accountNav.help,
+    ],
   },
   { id: "grow", headingKey: "footer.grow", items: [...growNav, aboutNav.partners] },
   { id: "legal", headingKey: "footer.legal", items: legalNav },

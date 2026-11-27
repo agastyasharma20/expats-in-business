@@ -2,7 +2,6 @@ import { MailIcon, MessageCircleIcon, UsersIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { ExternalLink } from "@/components/common/external-link";
-import { InstallLink } from "@/components/pwa/install-link";
 import { getFact } from "@/config/facts";
 import { Link } from "@/lib/i18n/navigation";
 import { footerColumns, socialNav } from "@/lib/nav";
@@ -107,7 +106,6 @@ export function SiteFooter() {
       <div className="border-t border-brand-800">
         <div className="container-page flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-6 text-small text-on-dark-muted">
           <p>{t("footer.copyright", { name: getFact("org.name").value })}</p>
-          <InstallLink className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg px-2 font-semibold text-on-dark underline underline-offset-4 hover:text-on-dark-muted" />
         </div>
       </div>
     </footer>

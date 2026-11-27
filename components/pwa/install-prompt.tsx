@@ -2,15 +2,18 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
-import { PlusSquareIcon, ShareIcon, WifiOffIcon, XIcon, ZapIcon } from "lucide-react";
+import { DownloadIcon, WifiOffIcon, XIcon, ZapIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
+  getInstallDialogOpen,
   getInstallState,
+  getServerInstallDialogOpen,
   getServerInstallState,
-  promptInstall,
+  startInstall,
   subscribeInstall,
+  subscribeInstallDialog,
 } from "@/lib/pwa/install-store";
 
 import monogram from "@/public/brand/eib-monogram.png";
@@ -18,7 +21,7 @@ import monogram from "@/public/brand/eib-monogram.png";
 const DISMISSED_KEY = "eib:install-dismissed";
 const SNOOZE_MS = 30 * 24 * 60 * 60 * 1000;
 /** Wait a little so the card never competes with the first impression of a page. */
-const SHOW_AFTER_MS = 15_000;
+const SHOW_AFTER_MS = 8_000;
 
 function snoozed(): boolean {
   try {
@@ -30,31 +33,36 @@ function snoozed(): boolean {
 }
 
 /**
- * A friendly, dismissible card that invites members to install the app. It appears once the
- * browser says installing is possible (or, on iOS, after a short delay), never inside the
- * installed app, and stays away for 30 days after "Not now".
+ * A friendly, dismissible card that invites people to install the app. It appears for everyone who
+ * has not installed (every phone, tablet and computer), never inside the installed app, and stays
+ * away for 30 days after "Not now". "Install app" installs in one tap where the browser allows it
+ * and otherwise opens the dialog with the steps for the device. Escape closes it.
  */
 export function InstallPrompt() {
   const t = useTranslations("pwa.install");
   const install = useSyncExternalStore(subscribeInstall, getInstallState, getServerInstallState);
+  const dialogOpen = useSyncExternalStore(
+    subscribeInstallDialog,
+    getInstallDialogOpen,
+    getServerInstallDialogOpen,
+  );
   const [ready, setReady] = useState(false);
   const [closed, setClosed] = useState(false);
-  const available = (install.canPrompt || install.ios) && !install.standalone;
 
   useEffect(() => {
-    if (!available || snoozed()) return;
+    if (install.standalone || snoozed()) return;
     const timer = window.setTimeout(() => setReady(true), SHOW_AFTER_MS);
     return () => window.clearTimeout(timer);
-  }, [available]);
+  }, [install.standalone]);
 
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || closed) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") dismiss();
+      if (event.key === "Escape" && !getInstallDialogOpen()) dismiss();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [ready]);
+  }, [ready, closed]);
 
   function dismiss() {
     setClosed(true);
@@ -66,11 +74,11 @@ export function InstallPrompt() {
   }
 
   async function accept() {
-    const outcome = await promptInstall();
-    if (outcome !== "unavailable") setClosed(true);
+    setClosed(true);
+    await startInstall();
   }
 
-  if (!ready || closed || !available) return null;
+  if (!ready || closed || install.standalone || dialogOpen) return null;
 
   return (
     <aside
@@ -93,48 +101,32 @@ export function InstallPrompt() {
           alt=""
           width={56}
           height={56}
-          className="size-14 shrink-0 rounded-2xl shadow-card"
+          className="float-soft size-14 shrink-0 rounded-2xl shadow-card"
         />
         <div className="flex flex-col gap-1">
           <h2 id="install-title" className="text-h3 leading-tight">
-            {install.ios && !install.canPrompt ? t("iosTitle") : t("title")}
+            {t("title")}
           </h2>
           <p className="text-small text-muted-foreground">{t("lead")}</p>
         </div>
       </div>
-
-      {install.ios && !install.canPrompt ? (
-        <ol className="flex flex-col gap-2 text-small">
-          <li className="flex items-center gap-3 rounded-lg bg-brand-50 p-3">
-            <ShareIcon aria-hidden="true" className="size-5 shrink-0 text-brand-950" />
-            {t("iosStepShare")}
-          </li>
-          <li className="flex items-center gap-3 rounded-lg bg-brand-50 p-3">
-            <PlusSquareIcon aria-hidden="true" className="size-5 shrink-0 text-brand-950" />
-            {t("iosStepAdd")}
-          </li>
-        </ol>
-      ) : (
-        <ul className="flex flex-col gap-2 text-small">
-          <li className="flex items-center gap-3">
-            <WifiOffIcon aria-hidden="true" className="size-4 shrink-0 text-brand-950" />
-            {t("benefitOffline")}
-          </li>
-          <li className="flex items-center gap-3">
-            <ZapIcon aria-hidden="true" className="size-4 shrink-0 text-brand-950" />
-            {t("benefitFast")}
-          </li>
-        </ul>
-      )}
-
+      <ul className="flex flex-col gap-2 text-small">
+        <li className="flex items-center gap-3">
+          <WifiOffIcon aria-hidden="true" className="size-4 shrink-0 text-brand-950" />
+          {t("benefitOffline")}
+        </li>
+        <li className="flex items-center gap-3">
+          <ZapIcon aria-hidden="true" className="size-4 shrink-0 text-brand-950" />
+          {t("benefitFast")}
+        </li>
+      </ul>
       <div className="flex flex-wrap gap-3">
-        {install.canPrompt ? (
-          <Button onClick={accept} className="flex-1">
-            {t("action")}
-          </Button>
-        ) : null}
-        <Button variant={install.canPrompt ? "ghost" : "secondary"} onClick={dismiss}>
-          {install.canPrompt ? t("later") : t("gotIt")}
+        <Button onClick={accept} className="flex-1" data-testid="install-prompt-action">
+          <DownloadIcon aria-hidden="true" />
+          {t("action")}
+        </Button>
+        <Button variant="ghost" onClick={dismiss}>
+          {t("later")}
         </Button>
       </div>
     </aside>

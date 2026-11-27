@@ -43,13 +43,13 @@ export async function ReviewBoard({
             aria-labelledby={`${testId}-${column}`}
             className="flex flex-col gap-3 rounded-2xl bg-canvas p-3"
           >
-            <h3
+            <h2
               id={`${testId}-${column}`}
               className="flex items-center justify-between px-1 text-body font-bold"
             >
               {t(`status.${column}`)}
               <Badge variant="outline">{list.length}</Badge>
-            </h3>
+            </h2>
             {list.length ? (
               <ul className="flex flex-col gap-3">
                 {list.map((item) => (

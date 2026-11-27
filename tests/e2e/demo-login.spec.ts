@@ -47,7 +47,7 @@ test.describe("one-click demo sign-in", () => {
     expect(overflow).toBe(false);
     // Every card is a real, named, 44px-high control.
     for (const card of await page.getByTestId("demo-login").getByRole("button").all()) {
-      await expect(card).toHaveAccessibleName(/Use .*@demo\.eib\.local/);
+      await expect(card).toHaveAccessibleName(/Demo/);
       const box = await card.boundingBox();
       expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
     }

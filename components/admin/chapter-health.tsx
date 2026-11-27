@@ -12,7 +12,7 @@ export async function ChapterHealth({ chapters }: { chapters: Chapter[] }) {
     chapterHealth(chapters.map((c) => c.id)),
   ]);
   return (
-    <section aria-labelledby="health-title" className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4">
       <h2 id="health-title" className="text-h3">
         {t("health.title")}
       </h2>

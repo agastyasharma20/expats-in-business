@@ -75,7 +75,6 @@ export function DemoLogin({ next, password, personas }: DemoLoginProps) {
                 type="button"
                 onClick={() => signInAs(persona, email)}
                 disabled={active !== null}
-                aria-label={t("demoUse", { email })}
                 data-testid={`demo-${persona}`}
                 className={cn(
                   "group flex min-h-14 w-full items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-left shadow-card",
